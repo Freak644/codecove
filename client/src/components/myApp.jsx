@@ -31,7 +31,7 @@ export default function MyApp() {
     },[isTrue])
 
     useEffect(()=>{
-        if (fileURL.length>1) {
+        if (fileURL?.length>1) {
             setCropping(true)
         }else{
             setCropping(false)

@@ -111,10 +111,13 @@ export default function UserNameEl({stoggle}) {
         toggleLoader()
         let formData = new FormData(evnt.target);
         let {username, email} = Object.fromEntries(formData);
-        if (cache.includes(username)) {
-            return toast.info(username+" is Already Taken");
-        }
         try {
+            if (username.length<6) {
+             throw new Error("username.len>6")
+            }
+            if (cache.includes(username)) {
+                throw new Error(username+" is Already Taken");
+            }
             let request = await fetch("/myServer/sendVerifyEmail",{
                 method:"POST",
                 headers:{
@@ -132,7 +135,7 @@ export default function UserNameEl({stoggle}) {
                 toast.error(result.err)
             }
         } catch (error) {
-            console.log(error.message);
+            toast.error(error.message);
         } finally{
             toggleLoader();
         }
@@ -165,7 +168,7 @@ export default function UserNameEl({stoggle}) {
                                 <input type="text"
                                 onBlur={(evnt)=>handleBlur(evnt.target)}
                                     onChange={(evnt)=>setUsername(evnt.target.value)}
-                                id="UserName" autoComplete="username" name="username" value={username} required/>
+                                id="UserName" autoComplete="off" name="username" value={username} required/>
                                 <label htmlFor="UserName"><i className="bx bx-user">Username</i></label>
                                 <i id="checkbox" className="bx bxs-check-circle absolute right-0 top-2 transition-all duration-700 "></i>
                              <div className="suggestionDiv absolute flex items-center justify-center bottom-[-14px] gap-1.5">

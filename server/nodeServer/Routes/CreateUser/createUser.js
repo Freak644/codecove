@@ -4,7 +4,6 @@ import sharp from 'sharp';
 import { fileTypeFromBuffer } from 'file-type';
 import fs from 'fs';
 import path from 'path';
-import { sendTheMail } from '../../Controllers/nodemailer.js';
 
 async function checkDuplicate(sqlData, username, email) {
   if (sqlData.some(prv => prv.username === username)) return username;
@@ -19,7 +18,7 @@ export const CreateUser = async (rkv, rspo) => {
   const { email, password, username } = rkv.body;
   const file = rkv.file;
 
-  if (!file) return rspo.status(400).send({ err: "Please upload an image" });
+  if (!file) return rspo.status(400).send({ err: "Please upload an Avtar" });
 
   try {
     // 1️⃣ Validate file type
@@ -82,7 +81,7 @@ export const CreateUser = async (rkv, rspo) => {
     // Optional: send welcome email
     // await sendTheMail(email, "Welcome to CodeCove🎉", "Welcome", { username });
 
-    rspo.status(201).send({ msg: "User created successfully" });
+    rspo.status(201).send({ pass: "Account created successfully" });
 
   } catch (error) {
     // anything fails after saving, delete the file

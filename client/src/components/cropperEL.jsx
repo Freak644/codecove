@@ -36,8 +36,9 @@ export default function CropperEL({ prevImg }) {
     canvas.toBlob(
       (blob) => {
         const croppedFile = new File([blob], "avatar.png", { type: "image/png" });
+        console.log(croppedFile)
         setIMG(croppedFile);
-        setURL(""); // close cropper if needed
+        setURL(null); // close cropper if needed
         setPorc(false)
       },
       "image/png",

@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react"
 import { mngCrop } from "../../../lib/toggleTheme";
-import { toggleMini } from "../../../lib/tabToggle";
+import FaceToggle, { toggleMini } from "../../../lib/tabToggle";
 import { Loader } from "../../../lib/loader";
 import verifyZu from "../../../lib/verifyZu";
 import { toast } from "react-toastify";
 export default function CpassEL() {
-    const [img,setimg] = useState({})
+    const [myImage,setimg] = useState({
+        file:null,
+        fileUrl:""
+    })
+    const {setTab} = FaceToggle();
     // const [prevImage,setPrevImg] = useState(null);
     const {finalIMG,setURL} = mngCrop();
     const {toggleMiniTab} = toggleMini();
@@ -25,15 +29,19 @@ export default function CpassEL() {
         let myFIle = e.target.files[0]
         if (!myFIle) return ;
 
-        if (myFIle.size > 1 * 1024 * 1024) {
-            alert("File size will less then or = 1MB")
+        if (myFIle.size > 3 * 1024 * 1024) {
+            alert("File size <= 3MB")
             return
         }
         setURL(URL.createObjectURL(myFIle))
     }
     useEffect(()=>{
         if (finalIMG) {
-            setimg({file:finalIMG,fileUrl:URL.createObjectURL(finalIMG)});
+            setimg(prev=>({
+                ...prev,
+                file:finalIMG,
+                fileUrl:URL.createObjectURL(finalIMG)
+            }));
         }
     },[finalIMG])
 
@@ -165,19 +173,29 @@ export default function CpassEL() {
         if(!pwdStatus) return;
 
         let formData = new FormData(evnt.target)
-        console.log(email,username,img.file)
+
+
         formData.append("email", email);
         formData.append("username", username);
-        formData.append("file", img.file); 
+        //formData.append("file",myImage.file); 
+
+
         try {
             let rkv = await fetch("/myServer/CreateUser",{
                 method:"POST",
                 body:formData
             })
             let result = await rkv.json();
-            console.log(result)
+            if (result.err) {
+                throw new Error(result.err)
+            }
+            toast.success(result.pass)
+            setEstatus()
+            toggleMiniTab("user")
+            toggleLoader();
+            setTab("front")
         } catch (error) {
-            
+            toast.error(error.message)
         }
     }
     return(
@@ -199,13 +217,13 @@ export default function CpassEL() {
                             <input type="file" onChange={(evnt)=>handleImg(evnt)} style={{display:"none"}} id="file" name="file" accept="image/*" multiple={false} />
                             <label className="!left-[40%] !top-13 !cursor-pointer" htmlFor="file"><i className="bx bx-image">Avatar</i></label>
                             <div onClick={()=> document.getElementById("file").click()}  className="imgDiv flex items-center justify-center h-13 w-13 rounded-full">
-                                <img src={img?.fileUrl || "https://i.postimg.cc/zDK9mWZX/girl-anime.avif"} className="h-12 w-12 rounded-full" alt="DP" />
+                                <img src={myImage?.fileUrl || "https://i.postimg.cc/zDK9mWZX/girl-anime.avif"} className="h-12 w-12 rounded-full" alt="DP" />
                             </div>
                         </div>
                         <div className="inputDiv">
                             <input type={password.type} name="password" id="password" onBlur={(evnt)=>handleBlur(evnt.target)} value={password.password} onChange={handleChange} />
                             <label htmlFor="password"><i className="bx bx-key">Password</i></label>
-                            <i onClick={togglePassword} className={`bx bx-${getClass()} absolute right-3 top-3 transition-all duration-300 cursor-pointer`}></i>
+                            <i onClick={togglePassword} className={`bx bx-${getClass()} absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer`}></i>
                             <div className="suggestionDiv absolute flex items-center justify-between bottom-[-14px] gap-1.5">
                                 {
                                     [1,2,3].map(bar=>{

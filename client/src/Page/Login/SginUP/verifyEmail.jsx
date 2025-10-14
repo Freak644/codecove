@@ -163,6 +163,7 @@ export default function VerifyEl() {
                                     onChange={(e)=>handleChange(e,index)}
                                     onKeyDown={(e)=>handleKeyDown(e,index)}
                                     ref={(el)=>(inputsRef.current[index] = el)}
+                                    autoComplete='off'
                                  type="text" maxLength={1} className='otp-box h-8 w-8 text-center text-[12px] font-medium  border-2 border-skin-ptext rounded-lg' />
                             ))
                            }

@@ -48,6 +48,7 @@ export default function LoginCon({toggle}) {
                             <div className="inputDiv twobtnInput">
                                 <button className="text-btn bigBtn" type="button" onClick={()=>setTab("right")}>Forgot Password?</button>
                                 <button className="btn bigBtn">Login</button>
+                                <button type="button" onClick={()=>setTab("right")} className="text-btn bigbtn">Don't have account</button>
                             </div>
                     </form>
                 </div>

@@ -11,7 +11,7 @@ export const useThemeStore = create((set)=>({
 }));
 
 export const mngCrop = create((set)=>({
-    fileURL:"",
+    fileURL:null,
     finalIMG:null,
     setURL: (url)=> set(()=>({fileURL:url})),
     setIMG: (file) => set(()=>({finalIMG:file}))

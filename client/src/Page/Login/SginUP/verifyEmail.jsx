@@ -2,10 +2,13 @@ import React, { useEffect, useRef,useState } from 'react'
 import verifyZu from '../../../lib/verifyZu';
 import { toast } from 'react-toastify';
 import { Loader } from '../../../lib/loader';
+import { toggleMini } from '../../../lib/tabToggle';
 export default function VerifyEl() {
-    const {email,username,setVTab,setMail,setEstatus} = verifyZu();
+    const {email,Tusername,setVTab,setMail,setEstatus} = verifyZu();
     const {isTrue,toggleLoader} = Loader();
     const [isLoader,setLoader] = useState(isTrue);
+    const [username] = useState(Tusername);
+    const {toggleMiniTab} = toggleMini();
     let btnRef = useRef();
     let vbtnRef = useRef();
 
@@ -136,6 +139,7 @@ export default function VerifyEl() {
         }else{
           setEstatus()
           toast.success(result.pass)
+          toggleMiniTab("pass")
           handleAnimation();
         }
    } catch (error) {

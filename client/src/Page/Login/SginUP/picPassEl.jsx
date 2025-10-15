@@ -14,7 +14,7 @@ export default function CpassEL() {
     const {finalIMG,setURL} = mngCrop();
     const {toggleMiniTab} = toggleMini();
     const {isTrue,toggleLoader} = Loader();
-    const {username,email,emailStatus,setEstatus} = verifyZu();
+    const {Tusername,email,emailStatus,setEstatus} = verifyZu();
     const [password,setPassword] = useState({
         password:"",
         strength:0,
@@ -163,7 +163,7 @@ export default function CpassEL() {
     const handleSubmit = async (evnt) => {
         evnt.preventDefault();
         toggleLoader()
-        if (!email?.trim() || !username?.trim() || !password.password?.trim()) {
+        if (!email?.trim() || !Tusername?.trim() || !password.password?.trim()) {
            return toast.info("Please provide proper information");
         }
         if (!/^[A-Za-z0-9][A-Za-z0-9._%+-]*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
@@ -176,7 +176,7 @@ export default function CpassEL() {
 
 
         formData.append("email", email);
-        formData.append("username", username);
+        formData.append("username", Tusername);
         //formData.append("file",myImage.file); 
 
 
@@ -215,7 +215,7 @@ export default function CpassEL() {
                         </div>
                         <div className="inputDiv !flex-col !h-[80px]  !items-center">
                             <input type="file" onChange={(evnt)=>handleImg(evnt)} style={{display:"none"}} id="file" name="file" accept="image/*" multiple={false} />
-                            <label className="!left-[40%] !top-13 !cursor-pointer" htmlFor="file"><i className="bx bx-image">Avatar</i></label>
+                            <label className="!left-[40%] !top-13 !cursor-pointer" htmlFor="file"><i className="bx bx-image text-blue-500">Avatar</i></label>
                             <div onClick={()=> document.getElementById("file").click()}  className="imgDiv flex items-center justify-center h-13 w-13 rounded-full">
                                 <img src={myImage?.fileUrl || "https://i.postimg.cc/zDK9mWZX/girl-anime.avif"} className="h-12 w-12 rounded-full" alt="DP" />
                             </div>

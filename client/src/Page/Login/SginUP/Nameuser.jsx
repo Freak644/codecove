@@ -5,7 +5,7 @@ import verifyZu from "../../../lib/verifyZu";
 import { Loader } from "../../../lib/loader";
 export default function UserNameEl({stoggle}) {
     const {setTab} = FaceToggle();
-    const {setMail,setTUsername,setVTab,emailStatus} = verifyZu();
+    const {setMail,setTUsername,setVTab,emailStatus,email,Tusername} = verifyZu();
     const {isTrue,toggleLoader} = Loader();
     const [username,setUsername] = useState("");
     // const [debounceVal,setDeVal] = useState("");
@@ -21,8 +21,11 @@ export default function UserNameEl({stoggle}) {
 
     useEffect(()=>{
         if (emailStatus) {
-            toggleMiniTab("pass")
+           let eml = document.getElementById("email")
+           eml.value = email;
+           setUsername(Tusername)
         }
+        handleBlur()
     },[emailStatus])
     function checkAv() {
     // remove previous classes before adding a new one
@@ -108,6 +111,9 @@ export default function UserNameEl({stoggle}) {
     const handleSubmit = async (evnt) => {
         evnt.preventDefault();
         toggleLoader()
+        if (emailStatus) {
+            return toggleMiniTab("pass")
+        }
         let formData = new FormData(evnt.target);
         let {username, email} = Object.fromEntries(formData);
         try {

@@ -8,6 +8,7 @@ import multer from 'multer';
 import { CreateUser } from './Routes/CreateUser/createUser.js';
 import {getUsers} from './Routes/getUsers/getUsers.js';
 import {SendEmailVerify, verifyEmail } from './Routes/CreateUser/verifyUser.js';
+import Logmein from './Routes/Login/loginAPI.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(cookieParser());
@@ -39,6 +40,7 @@ myApp.post("/sendVerifyEmail",SendEmailVerify);
 
 myApp.post("/verifyEmail",verifyEmail)
 myApp.post("/CreateUser",upload.single("file"),CreateUser)
+myApp.post("/login",Logmein)
 myApp.listen(port,()=>{
     console.log(chalk.greenBright.yellow.italic.bold("server is start on "+port))
 })

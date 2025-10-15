@@ -347,7 +347,7 @@ body{
                     background-color: var(--bg-color);
                     opacity: 1;
                     i{
-                        color: white;
+                        color: var(--login-txt-color);
                     }
 }
 .btn{

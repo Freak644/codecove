@@ -20,7 +20,6 @@ export default function UserNameEl({stoggle}) {
     },[isTrue])
 
     useEffect(()=>{
-        console.log(emailStatus)
         if (emailStatus) {
             toggleMiniTab("pass")
         }

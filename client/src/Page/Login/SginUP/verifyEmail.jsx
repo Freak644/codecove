@@ -12,6 +12,10 @@ export default function VerifyEl() {
     useEffect(()=>{
       setLoader(isTrue)
     },[isTrue])
+    useEffect(()=>{
+      let firstInp = document.getElementById("0")
+      firstInp.focus()
+    },[])
     const handleAPICall = async () => {
      // if (btnRef.current.disabled != true) {
         toggleLoader();
@@ -79,8 +83,7 @@ export default function VerifyEl() {
     // notify parent
     newOtp.join("")
     if (newOtp.every(digit => digit !== "")) {
-      vbtnRef.current.disabled = false;
-       //handleSubmit(); // no need to pass anything
+      vbtnRef.current.disabled = false;// no need to pass anything
     }
   };
 
@@ -164,7 +167,7 @@ export default function VerifyEl() {
                                     onKeyDown={(e)=>handleKeyDown(e,index)}
                                     ref={(el)=>(inputsRef.current[index] = el)}
                                     autoComplete='off'
-                                 type="text" maxLength={1} className='otp-box h-8 w-8 text-center text-[12px] font-medium  border-2 border-skin-ptext rounded-lg' />
+                                 type="text" maxLength={1} className='otp-box h-8 w-8 text-center text-[12px] font-medium  border-2 border-skin-ptext text-skin-login rounded-lg' />
                             ))
                            }
                         </div>

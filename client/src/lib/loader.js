@@ -7,3 +7,14 @@ export const Loader = create((set)=>({
             return {isTrue:newState}
         })
 }))
+
+// export  const toggleLogin = create((set)=>({
+//     isLogin:true,
+//     loginToggle: (value)=>
+//         set((state)=>{
+//             const newState =  value;
+//             sessionStorage.setItem("status",newState);
+//             console.log("there",state.isLogin)
+//             return {isLogin:newState}
+//         })
+// }))

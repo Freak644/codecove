@@ -9,6 +9,8 @@ import { CreateUser } from './Routes/CreateUser/createUser.js';
 import {getUsers} from './Routes/getUsers/getUsers.js';
 import {SendEmailVerify, verifyEmail } from './Routes/CreateUser/verifyUser.js';
 import {LoginAPI} from './Routes/Login/loginAPI.js'
+import { Auth } from './Routes/Login/tokenChecker.js';
+import { CrntUser } from './Routes/getUsers/getCurrentUserdata.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(cookieParser());
@@ -41,6 +43,7 @@ myApp.post("/sendVerifyEmail",SendEmailVerify);
 myApp.post("/verifyEmail",verifyEmail)
 myApp.post("/CreateUser",upload.single("file"),CreateUser)
 myApp.post("/login",LoginAPI)
+myApp.get("/isUser",Auth,CrntUser)
 myApp.listen(port,()=>{
     console.log(chalk.greenBright.yellow.italic.bold("server is start on "+port))
 })

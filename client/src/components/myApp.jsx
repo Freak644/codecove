@@ -14,7 +14,7 @@ export default function MyApp() {
     let {toggleTheme} = useThemeStore();
     let [currentTheme] = useState(localStorage.getItem('theme') || "dark")
     let location = useLocation();
-    let isLogin = location.pathname === "/"
+    let [isLogin,setLogin] = useState(true);
     const {isTrue,toggleLoader} = Loader();
     const [isLoader,setLoader] = useState(isTrue);
     useEffect(()=>{
@@ -22,9 +22,12 @@ export default function MyApp() {
         window.addEventListener("load",handler);
         return ()=> window.removeEventListener("load",handler)
     },[location.pathname]);
-
     useEffect(()=>{
         toggleTheme(currentTheme)
+        let jwt = sessionStorage.getItem("auth")
+        if (jwt !== null) {
+            setLogin(false)
+        }
     },[])
     useEffect(()=>{
         setLoader(isTrue)
@@ -43,9 +46,10 @@ export default function MyApp() {
            {!isLogin && <Header/>}
            {!isLogin && <MenuEL/>}
            {isCropping && <CropperEL prevImg={fileURL} />}
+           {isLogin && <div className='loginContainer flex items-center content-center h-[100vh] w-[100vw]'>{<LoginEL/>}</div>}
             <Routes>
-                <Route path='/' element={<div className='loginContainer flex items-center content-center h-[100vh] w-[100vw]'>{<LoginEL/>}</div>} />
-                <Route path='/Home' element={<div className='routeContainer flex items-center content-center'>{<LoginEL/>}</div>} />
+                {/* <Route path='/' element={} /> */}
+                <Route path='/' element={<div className='routeContainer flex items-center content-center'></div>} />
             </Routes>
         </PageTransition>
     )

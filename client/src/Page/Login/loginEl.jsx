@@ -1,12 +1,12 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FaceToggle from "../../lib/tabToggle";
 import { toast } from "react-toastify";
-import { Loader } from "../../lib/loader";
+import { Loader} from "../../lib/loader";
 export default function LoginCon({toggle}) {
     const pwdRef = useRef();
     const {setTab} = FaceToggle();
     const [pwdType,setType] = useState("password")
-    let {toggleLoader} = Loader();
+    let {isTrue,toggleLoader} = Loader();
         const handleBlur = (inp)=>{
         if (inp && inp.value) {
             let labl = inp.nextElementSibling;
@@ -62,8 +62,8 @@ export default function LoginCon({toggle}) {
             if (result.err) {
                 throw new Error(result.err)
             }
-            console.log(result)
-            toast.success(result.pass)
+            sessionStorage.setItem("auth",result.authToken)
+            location.reload();
         } catch (error) {
             toast.error(error.message)
         } finally{
@@ -96,7 +96,7 @@ export default function LoginCon({toggle}) {
                             </div>
                             <div className="inputDiv twobtnInput">
                                 <button className="text-btn bigBtn" type="button" onClick={()=>setTab("back")}>Forgot Password?</button>
-                                <button type="submit" className="btn bigBtn">Login</button>
+                                <button type="submit" className="btn bigBtn">{isTrue ? <div className="miniLoader"></div> : "Login"}</button>
                                 <button type="button" onClick={()=>setTab("right")} className="text-btn bigbtn">Don't have account</button>
                             </div>
                     </form>

@@ -37,8 +37,8 @@ export default function LoginCon({toggle}) {
     }
     const getClass = ()=> {
         switch (pwdType) {
-            case "text": return "show";
-            case "password": return "hide";
+            case "text": return "hide";
+            case "password": return "show";
             default: return "show"
         }
     }
@@ -51,7 +51,6 @@ export default function LoginCon({toggle}) {
         
         try {
             if(!Email?.trim() || !Password?.trim()) throw new Error("Fields are required");
-            console.log(Email,Password)
             let rkv = await fetch("/myServer/login",{
                 headers:{
                     "Content-Type":"application/json"
@@ -60,7 +59,11 @@ export default function LoginCon({toggle}) {
                 body:JSON.stringify({Email,Password})
             })
             let result = await rkv.json();
+            if (result.err) {
+                throw new Error(result.err)
+            }
             console.log(result)
+            toast.success(result.pass)
         } catch (error) {
             toast.error(error.message)
         } finally{

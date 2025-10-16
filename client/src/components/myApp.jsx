@@ -12,7 +12,7 @@ export default function MyApp() {
     let {fileURL,setURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);
     let {toggleTheme} = useThemeStore();
-    let [currentTheme] = useState(localStorage.getItem('theme') || "light")
+    let [currentTheme] = useState(localStorage.getItem('theme') || "dark")
     let location = useLocation();
     let isLogin = location.pathname === "/"
     const {isTrue,toggleLoader} = Loader();

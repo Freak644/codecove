@@ -45,7 +45,8 @@ export const CreateUser = async (rkv, rspo) => {
       return rspo.status(400).send({ err: "Please provide proper information" });
     }
 
-    if (!/^[A-Za-z0-9][A-Za-z0-9._%+-]*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
+    if (!email.endsWith("@gmail.com") ||
+      !/^[A-Za-z0-9][A-Za-z0-9._%+-]*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
       return rspo.status(400).send({ err: "Invalid email" });
     }
 

@@ -1,7 +1,12 @@
+import { useRef, useState } from "react";
 import FaceToggle from "../../lib/tabToggle";
+import { toast } from "react-toastify";
+import { Loader } from "../../lib/loader";
 export default function LoginCon({toggle}) {
+    const pwdRef = useRef();
     const {setTab} = FaceToggle();
-
+    const [pwdType,setType] = useState("password")
+    let {toggleLoader} = Loader();
         const handleBlur = (inp)=>{
         if (inp && inp.value) {
             let labl = inp.nextElementSibling;
@@ -22,11 +27,51 @@ export default function LoginCon({toggle}) {
             })
         }
     }
+    const togglePassword = ()=>{
+        let pwd = pwdRef.current
+        if (pwd.type === "password") {
+            setType("text")
+        }else{
+            setType("password")
+        }
+    }
+    const getClass = ()=> {
+        switch (pwdType) {
+            case "text": return "show";
+            case "password": return "hide";
+            default: return "show"
+        }
+    }
+    
+    const handleSubmit = async (evnt) => {
+        evnt.preventDefault();
+        toggleLoader()
+        let formData = new FormData(evnt.target);
+        let {Email,Password} = Object.fromEntries(formData);
+        
+        try {
+            if(!Email?.trim() || !Password?.trim()) throw new Error("Fields are required");
+            console.log(Email,Password)
+            let rkv = await fetch("/myServer/login",{
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                method:"POST",
+                body:JSON.stringify({Email,Password})
+            })
+            let result = await rkv.json();
+            console.log(result)
+        } catch (error) {
+            toast.error(error.message)
+        } finally{
+            toggleLoader();
+        }
+    }
     return(
         <div className="underTaker">
             <div className="mainLogDiv flex items-center justify-center h-full w-full ">
                 <div className="formDiv">
-                    <form action="">
+                    <form action="" onSubmit={handleSubmit}>
                          <div className="Logotxt flex items-center flex-col w-[120px] absolute sm:top-[-80px] lg:top-[-90px]">
                             <i className='bx bx-code-block text-5xl
                             transition-all duration-500 ease-in-out bg-[length:200%_200%]
@@ -38,16 +83,17 @@ export default function LoginCon({toggle}) {
                             bg-clip-text text-transparent'>CodeCove</h2>
                         </div>
                             <div className="inputDiv">
-                                <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="Email"/>
+                                <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="Email" required/>
                                 <label htmlFor="Email"><i className="bx bx-user">Username</i></label>
                             </div>
                             <div className="inputDiv">
-                                <input onBlur={(evnt)=>handleBlur(evnt.target)} type="Password" name="Password" id="Paswrd"/>
+                                <input ref={pwdRef} onBlur={(evnt)=>handleBlur(evnt.target)} type={pwdType} name="Password" id="Paswrd" required/>
                                 <label htmlFor="Paswrd"><i className="bx bx-key">Password</i></label>
+                                <i onClick={togglePassword} className={`bx bx-${getClass()} absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer`}></i>
                             </div>
                             <div className="inputDiv twobtnInput">
-                                <button className="text-btn bigBtn" type="button" onClick={()=>setTab("right")}>Forgot Password?</button>
-                                <button className="btn bigBtn">Login</button>
+                                <button className="text-btn bigBtn" type="button" onClick={()=>setTab("back")}>Forgot Password?</button>
+                                <button type="submit" className="btn bigBtn">Login</button>
                                 <button type="button" onClick={()=>setTab("right")} className="text-btn bigbtn">Don't have account</button>
                             </div>
                     </form>

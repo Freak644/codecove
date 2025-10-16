@@ -11,7 +11,7 @@ export const SendEmailVerify = async (rkv,rspo) => {
         if(row.some(crntRow=>crntRow.username === username)) return rspo.status(406).send({err:`${username} is Already taken`});
         if (row.some(crntRow=>crntRow.email === email)) return rspo.status(406).send({err:`Account Exists on ${email}`});
         if (
-        //!email.endsWith("@gmail.com") ||
+        !email.endsWith("@gmail.com") ||
        !/^[A-Za-z0-9][A-Za-z0-9._%+-]*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)
          ) {
         return rspo.status(400).send({err:"Please Enter a valid Email"})

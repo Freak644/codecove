@@ -123,6 +123,9 @@ export default function UserNameEl({stoggle}) {
             if (cache.includes(username)) {
                 throw new Error(username+" is Already Taken");
             }
+            if (!email.endsWith("@gmail.com")) {
+                throw new Error("We only process with gmail.com")
+            }
             let request = await fetch("/myServer/sendVerifyEmail",{
                 method:"POST",
                 headers:{

@@ -11,8 +11,8 @@ createRoot(document.getElementById('rootContainer')).render(
         <MyApp/>
         </BrowserRouter>
         <ToastContainer
-            position='bottom-right'
-            autoClose={false}
+            position='top-right'
+            autoClose={3000}
             hideProgressBar={false}
             newestOnTop
             closeOnClick

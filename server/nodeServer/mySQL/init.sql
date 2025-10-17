@@ -30,21 +30,20 @@ CREATE TABLE IF NOT EXISTS users (
 */
 
 CREATE TABLE IF NOT EXISTS user_sessions (
-  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  user_id CHAR(36) NOT NULL,
-  session_id CHAR(36) DEFAULT (UUID()),
+  session_id CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
+  id CHAR(36) NOT NULL,
   ip VARCHAR(45),
   country VARCHAR(64),
   region VARCHAR(128),
   city VARCHAR(128),
-  latitude DECIMAL(9,6),
-  longitude DECIMAL(9,6),
+  latitude DECIMAL(10,7),
+  longitude DECIMAL(10,7),
   isp VARCHAR(255),
   user_agent TEXT,
   browser VARCHAR(64),
   browser_version VARCHAR(32),
   os VARCHAR(64),
-  device_type VARCHAR(64),
+  device_type VARCHAR(64) DEFAULT 'desktop',
   platform VARCHAR(128),
   timezone VARCHAR(64),
   screen VARCHAR(64),
@@ -53,6 +52,6 @@ CREATE TABLE IF NOT EXISTS user_sessions (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   revoked BOOLEAN DEFAULT FALSE,
   last_seen_at TIMESTAMP NULL,
-  INDEX(user_id),
-  UNIQUE KEY (session_id)
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 );
+

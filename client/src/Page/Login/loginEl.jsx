@@ -51,8 +51,8 @@ export default function LoginCon({toggle}) {
         let {Email,Password} = Object.fromEntries(formData);
         let clientInfo = {
             userAgent: navigator.userAgent,
-            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-            //platForm: navigator.platform,
+            timeZone : Intl.DateTimeFormat().resolvedOptions().timeZone || "Unknown",
+            platForm: navigator.platform,
             screen: { width: screen.width, height: screen.height, availWidth: screen.availWidth, availHeight: screen.availHeight },
             memory: navigator.deviceMemory || null,
             cores: navigator.hardwareConcurrency || null

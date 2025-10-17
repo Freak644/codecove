@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { database } from '../../Controllers/myConnectionFile.js';
 import dotenv from 'dotenv';
+import { SaveThisSession } from './userSession.js';
 dotenv.config();
 export const LoginAPI = async (rkv,rspo) => {
     let {Email,Password} = rkv.body;
@@ -26,15 +27,19 @@ export const LoginAPI = async (rkv,rspo) => {
             return rspo.status(401).send({ err: "Check your Password"})
         }
         let {id} = isUser[0];
-        let authToken = jwt.sign({id},process.env.jwt_sec,{expiresIn:"1h"});
+        let SessionRkv = await SaveThisSession(rkv,id)
+
+        let authToken = jwt.sign({id,SessionRkv},process.env.jwt_sec,{expiresIn:"1h"});
         rspo.cookie("myAuthToken",authToken,{
             httpOnly:true,
             secure:true,
             sameSite:"strict",
-            maxAge: 1 * 60 *1000
+            maxAge: 24 * 60 *1000
         })
+        
         rspo.status(200).send({ pass: "Login",authToken:isUser[0].username})
     } catch (error) {
         rspo.status(500).send({ err: "Sever Side Error",details:error.message});
     }
 }
+

@@ -1,6 +1,7 @@
 import express from 'express';
 import chalk from 'chalk';
 import cookieParser from 'cookie-parser';
+import requestIp from 'request-ip';
 let port = 3222;
 import fs from 'fs';
 //import path from 'path';
@@ -13,6 +14,7 @@ import { Auth } from './Routes/Login/tokenChecker.js';
 import { CrntUser } from './Routes/getUsers/getCurrentUserdata.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
+myApp.use(requestIp.mw())
 myApp.set("trust proxy",true)
 myApp.use(cookieParser());
 myApp.use("/Images",express.static('Images'));

@@ -64,12 +64,14 @@
   .btn:hover {
     background: #14532d;
   }
-
+  p{
+    color: white;
+  }
   .footer {
     text-align: center;
     padding: 18px;
     font-size: 12px;
-    color: #777;
+    color: #ffffff;
     background: #181818;
   }
 </style>
@@ -87,7 +89,7 @@
         <p><strong>Location:</strong> {{city}}, {{region}}, {{country}}</p>
         <p><strong>Time:</strong> {{login_time}}</p>
       </div>
-      <a href="{{check_activity_url}}" class="btn">Check Activity</a>
+      <a href="{{activity_url}}" class="btn">Check Activity</a>
       <p>If this wasn’t you, click the button above to secure your account immediately.</p>
     </div>
     <div class="footer">

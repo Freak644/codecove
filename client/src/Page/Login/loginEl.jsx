@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import FaceToggle from "../../lib/tabToggle";
 import { toast } from "react-toastify";
 import { Loader} from "../../lib/loader";
+import { time } from "framer-motion";
 export default function LoginCon({toggle}) {
     const pwdRef = useRef();
     const {setTab} = FaceToggle();
@@ -48,7 +49,14 @@ export default function LoginCon({toggle}) {
         toggleLoader()
         let formData = new FormData(evnt.target);
         let {Email,Password} = Object.fromEntries(formData);
-        
+        let clientInfo = {
+            userAgent: navigator.userAgent,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            //platForm: navigator.platform,
+            screen: { width: screen.width, height: screen.height, availWidth: screen.availWidth, availHeight: screen.availHeight },
+            memory: navigator.deviceMemory || null,
+            cores: navigator.hardwareConcurrency || null
+        }
         try {
             if(!Email?.trim() || !Password?.trim()) throw new Error("Fields are required");
             let rkv = await fetch("/myServer/login",{
@@ -56,7 +64,7 @@ export default function LoginCon({toggle}) {
                     "Content-Type":"application/json"
                 },
                 method:"POST",
-                body:JSON.stringify({Email,Password})
+                body:JSON.stringify({Email,Password,clientInfo})
             })
             let result = await rkv.json();
             if (result.err) {

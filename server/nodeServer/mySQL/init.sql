@@ -22,3 +22,37 @@ CREATE TABLE IF NOT EXISTS users (
     bio VARCHAR(100) DEFAULT 'Stay! Ahead, Follow the Revolution',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+/*
+===================================
+  🧑‍💻Create session Store table if not exists;
+===================================
+*/
+
+CREATE TABLE IF NOT EXISTS user_sessions (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id CHAR(36) NOT NULL,
+  session_id CHAR(36) DEFAULT (UUID()),
+  ip VARCHAR(45),
+  country VARCHAR(64),
+  region VARCHAR(128),
+  city VARCHAR(128),
+  latitude DECIMAL(9,6),
+  longitude DECIMAL(9,6),
+  isp VARCHAR(255),
+  user_agent TEXT,
+  browser VARCHAR(64),
+  browser_version VARCHAR(32),
+  os VARCHAR(64),
+  device_type VARCHAR(64),
+  platform VARCHAR(128),
+  timezone VARCHAR(64),
+  screen VARCHAR(64),
+  memory VARCHAR(32),
+  cores INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  revoked BOOLEAN DEFAULT FALSE,
+  last_seen_at TIMESTAMP NULL,
+  INDEX(user_id),
+  UNIQUE KEY (session_id)
+);

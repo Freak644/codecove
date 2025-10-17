@@ -13,6 +13,7 @@ import { Auth } from './Routes/Login/tokenChecker.js';
 import { CrntUser } from './Routes/getUsers/getCurrentUserdata.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
+myApp.set("trust proxy",true)
 myApp.use(cookieParser());
 myApp.use("/Images",express.static('Images'));
 

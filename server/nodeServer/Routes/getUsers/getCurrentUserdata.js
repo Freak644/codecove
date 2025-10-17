@@ -9,6 +9,6 @@ export const CrntUser = async (rkv,rspo) => {
     )
         rspo.status(302).send({userinfo})
     } catch (error) {
-        rspo.status(500).send({err:"server side error",details:error.message})
+        rspo.status(500).send({err:"Server side error",details:error.message})
     }
 }

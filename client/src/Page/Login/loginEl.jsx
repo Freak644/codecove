@@ -66,7 +66,6 @@ export default function LoginCon({toggle}) {
             if (result.err) {
                 throw new Error(result.err)
             }
-            sessionStorage.setItem("auth",result.authToken)
             location.reload();
         } catch (error) {
             toast.error(error.message)

@@ -9,7 +9,7 @@ import LoaderEL from '../assets/animations/loadingBar';
 import { mngCrop, useThemeStore } from '../lib/toggleTheme';
 import CropperEL from './cropperEL';
 export default function MyApp() {
-    let {fileURL,setURL} = mngCrop();
+    let {fileURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);
     let {toggleTheme} = useThemeStore();
     let [currentTheme] = useState(localStorage.getItem('theme') || "dark")
@@ -24,10 +24,21 @@ export default function MyApp() {
     },[location.pathname]);
     useEffect(()=>{
         toggleTheme(currentTheme)
-        let jwt = sessionStorage.getItem("auth")
-        if (jwt !== null) {
-            setLogin(false)
+        const checkAuth = async () => {
+            try {
+                let rqst = await fetch("/myServer/auth",{credentials:"include"})
+                let result = await rqst.json();
+                console.log(result?.details)
+                if (result.loggedIn) {
+                    throw new Error(result.details)
+                }
+                setLogin(false)
+            } catch (error) {
+                console.log(error.message)
+                setLogin(true)
+            }
         }
+        checkAuth();
     },[])
     useEffect(()=>{
         setLoader(isTrue)

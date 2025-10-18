@@ -10,8 +10,9 @@ import { CreateUser } from './Routes/CreateUser/createUser.js';
 import {getUsers} from './Routes/getUsers/getUsers.js';
 import {SendEmailVerify, verifyEmail } from './Routes/CreateUser/verifyUser.js';
 import {LoginAPI} from './Routes/Login/loginAPI.js'
-import { Auth } from './Routes/Login/tokenChecker.js';
+import { Auth, checkAuth } from './Routes/Login/tokenChecker.js';
 import { CrntUser } from './Routes/getUsers/getCurrentUserdata.js';
+import { loggedMeOut } from './Routes/Login/userSession.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -47,6 +48,8 @@ myApp.post("/verifyEmail",verifyEmail)
 myApp.post("/CreateUser",upload.single("file"),CreateUser)
 myApp.post("/login",LoginAPI)
 myApp.get("/isUser",Auth,CrntUser)
+myApp.get("/auth",checkAuth)
+myApp.post("/Logout",Auth,loggedMeOut)
 myApp.listen(port,()=>{
     console.log(chalk.greenBright.yellow.italic.bold("server is start on "+port))
 })

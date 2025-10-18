@@ -2,6 +2,9 @@ import geoip from 'geoip-lite';
 import {UAParser} from "ua-parser-js";
 import { database } from '../../Controllers/myConnectionFile.js';
 import {v4 as uuidV4} from 'uuid';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken'
+dotenv.config();
 export const SaveThisSession = async (rkv,userID) => {
     console.log("i am in session")
     let session_id = uuidV4();
@@ -27,3 +30,21 @@ export const SaveThisSession = async (rkv,userID) => {
     }
 }
 
+export const loggedMeOut = async (rkv,rspo) => {
+    let {tokenData} = rkv.authData;
+    try {
+        let {session_id,id} = tokenData;
+        let rqst = await database.execute("DELETE FROM user_sessions WHERE session_id=? AND id=?",
+            [session_id,id]
+        )
+        rkv.clearCookie("myAuthToken",{
+            httpOnly:true,
+            secure:true,
+            sameSite:"strict"
+        })
+        rspo.status(200).send({pass:"Logged-Out",rqst})
+    } catch (error) {
+        return rspo.status(500).send({err:error.message})
+    }
+
+}

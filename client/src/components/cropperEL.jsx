@@ -11,6 +11,7 @@ export default function CropperEL({ prevImg }) {
 
   // Crop complete callback
   const onCropComplete = useCallback((_, pixelCrop) => {
+    console.log(pixelCrop)
     setPixcrop(pixelCrop);
   }, []);
 
@@ -21,30 +22,57 @@ export default function CropperEL({ prevImg }) {
   };
 
   // Create cropped image
-  const createCropedIMG = async () => {
-    if (!pixelCrop) return;
+const createCropedIMG = async () => {
+  if (!pixelCrop) return;
+  setPorc(true);
+
+  try {
     const imgElement = await createIMG(prevImg);
+
+    const scaleX = imgElement.naturalWidth / imgElement.width;
+    const scaleY = imgElement.naturalHeight / imgElement.height;
+
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
-    const { width, height, x, y } = pixelCrop;
+    const { x, y, width, height } = pixelCrop;
+
+    // Set canvas size to crop size
     canvas.width = width;
     canvas.height = height;
 
-    ctx.drawImage(imgElement, x, y, width, height, 0, 0, width, height);
+    // Draw the properly scaled cropped portion
+    ctx.drawImage(
+      imgElement,
+      x * scaleX,
+      y * scaleY,
+      width * scaleX,
+      height * scaleY,
+      0,
+      0,
+      width,
+      height
+    );
 
     canvas.toBlob(
       (blob) => {
+        if (!blob) return;
+
         const croppedFile = new File([blob], "avatar.png", { type: "image/png" });
-        console.log(croppedFile)
+        console.log(croppedFile);
         setIMG(croppedFile);
         setURL(null); // close cropper if needed
-        setPorc(false)
+        setPorc(false);
       },
       "image/png",
       0.6
     );
-  };
+  } catch (err) {
+    console.error("Crop failed:", err);
+    setPorc(false);
+  }
+};
+
 
   // Load image as HTMLImageElement
   const createIMG = (img) => {

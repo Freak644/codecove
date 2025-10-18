@@ -2,7 +2,6 @@ import { database } from "../../Controllers/myConnectionFile.js";
 
 export const CrntUser = async (rkv,rspo) => {
     let {id} = rkv.authData;
-    console.log(id)
     try {
         let [userinfo] = await database.execute(
         "SELECT avatar FROM users WHERE id=?",

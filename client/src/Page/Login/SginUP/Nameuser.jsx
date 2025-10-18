@@ -81,7 +81,7 @@ export default function UserNameEl({stoggle}) {
                     setList(result.takenList);
                     checkAv();
                 }
-                console.log(cache)
+                //console.log(cache)
             } catch (error) {
                 console.log(error.message)
             }

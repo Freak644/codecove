@@ -125,16 +125,16 @@ body{
             padding: 5px;
             border-radius: 10px;
             cursor: pointer;
-            &:hover{
+            /* &:hover{
                 background-color: var(--p-text-color);
                 color: var(--bg-color);
-            }
+            } */
 
         
         }
     }
     ul:hover li{
-        opacity: .2;
+        opacity: .4;
     }
     ul:hover li:hover{
         opacity: .8;

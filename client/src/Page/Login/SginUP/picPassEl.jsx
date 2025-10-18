@@ -26,6 +26,7 @@ export default function CpassEL() {
         }
     },[])
     const handleImg = e=>{
+        //console.log(e.target.value)
         let myFIle = e.target.files[0]
         if (!myFIle) return ;
 
@@ -36,6 +37,7 @@ export default function CpassEL() {
         setURL(URL.createObjectURL(myFIle))
     }
     useEffect(()=>{
+      //  console.log(finalIMG)
         if (finalIMG) {
             setimg(prev=>({
                 ...prev,
@@ -174,12 +176,16 @@ export default function CpassEL() {
 
         let formData = new FormData(evnt.target)
 
-
+        // let {files} = Object.fromEntries(formData)
+        // console.log(files,myImage.file)
+        formData.delete("files")
         formData.append("email", email);
         formData.append("username", Tusername);
-        //formData.append("file",myImage.file); 
+        formData.append("avatar",myImage.file); 
 
-
+        formData.forEach((value, key) => {
+            console.log(`${key}:`, value);
+            });
         try {
             let rkv = await fetch("/myServer/CreateUser",{
                 method:"POST",
@@ -214,9 +220,9 @@ export default function CpassEL() {
                             bg-clip-text text-transparent'>CodeCove</h2>
                         </div>
                         <div className="inputDiv !flex-col !h-[80px]  !items-center">
-                            <input type="file" onChange={(evnt)=>handleImg(evnt)} style={{display:"none"}} id="file" name="file" accept="image/*" multiple={false} />
+                            <input type="file" onChange={(evnt)=>handleImg(evnt)} style={{display:"none"}} id="files" name="files" accept="image/*" multiple={false} />
                             <label className="!left-[40%] !top-13 !cursor-pointer" htmlFor="file"><i className="bx bx-image text-blue-500">Avatar</i></label>
-                            <div onClick={()=> document.getElementById("file").click()}  className="imgDiv flex items-center justify-center h-13 w-13 rounded-full">
+                            <div onClick={()=> document.getElementById("files").click()}  className="imgDiv flex items-center justify-center h-13 w-13 rounded-full">
                                 <img src={myImage?.fileUrl || "https://i.postimg.cc/zDK9mWZX/girl-anime.avif"} className="h-12 w-12 rounded-full" alt="DP" />
                             </div>
                         </div>

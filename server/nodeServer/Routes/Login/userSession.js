@@ -23,7 +23,7 @@ export const SaveThisSession = async (rkv,userID) => {
         uAresult.browser.name, uAresult.browser.version, uAresult.os.name,
         uAresult.device.type || "desktop"]
          );
-         console.log(rows) // i am use || null only becuase localhost have 127.0.0.1 so this don't have geo location
+         // i am use || null only becuase localhost have 127.0.0.1 so this don't have geo location
         return {session_id,device_type:uAresult.device.type || "desktop",ip,city:geo?.city,region:geo?.region,country:geo?.country};
     } catch (error) {
         return {err:"server side error", details: error.message}
@@ -31,18 +31,18 @@ export const SaveThisSession = async (rkv,userID) => {
 }
 
 export const loggedMeOut = async (rkv,rspo) => {
-    let {tokenData} = rkv.authData;
+    let {id,session_id} = rkv.authData;
     try {
-        let {session_id,id} = tokenData;
         let rqst = await database.execute("DELETE FROM user_sessions WHERE session_id=? AND id=?",
             [session_id,id]
         )
+        console.log(rqst)
         rkv.clearCookie("myAuthToken",{
             httpOnly:true,
             secure:true,
             sameSite:"strict"
         })
-        rspo.status(200).send({pass:"Logged-Out",rqst})
+        rspo.status(200).send({pass:"Logged-Out"})
     } catch (error) {
         return rspo.status(500).send({err:error.message})
     }

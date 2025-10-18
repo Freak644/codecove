@@ -12,7 +12,6 @@ const revokedToken = async (session_id) => {
 }
 export const Auth = async (rkv,rspo,next) => {
     let token = rkv.cookies.myAuthToken;
-    console.log("in auth")
     if(!token) return rspo.status(401).send({login: "Please Login"});
     let tokenData = jwt.decode(token,process.env.jwt_sec);
     let decodedTime = Math.floor(Date.now()/1000);

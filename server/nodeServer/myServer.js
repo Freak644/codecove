@@ -45,7 +45,7 @@ myApp.get("/getUsername",getUsers);
 myApp.post("/sendVerifyEmail",SendEmailVerify);
 
 myApp.post("/verifyEmail",verifyEmail)
-myApp.post("/CreateUser",upload.single("file"),CreateUser)
+myApp.post("/CreateUser",upload.single("avatar"),CreateUser)
 myApp.post("/login",LoginAPI)
 myApp.get("/isUser",Auth,CrntUser)
 myApp.get("/auth",checkAuth)

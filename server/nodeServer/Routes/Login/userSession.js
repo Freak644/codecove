@@ -37,7 +37,7 @@ export const loggedMeOut = async (rkv,rspo) => {
             [session_id,id]
         )
         console.log(rqst)
-        rkv.clearCookie("myAuthToken",{
+        rspo.clearCookie("myAuthToken",{
             httpOnly:true,
             secure:true,
             sameSite:"strict"

@@ -4,6 +4,7 @@ import ThemeButton from '../../components/toggleButton'
 export default function MenuEL(params) {
     const [currentTab,setTab] = useState('Home');
     const [logoimg,setlogo] = useState("")
+    const [isDD,setDD] = useState(false)
     useEffect(()=>{
         getUserInfo();
     },[])
@@ -60,17 +61,17 @@ export default function MenuEL(params) {
                 <li onClick={()=>setTab('Profile')}> <div className='imgDiv h-[20px] w-[20px] md:h-[30px] md:w-[30px] border rounded-full flex items-center justify-center'><img className='h-[100%] w-[100%]' src={logoimg ? `http://localhost:3222/${logoimg}` :"https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" /></div> <span>Profile</span></li>
                 </ul>
                 <ul className='secul flex items-start flex-col gap-5'>
-                    <li onClick={()=>setTab("none")}><i className='bx bx-menu'></i><span>Menu</span>
-                    <div className="dropdownMenu">
-                        <ul>
+                    <li onClick={()=>{setTab("none");setDD(prev=>!prev)}} className='relative'><i className='bx bx-menu'></i><span>Menu</span>
+                    {isDD && <div className="dropdownMenu flex items-center flex-col rounded-2xl w-52 bg-gray-600">
+                        <ul >
                             <li><i className='bx bx-cog'></i><span>Setting</span></li>
                             <li><i className='bx bx-chart'></i><span>Your Activity</span></li>
                             <li> <ThemeButton/> </li>
-                            <li></li>
-                            <li></li>
-                            <li onClick={handleLogout}>Logout</li>
+                            <li><i className='bx bx-bookmark'></i><span>Save</span></li>
+                            <li><i className='bx bx-error-circle'></i><span className='flex items-center justify-center z-20'>Report an issue</span></li>
+                            <li onClick={handleLogout}><i className='bx bxs-log-in'></i><span>Logout</span></li>
                         </ul>
-                    </div>
+                    </div>}
                     </li>
                     <li onClick={()=>setTab("none")}><i className='bx bx-menu-alt-left'></i><span>DevTools</span></li>
                 </ul>

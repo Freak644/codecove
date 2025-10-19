@@ -2,11 +2,7 @@ import geoip from 'geoip-lite';
 import {UAParser} from "ua-parser-js";
 import { database } from '../../Controllers/myConnectionFile.js';
 import {v4 as uuidV4} from 'uuid';
-import dotenv from 'dotenv';
-import jwt from 'jsonwebtoken'
-dotenv.config();
 export const SaveThisSession = async (rkv,userID) => {
-    console.log("i am in session")
     let session_id = uuidV4();
     const ip = rkv.clientIp?.replace(/^::ffff:/,"") || "0.0.0.0";
     const userAgent = rkv.headers["user-agent"] || "";

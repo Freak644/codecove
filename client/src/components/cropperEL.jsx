@@ -19,6 +19,7 @@ export default function CropperEL({ prevImg }) {
   const handleRESET = () => {
     setCrop({ x: 0, y: 0 });
     setZoom(1);
+    setURL("")
   };
 
   // Create cropped image
@@ -59,7 +60,7 @@ const createCropedIMG = async () => {
         if (!blob) return;
 
         const croppedFile = new File([blob], "avatar.png", { type: "image/png" });
-        console.log(croppedFile);
+        //console.log(croppedFile);
         setIMG(croppedFile);
         setURL(null); // close cropper if needed
         setPorc(false);
@@ -88,12 +89,12 @@ const createCropedIMG = async () => {
     <div className="mainCroperDiv absolute h-[100vh] w-[100vw] z-20 flex items-center justify-center bg-black/80 backdrop-blur-md">
       <div className="innerDiv relative h-96 w-96 bg-white/10 backdrop-blur-lg rounded-lg overflow-hidden shadow px-3">
         {/* Close button */}
-        <button
+        {/* <button
           onClick={() => setURL("")}
           className="absolute top-2 right-2 text-2xl font-bold text-violet-200 hover:text-red-500 cursor-pointer z-10"
         >
           X
-        </button>
+        </button> */}
 
         {/* Cropper */}
         <Cropper
@@ -127,7 +128,7 @@ const createCropedIMG = async () => {
               onClick={handleRESET}
               className="!px-2 py-1 bg-red-600 text-white rounded-lg hover:bg-red-400 cursor-pointer"
             >
-              Reset
+              Cancel
             </button>
             {/* <button
               onClick={() => setURL("")}

@@ -18,26 +18,28 @@ export const CreateUser = async (rkv, rspo) => {
   const { email, password, username } = rkv.body;
   const file = rkv.file;
 
-  if (!file) return rspo.status(400).send({ err: "Please upload an Avtar" });
+  //if (!file) return rspo.status(400).send({ err: "Please upload an Avtar" });
 
   try {
     // 1️⃣ Validate file type
-    const type = await fileTypeFromBuffer(file.buffer);
-    if (!type || !['image/png', 'image/jpg', 'image/jpeg'].includes(type.mime)) {
-      return rspo.status(400).send({ err: "Invalid file type" });
-    }
+    if (file) {
+        const type = await fileTypeFromBuffer(file.buffer);
+        if (!type || !['image/png', 'image/jpg', 'image/jpeg'].includes(type.mime)) {
+          return rspo.status(400).send({ err: "Invalid file type" });
+        }
 
-    // 2️⃣ Validate image dimensions
-    const metaData = await sharp(file.buffer).metadata();
-    if (!metaData.width || !metaData.height) {
-      return rspo.status(400).send({ err: "Can't read image dimensions" });
-    }
-    if (
-      metaData.width > MAX_WIDTH ||
-      metaData.height > MAX_HEIGHT ||
-      metaData.width * metaData.height > MAX_PIXELS
-    ) {
-      return rspo.status(413).send({ err: "Image is too large" });
+        // 2️⃣ Validate image dimensions
+        const metaData = await sharp(file.buffer).metadata();
+        if (!metaData.width || !metaData.height) {
+          return rspo.status(400).send({ err: "Can't read image dimensions" });
+        }
+        if (
+          metaData.width > MAX_WIDTH ||
+          metaData.height > MAX_HEIGHT ||
+          metaData.width * metaData.height > MAX_PIXELS
+        ) {
+          return rspo.status(413).send({ err: "Image is too large" });
+        }
     }
 
     // 3️⃣ Validate user input
@@ -68,9 +70,12 @@ export const CreateUser = async (rkv, rspo) => {
     const dir = "./Images/Avtar";
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
-    const avatarFileName = Date.now() + "-" + file.originalname;
-    const avatarPath = path.join(dir, avatarFileName);
-    fs.writeFileSync(avatarPath, file.buffer);
+    let avatarFileName = "default.png";
+    if (file) {
+      avatarFileName = Date.now()+"-"+file.originalname;
+      const avatarPath = path.join(dir, avatarFileName);
+      fs.writeFileSync(avatarPath, file.buffer);
+    }
 
     const avatar = `Images/Avtar/${avatarFileName}`;
 

@@ -183,9 +183,9 @@ export default function CpassEL() {
         formData.append("username", Tusername);
         formData.append("avatar",myImage.file); 
 
-        formData.forEach((value, key) => {
-            console.log(`${key}:`, value);
-            });
+        // formData.forEach((value, key) => {
+        //     console.log(`${key}:`, value);
+        //     });
         try {
             let rkv = await fetch("/myServer/CreateUser",{
                 method:"POST",
@@ -193,10 +193,13 @@ export default function CpassEL() {
             })
             let result = await rkv.json();
             if (result.err) {
+                console.log(result.details)
                 throw new Error(result.err)
             }
             toast.success(result.pass)
             setEstatus()
+            setimg({file:null,
+                fileUrl:""})
             toggleMiniTab("user")
             toggleLoader();
             setTab("front")
@@ -221,7 +224,7 @@ export default function CpassEL() {
                         </div>
                         <div className="inputDiv !flex-col !h-[80px]  !items-center">
                             <input type="file" onChange={(evnt)=>handleImg(evnt)} style={{display:"none"}} id="files" name="files" accept="image/*" multiple={false} />
-                            <label className="!left-[40%] !top-13 !cursor-pointer" htmlFor="file"><i className="bx bx-image text-blue-500">Avatar</i></label>
+                            <label className="!left-[40%] !top-13 !cursor-pointer" htmlFor="files"><i className="bx bx-image text-blue-500">Avatar</i></label>
                             <div onClick={()=> document.getElementById("files").click()}  className="imgDiv flex items-center justify-center h-13 w-13 rounded-full">
                                 <img src={myImage?.fileUrl || "https://i.postimg.cc/zDK9mWZX/girl-anime.avif"} className="h-12 w-12 rounded-full" alt="DP" />
                             </div>

@@ -615,6 +615,13 @@ form>h1>span{
         padding-bottom: 10px;
     }
 }
+.routeContainer{
+    height: 93.5vh; width: 87vw;
+    border: 1px solid yellow;
+    position: absolute;
+    right: 0px;
+    top: 50px;
+}
 /* .container{
     height: 80vh; width: 80vw;
     background-color: var(--mini-bg-color);

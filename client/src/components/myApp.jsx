@@ -15,6 +15,7 @@ export default function MyApp() {
     let [currentTheme] = useState(localStorage.getItem('theme') || "dark")
     let location = useLocation();
     let [isLogin,setLogin] = useState(true);
+    const [winddowHerder,setHeader] = useState(true);
     const {isTrue,toggleLoader} = Loader();
     const [isLoader,setLoader] = useState(isTrue);
     useEffect(() => {
@@ -32,7 +33,13 @@ export default function MyApp() {
             window.removeEventListener('resize', setVH);
         };
         }, []);
-
+    useEffect(()=>{
+        if (window.innerWidth > 1023) {
+            setHeader(true)
+        }else{
+            false
+        }
+    },[])
     useEffect(()=>{
         const handler = ()=> toggleLoader();
         if (document.readyState === "complete") {
@@ -80,7 +87,7 @@ export default function MyApp() {
            {isLogin && <div className='loginContainer flex items-center content-center h-[100vh] w-[100vw]'>{<LoginEL/>}</div>}
             <Routes>
                 {/* <Route path='/' element={} /> */}
-                <Route path='/' element={<div className='routeContainer flex items-center content-center'></div>} />
+                <Route path='/' element={<div className='routeContainer my-scroll flex items-center content-center'></div>} />
             </Routes>
         </PageTransition>
     )

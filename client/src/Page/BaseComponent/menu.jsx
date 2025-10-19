@@ -38,7 +38,7 @@ export default function MenuEL(params) {
         }
     }
     return(
-        <div className="menuDiv border-r-1  h-[91vh] border-gray-400 lg:h-[100vh] lg:w-[200px]
+        <div className="menuDiv top-[50px] absolute border-r-1  h-[91vh] border-gray-400 lg:h-[93.5vh] lg:w-[200px]
         flex items-center flex-col gap-5
         ">
             <div className="Logotxt flex items-center flex-col w-[120px]">

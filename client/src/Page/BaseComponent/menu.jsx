@@ -38,7 +38,7 @@ export default function MenuEL(params) {
         }
     }
     return(
-        <div className="menuDiv top-[50px] absolute border-r-1  h-[91vh] border-gray-400 lg:h-[93.5vh] lg:w-[200px]
+        <div className="menuDiv  lg:top-[50px] relative border-r-1  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
         flex items-center flex-col gap-5
         ">
             <div className="Logotxt flex items-center flex-col w-[120px]">
@@ -51,7 +51,7 @@ export default function MenuEL(params) {
                 bg-gradient-to-tr from-purple-500 via-pink-500 to-blue-600
                 bg-clip-text text-transparent'>CodeCove</h2>
             </div>
-            <div className='menuContainer flex items-center flex-col gap-10 lg:text-[20px] sm:text-3xl text-skin-text'>
+            <div className='menuContainer flex items-center flex-col gap-10 lg:text-[18px] sm:text-3xl text-skin-text'>
                 <ul className='flex items-start flex-col gap-5  border-b-2 border-gray-400'>
                 <li onClick={()=>setTab('Home')}><i className={`bx ${currentTab==='Home'?"bxs":"bx"}-home text-skin-text`}></i><span>Home</span></li>
                 <li onClick={()=>setTab('Search')}><i className={`bx ${currentTab==='Search'?"bxs":"bx"}-search text-skin-text`}></i><span>Search</span></li>

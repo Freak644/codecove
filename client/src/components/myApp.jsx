@@ -85,10 +85,10 @@ export default function MyApp() {
            {!isLogin && <MenuEL/>}
            {isCropping && <CropperEL prevImg={fileURL} />}
            {isLogin && <div className='loginContainer flex items-center content-center h-[100vh] w-[100vw]'>{<LoginEL/>}</div>}
-            <Routes>
+            {!isLogin && <Routes>
                 {/* <Route path='/' element={} /> */}
                 <Route path='/' element={<div className='routeContainer my-scroll flex items-center content-center'></div>} />
-            </Routes>
+            </Routes>}
         </PageTransition>
     )
 }

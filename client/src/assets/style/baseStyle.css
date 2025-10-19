@@ -112,6 +112,9 @@ body{
             }
         }
     }
+    .routeContainer{
+        width: 95vw !important;
+    }
 }
 .menuDiv{
     ul{
@@ -152,10 +155,16 @@ body{
     }
 }
 @media (max-width:426px) {
+    .routeContainer{
+        width: 100vw !important;
+    }
     .menuDiv{
         height: 50px;
         width: 100%;
         flex-direction: row !important;
+        position: absolute;
+        bottom: 5px;
+
         .menuContainer{
             height: 50px;
             width: 100vw;
@@ -606,7 +615,7 @@ form>h1>span{
     border: 1px solid;
     opacity: 1 !important;
     position: absolute;
-    top: -100px; left: 100px;
+    top: -100px; left: 150px;
     li{
         gap: 5px !important;
     }
@@ -621,6 +630,12 @@ form>h1>span{
     position: absolute;
     right: 0px;
     top: 50px;
+    z-index: -1;
+}
+@media (max-width:1024px) {
+    .routeContainer{
+        top: 9vh;
+    }
 }
 /* .container{
     height: 80vh; width: 80vw;

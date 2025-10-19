@@ -27,7 +27,8 @@ body{
     transition: background-color 0.3s,color 0.3s;
 }
 #rootContainer,.middlerWhere{
-    height: 100vh; width: 100vw;
+    height: calc(var(--vh)*100); 
+    width: 100vw;
     display: grid;
     background: var(--mini-bg-color);
     backdrop-filter: blur(10px);

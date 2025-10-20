@@ -29,7 +29,9 @@ body{
 #rootContainer,.middlerWhere{
     height: calc(var(--vh)*100); 
     width: 100vw;
-    display: grid;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
     background: var(--mini-bg-color);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -112,9 +114,7 @@ body{
             }
         }
     }
-    .routeContainer{
-        width: 95vw !important;
-    }
+    
 }
 .menuDiv{
     ul{
@@ -154,7 +154,7 @@ body{
         opacity: .8;
     }
 }
-@media (max-width:426px) {
+/* @media (max-width:426px) {
     .routeContainer{
         width: 100vw !important;
     }
@@ -193,7 +193,7 @@ body{
             display: none;
         }
     }
-}
+} */
 
 .underTaker{
     height: 100%; width: 100%;
@@ -516,6 +516,10 @@ form>h1>span{
 }
 
 @media (max-width:1024px) {
+    .routeContainer{
+        left: 50px !important;
+        width: 95vw !important;
+    }
     .rightside{
         flex: 1 1 0;
 
@@ -525,6 +529,9 @@ form>h1>span{
     }
 }
 @media (max-width:769px) {
+    /* .routeContainer{
+        width: 93vw !important;
+    } */
     .face{
         box-shadow: none;
     }
@@ -550,6 +557,10 @@ form>h1>span{
     }
 }
 @media (max-width:500px) {
+    .routeContainer{
+        width: 100vw !important;
+        left: 0px !important;
+    }
     .leftside{
         display: none;
     }
@@ -560,6 +571,41 @@ form>h1>span{
         padding: none !important;
         .container{
             width: 350px !important;
+        }
+    }
+     .menuDiv{
+        height: 50px;
+        width: 100%;
+        flex-direction: row !important;
+        position: absolute;
+        bottom: 5px;
+
+        .menuContainer{
+            height: 50px;
+            width: 100vw;
+            flex-direction: row;
+            background-color: var(--bg-color);
+            ul{
+                width: 100%;
+                flex-direction: row;
+                border: 1px;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1px;
+                font-size: 30px;
+                position: absolute;
+                bottom: 0px;
+
+                li:nth-child(3){
+                    display: none;
+                }
+            }
+        }
+        .Logotxt{
+            display: none;
+        }
+        .secul{
+            display: none;
         }
     }
     /* .formDiv{
@@ -628,7 +674,7 @@ form>h1>span{
     height: 93.5vh; width: 87vw;
     border: 1px solid yellow;
     position: absolute;
-    right: 0px;
+    left: 13vw;
     top: 50px;
     z-index: -1;
 }

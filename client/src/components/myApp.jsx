@@ -8,6 +8,7 @@ import { Loader } from '../lib/loader';
 import LoaderEL from '../assets/animations/loadingBar';
 import { mngCrop, useThemeStore } from '../lib/toggleTheme';
 import CropperEL from './cropperEL';
+import WindowHerder from '../Page/BaseComponent/windowHeader';
 export default function MyApp() {
     let {fileURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);
@@ -37,7 +38,7 @@ export default function MyApp() {
         if (window.innerWidth > 1023) {
             setHeader(true)
         }else{
-            false
+            setHeader(false)
         }
     },[])
     useEffect(()=>{
@@ -81,6 +82,7 @@ export default function MyApp() {
     return(
         <PageTransition location={location} key={location.pathname}>
             {isLoader && <LoaderEL/>}
+            {winddowHerder && <WindowHerder/>}
            {!isLogin && <Header/>}
            {!isLogin && <MenuEL/>}
            {isCropping && <CropperEL prevImg={fileURL} />}

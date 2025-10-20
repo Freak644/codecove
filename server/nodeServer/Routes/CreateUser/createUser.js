@@ -93,7 +93,7 @@ export const CreateUser = async (rkv, rspo) => {
     // anything fails after saving, delete the file
     if (rkv.file) {
       const avatarFileName = `Images/Avtar/${rkv.file.originalname}`;
-      try { fs.unlinkSync(avatarFileName); } catch (err) { console.error(err); }
+      try { fs.unlinkSync(avatarFileName); } catch (err) { console.error(err) };
     }
     rspo.status(500).send({ err: "Something went wrong", details: error.message });
   }

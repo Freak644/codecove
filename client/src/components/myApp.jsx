@@ -82,7 +82,7 @@ export default function MyApp() {
     return(
         <PageTransition location={location} key={location.pathname}>
             {isLoader && <LoaderEL/>}
-            {winddowHerder && <WindowHerder/>}
+            {winddowHerder && !isLogin && <WindowHerder/>}
            {!isLogin && <Header/>}
            {!isLogin && <MenuEL/>}
            {isCropping && <CropperEL prevImg={fileURL} />}
@@ -90,6 +90,7 @@ export default function MyApp() {
             {!isLogin && <Routes>
                 {/* <Route path='/' element={} /> */}
                 <Route path='/' element={<div className='routeContainer my-scroll flex items-center content-center'></div>} />
+                <Route path='/Chat' element={<div className='routeContainer my-scroll flex items-center content-center'></div>} />
             </Routes>}
         </PageTransition>
     )

@@ -62,8 +62,8 @@ export default function MenuEL(params) {
                 </ul>
                 <ul className='secul flex items-start flex-col gap-5'>
                     <li onClick={()=>{setTab("none");setDD(prev=>!prev)}} className='relative'><i className='bx bx-menu'></i><span>Menu</span>
-                    {isDD && <div className="dropdownMenu flex items-center flex-col rounded-2xl w-52 bg-gray-600">
-                        <ul >
+                    {isDD && <div onClick={(evnt)=>evnt.stopPropagation()} className="dropdownMenu flex items-center flex-col rounded-2xl w-52 bg-skin-bg">
+                        <ul className='flex gap-2 flex-col'>
                             <li><i className='bx bx-cog'></i><span>Setting</span></li>
                             <li><i className='bx bx-chart'></i><span>Your Activity</span></li>
                             <li> <ThemeButton/> </li>

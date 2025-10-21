@@ -41,7 +41,7 @@ export default function MenuEL(params) {
         <div className="menuDiv   relative left-0 border-r-1  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
         flex items-center flex-col gap-5
         ">
-            <div className="Logotxt flex items-center flex-col w-[120px]">
+            <div className="Logotxt flex items-center lg:!mt-3.5 flex-col w-[120px]">
                 <i className='bx bx-code-block text-5xl
                 transition-all duration-500 ease-in-out bg-[length:200%_200%]
                 bg-gradient-to-tr from-purple-500 via-pink-500 to-blue-600

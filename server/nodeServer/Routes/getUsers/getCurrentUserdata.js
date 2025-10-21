@@ -4,7 +4,7 @@ export const CrntUser = async (rkv,rspo) => {
     let {id} = rkv.authData;
     try {
         let [userinfo] = await database.execute(
-        "SELECT avatar FROM users WHERE id=?",
+        "SELECT avatar,username, FROM users WHERE id=?",
         [id]
     )
         rspo.status(302).send({userinfo})

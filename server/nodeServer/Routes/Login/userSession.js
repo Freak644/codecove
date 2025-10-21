@@ -32,7 +32,7 @@ export const loggedMeOut = async (rkv,rspo) => {
         let rqst = await database.execute("DELETE FROM user_sessions WHERE session_id=? AND id=?",
             [session_id,id]
         )
-        console.log(rqst)
+        //console.log(rqst)
         rspo.clearCookie("myAuthToken",{
             httpOnly:true,
             secure:true,

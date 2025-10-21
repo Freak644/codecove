@@ -47,7 +47,7 @@ myApp.post("/sendVerifyEmail",SendEmailVerify);
 myApp.post("/verifyEmail",verifyEmail);
 myApp.post("/CreateUser",upload.single("avatar"),CreateUser);
 myApp.post("/login",LoginAPI);
-myApp.get("/isUser",Auth,CrntUser);
+myApp.get("/GetUserInfo",Auth,CrntUser);
 myApp.get("/auth",checkAuth);
 myApp.post("/Logout",Auth,loggedMeOut);
 myApp.listen(port,()=>{

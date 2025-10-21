@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
-import ThemeButton from '../../components/toggleButton'
+import ThemeButton from '../../components/toggleButton';
+import { UnivuUserInfo } from '../../lib/basicUserinfo';
 export default function MenuEL(params) {
     const [currentTab,setTab] = useState('Home');
     const [logoimg,setlogo] = useState("")
     const [isDD,setDD] = useState(false)
+    const {setInfo} = UnivuUserInfo();
     useEffect(()=>{
         getUserInfo();
     },[])
     const getUserInfo = async () => {
         try {
-            let rkv = await fetch("/myServer/isUser")
+            let rkv = await fetch("/myServer/getUserInfo")
             let result = await rkv.json();
             if (result.err) {
                 throw new Error(result.err);
@@ -19,6 +21,7 @@ export default function MenuEL(params) {
                     location.reload()
                 }
                 setlogo(result.userinfo[0].avatar)
+                setInfo(result.userinfo[0])
         } catch (error) {
             toast.error(error.message);
         }

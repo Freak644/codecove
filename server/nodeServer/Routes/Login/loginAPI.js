@@ -57,7 +57,7 @@ export const LoginAPI = async (rkv,rspo) => {
                 sameSite:"strict",
                 maxAge: 24 * 60 * 60 *1000 //  1day
             })
-            rspo.status(200).send({ pass: "Login",authToken:isUser[0].username})
+            rspo.status(200).send({ pass: "Login",authToken:isUser[0].username,session_id})
         }else{
             rspo.status(504).send({err:"Something went wrong while Login"})
         }

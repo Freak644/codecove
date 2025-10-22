@@ -1,5 +1,5 @@
 import PageTransition from '../assets/animations/framerMotion'
-import {Routes,Route, useLocation} from 'react-router-dom';
+import {Routes,Route, useLocation, useNavigate} from 'react-router-dom';
 import LoginEL from '../Page/Login/baseFIle';
 import Header from '../Page/BaseComponent/header';
 import MenuEL from '../Page/BaseComponent/menu';
@@ -9,7 +9,10 @@ import LoaderEL from '../assets/animations/loadingBar';
 import { mngCrop, useThemeStore } from '../lib/toggleTheme';
 import CropperEL from './cropperEL';
 import WindowHerder from '../Page/BaseComponent/windowHeader';
+import CheckInfo from '../Page/Login/checkinfo';
+import NotFound from '../Page/BaseComponent/404NotFound';
 export default function MyApp() {
+    let navi = useNavigate();
     let {fileURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);
     let {toggleTheme} = useThemeStore();
@@ -79,6 +82,7 @@ export default function MyApp() {
             setCropping(false)
         }
     },[fileURL])
+
     return(
         <PageTransition location={location} key={location.pathname}>
             {isLoader && <LoaderEL/>}
@@ -90,7 +94,8 @@ export default function MyApp() {
             {!isLogin && <Routes>
                 {/* <Route path='/' element={} /> */}
                 <Route path='/' element={<div className='routeContainer my-scroll flex items-center content-center'></div>} />
-                <Route path='/Chat' element={<div className='routeContainer my-scroll flex items-center content-center'></div>} />
+                <Route path='/CheckInfo/:session_id' element={<div className='routeContainer my-scroll flex items-center content-center'>{<CheckInfo/>}</div>} />
+                <Route path='*' element={<NotFound/>} />
             </Routes>}
         </PageTransition>
     )

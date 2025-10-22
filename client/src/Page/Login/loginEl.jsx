@@ -3,6 +3,7 @@ import FaceToggle from "../../lib/tabToggle";
 import { toast } from "react-toastify";
 import { Loader} from "../../lib/loader";
 import { time } from "framer-motion";
+import { registerHelper } from "handlebars";
 export default function LoginCon({toggle}) {
     const pwdRef = useRef();
     const {setTab} = FaceToggle();
@@ -63,6 +64,7 @@ export default function LoginCon({toggle}) {
                 body:JSON.stringify({Email,Password,clientInfo})
             })
             let result = await rkv.json();
+            console.log(result)
             if (result.err) {
                 throw new Error(result.err)
             }

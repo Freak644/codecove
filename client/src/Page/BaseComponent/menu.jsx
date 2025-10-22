@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import ThemeButton from '../../components/toggleButton';
 import { UnivuUserInfo } from '../../lib/basicUserinfo';
+import { useNavigate } from 'react-router-dom';
 export default function MenuEL(params) {
     const [currentTab,setTab] = useState('Home');
     const [logoimg,setlogo] = useState("")
     const [isDD,setDD] = useState(false)
     const {setInfo} = UnivuUserInfo();
+
+    const navi = useNavigate()
     useEffect(()=>{
         getUserInfo();
     },[])
@@ -38,6 +41,7 @@ export default function MenuEL(params) {
         console.log(result)
         if (result.pass) {
             location.reload();
+            navi('/')            
         }
     }
     return(

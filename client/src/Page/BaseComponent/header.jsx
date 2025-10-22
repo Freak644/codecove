@@ -1,7 +1,27 @@
 import ThemeButton from "../../components/toggleButton";
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { UnivuUserInfo } from "../../lib/basicUserinfo";
 export default function Header() {
     const [isToggle,setToggle] = useState(false)
+    const [userData,setdata] = useState({});
+    let {userInfo} = UnivuUserInfo();
+    useEffect(()=>{
+        setdata(userInfo);
+    },[userInfo])
+
+    const handleLogout = async () => {
+        let rqst = await fetch("/myServer/Logout",{
+            headers:{
+                "Content-Type":"application/json"
+            },
+            method:"POST"
+        })
+        let result = await rqst.json();
+        console.log(result)
+        if (result.pass) {
+            location.reload();
+        }
+    }
     return(
         <div className="headerContainer h-[9vh] cursor-pointer lg:!bg-gray-500 lg:h-10 lg:w-[200px] lg:rounded-[2rem] lg:absolute lg:!top-160 lg:!right-30 w-full  rounded flex items-center justify-between
         lg:bg-gradient-to-tr lg:from-yellow-400 lg:via-purple-600 lg:to-pink-500 
@@ -20,8 +40,8 @@ export default function Header() {
                 <i className='bx bx-message-rounded-detail'><span className="lg:inline hidden">Message</span></i>
             </div>
             <div className="userMenu relative flex items-center lg:hidden !text-skin-text">
-                <div onClick={()=>setToggle(prev=>!prev)} className="imgDiv h-[40px] w-[40px] bg-black rounded-full flex items-center justify-center border-2 border-amber-200">
-                    <img className="h-[30px] w-[30px] rounded-full" src="https://i.postimg.cc/7ZTJzX5X/icon.png" alt="" />
+                <div onClick={()=>setToggle(prev=>!prev)} className=" h-[40px] w-[40px] bg-black rounded-full flex items-center justify-center border-2 border-amber-200">
+                    <img className="h-[30px] w-[30px] rounded-full" src={userData.avatar ? `/myServer/${userData.avatar}` :"https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" />
                 </div>
                 {
                    isToggle && <div className="dropDown absolute px-3 border border-white-20 shadow-lg rounded-2xl
@@ -31,7 +51,7 @@ export default function Header() {
                         <li><i className="bx bx-user-circle !text-skin-text"></i> Profile</li>
                         <li><ThemeButton/></li>
                         <li><i className="bx bx-cog !text-skin-text"></i> Setting</li>
-                        <li><i className="bx bx-log-out !text-skin-text"></i> Logout</li>
+                        <li onClick={handleLogout}><i className="bx bx-log-out !text-skin-text"></i> Logout</li>
                     </ul>
                 </div>
                 }

@@ -38,16 +38,17 @@ export default function WindowHerder(params) {
                     w-64
                     " />
                     <i className="text-2xl bx bx-search-alt text-gray-400 border-r absolute left-3"></i>
-                    <div className="miniMenuDiv !m-2 text-2xl border-2 border-gray-600 rounded-lg flex items-center justify-center">
+                    <div className=" cursor-pointer miniMenuDiv !m-2 text-2xl border-2 border-gray-600 rounded-lg flex items-center justify-center">
                         <i className="bx bx-ghost m-1 border-r text-gray-300"></i>
                         <i className='bx bx-chevron-down text-[18px]'></i>
                     </div>
                 </form>
 
-                <div className="secminiMenuDiv text-2xl flex items-center flex-row gap-[1vw]">
-                    <div className="createPost flex items-center justify-center ml-2.5">
-                        <i className="bx bx-plus"></i>
-                        <i className="bx bx-chevron-down"></i>
+                <div className="secminiMenuDiv text-2xl flex items-center flex-row gap-[1vw] ">
+                    <div className="createPost flex items-center justify-center ml-2.5 border-2 border-gray-600 rounded-lg
+                    cursor-pointer ">
+                        <i className="bx bx-plus border-r m-1"></i>
+                        <i className="bx bx-chevron-down text-[18px]"></i>
                     </div>
 
                     <div className="userThings flex gap-[1vw]">

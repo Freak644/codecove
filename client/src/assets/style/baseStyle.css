@@ -673,7 +673,7 @@ form>h1>span{
 }
 .routeContainer{
     height: 93.5vh; width: 87vw;
-    border: 1px solid yellow;
+    /* border: 1px solid yellow; */
     position: absolute;
     left: 13vw;
     top: 50px;

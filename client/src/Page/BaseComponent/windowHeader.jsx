@@ -30,7 +30,7 @@ export default function WindowHerder(params) {
                 ease-in-out bg[length:200%_200%] bg-gradient-to-br from-purple-500 via-pink-400 to-blue-600 
                 bg-clip-text text-transparent
                 "></i>
-                <span className="text-skin-ptext text-[15px] font-light flex items-center">{pathName}</span>
+                <span className="text-skin-ptext text-[15px]  flex items-center">{pathName}</span>
             </div>
             <div className="rightHeader flex justify-end flex-1 text-skin-login ">
                 <form action="" className="flex relative items-center justify-start gap-1 p-2  border-gray-600">
@@ -39,7 +39,7 @@ export default function WindowHerder(params) {
                     " />
                     <i className="text-2xl bx bx-search-alt text-gray-400 border-r absolute left-3"></i>
                     <div className=" cursor-pointer miniMenuDiv !m-2 text-2xl border-2 border-gray-600 rounded-lg flex items-center justify-center">
-                        <i className="bx bx-ghost m-1 border-r text-gray-300"></i>
+                        <i className="bx bx-ghost m-1 border-r"></i>
                         <i className='bx bx-chevron-down text-[18px]'></i>
                     </div>
                 </form>

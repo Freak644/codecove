@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 :root {
-    --bg-color: rgb(255, 255, 255);
+    --bg-color: rgb(240, 240, 255);
     --text-color: #000000;
     --p-text-color:#363636;
     --login-txt-color:black;

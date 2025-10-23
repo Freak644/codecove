@@ -95,3 +95,8 @@
   0%, 100% { transform: translateY(6px); }
   50% { transform: translateY(-6px); }
 }
+@media (max-width:800px) {
+  .container{
+    flex-direction: column;
+  }
+}

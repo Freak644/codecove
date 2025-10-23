@@ -1,13 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import '../../assets/style/Error404.css'
+import ChangePassword from "./changePassword";
 export default function CheckInfo(params) {
     let {session_id} = useParams();
+    const [isChanging,setchanging] = useState(false)
     useEffect(()=>{
         if(session_id.length < 2) return;
     },[session_id])
     return(
         <div className="underTaker bg-skin-bg">
+           {isChanging && <ChangePassword toggle={setchanging}/>}
             <div className="Logotxt flex items-center lg:!mt-3.5 flex-col w-[120px] absolute top-3 left-2">
                 <i className='bx bx-code-block text-5xl
                 transition-all duration-500 ease-in-out bg-[length:200%_200%]
@@ -51,7 +54,7 @@ export default function CheckInfo(params) {
                             <p><strong>Location:</strong>{"Lc"}</p>
                             <p><strong>Login Time:</strong>{"Login_time"}</p>
                         </div>
-                        <button className="mt-4 bg-gradient-to-br from-cyan-500 to-blue-600 via-pink-400 hover:from-cyan-400 hover:to-blue-500 hover:via-yellow-300
+                        <button onClick={()=>setchanging(prev=>!prev)} className="mt-4 bg-gradient-to-br from-cyan-500 to-blue-600 via-pink-400 hover:from-cyan-400 hover:to-blue-500 hover:via-yellow-300
             text-white font-semibold py-2 px-6 rounded-lg shadow-md
             transition-all duration-300 cursor-pointer">Change Password</button>
                     </div>

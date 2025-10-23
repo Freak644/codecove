@@ -12,7 +12,6 @@ import WindowHerder from '../Page/BaseComponent/windowHeader';
 import CheckInfo from '../Page/Login/checkinfo';
 import NotFound from '../Page/BaseComponent/404NotFound';
 export default function MyApp() {
-    let navi = useNavigate();
     let {fileURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);
     let {toggleTheme} = useThemeStore();
@@ -22,6 +21,7 @@ export default function MyApp() {
     const [winddowHerder,setHeader] = useState(true);
     const {isTrue,toggleLoader} = Loader();
     const [isLoader,setLoader] = useState(isTrue);
+    const [isChecking,setCheck] = useState(false)
     useEffect(() => {
         const setVH = () => {
             const vh = window.visualViewport?.height
@@ -45,6 +45,10 @@ export default function MyApp() {
         }
     },[])
     useEffect(()=>{
+        let currentPath = location.pathname.split("/")
+        if (currentPath[1] === "CheckInfo") {
+            setCheck(true)
+        }
         const handler = ()=> toggleLoader();
         if (document.readyState === "complete") {
             handler();
@@ -90,13 +94,12 @@ export default function MyApp() {
            {!isLogin && <Header/>}
            {!isLogin && <MenuEL/>}
            {isCropping && <CropperEL prevImg={fileURL} />}
-           {isLogin && <div className='loginContainer flex items-center content-center h-[100vh] w-[100vw]'>{<LoginEL/>}</div>}
-            {!isLogin && <Routes>
-                {/* <Route path='/' element={} /> */}
+           {(isLogin && !isChecking) && (<div className='loginContainer flex items-center content-center h-[100vh] w-[100vw]'>{<LoginEL/>}</div>)}
+            {(!isLogin || isChecking) && (<Routes>
                 <Route path='/' element={<div className='routeContainer my-scroll flex items-center content-center'></div>} />
-                <Route path='/CheckInfo/:session_id' element={<div className='routeContainer my-scroll flex items-center content-center'>{<CheckInfo/>}</div>} />
+                <Route path='/CheckInfo/:session_id' element={<div className='my-scroll flex items-center justify-center h-screen w-screen'>{<CheckInfo/>}</div>} />
                 <Route path='*' element={<NotFound/>} />
-            </Routes>}
+            </Routes>)}
         </PageTransition>
     )
 }

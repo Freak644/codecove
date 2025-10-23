@@ -52,4 +52,4 @@ myApp.get("/auth",checkAuth);
 myApp.post("/Logout",Auth,loggedMeOut);
 myApp.listen(port,()=>{
     console.log(chalk.greenBright.yellow.italic.bold("server is start on "+port))
-})
+});

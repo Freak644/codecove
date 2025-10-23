@@ -41,11 +41,11 @@
   100% { transform: translate(-6px,-6px); }
 }
 
-.faceWeye{
+/* .faceWeye{
   h1{
     animation: lookAround 4s infinite;
   }
-}
+} */
 .main404 {
   position: absolute;
   z-index: 2;

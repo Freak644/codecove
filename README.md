@@ -82,10 +82,7 @@ Create a `.env` file in the root and add your secrets (example keys):
  ```
  ## License
 
-This project is licensed under the **WarChild Source-Available License v1.0 (Non-Commercial)**.  
-
-You may view, use, and share this project for personal or non-commercial purposes.  
-
-See the [LICENSE](./LICENSE) file for full details.  
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+ 
 
 Contact: loser4113@gmail.com for commercial use or collaboration inquiries.

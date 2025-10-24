@@ -13,6 +13,7 @@ import {LoginAPI} from './Routes/Login/loginAPI.js'
 import { Auth, checkAuth } from './Routes/Login/tokenChecker.js';
 import { CrntUser } from './Routes/getUsers/getCurrentUserdata.js';
 import { loggedMeOut } from './Routes/Login/userSession.js';
+import { ActivityInfo } from './Routes/Login/getSessionInfo.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -41,15 +42,14 @@ const upload = multer({
 });
 
 myApp.get("/getUsername",getUsers);
-
 myApp.post("/sendVerifyEmail",SendEmailVerify);
-
 myApp.post("/verifyEmail",verifyEmail);
 myApp.post("/CreateUser",upload.single("avatar"),CreateUser);
 myApp.post("/login",LoginAPI);
 myApp.get("/GetUserInfo",Auth,CrntUser);
 myApp.get("/auth",checkAuth);
 myApp.post("/Logout",Auth,loggedMeOut);
+myApp.get("/Checkactive",ActivityInfo)
 myApp.listen(port,()=>{
     console.log(chalk.greenBright.yellow.italic.bold("server is start on "+port))
 });

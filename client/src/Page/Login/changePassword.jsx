@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function ChangePassword({user_id,toggle}) {
+    let {session_id} = useParams();
     const [mgmtPassword,setPassword] = useState({
         basePass:"",
         confPass:"",
@@ -22,9 +25,30 @@ export default function ChangePassword({user_id,toggle}) {
                 if (input && !input.value) {
                     lbal.classList.remove('activeLabl');
                 } else if(input && input.value){
-                    lbal.classList.add('activeLabl')
+                    lbal.classList.add('activeLabl');
                 }
             })
+        }
+    }
+    const handleSubmit = async (evnt) => {
+        evnt.preventDefault();
+        let {basePass,confPass} = mgmtPassword;
+        if(basePass !== confPass) return toast.error("Password === Confirm.password()")
+        try {
+            let rqst = await fetch("/myServer/upDatePass",{
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                method:"UPDATE",
+                body:JSON.stringify({basePass,session_id})
+            })
+            let result = await rqst.json();
+            if (result.err) {
+                console.log(result.err)
+                throw new Error(result.details);
+            }
+        } catch (error) {
+            toast.error(error.message);
         }
     }
     const togglePassword = elemnt=>{
@@ -47,7 +71,7 @@ export default function ChangePassword({user_id,toggle}) {
                         border border-cyan-500/20 shadow-[0_0_30px_rgba(0,255,255,0.15)]
                         backdrop-blur-lg">
                 <div className="formDiv mt-[10%] ">
-                    <form action="" className="bg-skin-bg !p-10 rounded-lg shadow-[0_0_30px_rgba(0,255,255,0.15)]">
+                    <form action="" onSubmit={handleSubmit} className="bg-skin-bg !p-10 rounded-lg shadow-[0_0_30px_rgba(0,255,255,0.15)]">
                         <i className="bx bx-window-close absolute text-3xl text-white -right-10 cursor-pointer" title="close" onClick={()=>toggle(prev=>!prev)}></i>
                         <div className="Logotxt flex items-center lg:!mt-3.5 flex-col w-[120px]  left-2">
                 <i className='bx bx-code-block text-5xl
@@ -77,7 +101,7 @@ export default function ChangePassword({user_id,toggle}) {
                             <label htmlFor="ConfpassType"><i className="bx bx-key">Confirm Password</i></label>
                         </div>
                         <div className="inputDiv">
-                            <div className="btn w-full flex items-center justify-center ">Change</div>
+                            <button type="submit" className="btn w-full flex items-center justify-center ">Change</button>
                         </div>
                     </form>
                 </div>

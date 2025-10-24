@@ -2,15 +2,32 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import '../../assets/style/Error404.css'
 import ChangePassword from "./changePassword";
+import { toast } from "react-toastify";
 export default function CheckInfo(params) {
     let {session_id} = useParams();
     const [isChanging,setchanging] = useState(false)
+    const [userInfo,setInfo] = useState({})
+    const getSessionInfo = async () => {
+        try {
+            let rqst = await fetch(`/myServer/checkActive?session_id=${session_id}`)
+            let result = await rqst.json();
+            if (result.err) {
+                console.log(result.err)
+                throw new Error(result.details);
+            }
+            setInfo(result.data);
+        } catch (error) {
+            toast.error(error.message);
+        }
+    }
+
     useEffect(()=>{
         if(session_id.length < 2) return;
+        getSessionInfo()
     },[session_id])
     return(
-        <div className="underTaker bg-skin-bg">
-           {isChanging && <ChangePassword toggle={setchanging}/>}
+        <div className="underTaker bg-skin-bg absolute top-0 z-40">
+           {isChanging && <ChangePassword user_id={userInfo.id} toggle={setchanging}/>}
             <div className="Logotxt flex items-center lg:!mt-3.5 flex-col w-[120px] absolute top-3 left-2">
                 <i className='bx bx-code-block text-5xl
                 transition-all duration-500 ease-in-out bg-[length:200%_200%]
@@ -47,12 +64,12 @@ export default function CheckInfo(params) {
                         bg-gradient-to-br from-white/10 via-white/5 to-transparent
                         border border-cyan-500/20 shadow-[0_0_30px_rgba(0,255,255,0.15)]
                         backdrop-blur-md">
-                        <p className="big404">Hello 👋 {"Username"}</p>
+                        <p className="big404">Hello 👋 </p>
                         <div className="flex items-center flex-col gap-3">
-                            <p><strong>Device:</strong>{"Device"}</p>
-                            <p><strong>IP:</strong>{"IP"}</p>
-                            <p><strong>Location:</strong>{"Lc"}</p>
-                            <p><strong>Login Time:</strong>{"Login_time"}</p>
+                            <p><strong>Device:</strong>{userInfo.device_type}</p>
+                            <p><strong>IP:</strong>{userInfo.ip}</p>
+                            <p><strong>Location:</strong>{`${userInfo.city} ,${userInfo.region} ,${userInfo.country}`}</p>
+                            <p><strong>Login Time:</strong>{userInfo.time}</p>
                         </div>
                         <button onClick={()=>setchanging(prev=>!prev)} className="mt-4 bg-gradient-to-br from-cyan-500 to-blue-600 via-pink-400 hover:from-cyan-400 hover:to-blue-500 hover:via-yellow-300
             text-white font-semibold py-2 px-6 rounded-lg shadow-md

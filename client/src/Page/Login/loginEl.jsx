@@ -94,13 +94,15 @@ export default function LoginCon({toggle}) {
                                 <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="Email" required/>
                                 <label htmlFor="Email"><i className="bx bx-user">Username</i></label>
                             </div>
-                            <div className="inputDiv">
+                            <div className="inputDiv mb-8">
                                 <input ref={pwdRef} onBlur={(evnt)=>handleBlur(evnt.target)} type={pwdType} name="Password" id="Paswrd" required/>
                                 <label htmlFor="Paswrd"><i className="bx bx-key">Password</i></label>
                                 <i onClick={togglePassword} className={`bx bx-${getClass()} absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer`}></i>
+                                <div className="suggestionDiv absolute right-0 cursor-pointer -bottom-5 text-purple-500 text-[12px] hover:text-blue-500" onClick={()=>setTab("back")}>
+                                    Forgot Password ?
+                                </div>
                             </div>
-                            <div className="inputDiv twobtnInput">
-                                <button className="text-btn bigBtn" type="button" onClick={()=>setTab("back")}>Forgot Password?</button>
+                            <div className="inputDiv twobtnInput ">
                                 <button type="submit" className="btn bigBtn">{isTrue ? <div className="miniLoader"></div> : "Login"}</button>
                                 <button type="button" onClick={()=>setTab("right")} className="text-btn bigbtn">Don't have account</button>
                             </div>

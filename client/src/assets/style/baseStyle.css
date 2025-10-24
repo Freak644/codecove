@@ -522,7 +522,7 @@ form>h1>span{
         flex: 1 1 0;
 
         .container{
-            height: 400px !important; width: 400px !important;
+            height: 500px !important; width: 400px !important;
         }
     }
 }
@@ -545,22 +545,13 @@ form>h1>span{
         }
     }
     .leftside{
-        position: absolute;
-        flex: 1 1 0;
-        
-        .text-div{
-            left: 40%;
-            top: 90% !important;
-        }
+        display: none;
     }
 }
 @media (max-width:500px) {
     .routeContainer{
         width: 100vw !important;
         left: 0px !important;
-    }
-    .leftside{
-        display: none;
     }
     form{
         padding: none !important;

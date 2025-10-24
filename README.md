@@ -1,3 +1,5 @@
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+
 # 🌐 CodeCove — An Anonymous Developer Social Media Platform
 
 **CodeCove** is a modern, anonymous social media platform **built by developers, for developers**.  
@@ -82,7 +84,5 @@ Create a `.env` file in the root and add your secrets (example keys):
  ```
  ## License
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
- 
 
 Contact: loser4113@gmail.com for commercial use or collaboration inquiries.

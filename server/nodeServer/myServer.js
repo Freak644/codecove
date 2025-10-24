@@ -14,6 +14,7 @@ import { Auth, checkAuth } from './Routes/Login/tokenChecker.js';
 import { CrntUser } from './Routes/getUsers/getCurrentUserdata.js';
 import { loggedMeOut } from './Routes/Login/userSession.js';
 import { ActivityInfo } from './Routes/Login/getSessionInfo.js';
+import { changePassSecure } from './Routes/UpdateApi/SecureAccount.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -49,7 +50,8 @@ myApp.post("/login",LoginAPI);
 myApp.get("/GetUserInfo",Auth,CrntUser);
 myApp.get("/auth",checkAuth);
 myApp.post("/Logout",Auth,loggedMeOut);
-myApp.get("/Checkactive",ActivityInfo)
+myApp.get("/checkActive",ActivityInfo)
+myApp.put("/upDatePass",changePassSecure)
 myApp.listen(port,()=>{
     console.log(chalk.greenBright.yellow.italic.bold("server is start on "+port))
 });

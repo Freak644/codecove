@@ -46,7 +46,8 @@ export default function MyApp() {
     },[])
     useEffect(()=>{
         let currentPath = location.pathname.split("/")
-        if (currentPath[1] === "CheckInfo") {
+        console.log(currentPath[1])
+        if (currentPath[1] === "checkInfo") {
             setCheck(true)
         }
         const handler = ()=> toggleLoader();

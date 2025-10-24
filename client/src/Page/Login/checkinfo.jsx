@@ -64,7 +64,7 @@ export default function CheckInfo(params) {
                         bg-gradient-to-br from-white/10 via-white/5 to-transparent
                         border border-cyan-500/20 shadow-[0_0_30px_rgba(0,255,255,0.15)]
                         backdrop-blur-md">
-                        <p className="big404">Hello 👋 </p>
+                        <p className="big404">Hello 👋 {userInfo.username}</p>
                         <div className="flex items-center flex-col gap-3">
                             <p><strong>Device:</strong>{userInfo.device_type}</p>
                             <p><strong>IP:</strong>{userInfo.ip}</p>

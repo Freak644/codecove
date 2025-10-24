@@ -33,20 +33,22 @@ export default function ChangePassword({user_id,toggle}) {
     const handleSubmit = async (evnt) => {
         evnt.preventDefault();
         let {basePass,confPass} = mgmtPassword;
+        if (!basePass.trim()) {return toast.error("Empty ^_^")}
         if(basePass !== confPass) return toast.error("Password === Confirm.password()")
         try {
             let rqst = await fetch("/myServer/upDatePass",{
                 headers:{
                     "Content-Type":"application/json"
                 },
-                method:"UPDATE",
+                method:"PUT",
                 body:JSON.stringify({basePass,session_id})
             })
             let result = await rqst.json();
             if (result.err) {
                 console.log(result.err)
-                throw new Error(result.details);
+                throw new Error(result.details || result.err);
             }
+            toast.success(result.pass);
         } catch (error) {
             toast.error(error.message);
         }
@@ -89,7 +91,7 @@ export default function ChangePassword({user_id,toggle}) {
                                 ...prev,
                                 basePass:evnt.target.value
                             }))} onBlur={(evnt)=>handleBlur(evnt.target)} type={mgmtPassword.basePassType} name="password" id="basePassType"/>
-                            <label htmlFor="basePassword"><i className="bx bx-key">Password</i></label>
+                            <label htmlFor="basePassType"><i className="bx bx-key">Password</i></label>
                         </div>
                         <div className="inputDiv">
                             <i onClick={(evnt)=>togglePassword(evnt.target)} className="bx bx-show absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer"></i>

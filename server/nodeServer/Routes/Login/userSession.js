@@ -29,8 +29,8 @@ export const SaveThisSession = async (rkv,userID) => {
 export const loggedMeOut = async (rkv,rspo) => {
     let {id,session_id} = rkv.authData;
     try {
-        let rqst = await database.execute("DELETE FROM user_sessions WHERE session_id=? AND id=?",
-            [session_id,id]
+        let rqst = await database.execute("UPDATE user_sessions SET revoked=? WHERE session_id=? AND id=?",
+            [true,session_id,id]
         )
         //console.log(rqst)
         rspo.clearCookie("myAuthToken",{
@@ -44,3 +44,9 @@ export const loggedMeOut = async (rkv,rspo) => {
     }
 
 }
+/*
+Tu meri Memory meinn ek allocated space hai,
+DiL ke pointer pe sirf tera address trace hai,
+Garbage collector bhi tujeeh chooo nhi sakta ,
+Tera referrence meri har line main base hai.
+*/

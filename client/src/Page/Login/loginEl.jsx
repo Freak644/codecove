@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import FaceToggle from "../../lib/tabToggle";
 import { toast } from "react-toastify";
 import { Loader} from "../../lib/loader";
-import { time } from "framer-motion";
-import { registerHelper } from "handlebars";
+
 export default function LoginCon({toggle}) {
     const pwdRef = useRef();
     const {setTab} = FaceToggle();
@@ -98,7 +97,7 @@ export default function LoginCon({toggle}) {
                                 <input ref={pwdRef} onBlur={(evnt)=>handleBlur(evnt.target)} type={pwdType} name="Password" id="Paswrd" required/>
                                 <label htmlFor="Paswrd"><i className="bx bx-key">Password</i></label>
                                 <i onClick={togglePassword} className={`bx bx-${getClass()} absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer`}></i>
-                                <div className="suggestionDiv absolute right-0 cursor-pointer -bottom-5 text-purple-500 text-[12px] hover:text-blue-500" onClick={()=>setTab("back")}>
+                                <div className="suggestionDiv absolute right-0 cursor-pointer -bottom-5 text-purple-500 text-[12px] hover:text-blue-500" onClick={()=>setTab("left")}>
                                     Forgot Password ?
                                 </div>
                             </div>

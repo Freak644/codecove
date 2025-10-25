@@ -4,6 +4,7 @@ import FaceToggle from "../../lib/tabToggle";
 import VerifyEl from "./SginUP/verifyEmail";
 import LoginCon from "./loginEl";
 import verifyZu from "../../lib/verifyZu";
+import ForgotEl from "./forgotPass";
 export default function LoginEL() {
     const {currentTab,setTab} = FaceToggle();
     let [face,setFace] = useState(currentTab);
@@ -58,8 +59,8 @@ export default function LoginEL() {
                                 <div className={`cube relative transform-3d transition-all duration-1000 flex items-center justify-center ${getRotation()}`}>
                                     <div className="face front"><LoginCon/></div>
                                     <div className="face right"><SginUp toggle={setFace}/></div>
-                                    <div className="face back">Forgot</div>
-                                    <div className="face left"></div>
+                                    <div className="face back"></div>
+                                    <div className="face left"><ForgotEl/></div>
                                 </div>
                                
                             </div>

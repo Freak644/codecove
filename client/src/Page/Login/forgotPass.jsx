@@ -2,6 +2,26 @@ import FaceToggle from "../../lib/tabToggle"
 
 export default function ForgotEl() {
     let {setTab} = FaceToggle();
+    const handleBlur = (inp)=>{
+        if (inp && inp.value) {
+            let labl = inp.nextElementSibling;
+            labl.classList.add('activeLabl');
+        } else if(inp && !inp.value) {
+            let lbl = inp.nextElementSibling;
+            lbl.classList.remove('activeLabl');
+        }else{
+            let divs = document.querySelectorAll('.inputDiv');
+            divs.forEach(inpDiv=>{
+                let input = inpDiv.querySelector('input');
+                let lbal = inpDiv.querySelector('label');
+                if (input && !input.value) {
+                    lbal.classList.remove('activeLabl');
+                } else if(input && input.value){
+                    lbal.classList.add('activeLabl')
+                }
+            })
+        }
+    }
     return(
         <div className="underTaker">
             <div className="formDiv">
@@ -18,8 +38,8 @@ export default function ForgotEl() {
                         </div>
 
                         <div className="inputDiv">
-                            <input type="text" name="Email" id="Email" required />
-                            <label htmlFor="Email"><i className="bx bx-user">Email OR userName</i></label>
+                            <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="USEmail" required />
+                            <label htmlFor="USEmail"><i className="bx bx-user">Email OR userName</i></label>
                         </div>
                         <div className="inputDiv twobtnInput">
                             <button type="submit" className="btn bigBtn">Find Account</button>

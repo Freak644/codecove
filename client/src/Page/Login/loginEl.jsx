@@ -6,7 +6,10 @@ import { Loader} from "../../lib/loader";
 export default function LoginCon({toggle}) {
     const pwdRef = useRef();
     const {setTab} = FaceToggle();
-    const [pwdType,setType] = useState("password")
+    const [mgmtPass,setType] = useState({
+        pwdType:"password",
+        passwordVal:"",
+    })
     let {isTrue,toggleLoader} = Loader();
         const handleBlur = (inp)=>{
         if (inp && inp.value) {
@@ -37,13 +40,15 @@ export default function LoginCon({toggle}) {
         }
     }
     const getClass = ()=> {
-        switch (pwdType) {
+        switch (mgmtPass.pwdType) {
             case "text": return "hide";
             case "password": return "show";
             default: return "show"
         }
     }
-    
+    useEffect(()=>{
+        handleBlur();
+    },[mgmtPass.passwordVal])
     const handleSubmit = async (evnt) => {
         evnt.preventDefault();
         toggleLoader()
@@ -94,7 +99,10 @@ export default function LoginCon({toggle}) {
                                 <label htmlFor="Email"><i className="bx bx-user">Username</i></label>
                             </div>
                             <div className="inputDiv mb-8">
-                                <input ref={pwdRef} onBlur={(evnt)=>handleBlur(evnt.target)} type={pwdType} name="Password" id="Paswrd" required/>
+                                <input onChange={(evnt)=>setType(prev=>({
+                                    ...prev,
+                                    passwordVal:evnt.target.value
+                                }))} value={mgmtPass.passwordVal} ref={pwdRef} onBlur={(evnt)=>handleBlur(evnt.target)} type={mgmtPass.pwdType} name="Password" id="Paswrd" required/>
                                 <label htmlFor="Paswrd"><i className="bx bx-key">Password</i></label>
                                 <i onClick={togglePassword} className={`bx bx-${getClass()} absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer`}></i>
                                 <div className="suggestionDiv absolute right-0 cursor-pointer -bottom-5 text-purple-500 text-[12px] hover:text-blue-500" onClick={()=>setTab("left")}>

@@ -50,7 +50,7 @@ export default function MyApp() {
         if (currentPath[1] === "checkInfo") {
             setCheck(true)
         }
-        const handler = ()=> toggleLoader();
+        const handler = ()=> toggleLoader(false);
         if (document.readyState === "complete") {
             handler();
         }else{

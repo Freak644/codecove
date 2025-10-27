@@ -2,7 +2,7 @@ import { database } from "../../Controllers/myConnectionFile.js";
 import bcrypt from 'bcrypt';
 export const changePassSecure = async (rkv,rspo) => {
     let {basePass,session_id} = rkv.body;
-
+    
     try {
         let [rows] = await database.query(`SELECT u.password,u.id,s.ip FROM user_sessions s
             INNER JOIN users u ON s.id = u.id WHERE session_id = ?`,[session_id]);

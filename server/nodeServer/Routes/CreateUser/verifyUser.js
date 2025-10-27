@@ -46,7 +46,7 @@ export const SendEmailVerify = async (rkv,rspo) => {
 
 export const verifyEmail = async (rkv,rspo) => {
     let {username,email,inOTP} = rkv.body;
-    let token = rkv.cookies.otpToken
+    let token = rkv.cookies.otpToken;
     let tokenData = jwt.decode(token,process.env.jwt_sec)
     let decodedTime = Math.floor(Date.now()/1000)
     if (!token) {

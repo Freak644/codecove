@@ -1,7 +1,12 @@
+import { toast } from "react-toastify";
 import FaceToggle from "../../lib/tabToggle"
+import verifyZu from "../../lib/verifyZu";
+import { Loader } from "../../lib/loader";
 
 export default function ForgotEl() {
     let {setTab} = FaceToggle();
+    let {setMail,setTUsername,setVTab,setForgotSide} = verifyZu();
+    let {isTrue,toggleLoader} = Loader();
     const handleBlur = (inp)=>{
         if (inp && inp.value) {
             let labl = inp.nextElementSibling;
@@ -22,10 +27,40 @@ export default function ForgotEl() {
             })
         }
     }
+    const handleSubmit = async (evnt) => {
+        evnt.preventDefault();
+        toggleLoader(true)
+        setForgotSide(true)
+        let formData = new FormData(evnt.target);
+        let {Email} = Object.fromEntries(formData);
+        try {
+            if(!Email.trim()) throw new Error("Field is requird");
+            let rqst = await fetch("/myServer/sendForgotMail",{
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                method:"POST",
+                body:JSON.stringify({Email})
+            })
+            let result = await rqst.json();
+            if (result.err) {
+                console.log(result.err)
+                throw new Error(result.err);
+            }
+            console.log(result)
+            setTUsername(result.username)
+            setMail(result.email)
+            setVTab();
+        } catch (error) {
+            toast.error(error.message)
+        } finally{
+            toggleLoader(false)
+        }
+    }
     return(
         <div className="underTaker">
             <div className="formDiv">
-                <form action="">
+                <form action="" onSubmit={handleSubmit}>
                     <div className="Logotxt flex items-center flex-col w-[120px] absolute sm:top-[-80px] lg:top-[-90px]">
                             <i className='bx bx-code-block text-5xl
                             transition-all duration-500 ease-in-out bg-[length:200%_200%]
@@ -42,7 +77,7 @@ export default function ForgotEl() {
                             <label htmlFor="USEmail"><i className="bx bx-user">Email OR userName</i></label>
                         </div>
                         <div className="inputDiv twobtnInput">
-                            <button type="submit" className="btn bigBtn">Find Account</button>
+                            <button type="submit" className="btn bigBtn">{isTrue ? <div className="miniLoader"></div> : "Find Account"}</button>
                             <button type="button" className="bigBtn m-2.5 border-blue-600 text-blue-500 cursor-pointer hover:shadow-gray-500/30 hover:shadow-2xl hover:text-white border rounded-lg p-1.5" onClick={()=>setTab("front")}>
                             Login</button>
                         </div>

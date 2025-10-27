@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { Loader } from '../../../lib/loader';
 import { toggleMini } from '../../../lib/tabToggle';
 export default function VerifyEl() {
-    const {email,Tusername,setVTab,setMail,setEstatus} = verifyZu();
+    const {email,Tusername,setVTab,setMail,setEstatus,isForgotSide} = verifyZu();
     const {isTrue,toggleLoader} = Loader();
     const [isLoader,setLoader] = useState(isTrue);
     const [username] = useState(Tusername);
@@ -23,7 +23,7 @@ export default function VerifyEl() {
      // if (btnRef.current.disabled != true) {
         toggleLoader();
         try {
-            let request = await fetch("/myServer/sendVerifyEmail",{
+            let request = await fetch(`/myServer/${isForgotSide ? "sendForgotMail" : "sendVerifyEmail"}`,{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
@@ -45,7 +45,7 @@ export default function VerifyEl() {
       //}
     }
     function setCoundown() {
-        let coundown = 120;
+        let coundown = 10;
         let btn= btnRef.current;
         btn.disabled = true;
         btn.style.opacity = 0.7;
@@ -115,7 +115,9 @@ export default function VerifyEl() {
       inp.style.borderColor = "yellowgreen";
       inp.blur();
     })
-    setVTab(false)
+    setTimeout(() => {
+      setVTab(false)
+    }, 1500);
   }
   const handleSubmit = async (evnt) => {
     if (evnt) {

@@ -50,7 +50,7 @@ export const verifyEmail = async (rkv,rspo) => {
     let tokenData = jwt.decode(token,process.env.jwt_sec)
     let decodedTime = Math.floor(Date.now()/1000)
     if (!token) {
-    return rspo.status(400).send({ err: "OTP token is missing or expired" });
+    return rspo.status(400).send({ err: "OTP Cookie is missing or expired" });
     }
    try {
     if (tokenData.exp<decodedTime) {

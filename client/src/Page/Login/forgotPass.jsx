@@ -2,10 +2,11 @@ import { toast } from "react-toastify";
 import FaceToggle from "../../lib/tabToggle"
 import verifyZu from "../../lib/verifyZu";
 import { Loader } from "../../lib/loader";
+import ChangePassword from "./changePassword";
 
 export default function ForgotEl() {
     let {setTab} = FaceToggle();
-    let {setMail,setTUsername,setVTab,setForgotSide} = verifyZu();
+    let {setMail,setTUsername,setVTab,setForgotSide,emailStatus} = verifyZu();
     let {isTrue,toggleLoader} = Loader();
     const handleBlur = (inp)=>{
         if (inp && inp.value) {
@@ -59,6 +60,7 @@ export default function ForgotEl() {
     }
     return(
         <div className="underTaker">
+            {emailStatus && <ChangePassword/>}
             <div className="formDiv">
                 <form action="" onSubmit={handleSubmit}>
                     <div className="Logotxt flex items-center flex-col w-[120px] absolute sm:top-[-80px] lg:top-[-90px]">

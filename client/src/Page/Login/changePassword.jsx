@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import verifyZu from "../../lib/verifyZu";
+import FaceToggle from "../../lib/tabToggle";
 
-export default function ChangePassword({user_id,toggle}) {
+export default function ChangePassword() {
+    let {setEstatus,email} = verifyZu();
     let {session_id} = useParams();
+    let {setTab} = FaceToggle();
     const [mgmtPassword,setPassword] = useState({
         basePass:"",
         confPass:"",
@@ -49,6 +53,8 @@ export default function ChangePassword({user_id,toggle}) {
                 throw new Error(result.details || result.err);
             }
             toast.success(result.pass);
+            setTab("front")
+            setEstatus();
         } catch (error) {
             toast.error(error.message);
         }
@@ -74,7 +80,6 @@ export default function ChangePassword({user_id,toggle}) {
                         backdrop-blur-lg">
                 <div className="formDiv mt-[10%] ">
                     <form action="" onSubmit={handleSubmit} className="bg-skin-bg !p-10 rounded-lg shadow-[0_0_30px_rgba(0,255,255,0.15)]">
-                        <i className="bx bx-window-close absolute text-3xl text-white -right-10 cursor-pointer" title="close" onClick={()=>toggle(prev=>!prev)}></i>
                         <div className="Logotxt flex items-center lg:!mt-3.5 flex-col w-[120px]  left-2">
                 <i className='bx bx-code-block text-5xl
                 transition-all duration-500 ease-in-out bg-[length:200%_200%]

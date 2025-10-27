@@ -33,6 +33,12 @@ export const forgotPass = async (rkv,rspo) => {
                 sameSite:"strict",
                 maxAge:6 * 60 * 1000
             });
+            rspo.cookie("tempID",id,{
+                httpOnly:true,
+                secure:true,
+                sameSite:"strict",
+                maxAge:5*60*1000
+            });
             rspo.status(200).send({pass:"Done Boss",email,username})
         }
     } catch (error) {

@@ -4,8 +4,8 @@ import { toast } from "react-toastify";
 import verifyZu from "../../lib/verifyZu";
 import FaceToggle from "../../lib/tabToggle";
 
-export default function ChangePassword() {
-    let {setEstatus,email} = verifyZu();
+export default function ChangePassword({toggle}) {
+    let {setEstatus} = verifyZu();
     let {session_id} = useParams();
     let {setTab} = FaceToggle();
     const [mgmtPassword,setPassword] = useState({
@@ -53,8 +53,11 @@ export default function ChangePassword() {
                 throw new Error(result.details || result.err);
             }
             toast.success(result.pass);
-            setTab("front")
             setEstatus();
+            if (toggle) {
+                toggle(prev=>!prev)
+            }
+            setTab("front")
         } catch (error) {
             toast.error(error.message);
         }

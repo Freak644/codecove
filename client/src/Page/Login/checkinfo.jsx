@@ -27,7 +27,7 @@ export default function CheckInfo(params) {
     },[session_id])
     return(
         <div className="underTaker bg-skin-bg absolute top-0 z-40">
-           {isChanging && <ChangePassword />}
+           {isChanging && <ChangePassword toggle={setchanging} />}
             <div className="Logotxt flex items-center lg:!mt-3.5 flex-col w-[120px] absolute top-3 left-2">
                 <i className='bx bx-code-block text-5xl
                 transition-all duration-500 ease-in-out bg-[length:200%_200%]

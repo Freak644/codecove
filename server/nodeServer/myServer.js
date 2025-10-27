@@ -53,7 +53,7 @@ myApp.get("/auth",checkAuth);
 myApp.post("/Logout",Auth,loggedMeOut);
 myApp.get("/checkActive",ActivityInfo);
 myApp.put("/upDatePass",changePassSecure);
-myApp.post("/sendForgotMail",forgotPass)
+myApp.post("/sendForgotMail",forgotPass);
 myApp.listen(port,()=>{
     console.log(chalk.greenBright.yellow.italic.bold("server is start on "+port))
 });

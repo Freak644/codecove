@@ -26,7 +26,7 @@ async function migrate() {
         let dbStepFile = fs.readFileSync("./server/nodeServer/mySQL/init.sql","utf-8");
         dbStepFile = dbStepFile.replace(/^\uFEFF/,''); //strip the BOM from the file if present
         await connection.query(dbStepFile);
-        console.log(chalk.bold.green("✅Database Schema applied succesfully"));
+        console.log(chalk.bold.green("✅succesfully! CREATE DATABASE IN YOUR MATCHINE"));
     }catch (err) {
      console.error(chalk.red("❌ Migration failed:"), err.message);
     }

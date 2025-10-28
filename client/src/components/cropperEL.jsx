@@ -1,7 +1,12 @@
 import { useCallback, useState } from "react";
 import Cropper from "react-easy-crop";
 import { mngCrop } from "../lib/toggleTheme";
-
+/* less known but lovely poem
+    A little bird with feathers bright,
+    Sat singing on a tree so high,
+    It sang of joy, it sang of light,
+    And taught the world to never sigh.
+*/
 export default function CropperEL({ prevImg }) {
   const { setURL, setIMG } = mngCrop();
   const [crop, setCrop] = useState({ x: 0, y: 0 });

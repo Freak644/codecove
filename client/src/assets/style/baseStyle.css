@@ -505,7 +505,7 @@ form>h1>span{
 .miniLoader::after,
 .miniLoader::before{
     content: '';
-    border-radius: 50px;
+    border-radius: 50%;
     border: 2px solid transparent;
     grid-area: 1/1;
     animation: miniLoader 3s infinite;
@@ -571,17 +571,19 @@ form>h1>span{
         }
     }
      .menuDiv{
-        height: 50px;
+        height: 60px;
         width: 100%;
         flex-direction: row !important;
         position: absolute;
-        bottom: 5px;
+        bottom: 0px;
+        margin: 0px !important;
 
         .menuContainer{
-            height: 50px;
+            height: 100%;
             width: 100vw;
             flex-direction: row;
             background-color: var(--bg-color);
+            border-radius: 5px 5px;
             ul{
                 width: 100%;
                 flex-direction: row;
@@ -592,16 +594,45 @@ form>h1>span{
                 font-size: 30px;
                 position: absolute;
                 bottom: 0px;
-
-                li:nth-child(3){
+                li{
+                    font-size: 28px;
+                }
+                li:nth-child(3),li:nth-child(4){
                     display: none;
+                }
+
+                
+                li:nth-child(5){
+                    padding: 17px;
+                    background-color: var(--bg-color);
+                    /* transform: translateY(-15px); */
+                    border-radius: 50%;
+                    display: grid !important;
+                    
+                    position: relative;
+                }
+                li:nth-child(5):after,
+                li:nth-child(5):before{
+                    content: '';
+                    position: absolute;
+                    top: -18px; left: -20px;
+                    height: 150%; width: 150%;
+                    border-radius: 50%;
+                    border: 3px solid transparent;
+                    grid-area: 1/1;
+                    animation: miniLoader 3s infinite;
+                }
+                li:nth-child(5):after {
+                    border-color: #4666e5 transparent transparent; /* Indigo-600 from Tailwind palette */
+                    animation-direction: alternate-reverse;
+                }
+
+                li:nth-child(5):before {
+                    border-color: #10a2b9 transparent transparent; /* Emerald-500 from Tailwind palette */
                 }
             }
         }
-        .Logotxt{
-            display: none;
-        }
-        .secul{
+        .Logotxt,.secul{
             display: none;
         }
     }
@@ -611,6 +642,7 @@ form>h1>span{
         }
     } */
 }
+
 @media (max-width:400px) {
     .rightside{
         .container{

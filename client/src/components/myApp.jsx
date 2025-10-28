@@ -97,10 +97,16 @@ export default function MyApp() {
            {isCropping && <CropperEL prevImg={fileURL} />}
            {(isLogin && !isChecking) && (<div className='loginContainer flex items-center content-center h-[100vh] w-[100vw]'>{<LoginEL/>}</div>)}
             {(!isLogin || isChecking) && (<Routes>
-                <Route path='/' element={<div className='routeContainer my-scroll flex items-center content-center'></div>} />
+                <Route path='/' element={<div className='routeContainer bg-amber-300 my-scroll flex items-center content-center'></div>} />
                 <Route path='/CheckInfo/:session_id' element={<div className='my-scroll flex items-center justify-center h-screen w-screen'>{<CheckInfo/>}</div>} />
                 <Route path='*' element={<NotFound/>} />
             </Routes>)}
         </PageTransition>
     )
 }
+
+/*
+ Humpty Dumpty sat on a wall, /Humpty Dumpty had a great fall.
+ /All the king's horses and all the king's men/
+ Couldn't put Humpty together again.
+*/

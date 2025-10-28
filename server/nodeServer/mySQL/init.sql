@@ -47,6 +47,23 @@ CREATE TABLE IF NOT EXISTS user_sessions (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   revoked BOOLEAN DEFAULT FALSE,
   last_seen_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_user_id (id)
 );
 
+/*
+===================================
+  🖼️ POST Table
+===================================
+*/
+
+CREATE TABLE IF NOT EXISTS posts (
+  post_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  id CHAR(36) NOT NULL,
+  image_url VARCHAR(255),
+  caption TEXT,
+  visibility BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_user_id (id)
+);

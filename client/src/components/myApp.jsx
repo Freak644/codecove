@@ -99,6 +99,8 @@ export default function MyApp() {
             {(!isLogin || isChecking) && (<Routes>
                 <Route path='/' element={<div className='routeContainer my-scroll flex items-center content-center'></div>} />
                 <Route path='/CheckInfo/:session_id' element={<div className='my-scroll flex items-center justify-center h-screen w-screen'>{<CheckInfo/>}</div>} />
+                <Route path='/Create' element={<div className='routeContainer flex items-center content-center'></div>} />
+
                 <Route path='*' element={<NotFound/>} />
             </Routes>)}
         </PageTransition>

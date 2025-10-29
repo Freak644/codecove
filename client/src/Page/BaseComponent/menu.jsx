@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify';
 import ThemeButton from '../../components/toggleButton';
 import { UnivuUserInfo } from '../../lib/basicUserinfo';
 import { useLocation, useNavigate } from 'react-router-dom';
 export default function MenuEL(params) {
-    const [currentTab,setTab] = useState('');
-    const [logoimg,setlogo] = useState("")
-    const [isDD,setDD] = useState(false)
+    const [currentTab,setTab] = useState('Home');
+    const [logoimg,setlogo] = useState("");
+    const [isDD,setDD] = useState(false);
     const {setInfo} = UnivuUserInfo();
-
+    const dropRef = useRef();
     const navi = useNavigate();
     const location = useLocation();
     useEffect(()=>{
@@ -59,6 +59,17 @@ export default function MenuEL(params) {
         }
         setTab(crntRoute[1])
     },[location.pathname])
+
+    useEffect(()=>{
+        const handleClick = evnt=> {
+            if (dropRef.current && !dropRef.current.contains(evnt.target)) {
+                setDD(false)
+            }
+        }
+
+        document.addEventListener("click",handleClick);
+        return ()=> document.removeEventListener("click",handleClick)
+    },[])
     return(
         <div className="menuDiv   relative left-0 border-r-1  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
         flex items-center flex-col gap-5
@@ -84,7 +95,7 @@ export default function MenuEL(params) {
                 <li onClick={(evnt)=>{handleRoutes(evnt)}}> <div className='imgDiv h-[20px] w-[20px] md:h-[30px] md:w-[30px] border rounded-full flex items-center justify-center'><img className='h-[100%] w-[100%]' src={logoimg ? `/myServer/${logoimg}` :"https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" /></div> <span>Profile</span></li>
                 </ul>
                 <ul className='secul flex items-start flex-col gap-5'>
-                    <li onClick={()=>{setTab("none");setDD(prev=>!prev)}} className='relative'><i className='bx bx-menu'></i><span>Menu</span>
+                    <li ref={dropRef} onClick={()=>{setDD(prev=>!prev)}} className='relative'><i className='bx bx-menu'></i><span>Menu</span>
                     {isDD && <div onClick={(evnt)=>evnt.stopPropagation()} className="dropdownMenu flex items-center flex-col rounded-2xl w-52 bg-skin-bg">
                         <ul className='flex gap-2 flex-col'>
                             <li><i className='bx bx-cog'></i><span>Setting</span></li>
@@ -96,7 +107,7 @@ export default function MenuEL(params) {
                         </ul>
                     </div>}
                     </li>
-                    <li onClick={()=>setTab("none")}><i className='bx bx-menu-alt-left'></i><span>DevTools</span></li>
+                    <li ><i className='bx bx-menu-alt-left'></i><span>DevTools</span></li>
                 </ul>
             </div>
         </div>

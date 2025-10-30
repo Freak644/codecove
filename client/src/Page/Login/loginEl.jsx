@@ -84,14 +84,14 @@ export default function LoginCon({toggle}) {
             <div className="mainLogDiv flex items-center justify-center h-full w-full ">
                 <div className="formDiv">
                     <form action="" onSubmit={handleSubmit}>
-                         <div className="Logotxt flex items-center flex-col w-[120px] absolute sm:top-[-80px] lg:top-[-90px]">
+                         <div className="Logotxt flex items-center flex-col w-[120px] absolute sm:-top-20 lg:top-[-90px]">
                             <i className='bx bx-code-block text-5xl
-                            transition-all duration-500 ease-in-out bg-[length:200%_200%]
-                            bg-gradient-to-tr from-purple-500 via-pink-500 to-blue-600
+                            transition-all duration-500 ease-in-out bg-size-[200%_200%]
+                            bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
                             bg-clip-text text-transparent
                             '></i>
-                            <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-[length:200%_200%]
-                            bg-gradient-to-tr from-purple-500 via-pink-500 to-blue-600
+                            <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
+                            bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
                             bg-clip-text text-transparent'>CodeCove</h2>
                         </div>
                             <div className="inputDiv">

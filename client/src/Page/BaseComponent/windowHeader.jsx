@@ -21,24 +21,24 @@ export default function WindowHerder(params) {
         }
     },[location.pathname])
     return(
-        <div className="mainheaderCom relative w-[100vw] h-[50px] flex items-center justify-between p-1 
+        <div className="mainheaderCom relative w-screen h-[50px] flex items-center justify-between p-1 
             border-amber-200 border-b border-b-gray-500
         ">
-            <div className="leftHeader text-4xl flex flex-1 gap-4 !pl-5">
+            <div className="leftHeader text-4xl flex flex-1 gap-4 pl-5">
                 <i className="bx bx-menu border-gray-500 border rounded-sm text-skin-ptext"></i>
                 <i className="bx bx-code-block transition-all duration-500
-                ease-in-out bg[length:200%_200%] bg-gradient-to-br from-purple-500 via-pink-400 to-blue-600 
+                ease-in-out bg[length:200%_200%] bg-linear-to-br from-purple-500 via-pink-400 to-blue-600 
                 bg-clip-text text-transparent
                 "></i>
                 <span className="text-skin-ptext text-[15px]  flex items-center">{pathName}</span>
             </div>
             <div className="rightHeader flex justify-end flex-1 text-skin-login ">
                 <form action="" className="flex relative items-center justify-start gap-1 p-2  border-gray-600">
-                    <input type="text" placeholder="Type to search" className="!p-1 !pl-8 border-2 placeholder:text-gray-500 transition-all duration-1000 rounded-sm border-gray-500
+                    <input type="text" placeholder="Type to search" className="p-1 pl-8 border-2 placeholder:text-gray-500 transition-all duration-1000 rounded-sm border-gray-500
                     w-64
                     " />
                     <i className="text-2xl bx bx-search-alt text-gray-400 border-r absolute left-3"></i>
-                    <div className=" cursor-pointer miniMenuDiv !m-2 text-2xl border-2 border-gray-600 rounded-lg flex items-center justify-center">
+                    <div className=" cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-gray-600 rounded-lg flex items-center justify-center">
                         <i className="bx bx-ghost m-1 border-r"></i>
                         <i className='bx bx-chevron-down text-[18px]'></i>
                     </div>

@@ -71,17 +71,17 @@ export default function MenuEL(params) {
         return ()=> document.removeEventListener("click",handleClick)
     },[])
     return(
-        <div className="menuDiv   relative left-0 border-r-1  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
+        <div className="menuDiv   relative left-0 border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
         flex items-center flex-col gap-5
         ">
-            <div className="Logotxt flex items-center lg:!mt-3.5 flex-col w-[120px]">
+            <div className="Logotxt flex items-center lg:mt-3.5! flex-col w-[120px]">
                 <i className='bx bx-code-block text-5xl
-                transition-all duration-500 ease-in-out bg-[length:200%_200%]
-                bg-gradient-to-tr from-purple-500 via-pink-500 to-blue-600
+                transition-all duration-500 ease-in-out bg-size-[200%_200%]
+                bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
                 bg-clip-text text-transparent
                 '></i>
-                <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-[length:200%_200%]
-                bg-gradient-to-tr from-purple-500 via-pink-500 to-blue-600
+                <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
+                bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
                 bg-clip-text text-transparent'>CodeCove</h2>
             </div>
             <div className='menuContainer flex items-center flex-col gap-10 lg:text-[18px] sm:text-3xl text-skin-text'>
@@ -92,7 +92,7 @@ export default function MenuEL(params) {
                 <li onClick={(evnt)=>{handleRoutes(evnt)}}><i className={`bx ${currentTab==='Explore'?"bxs":"bx"}-compass text-skin-text`}></i><span>Explore</span></li>
                 <li onClick={(evnt)=>{handleRoutes(evnt)}} className=' sm:miniLoader '><i className={`bx ${currentTab==='Create'?"bxs":"bx"}-plus-circle text-skin-text`}></i><span>Create</span></li>
                 <li onClick={(evnt)=>{handleRoutes(evnt)}}><i className={`bx ${currentTab==='Notification'?"bxs":"bx"}-bell text-skin-text`}></i><span>Notifications</span></li>
-                <li onClick={(evnt)=>{handleRoutes(evnt)}}> <div className='imgDiv h-[20px] w-[20px] md:h-[30px] md:w-[30px] border rounded-full flex items-center justify-center'><img className='h-[100%] w-[100%]' src={logoimg ? `/myServer/${logoimg}` :"https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" /></div> <span>Profile</span></li>
+                <li onClick={(evnt)=>{handleRoutes(evnt)}}> <div className='imgDiv h-5 w-5 md:h-[30px] md:w-[30px] border rounded-full flex items-center justify-center'><img className='h-full w-full' src={logoimg ? `/myServer/${logoimg}` :"https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" /></div> <span>Profile</span></li>
                 </ul>
                 <ul className='secul flex items-start flex-col gap-5'>
                     <li ref={dropRef} onClick={()=>{setDD(prev=>!prev)}} className='relative'><i className='bx bx-menu'></i><span>Menu</span>

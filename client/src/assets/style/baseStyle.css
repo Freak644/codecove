@@ -78,7 +78,7 @@ body{
 }
 .Logotxt,.firstHalf{
     i,h2,p{
-        animation: bgMove 6s infinite;
+        animation: bgMove 6s linear infinite;
     }
     p{
         font-family: 'Courier New', Courier, monospace;

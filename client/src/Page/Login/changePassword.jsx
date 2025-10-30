@@ -78,19 +78,19 @@ export default function ChangePassword({toggle}) {
 }
     return(
         <div className="flex h-screen w-screen items-center flex-col absolute z-50
-                        bg-gradient-to-br from-white/10 via-white/5 to-transparent
+                        bg-linear-to-br from-white/10 via-white/5 to-transparent
                         border border-cyan-500/20 shadow-[0_0_30px_rgba(0,255,255,0.15)]
                         backdrop-blur-lg">
                 <div className="formDiv mt-[10%] ">
-                    <form action="" onSubmit={handleSubmit} className="bg-skin-bg !p-10 rounded-lg shadow-[0_0_30px_rgba(0,255,255,0.15)]">
-                        <div className="Logotxt flex items-center lg:!mt-3.5 flex-col w-[120px]  left-2">
+                    <form action="" onSubmit={handleSubmit} className="bg-skin-bg p-10! rounded-lg shadow-[0_0_30px_rgba(0,255,255,0.15)]">
+                        <div className="Logotxt flex items-center lg:mt-3.5! flex-col w-[120px]  left-2">
                 <i className='bx bx-code-block text-5xl
-                transition-all duration-500 ease-in-out bg-[length:200%_200%]
-                bg-gradient-to-tr from-purple-500 via-pink-500 to-blue-600
+                transition-all duration-500 ease-in-out bg-size-[200%_200%]
+                bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
                 bg-clip-text text-transparent
                 '></i>
-                <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-[length:200%_200%]
-                bg-gradient-to-tr from-purple-500 via-pink-500 to-blue-600
+                <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
+                bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
                 bg-clip-text text-transparent'>CodeCove</h2>
             </div>
                         <div className="inputDiv">

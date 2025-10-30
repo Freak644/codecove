@@ -7,14 +7,14 @@ export default function NotFound() {
   return (
     <div className="main404 h-screen w-screen flex items-center justify-center bg-[#05080f] relative overflow-hidden">
       {/* subtle blurred glow background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/20 via-transparent to-blue-900/20 blur-3xl" />
+      <div className="absolute inset-0 bg-linear-to-br from-cyan-900/20 via-transparent to-blue-900/20 blur-3xl" />
 
       <div className="errorContainer flex items-center gap-24 z-10 flex-row">
         {/* Left Side: Face with Eyes */}
         <div
           className="faceWeye relative h-80 w-[500px] rounded-2xl
           flex items-center justify-center gap-10 p-6
-          bg-gradient-to-br from-white/10 via-white/5 to-transparent
+          bg-linear-to-br from-white/10 via-white/5 to-transparent
           border border-cyan-500/20 shadow-[0_0_30px_rgba(0,255,255,0.15)]
           backdrop-blur-md"
         >
@@ -38,7 +38,7 @@ export default function NotFound() {
         <div
           className="textMSG h-[380px] w-[400px] rounded-2xl flex flex-col
           items-center justify-center text-white gap-4 text-center
-          bg-gradient-to-br from-white/10 via-white/5 to-transparent
+          bg-linear-to-br from-white/10 via-white/5 to-transparent
           border border-cyan-500/20 shadow-[0_0_40px_rgba(0,255,255,0.1)]
           backdrop-blur-md p-6"
         >
@@ -50,7 +50,7 @@ export default function NotFound() {
           </p>
           <button
             onClick={() => navi("/")}
-            className="mt-4 bg-gradient-to-br from-cyan-500 to-blue-600 via-pink-400 hover:from-cyan-400 hover:to-blue-500 hover:via-yellow-300
+            className="mt-4 bg-linear-to-br from-cyan-500 to-blue-600 via-pink-400 hover:from-cyan-400 hover:to-blue-500 hover:via-yellow-300
             text-white font-semibold py-2 px-6 rounded-lg shadow-md
             transition-all duration-300 cursor-pointer"
           >

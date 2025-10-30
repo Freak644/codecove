@@ -33,7 +33,7 @@ export default function LoginEL() {
                 <VerifyEl/>
             </div>}
             <div className="login my-scroll h-full w-full flex flex-col items-center text-skin-text">
-                <div className="loginbase p-4 h-[100vh] w-full flex items-center flex-row">
+                <div className="loginbase p-4 h-screen w-full flex items-center flex-row">
                     <div className="leftside h-full flex-1 flex items-center flex-col
                     ">
                         <img src="./Banner/banner.png" alt="bannerImage" className="z-0 absolute top-3 h-2/3" />
@@ -54,7 +54,7 @@ export default function LoginEL() {
                         </div>
                     </div>
                     <div className="rightside h-full flex-1 p-5 flex justify-center items-center">
-                        <div className="container !p-4 h-[500px] w-[500px]  flex items-center justify-center">
+                        <div className="container p-4 h-[500px] w-[500px]  flex items-center justify-center">
                             <div className="senceDiv h-full w-full perspective-distant flex items-center justify-center">
                                 <div className={`cube relative transform-3d transition-all duration-1000 flex items-center justify-center ${getRotation()}`}>
                                     <div className="face front"><LoginCon/></div>

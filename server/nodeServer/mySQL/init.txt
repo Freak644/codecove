@@ -91,3 +91,172 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+
+
+import React, { useCallback, useState, useEffect } from "react";
+import { useDropzone } from "react-dropzone";
+import { motion } from "framer-motion";
+import { Upload, File, X } from "lucide-react";
+import axios from "axios";
+
+export default function FileDropzone() {
+  const [files, setFiles] = useState([]); // each item: { file, preview }
+
+  const onDrop = useCallback((acceptedFiles) => {
+    const mapped = acceptedFiles.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+      progress: 0,
+      uploaded: false,
+    }));
+    setFiles((prev) => [...prev, ...mapped]);
+  }, []);
+
+  const removeFile = (name) => {
+    // Revoke preview URL for the removed file to avoid memory leaks
+    setFiles((prev) => {
+      const toRemove = prev.find((p) => p.file.name === name);
+      if (toRemove) URL.revokeObjectURL(toRemove.preview);
+      return prev.filter((f) => f.file.name !== name);
+    });
+  };
+
+  // cleanup all objectURLs on unmount
+  useEffect(() => {
+    return () => {
+      files.forEach((f) => URL.revokeObjectURL(f.preview));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    multiple: true,
+    maxSize: 20 * 1024 * 1024, // example max 20MB
+  });
+
+  // Example upload function with axios and progress
+  const uploadFiles = async () => {
+    for (let i = 0; i < files.length; i++) {
+      const item = files[i];
+      if (item.uploaded) continue;
+
+      const form = new FormData();
+      form.append("file", item.file);
+
+      try {
+        await axios.post("/api/upload", form, {
+          headers: { "Content-Type": "multipart/form-data" },
+          onUploadProgress: (progressEvent) => {
+            const pct = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            setFiles((prev) =>
+              prev.map((p) => (p.file.name === item.file.name ? { ...p, progress: pct } : p))
+            );
+          },
+        });
+
+        setFiles((prev) =>
+          prev.map((p) => (p.file.name === item.file.name ? { ...p, uploaded: true } : p))
+        );
+      } catch (err) {
+        console.error("Upload failed", err);
+        // handle error UI here
+      }
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6">
+      <motion.div
+        {...getRootProps()}
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        whileHover={{ scale: 1.02 }}
+        className={`border-2 border-dashed rounded-2xl p-10 w-full max-w-xl cursor-pointer text-center transition-all duration-300 ${
+          isDragActive
+            ? "border-cyan-400 bg-slate-800/60 shadow-lg shadow-cyan-500/20"
+            : "border-gray-600 bg-slate-800/40 hover:bg-slate-800/60"
+        }`}
+      >
+        <input {...getInputProps()} />
+        <motion.div
+          animate={{ y: isDragActive ? -6 : 0 }}
+          transition={{ type: "spring", stiffness: 200 }}
+          className="flex flex-col items-center justify-center gap-3"
+        >
+          <Upload className="text-cyan-400 w-12 h-12" />
+          <p className="text-gray-300 text-lg">
+            {isDragActive
+              ? "Drop files to upload"
+              : "Drag & drop files here or click to browse"}
+          </p>
+        </motion.div>
+      </motion.div>
+
+      {files.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-8 w-full max-w-xl bg-slate-800/60 border border-gray-700 rounded-xl p-4"
+        >
+          <h2 className="text-gray-100 text-lg font-semibold mb-3">Files Ready to Upload</h2>
+          <div className="space-y-2">
+            {files.map(({ file, preview, progress, uploaded }) => (
+              <motion.div
+                key={file.name}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="flex items-center justify-between bg-slate-700/50 px-3 py-2 rounded-lg text-gray-200"
+              >
+                <div className="flex items-center gap-3">
+                  <img src={preview} alt={file.name} className="w-8 h-8 object-cover rounded" />
+                  <div>
+                    <p className="font-medium">{file.name}</p>
+                    <p className="text-sm text-gray-400">{(file.size / 1024).toFixed(2)} KB</p>
+                    {progress > 0 && (
+                      <div className="w-40 bg-slate-600 rounded-full mt-1 h-2 overflow-hidden">
+                        <div className="bg-cyan-400 h-2" style={{ width: `${progress}%` }} />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {uploaded ? <span className="text-green-300 text-sm">Uploaded</span> : null}
+                  <button
+                    onClick={() => removeFile(file.name)}
+                    className="text-red-400 hover:text-red-500 transition"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-4 flex gap-3">
+            <motion.button
+              onClick={uploadFiles}
+              whileTap={{ scale: 0.97 }}
+              className="flex-1 bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-2 rounded-lg transition"
+            >
+              Upload Files
+            </motion.button>
+
+            <button
+              onClick={() => {
+                // clear all
+                files.forEach((f) => URL.revokeObjectURL(f.preview));
+                setFiles([]);
+              }}
+              className="px-4 py-2 rounded-lg border border-gray-600 text-gray-200"
+            >
+              Clear
+            </button>
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+}

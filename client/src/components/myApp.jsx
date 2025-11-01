@@ -11,6 +11,8 @@ import CropperEL from './cropperEL';
 import WindowHerder from '../Page/BaseComponent/windowHeader';
 import CheckInfo from '../Page/Login/checkinfo';
 import NotFound from '../Page/BaseComponent/404NotFound';
+import '../assets/style/paseTwo.css'
+import DragDropBox from '../Page/Promulgation/dropBox';
 export default function MyApp() {
     let {fileURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);
@@ -46,7 +48,6 @@ export default function MyApp() {
     },[])
     useEffect(()=>{
         let currentPath = location.pathname.split("/")
-        console.log(currentPath[1])
         if (currentPath[1] === "checkInfo") {
             setCheck(true)
         }
@@ -86,7 +87,7 @@ export default function MyApp() {
         }else{
             setCropping(false)
         }
-    },[fileURL])
+    },[fileURL]);
 
     return(
         <PageTransition location={location} key={location.pathname}>
@@ -95,11 +96,11 @@ export default function MyApp() {
            {!isLogin && <Header/>}
            {!isLogin && <MenuEL/>}
            {isCropping && <CropperEL prevImg={fileURL} />}
-           {(isLogin && !isChecking) && (<div className='loginContainer flex items-center content-center h-[100vh] w-[100vw]'>{<LoginEL/>}</div>)}
+           {(isLogin && !isChecking) && (<div className='loginContainer flex items-center content-center h-screen w-screen'>{<LoginEL/>}</div>)}
             {(!isLogin || isChecking) && (<Routes>
-                <Route path='/' element={<div className='routeContainer my-scroll flex items-center content-center'></div>} />
+                <Route path='/' element={<div className='routeContainer  my-scroll flex items-center content-center'></div>} />
                 <Route path='/CheckInfo/:session_id' element={<div className='my-scroll flex items-center justify-center h-screen w-screen'>{<CheckInfo/>}</div>} />
-                <Route path='/Create' element={<div className='routeContainer flex items-center content-center'></div>} />
+                <Route path='/Create' element={<div className='routeContainer flex items-center content-center'><DragDropBox/></div>} />
 
                 <Route path='*' element={<NotFound/>} />
             </Routes>)}

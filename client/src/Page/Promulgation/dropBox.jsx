@@ -63,51 +63,76 @@ export default function DragDropBox() {
         maxSize: 5 * 1024 * 1024, // size 5MB
     });
 
-    const uploadFiles = async () => {
-        try {
-          for(const img of imgFiles) {
-            const formData = new FormData();
-            formData.append("postFile",img.file);
-            await axios.post('/myServer/CreatePost',formData,{
-              onUploadProgress: (evnt)=> {
-                const percent = Math.round((evnt.loaded * 100) / evnt.total);
-                setImgFiles((prev)=>
-                  prev.map((file)=>
-                  file.file.name === img.file.name ? {...file,progress:percent} : file)
-                )
-              }
-            });
-            setImgFiles(prev=>
-              prev.map(file=>
-                file.file.name === img.file.name ? {...file,uploaded:true} : file
-              )
-            )
-          }
-        } catch (error) {
-           if (error.response) {
-              // Backend responded with an error
-              console.error("Server Error:", error.response.data);
-              alert(error.response.data.err || "Upload failed due to server validation.");
-            } else if (error.request) {
-              // Request made but no response
-              console.error("Network Error:", error.request);
-              alert("Network error: Server not reachable.");
-            } else {
-              // Something else
-              console.error("Client Error:", error.message);
-              alert("Unexpected error occurred.");
-            }
+const uploadFiles = async () => {
+  try {
+    for (const img of imgFiles) {
+      const formData = new FormData();
+      formData.append("postFile", img.file);
 
-            // Optionally update that specific image’s status
-            setImgFiles((prev) =>
-              prev.map((file) =>
-                file.file.name === img.file.name
-                  ? { ...file, uploaded: false, error: true }
-                  : file
-              )
-            );
-        }
+     
+      setImgFiles((prev) =>
+        prev.map((file) =>
+          file.file.name === img.file.name
+            ? { ...file, uploading: true, error: false }
+            : file
+        )
+      );
+
+    
+      const res = await axios.post("/myServer/CreatePost", formData, {
+        onUploadProgress: (event) => {
+          const percent = Math.round((event.loaded * 100) / event.total);
+          setImgFiles((prev) =>
+            prev.map((file) =>
+              file.file.name === img.file.name
+                ? { ...file, progress: percent }
+                : file
+            )
+          );
+        },
+      });
+
+    
+      setImgFiles((prev) =>
+        prev.map((file) =>
+          file.file.name === img.file.name
+            ? { ...file, uploaded: true, uploading: false }
+            : file
+        )
+      );
+
+      console.log("✅ Uploaded:", res.data);
     }
+  } catch (error) {
+    console.error("❌ Upload failed:", error);
+
+  
+    let message = "Something went wrong while uploading.";
+
+    if (error.response) {
+      message = error.response.data?.err || "Server error during upload.";
+      console.error("Server responded with:", error.response.data);
+    } else if (error.request) {
+      message = "Network error: Server not reachable.";
+    } else {
+      message = error.message;
+    }
+
+    alert(message);
+
+
+    setImgFiles((prev) =>
+      prev.map((file) =>
+        file.progress < 100 && !file.uploaded
+          ? { ...file, uploading: false, error: true }
+          : file
+      )
+    );
+
+    return; 
+  }
+};
+
 
 return (
   <div className="underTaker flex flex-col items-center gap-6">

@@ -1,7 +1,8 @@
 import {motion, progress} from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 import {useDropzone} from 'react-dropzone';
-import {Upload,X,File} from 'lucide-react'
+import {Upload,X,File} from 'lucide-react';
+import axios from 'axios';
 export default function DragDropBox() {
     const [imgFiles,setImgFiles] = useState([])
 
@@ -63,7 +64,49 @@ export default function DragDropBox() {
     });
 
     const uploadFiles = async () => {
-        
+        try {
+          for(const img of imgFiles) {
+            const formData = new FormData();
+            formData.append("postFile",img.file);
+            await axios.post('/myServer/CreatePost',formData,{
+              onUploadProgress: (evnt)=> {
+                const percent = Math.round((evnt.loaded * 100) / evnt.total);
+                setImgFiles((prev)=>
+                  prev.map((file)=>
+                  file.file.name === img.file.name ? {...file,progress:percent} : file)
+                )
+              }
+            });
+            setImgFiles(prev=>
+              prev.map(file=>
+                file.file.name === img.file.name ? {...file,uploaded:true} : file
+              )
+            )
+          }
+        } catch (error) {
+           if (error.response) {
+              // Backend responded with an error
+              console.error("Server Error:", error.response.data);
+              alert(error.response.data.err || "Upload failed due to server validation.");
+            } else if (error.request) {
+              // Request made but no response
+              console.error("Network Error:", error.request);
+              alert("Network error: Server not reachable.");
+            } else {
+              // Something else
+              console.error("Client Error:", error.message);
+              alert("Unexpected error occurred.");
+            }
+
+            // Optionally update that specific image’s status
+            setImgFiles((prev) =>
+              prev.map((file) =>
+                file.file.name === img.file.name
+                  ? { ...file, uploaded: false, error: true }
+                  : file
+              )
+            );
+        }
     }
 
 return (

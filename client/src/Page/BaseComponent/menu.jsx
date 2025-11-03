@@ -10,7 +10,7 @@ export default function MenuEL(params) {
     const {setInfo} = UnivuUserInfo();
     const dropRef = useRef();
     const navi = useNavigate();
-    const location = useLocation();
+    const crntLocation = useLocation();
     useEffect(()=>{
         getUserInfo();
     },[])
@@ -41,7 +41,7 @@ export default function MenuEL(params) {
         let result = await rqst.json();
         console.log(result)
         if (result.pass) {
-            location.reload();
+           location.reload()
             navi('/')            
         }
     }
@@ -53,12 +53,12 @@ export default function MenuEL(params) {
         navi("/"+route);
     }
     useEffect(()=>{
-        let crntRoute = location.pathname.split("/")
+        let crntRoute = crntLocation.pathname.split("/")
         if (!crntRoute[1].trim()) {
             return setTab("Home")
         }
         setTab(crntRoute[1])
-    },[location.pathname])
+    },[crntLocation.pathname])
 
     useEffect(()=>{
         const handleClick = evnt=> {

@@ -16,6 +16,7 @@ import { loggedMeOut } from './Routes/Login/userSession.js';
 import { ActivityInfo } from './Routes/Login/getSessionInfo.js';
 import { changePassSecure } from './Routes/Secure/SecureAccount.js';
 import { forgotPass } from './Routes/Secure/forgotPassMail.js';
+import { CreatePost } from './Routes/Promulgation/createPost.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -54,6 +55,7 @@ myApp.post("/Logout",Auth,loggedMeOut);
 myApp.get("/checkActive",ActivityInfo);
 myApp.put("/upDatePass",changePassSecure);
 myApp.post("/sendForgotMail",forgotPass);
+myApp.post("/CreatePost",upload.single("postFile"),Auth,CreatePost);
 myApp.listen(port,()=>{
     console.log(chalk.greenBright.yellow.italic.bold("server is start on "+port))
 });

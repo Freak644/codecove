@@ -1,11 +1,11 @@
 import {motion, progress} from 'framer-motion';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {useDropzone} from 'react-dropzone';
 import {Upload,X,File} from 'lucide-react';
 import axios from 'axios';
 export default function DragDropBox() {
     const [imgFiles,setImgFiles] = useState([])
-
+    const btnRef = useRef();
     useEffect(()=>{
         return ()=> {
             imgFiles.forEach(f=>URL.revokeObjectURL(f.preview));
@@ -64,6 +64,7 @@ export default function DragDropBox() {
     });
 
 const uploadFiles = async () => {
+  
   try {
     for (const img of imgFiles) {
       const formData = new FormData();
@@ -92,7 +93,6 @@ const uploadFiles = async () => {
         },
       });
 
-    
       setImgFiles((prev) =>
         prev.map((file) =>
           file.file.name === img.file.name
@@ -221,7 +221,7 @@ return (
         </div>
 
         <div className="mt-5 flex gap-3">
-          <motion.button
+          <motion.button ref={btnRef}
             onClick={uploadFiles}
             whileTap={{ scale: 0.97 }}
             className="flex-1 bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-2.5 rounded-lg shadow-md shadow-cyan-500/20 transition"

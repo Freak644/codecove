@@ -91,7 +91,7 @@ const createCropedIMG = async () => {
   };
 
   return (
-    <div className="mainCroperDiv absolute h-[100vh] w-[100vw] z-20 flex items-center justify-center bg-black/80 backdrop-blur-md">
+    <div className="mainCroperDiv absolute h-screen w-screen z-20 flex items-center justify-center bg-black/80 backdrop-blur-md">
       <div className="innerDiv relative h-96 w-96 bg-white/10 backdrop-blur-lg rounded-lg overflow-hidden shadow px-3">
         {/* Close button */}
         {/* <button
@@ -115,7 +115,7 @@ const createCropedIMG = async () => {
         />
 
         {/* Controls */}
-        <div className="innerCrop absolute bottom-1 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 bg-white/30 backdrop-blur-sm rounded-lg !px-3 !py-2 shadow">
+        <div className="innerCrop absolute bottom-1 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 bg-white/30 backdrop-blur-sm rounded-lg px-3 py-2 shadow">
           {/* Zoom slider */}
           <input
             type="range"
@@ -131,7 +131,7 @@ const createCropedIMG = async () => {
           <div className="flex gap-2">
             <button
               onClick={handleRESET}
-              className="!px-2 py-1 bg-red-600 text-white rounded-lg hover:bg-red-400 cursor-pointer"
+              className="px-2 py-1 bg-red-600 text-white rounded-lg hover:bg-red-400 cursor-pointer"
             >
               Cancel
             </button>
@@ -144,7 +144,7 @@ const createCropedIMG = async () => {
             <button
               onClick={()=>{setPorc(true);createCropedIMG()}}
               disabled={!pixelCrop}
-              className="!px-2 py-1 bg-green-600 text-white rounded-lg hover:bg-green-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-2 py-1 bg-green-600 text-white rounded-lg hover:bg-green-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isProcessing?"Cropping":"Done"}
             </button>

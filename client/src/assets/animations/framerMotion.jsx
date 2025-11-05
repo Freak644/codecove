@@ -4,12 +4,12 @@ export default function PageTransition({children,location}) {
         <AnimatePresence mode='wait'>
             <motion.div className='middlerWhere'
                 key={location.pathname}
-                initial={{y:"100%",opacity:0}}
-                animate={{y:0,opacity:1}}
-                exit={{y:"-100%",opacity:0}}
+                initial={{x:"100%",opacity:0,scale: .8}}
+                animate={{x:0,opacity:1,scale:1}}
+                exit={{x:"-100%",opacity:0,scale: .8}}
 
                 transition={{
-                    duration:0.7,
+                    duration: .8,
                     ease : [0.43,0.13,0.23,0.96],
                 }}
                 style={{

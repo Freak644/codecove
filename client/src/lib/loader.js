@@ -2,15 +2,7 @@ import {create} from 'zustand';
 export const Loader = create((set)=>({
     isTrue:true,
     toggleLoader: (val)=>
-        set((state)=>{
-            let newState;
-            if (val) {
-                newState = val
-            } else {
-                newState = !state.isTrue;
-            }
-            return {isTrue:newState}
-        })
+        set({isTrue:val})
 }))
 
 // export  const toggleLogin = create((set)=>({

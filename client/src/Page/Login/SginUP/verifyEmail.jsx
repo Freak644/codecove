@@ -21,7 +21,7 @@ export default function VerifyEl() {
     },[])
     const handleAPICall = async () => {
      // if (btnRef.current.disabled != true) {
-        toggleLoader();
+        toggleLoader(true);
         try {
             let request = await fetch(`/myServer/${isForgotSide ? "sendForgotMail" : "sendVerifyEmail"}`,{
                 method:"POST",
@@ -40,7 +40,7 @@ export default function VerifyEl() {
         } catch (error) {
             console.log(error.message)
         } finally{
-          toggleLoader();
+          toggleLoader(false);
         }
       //}
     }
@@ -123,7 +123,7 @@ export default function VerifyEl() {
     if (evnt) {
       evnt.preventDefault();
     }
-    toggleLoader();
+    toggleLoader(true);
     vbtnRef.current.disabled = true;
     let inOTP = otp.join("");
    try {
@@ -147,7 +147,7 @@ export default function VerifyEl() {
    } catch (error) {
       toast.error(error.message.err)
    } finally {
-    toggleLoader();
+    toggleLoader(false);
     vbtnRef.current.disabled = false;
    }
   }

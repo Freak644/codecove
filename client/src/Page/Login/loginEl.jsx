@@ -51,7 +51,7 @@ export default function LoginCon({toggle}) {
     },[mgmtPass.passwordVal])
     const handleSubmit = async (evnt) => {
         evnt.preventDefault();
-        toggleLoader()
+        toggleLoader(true)
         let formData = new FormData(evnt.target);
         let {Email,Password} = Object.fromEntries(formData);
         let clientInfo = {
@@ -76,7 +76,7 @@ export default function LoginCon({toggle}) {
         } catch (error) {
             toast.error(error.message)
         } finally{
-            toggleLoader();
+            toggleLoader(false);
         }
     }
     return(

@@ -3,17 +3,19 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import {useDropzone} from 'react-dropzone';
 import {Upload,X,File} from 'lucide-react';
 import axios from 'axios';
+import { Loader } from '../../lib/loader';
 export default function DragDropBox() {
     const [imgFiles,setImgFiles] = useState([])
     const btnRef = useRef();
     const scrollConRef = useRef(null);
-
+    const {isTrue, toggleLoader} = Loader();
     useEffect(()=>{
         return ()=> {
             imgFiles.forEach(f=>URL.revokeObjectURL(f.preview));
         };
     },[])
     const removeFile = (name) => {
+      toggleLoader(false)
         setImgFiles((prev) => {
         const toRemove = prev.find((p) => p.file.name === name);
         if (toRemove) URL.revokeObjectURL(toRemove.preview);
@@ -73,6 +75,8 @@ export default function DragDropBox() {
     }
 
 const uploadFiles = async () => {
+  if(isTrue) return;
+  toggleLoader(true);
   for (const img of imgFiles) {
     try {
       const formData = new FormData();
@@ -111,6 +115,7 @@ const uploadFiles = async () => {
 
       console.log("✅ Uploaded:", res.data);
     } catch (error) {
+      toggleLoader(false)
       console.error("❌ Upload failed:", error);
 
       let message = "Something went wrong while uploading.";
@@ -135,6 +140,7 @@ const uploadFiles = async () => {
       // 👇 continue to next file automatically (no return!)
     }
   }
+  toggleLoader(false);
 };
 
 
@@ -200,12 +206,12 @@ return (
                 <div>
                   <p className="font-medium text-gray-100">{file.name}</p>
                   <p className="text-sm text-gray-500">
-                    {(file.size / 1024).toFixed(2)} KB
+                    {error ? "Failed" :(file.size / 1024).toFixed(2)+"KB"}
                   </p>
                   {progress > 0 && (
                     <div className="w-40 bg-gray-800 rounded-full mt-1 h-2 overflow-hidden">
                       <div
-                        className="bg-cyan-400 h-2 transition-all"
+                        className={`${error ? "bg-red-500":"bg-green-500"} h-2 transition-all`}
                         style={{ width: `${progress}%` }}
                       />
                     </div>
@@ -237,7 +243,7 @@ return (
             Upload Files
           </motion.button>
 
-          <button
+          <button disabled={isTrue}
             onClick={() => {
               imgFiles.forEach((f) => URL.revokeObjectURL(f.preview));
               setImgFiles([]);

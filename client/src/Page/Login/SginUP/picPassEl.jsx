@@ -164,7 +164,7 @@ export default function CpassEL() {
         }
     const handleSubmit = async (evnt) => {
         evnt.preventDefault();
-        toggleLoader()
+        toggleLoader(true)
         if (!email?.trim() || !Tusername?.trim() || !password.password?.trim()) {
            return toast.info("Please provide proper information");
         }
@@ -201,7 +201,7 @@ export default function CpassEL() {
             setimg({file:null,
                 fileUrl:""})
             toggleMiniTab("user")
-            toggleLoader();
+            toggleLoader(false);
             setTab("front")
         } catch (error) {
             toast.error(error.message)
@@ -214,17 +214,17 @@ export default function CpassEL() {
                     <form action="" onSubmit={handleSubmit}>
                         <div className="Logotxt flex items-center flex-col w-[120px] absolute top-[-100px]">
                             <i className='bx bx-code-block text-5xl
-                            transition-all duration-500 ease-in-out bg-[length:200%_200%]
-                            bg-gradient-to-tr from-purple-500 via-pink-500 to-blue-600
+                            transition-all duration-500 ease-in-out bg-size-[200%_200%]
+                            bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
                             bg-clip-text text-transparent
                             '></i>
-                            <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-[length:200%_200%]
-                            bg-gradient-to-tr from-purple-500 via-pink-500 to-blue-600
+                            <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
+                            bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
                             bg-clip-text text-transparent'>CodeCove</h2>
                         </div>
-                        <div className="inputDiv !flex-col !h-[80px]  !items-center">
+                        <div className="inputDiv flex-col! h-20!  items-center!">
                             <input type="file" onChange={(evnt)=>handleImg(evnt)} style={{display:"none"}} id="files" name="files" accept="image/*" multiple={false} />
-                            <label className="!left-[40%] !top-13 !cursor-pointer" htmlFor="files"><i className="bx bx-image text-blue-500">Avatar</i></label>
+                            <label className="left-[40%]! top-13! cursor-pointer!" htmlFor="files"><i className="bx bx-image text-blue-500">Avatar</i></label>
                             <div onClick={()=> document.getElementById("files").click()}  className="imgDiv flex items-center justify-center h-13 w-13 rounded-full">
                                 <img src={myImage?.fileUrl || "https://i.postimg.cc/zDK9mWZX/girl-anime.avif"} className="h-12 w-12 rounded-full" alt="DP" />
                             </div>
@@ -233,7 +233,7 @@ export default function CpassEL() {
                             <input type={password.type} name="password" id="password" onBlur={(evnt)=>handleBlur(evnt.target)} value={password.password} onChange={handleChange} />
                             <label htmlFor="password"><i className="bx bx-key">Password</i></label>
                             <i onClick={togglePassword} className={`bx bx-${getClass()} absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer`}></i>
-                            <div className="suggestionDiv absolute flex items-center justify-between bottom-[-14px] gap-1.5">
+                            <div className="suggestionDiv absolute flex items-center justify-between -bottom-3.5 gap-1.5">
                                 {
                                     [1,2,3].map(bar=>{
                                         return(

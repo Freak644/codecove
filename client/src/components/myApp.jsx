@@ -22,7 +22,6 @@ export default function MyApp() {
     let [isLogin,setLogin] = useState(true);
     const [winddowHerder,setHeader] = useState(true);
     const {isTrue,toggleLoader} = Loader();
-    const [isLoader,setLoader] = useState(isTrue);
     const [isChecking,setCheck] = useState(false)
     useEffect(() => {
         const setVH = () => {
@@ -77,9 +76,6 @@ export default function MyApp() {
         }
         checkAuth();
     },[])
-    useEffect(()=>{
-        setLoader(isTrue)
-    },[isTrue])
 
     useEffect(()=>{
         if (fileURL?.length>1) {
@@ -91,7 +87,7 @@ export default function MyApp() {
 
     return(
         <PageTransition location={location} key={location.pathname}>
-            {isLoader && <LoaderEL/>}
+            {isTrue && <LoaderEL/>}
             {winddowHerder && !isLogin && <WindowHerder/>}
            {!isLogin && <Header/>}
            {!isLogin && <MenuEL/>}

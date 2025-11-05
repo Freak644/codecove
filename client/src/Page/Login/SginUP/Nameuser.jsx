@@ -29,7 +29,7 @@ export default function UserNameEl({stoggle}) {
     },[emailStatus])
     function checkAv() {
     // remove previous classes before adding a new one
-    toggleLoader();
+    toggleLoader(true);
     divRef.current.classList.remove('avlbl', 'notavlbl');
     
     if (/[A-Z]/.test(username)) {
@@ -47,7 +47,7 @@ export default function UserNameEl({stoggle}) {
     } else {
         divRef.current.classList.add('avlbl');
     }
-    toggleLoader()
+    toggleLoader(false)
     // clear any previous timeout to avoid overlapping removals
     clearTimeout(timeoutId);
 
@@ -110,7 +110,7 @@ export default function UserNameEl({stoggle}) {
 
     const handleSubmit = async (evnt) => {
         evnt.preventDefault();
-        toggleLoader()
+        toggleLoader(true)
         if (emailStatus) {
             return toggleMiniTab("pass")
         }
@@ -145,7 +145,7 @@ export default function UserNameEl({stoggle}) {
         } catch (error) {
             toast.error(error.message);
         } finally{
-            toggleLoader();
+            toggleLoader(false);
         }
     }
     return(
@@ -155,12 +155,12 @@ export default function UserNameEl({stoggle}) {
                     <form action="" onSubmit={handleSubmit}>
                         <div className="Logotxt flex items-center flex-col w-[120px] absolute top-[-100px]">
                             <i className='bx bx-code-block text-5xl
-                            transition-all duration-500 ease-in-out bg-[length:200%_200%]
-                            bg-gradient-to-tr from-purple-500 via-pink-500 to-blue-600
+                            transition-all duration-500 ease-in-out bg-size-[200%_200%]
+                            bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
                             bg-clip-text text-transparent
                             '></i>
-                            <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-[length:200%_200%]
-                            bg-gradient-to-tr from-purple-500 via-pink-500 to-blue-600
+                            <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
+                            bg-liner-to-tr from-purple-500 via-pink-500 to-blue-600
                             bg-clip-text text-transparent'>CodeCove</h2>
                         </div>
                         {/* <h1 className="flex items-center justify-center text-red-600 font-bold">Stay 
@@ -179,7 +179,7 @@ export default function UserNameEl({stoggle}) {
                                 id="UserName" autoComplete="off" name="username" value={username} required/>
                                 <label htmlFor="UserName"><i className="bx bx-user">Username</i></label>
                                 <i id="checkbox" className="bx bxs-check-circle absolute right-0 top-2 transition-all duration-700 "></i>
-                             <div className="suggestionDiv absolute flex items-center justify-center bottom-[-14px] gap-1.5">
+                             <div className="suggestionDiv absolute flex items-center justify-center -bottom-3.5 gap-1.5">
                                 {cache?.map((value,index)=>(
                                     <p onClick={()=>{setUsername(value),setCache([])}} className=" rounded-2xl md:text-[11px] " key={index}>{value}</p>
                                 ))}

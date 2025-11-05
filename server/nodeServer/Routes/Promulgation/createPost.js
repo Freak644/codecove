@@ -30,9 +30,11 @@ export const CreatePost = async (rkv,rspo) => {
     const MAX_WIDTH = 8000;
     const MAX_PIXELS = 50_000_000;
     const file = rkv.file;
-
     if (!file) return rspo.status(401).send({err:"no file found"});
-
+    let size = file.size / (1024 * 1024);
+    if (size > 5) {
+      return rspo.status(401).send({err:"file.size<=5MB"})
+    }
     const type = await fileTypeFromBuffer(file.buffer);
           if (!type || !['image/png', 'image/jpg', 'image/jpeg'].includes(type.mime)) {
             return rspo.status(400).send({ err: "Invalid file type" });
@@ -50,8 +52,7 @@ export const CreatePost = async (rkv,rspo) => {
           ) {
             return rspo.status(413).send({ err: "Image is too large" });
           }
-    const currentFileName = Date.now() +"-"+ file.originalname;
-    const imgPath = path.join(dir,currentFileName);
+    const imgPath = path.join(dir,file.originalname);
     await fs.promises.writeFile(imgPath,file.buffer)
     let {id} = rkv.authData;
     try {
@@ -60,9 +61,9 @@ export const CreatePost = async (rkv,rspo) => {
         resource_type:"image"
       })
       await fs.promises.unlink(imgPath);
-      console.log(result)
       rspo.status(200).send({pass:"done boss ",miniData:result.secure_url}) 
     } catch (error) {
+      await fs.promises.unlink(imgPath)
       rspo.status(500).send({err:"server side error",details:error.message});
     }
 }

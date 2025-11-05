@@ -6,6 +6,8 @@ import axios from 'axios';
 export default function DragDropBox() {
     const [imgFiles,setImgFiles] = useState([])
     const btnRef = useRef();
+    const scrollConRef = useRef(null);
+
     useEffect(()=>{
         return ()=> {
             imgFiles.forEach(f=>URL.revokeObjectURL(f.preview));
@@ -45,6 +47,7 @@ export default function DragDropBox() {
             preview: URL.createObjectURL(file),
             progress: 0,
             uploaded: false,
+            uploading:false
             });
         });
 
@@ -63,14 +66,18 @@ export default function DragDropBox() {
         maxSize: 5 * 1024 * 1024, // size 5MB
     });
 
+    const scrollCon = ()=>{
+      if (scrollConRef.current) {
+        scrollConRef.current.scrollBy({top:70, behavior: "smooth" });
+      }
+    }
+
 const uploadFiles = async () => {
-  
-  try {
-    for (const img of imgFiles) {
+  for (const img of imgFiles) {
+    try {
       const formData = new FormData();
       formData.append("postFile", img.file);
 
-     
       setImgFiles((prev) =>
         prev.map((file) =>
           file.file.name === img.file.name
@@ -79,7 +86,6 @@ const uploadFiles = async () => {
         )
       );
 
-    
       const res = await axios.post("/myServer/CreatePost", formData, {
         onUploadProgress: (event) => {
           const percent = Math.round((event.loaded * 100) / event.total);
@@ -93,6 +99,8 @@ const uploadFiles = async () => {
         },
       });
 
+      scrollCon();
+
       setImgFiles((prev) =>
         prev.map((file) =>
           file.file.name === img.file.name
@@ -102,36 +110,34 @@ const uploadFiles = async () => {
       );
 
       console.log("✅ Uploaded:", res.data);
+    } catch (error) {
+      console.error("❌ Upload failed:", error);
+
+      let message = "Something went wrong while uploading.";
+
+      if (error.response) {
+        message = error.response.data?.err || "Server error during upload.";
+      } else if (error.request) {
+        message = "Network error: Server not reachable.";
+      } else {
+        message = error.message;
+      }
+
+      setImgFiles((prev) =>
+        prev.map((file) =>
+          file.file.name === img.file.name
+            ? { ...file, uploading: false, error: true }
+            : file
+        )
+      );
+      // optional: show alert only once, not for every file
+      console.warn(message);
+      // 👇 continue to next file automatically (no return!)
     }
-  } catch (error) {
-    console.error("❌ Upload failed:", error);
-
-  
-    let message = "Something went wrong while uploading.";
-
-    if (error.response) {
-      message = error.response.data?.err || "Server error during upload.";
-      console.error("Server responded with:", error.response.data);
-    } else if (error.request) {
-      message = "Network error: Server not reachable.";
-    } else {
-      message = error.message;
-    }
-
-    alert(message);
-
-
-    setImgFiles((prev) =>
-      prev.map((file) =>
-        file.progress < 100 && !file.uploaded
-          ? { ...file, uploading: false, error: true }
-          : file
-      )
-    );
-
-    return; 
   }
 };
+
+
 
 
 return (
@@ -174,13 +180,15 @@ return (
         <h2 className="text-gray-200 text-lg font-semibold mb-3">
           Files Ready to Upload
         </h2>
-        <div className="space-y-3 max-h-60 my-scroll">
-          {imgFiles.map(({ file, preview, progress, uploaded }) => (
+        <div
+        ref={scrollConRef}
+        className="space-y-3 max-h-60 my-scroll">
+          {imgFiles.map(({ file, preview, progress, uploaded,uploading,error }) => (
             <motion.div
               key={file.name}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              className="flex items-center justify-between bg-gray-900/70 px-4 py-3 rounded-lg border border-gray-700 hover:border-cyan-400/30 transition-all"
+              className={`${error && "bg-red-400/70"} flex items-center justify-between bg-gray-900/70 px-4 py-3 rounded-lg border border-gray-700 hover:border-cyan-400/30 transition-all`}
             >
               <div className="flex items-center gap-3">
                 <img
@@ -213,7 +221,7 @@ return (
                   onClick={() => removeFile(file.name)}
                   className="text-red-400 hover:text-red-500 transition"
                 >
-                  <X className="w-5 h-5" />
+                  {uploading?<div className='miniLoader'></div>:<X className="w-5 h-5" />}
                 </button>
               </div>
             </motion.div>
@@ -224,7 +232,7 @@ return (
           <motion.button ref={btnRef}
             onClick={uploadFiles}
             whileTap={{ scale: 0.97 }}
-            className="flex-1 bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-2.5 rounded-lg shadow-md shadow-cyan-500/20 transition"
+            className="flex-1 cursor-pointer bg-cyan-500 hover:bg-cyan-800 text-white font-medium py-2.5 rounded-lg shadow-md shadow-cyan-500/20 transition"
           >
             Upload Files
           </motion.button>

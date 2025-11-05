@@ -82,6 +82,7 @@ const uploadFiles = async () => {
       const formData = new FormData();
       formData.append("postFile", img.file);
 
+      if (img.uploaded || img.error) continue;
       setImgFiles((prev) =>
         prev.map((file) =>
           file.file.name === img.file.name

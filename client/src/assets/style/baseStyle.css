@@ -18,15 +18,16 @@
 }
 body{
     margin: 0px; padding: 0px;
-    /* background-color: var(--bg-color); */
-    background-image: linear-gradient(rgba(0,0,0,.9),rgba(0,0,0,.9)), url('https://i.postimg.cc/bNSNbS5G/kiara-Anime.jpg');
+    background-color: var(--bg-color);
+    background-image: linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.4)), url('https://i.postimg.cc/bNSNbS5G/kiara-Anime.jpg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
     transition: background-color 0.3s,color 0.3s;
+    background-attachment: fixed;
 }
 #rootContainer,.middlerWhere{
-    height: calc(var(--vh)*100); 
+    height: calc(var(--vh)*100) !important; 
     width: 100vw;
     display: flex;
     align-items: flex-start;
@@ -132,8 +133,15 @@ body{
                 background-color: var(--p-text-color);
                 color: var(--bg-color);
             } */
-
         
+        }
+
+        a{
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            gap: 10px;
+            padding: 1px;
         }
         .secul{
             position: relative;
@@ -609,7 +617,6 @@ form>h1>span{
                     /* transform: translateY(-15px); */
                     border-radius: 50%;
                     display: grid !important;
-                    
                     position: relative;
                 }
                 li:nth-child(5):after,
@@ -622,6 +629,7 @@ form>h1>span{
                     border: 3px solid transparent;
                     grid-area: 1/1;
                     animation: miniLoader 3s infinite;
+                    pointer-events: none;
                 }
                 li:nth-child(5):after {
                     border-color: #0028c7 transparent transparent; /* Indigo-600 from Tailwind palette */

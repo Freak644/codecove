@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify';
 import ThemeButton from '../../components/toggleButton';
 import { UnivuUserInfo } from '../../lib/basicUserinfo';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 export default function MenuEL(params) {
     const [currentTab,setTab] = useState('Home');
     const [logoimg,setlogo] = useState("");
@@ -45,13 +45,6 @@ export default function MenuEL(params) {
             navi('/')            
         }
     }
-    const handleRoutes  = evnt=>{
-        let route = evnt.target.innerText;
-        if (route === "Home") {
-            return navi("/");
-        }
-        navi("/"+route);
-    }
     useEffect(()=>{
         let crntRoute = crntLocation.pathname.split("/")
         if (!crntRoute[1].trim()) {
@@ -85,15 +78,62 @@ export default function MenuEL(params) {
                 bg-clip-text text-transparent'>CodeCove</h2>
             </div>
             <div className='menuContainer flex items-center flex-col gap-10 lg:text-[18px] sm:text-3xl text-skin-text'>
-                <ul className='flex items-start flex-col gap-5  border-b-2 border-gray-400'>
-                <li onClick={(evnt)=>{handleRoutes(evnt)}}><i className={`bx ${currentTab==='Home'?"bxs":"bx"}-home text-skin-text`}></i><span>Home</span></li>
-                <li onClick={(evnt)=>{handleRoutes(evnt)}}><i className={`bx ${currentTab==='Search'?"bxs":"bx"}-search text-skin-text`}></i><span>Search</span></li>
-                <li onClick={(evnt)=>{handleRoutes(evnt)}}><i className={`bx ${currentTab==='Chat'?"bxs":"bx"}-chat text-skin-text`}></i><span>Messages</span></li>
-                <li onClick={(evnt)=>{handleRoutes(evnt)}}><i className={`bx ${currentTab==='Explore'?"bxs":"bx"}-compass text-skin-text`}></i><span>Explore</span></li>
-                <li onClick={(evnt)=>{handleRoutes(evnt)}} className=' sm:miniLoader '><i className={`bx ${currentTab==='Create'?"bxs":"bx"}-plus-circle text-skin-text`}></i><span>Create</span></li>
-                <li onClick={(evnt)=>{handleRoutes(evnt)}}><i className={`bx ${currentTab==='Notification'?"bxs":"bx"}-bell text-skin-text`}></i><span>Notifications</span></li>
-                <li onClick={(evnt)=>{handleRoutes(evnt)}}> <div className='imgDiv h-5 w-5 md:h-[30px] md:w-[30px] border rounded-full flex items-center justify-center'><img className='h-full w-full' src={logoimg ? `/myServer/${logoimg}` :"https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" /></div> <span>Profile</span></li>
-                </ul>
+                <ul className='flex items-start flex-col gap-5 border-b-2 border-gray-400'>
+                    <li>
+                        <Link to="/">
+                        <i className={`bx ${currentTab === 'Home' ? "bxs" : "bx"}-home text-skin-text`}></i>
+                        <span>Home</span>
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link to="/Search">
+                        <i className={`bx ${currentTab === 'Search' ? "bxs" : "bx"}-search text-skin-text`}></i>
+                        <span>Search</span>
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link to="/Chat">
+                        <i className={`bx ${currentTab === 'Chat' ? "bxs" : "bx"}-chat text-skin-text`}></i>
+                        <span>Messages</span>
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link to="/Explore">
+                        <i className={`bx ${currentTab === 'Explore' ? "bxs" : "bx"}-compass text-skin-text`}></i>
+                        <span>Explore</span>
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link to="/Create">
+                        <i className={`bx ${currentTab === 'Create' ? "bxs" : "bx"}-plus-circle text-skin-text`}></i>
+                        <span>Create</span>
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link to="/Notifications">
+                        <i className={`bx ${currentTab === 'Notification' ? "bxs" : "bx"}-bell text-skin-text`}></i>
+                        <span>Notifications</span>
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link to="/Profile">
+                        <div className='imgDiv h-5 w-5 md:h-[30px] md:w-[30px] border rounded-full flex items-center justify-center'>
+                            <img
+                            className='h-full w-full'
+                            src={logoimg ? `/myServer/${logoimg}` : "https://i.postimg.cc/7ZTJzX5X/icon.png"}
+                            alt=""
+                            />
+                        </div>
+                        <span>Profile</span>
+                        </Link>
+                    </li>
+                    </ul>
                 <ul className='secul flex items-start flex-col gap-5'>
                     <li ref={dropRef} onClick={()=>{setDD(prev=>!prev)}} className='relative'><i className='bx bx-menu'></i><span>Menu</span>
                     {isDD && <div onClick={(evnt)=>evnt.stopPropagation()} className="dropdownMenu flex items-center flex-col rounded-2xl w-52 bg-skin-bg">

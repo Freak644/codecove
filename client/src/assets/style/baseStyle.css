@@ -19,7 +19,7 @@
 body{
     margin: 0px; padding: 0px;
     background-color: var(--bg-color);
-    background-image: linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.4)), url('https://i.postimg.cc/bNSNbS5G/kiara-Anime.jpg');
+    background-image: linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.1)), url('https://i.postimg.cc/bNSNbS5G/kiara-Anime.jpg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -32,9 +32,9 @@ body{
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    background: var(--mini-bg-color);
+    /* background: var(--mini-bg-color);
     backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); */
     position: relative; 
     overflow: hidden;
 }
@@ -745,6 +745,7 @@ form>h1>span{
     left: 13vw;
     top: 50px;
     z-index: -1;
+    padding-bottom: 70px;
 }
 @media (max-width:1024px) {
     .routeContainer{

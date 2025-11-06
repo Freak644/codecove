@@ -123,7 +123,7 @@ export default function MenuEL(params) {
 
                     <li>
                         <Link to="/Profile">
-                        <div className='imgDiv h-5 w-5 md:h-[30px] md:w-[30px] border rounded-full flex items-center justify-center'>
+                        <div className='imgDiv h-7 w-7 md:h-[30px] md:w-[30px] border rounded-full flex items-center justify-center'>
                             <img
                             className='h-full w-full'
                             src={logoimg ? `/myServer/${logoimg}` : "https://i.postimg.cc/7ZTJzX5X/icon.png"}

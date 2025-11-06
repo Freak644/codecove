@@ -149,20 +149,10 @@ const uploadFiles = async () => {
 
 
 return (
-  <div className="h-full w-full  flex items-center justify-center p-3 flex-col my-scroll gap-6 my-scroll-visible">
-        <AnimatePresence>
-        {imgFiles.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className='flex relative items-center justify-center top-0'
-          >
-            <ImageSlider imgArray={imgFiles} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+  <div className="h-full relative w-full  flex items-center justify-center p-3 flex-col my-scroll gap-6 my-scroll-visible">
+
+        {imgFiles.length > 0 && <ImageSlider imgArray={imgFiles} />}
+
     {imgFiles.length === 0 &&<motion.div
       {...getRootProps()}
       initial={{ scale: 0.95, opacity: 0 }}
@@ -196,7 +186,7 @@ return (
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-xl bg-black/70 border border-gray-700 rounded-2xl p-5 shadow-inner shadow-cyan-400/10"
+        className="w-full relative max-w-xl bg-black/70 border border-gray-700 rounded-2xl p-5 shadow-inner shadow-cyan-400/10"
       >
         <h2 className="text-gray-200 text-lg font-semibold mb-3">
           Files Ready to Upload

@@ -18,7 +18,7 @@ export default function MyApp() {
     let [isCropping,setCropping] = useState(false);
     let {toggleTheme} = useThemeStore();
     let [currentTheme] = useState(localStorage.getItem('theme') || "dark")
-    let location = useLocation();
+    let currentLocation = useLocation();
     let [isLogin,setLogin] = useState(true);
     const [winddowHerder,setHeader] = useState(true);
     const {isTrue,toggleLoader} = Loader();
@@ -46,7 +46,7 @@ export default function MyApp() {
         }
     },[])
     useEffect(()=>{
-        let currentPath = location.pathname.split("/")
+        let currentPath = currentLocation.pathname.split("/")
         if (currentPath[1] === "checkInfo") {
             setCheck(true)
         }
@@ -57,7 +57,7 @@ export default function MyApp() {
             window.addEventListener("load",handler);
         }
         return ()=> window.removeEventListener("load",handler)
-    },[location.pathname]);
+    },[currentLocation.pathname]);
     useEffect(()=>{
         toggleTheme(currentTheme)
         const checkAuth = async () => { 
@@ -86,7 +86,7 @@ export default function MyApp() {
     },[fileURL]);
 
     return(
-        <PageTransition location={location} key={location.pathname}>
+        <PageTransition location={currentLocation} key={currentLocation.pathname}>
             {isTrue && <LoaderEL/>}
             {winddowHerder && !isLogin && <WindowHerder/>}
            {!isLogin && <Header/>}
@@ -94,9 +94,9 @@ export default function MyApp() {
            {isCropping && <CropperEL prevImg={fileURL} />}
            {(isLogin && !isChecking) && (<div className='loginContainer flex items-center content-center h-screen w-screen'>{<LoginEL/>}</div>)}
             {(!isLogin || isChecking) && (<Routes>
-                <Route path='/' element={<div className='routeContainer  my-scroll flex items-center content-center'></div>} />
+                <Route path='/' element={<div className='routeContainer  my-scroll'></div>} />
                 <Route path='/CheckInfo/:session_id' element={<div className='my-scroll flex items-center justify-center h-screen w-screen'>{<CheckInfo/>}</div>} />
-                <Route path='/Create' element={<div className='routeContainer flex items-center content-center'><DragDropBox/></div>} />
+                <Route path='/Create' element={<div className='routeContainer my-scroll'><DragDropBox/></div>} />
 
                 <Route path='*' element={<NotFound/>} />
             </Routes>)}

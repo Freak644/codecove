@@ -218,6 +218,30 @@ body{
 .my-scroll::-webkit-scrollbar{
     display: none;
 }
+.my-scroll-visible{
+    scrollbar-width:auto;
+    -ms-overflow-style: auto;
+}
+.my-scroll-visible::-webkit-scrollbar{
+    all: unset;
+    width: 8px;
+    border-radius: 5px;
+}
+.my-scroll-visible::-webkit-scrollbar-track{
+    background: rgba(10, 0, 0, 0.3);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+.my-scroll-visible::-webkit-scrollbar-thumb{
+    background-color: #0028c7;
+    border-radius: 16px;
+    cursor: pointer;
+    border: 1px solid white;
+    transition: background-color .4s ease;
+}
+.my-scroll-visible::-webkit-scrollbar-thumb:hover {
+    background-color: #3e78ff;
+}
 .cube{
     position: relative;
     transform: rotateY(0deg);
@@ -714,6 +738,9 @@ form>h1>span{
 .routeContainer{
     height: 93.5vh; width: 87vw;
     /* border: 1px solid yellow; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
     left: 13vw;
     top: 50px;

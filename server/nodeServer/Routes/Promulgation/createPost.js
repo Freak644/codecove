@@ -32,7 +32,7 @@ export const CreatePost = async (rkv,rspo) => {
     const file = rkv.file;
     if (!file) return rspo.status(401).send({err:"no file found"});
     let size = file.size / (1024 * 1024);
-    if (size > 1) {
+    if (size > 5) {
       return rspo.status(401).send({err:"file.size<=5MB"})
     }
     const type = await fileTypeFromBuffer(file.buffer);

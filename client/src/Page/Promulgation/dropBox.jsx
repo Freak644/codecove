@@ -1,9 +1,10 @@
-import {motion, progress} from 'framer-motion';
+import { AnimatePresence,motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {useDropzone} from 'react-dropzone';
 import {Upload,X,File} from 'lucide-react';
 import axios from 'axios';
 import { Loader } from '../../lib/loader';
+import ImageSlider from './sliderCom';
 export default function DragDropBox() {
     const [imgFiles,setImgFiles] = useState([])
     const btnRef = useRef();
@@ -148,8 +149,21 @@ const uploadFiles = async () => {
 
 
 return (
-  <div className="underTaker flex flex-col items-center gap-6">
-    <motion.div
+  <div className="h-full w-full  flex items-center justify-center p-3 flex-col my-scroll gap-6 my-scroll-visible">
+        <AnimatePresence>
+        {imgFiles.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className='flex relative items-center justify-center top-0'
+          >
+            <ImageSlider imgArray={imgFiles} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    {imgFiles.length === 0 &&<motion.div
       {...getRootProps()}
       initial={{ scale: 0.95, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
@@ -176,7 +190,7 @@ return (
         </p>
         <p className="text-sm text-gray-500">Max 5MB per image (png, jpg, jpeg)</p>
       </motion.div>
-    </motion.div>
+    </motion.div>}
 
     {imgFiles.length > 0 && (
       <motion.div

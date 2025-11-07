@@ -4,7 +4,6 @@ import {useDropzone} from 'react-dropzone';
 import {Upload,X,File} from 'lucide-react';
 import axios from 'axios';
 import { Loader } from '../../lib/loader';
-import ImageSlider from './sliderCom';
 import Creater from './captionAndPrev';
 import {toast} from 'react-toastify'
 export default function DragDropBox() {
@@ -183,7 +182,7 @@ return (
     </motion.div>}
 
     {imgFiles.length > 0 &&
-      <Creater Images={imgFiles}/>
+      <Creater Images={imgFiles} handler={setImgFiles}/>
     }
   </div>
 );

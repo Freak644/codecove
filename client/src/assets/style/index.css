@@ -1,15 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-    --color-skin-bg: rgb(240, 240, 255);
+    --color-skin-bg: rgb(230, 230, 230);
     --color-skin-text: #000000;
     --color-skin-ptext:#363636;
     --color-skin-login:rgb(0,0,0);
 }
 
-html[data-theme="dark"] {
+html[data-theme="dark-yellow"] {
     --color-skin-bg: rgb(13, 13, 13);
     --color-skin-text: #fff700;
     --color-skin-ptext: #fbff7d;
+    --color-skin-login:rgb(255,255,255);
+}
+html[data-theme="dark-white"]{
+    --color-skin-bg: rgb(13, 13, 13);
+    --color-skin-text: white;
+    --color-skin-ptext: rgb(245,245,245);
     --color-skin-login:rgb(255,255,255);
 }

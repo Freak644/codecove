@@ -1,34 +1,69 @@
-import { useEffect, useRef } from 'react';
-import {useThemeStore} from '../lib/toggleTheme';
-export default function ThemeButton() {
-    const {theme,toggleTheme} = useThemeStore();
-    let inpRef=useRef();
-    const handler = ()=>{
-      let inp = theme==="light" ? "dark" : "light";
-      toggleTheme(inp);
-    }
-    useEffect(()=>{
-      let currentinp = inpRef.current;
-      theme === "dark" ? currentinp.checked = true:"";
-    },[])
-    return(
-<label className="relative inline-flex items-center cursor-pointer">
-      <input ref={inpRef}  
-        type="checkbox" onClick={handler}
-        // checked={theme === "dark"} // make it reflect the current theme
-        className="sr-only peer"
-      />
-      <div
-        className="w-15 h-6 rounded-full bg-gradient-to-r from-yellow-300 to-orange-400 flex items-center 
-          peer-checked:from-gray-900 peer-checked:to-indigo-500 
-          transition-all duration-500 
-          after:content-['☀️'] after:absolute after:left-1 after:bg-skin-bg after:rounded-full after:h-5 after:w-5 
-          after:flex after:items-center after:justify-center 
-          after:transition-all after:duration-500 
-          peer-checked:after:translate-x-8 peer-checked:after:content-['🌙'] 
-          after:shadow-md after:text-lg"
-      ></div>
-    </label>
+import { useState, useEffect, useRef } from "react";
+import { useThemeStore } from "../lib/toggleTheme";
 
-    )
+export default function ThemeButton() {
+  const { theme, toggleTheme } = useThemeStore();
+  const [open, setOpen] = useState(false);
+  const btnRef = useRef(null);
+  const dropdownRef = useRef(null);
+
+  const themes = ["light", "dark-yellow", "dark-white"];
+
+  // handle theme change
+  const handleThemeChange = (selected) => {
+    toggleTheme(selected);
+    setOpen(false);
+  };
+
+  // close dropdown when clicked outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target) &&
+        !btnRef.current.contains(e.target)
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative inline-block">
+      {/* Button */}
+      <button
+        ref={btnRef}
+        onClick={() => setOpen((prev) => !prev)}
+        className="flex items-center gap-2 px-3 py-2 bg-skin-bg text-skin-text rounded-full shadow-md border border-[text-skin-ptext]/30 hover:bg-gray-800/10 transition-all duration-300"
+      >
+        {theme === "light" && "☀️ Light"}
+        {theme === "dark-yellow" && "🌕 Yellow"}
+        {theme === "dark-white" && "🌙 White"}
+      </button>
+
+      {/* Dropdown */}
+      {open && (
+        <div
+          ref={dropdownRef}
+          className="absolute -top-28 left-full -translate-x-1/2 bg-skin-bg border border-[text-skin-ptext]/20 rounded-xl shadow-lg p-2 flex flex-col items-start min-w-[120px] z-50"
+        >
+          {themes.map((t) => (
+            <button
+              key={t}
+              onClick={() => handleThemeChange(t)}
+              className={`w-full text-left cursor-pointer px-3 py-1.5 rounded-lg text-skin-text hover:bg-gray-800/10 transition-all ${
+                t === theme ? "font-semibold" : "opacity-70"
+              }`}
+            >
+              {t === "light" && "☀️ Light"}
+              {t === "dark-yellow" && "🌕 Dark Yellow"}
+              {t === "dark-white" && "🌙 Dark White"}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }

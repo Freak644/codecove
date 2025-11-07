@@ -17,7 +17,7 @@ export default function MyApp() {
     let {fileURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);
     let {toggleTheme} = useThemeStore();
-    let [currentTheme] = useState(localStorage.getItem('theme') || "dark")
+    let [currentTheme] = useState(localStorage.getItem('theme') || "dark-white")
     let currentLocation = useLocation();
     let [isLogin,setLogin] = useState(true);
     const [winddowHerder,setHeader] = useState(true);

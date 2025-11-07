@@ -1,14 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 :root {
-    --bg-color: rgb(240, 240, 255);
+    --bg-color: rgb(230, 230, 235);
     --text-color: #000000;
     --p-text-color:#363636;
     --login-txt-color:black;
 }
-[data-theme='dark']{
+[data-theme='dark-yellow']{
     --bg-color: rgb(13, 13, 13);
     --text-color: #fff700;
     --p-text-color:#fbff7d;
+    --login-txt-color:white;
+}
+[data-theme='dark-white']{
+    --bg-color:rgb(13,13,13);
+    --text-color: white;
+    --p-text-color:whitesmoke;
     --login-txt-color:white;
 }
 *{

@@ -46,7 +46,7 @@ export default function NotFound() {
             404
           </h1>
           <p className="text-lg text-gray-300">
-            The page you’re looking for <br /> doesn’t exist or was removed.
+            The page you’re looking for <br /> doesn’t exist or removed.
           </p>
           <button
             onClick={() => navi("/")}

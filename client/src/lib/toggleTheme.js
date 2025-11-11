@@ -1,6 +1,6 @@
 import {create} from 'zustand';
 export const useThemeStore = create((set)=>({
-    theme:"light",
+    theme:"dark-white",
     toggleTheme: (inp) =>
         set((state)=>{
             const newTheme =  inp;

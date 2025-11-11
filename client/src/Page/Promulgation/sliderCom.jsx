@@ -23,7 +23,7 @@ export default function ImageSlider({imgArray,setArray}) {
         <div className="relative h-full flex items-center justify-center w-[270px]">
             {/* left button */}
             <button onClick={prevImg}
-            className='absolute z-10 left-0 bg-transparent text-white w-9 h-9 rounded-full flex items-center justify-center hover:bg-gray-600  text-lg transition duration-100'
+            className='absolute z-10 left-0 bg-transparent hidden sm:flex text-white w-9 h-9 rounded-full items-center justify-center hover:bg-gray-600  text-lg transition duration-100'
             >
                 ⟵
             </button>
@@ -31,7 +31,7 @@ export default function ImageSlider({imgArray,setArray}) {
                 X
             </button>
             {/* slider or imgCOntainer */}
-            <div className='overflow-hidden h-full flex items-center z-1 w-[250px] rounded-2xl bg-skin-bg'>
+            <div className='my-scroll h-full flex items-center z-1 w-[300px] rounded-2xl bg-skin-bg'>
                 <motion.div
                 className='flex gap-5 items-center'
                 animate={{x: -index * 270}}
@@ -58,7 +58,7 @@ export default function ImageSlider({imgArray,setArray}) {
             </div>
             {/* right button */}
             <button onClick={nextImg}
-            className='absolute z-10 right-0 bg-transparent text-white w-9 h-9 rounded-full flex items-center justify-center hover:bg-gray-600  text-lg transition duration-100'
+            className='absolute z-10 right-0 bg-transparent text-white w-9 h-9 rounded-full hidden sm:flex items-center justify-center hover:bg-gray-600  text-lg transition duration-100'
             >
                 ⟶
             </button>

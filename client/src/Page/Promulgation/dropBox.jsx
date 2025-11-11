@@ -25,7 +25,6 @@ export default function DragDropBox() {
     };
 
     const onDrop = useCallback((acceptedFiles) => {
-        console.log(acceptedFiles)
         if (acceptedFiles.length > 5) return toast.info("You can only attach 5 file in single Post")
         const allowTypes = ["png", "jpeg", "jpg"];
         const maxSize = 5 * 1024 * 1024; // 5MB per file

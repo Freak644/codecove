@@ -149,7 +149,7 @@ const uploadFiles = async () => {
 
 
 return (
-  <div className="h-full relative w-full  flex items-center justify-center p-3 flex-col my-scroll gap-6 my-scroll-visible">
+  <div className="underTaker justify-center">
 
     {imgFiles.length === 0 &&<motion.div
       {...getRootProps()}

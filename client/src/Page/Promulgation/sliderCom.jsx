@@ -66,7 +66,7 @@ export default function ImageSlider({ imgArray, setArray }) {
       </button>
 
       {/* slider container (your original setup) */}
-      <div className="my-scroll h-full flex items-center z-1 w-[300px] rounded-2xl bg-skin-bg relative overflow-hidden touch-pan-y">
+      <div className="h-[450px] flex items-center z-1 w-[300px] rounded-2xl bg-skin-bg relative overflow-hidden touch-pan-y">
         <AnimatePresence initial={false} custom={direction}>
           {imgArray.length > 0 && (
             <motion.div

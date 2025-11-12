@@ -16,7 +16,6 @@ export default function CropperEL({ prevImg }) {
 
   // Crop complete callback
   const onCropComplete = useCallback((_, pixelCrop) => {
-    console.log(pixelCrop)
     setPixcrop(pixelCrop);
   }, []);
 

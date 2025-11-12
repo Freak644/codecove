@@ -152,7 +152,7 @@ export default function VerifyEl() {
    }
   }
     return(
-        <div className="underTaker">
+        <div className="underTaker flex items-center justify-center">
             <div className="verifyDiv flex items-center justify-center">
                 <div className="formDiv">
                     <form action="" onSubmit={handleSubmit}>

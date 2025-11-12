@@ -1,5 +1,9 @@
-/* .routeContainer{
-    background-image: url('https://i.postimg.cc/jS1mc6X5/katana-Girl-Black-white.jpg');
-    background-position: center;
-    background-size: cover;
-} */
+.innerCaption{
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-inline: calc(var(--spacing) * 1);
+    border: 1px solid white;
+    height: 800px;
+}

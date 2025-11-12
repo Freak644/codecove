@@ -1,67 +1,123 @@
-import {motion} from 'framer-motion';
-import { useState } from 'react';
-export default function ImageSlider({imgArray,setArray}) {
-    const [index,setIndex] = useState(0)
-    const nextImg = ()=> setIndex(prev => (prev+1)%imgArray.length);
-    const prevImg = ()=> setIndex(prev => (prev-1 + imgArray.length) % imgArray.length);
-    const removeFile = ()=>{
-        console.log(index)
-        setArray(prev=>{
-            const toRemove = prev[index];
-            if (toRemove) URL.revokeObjectURL(toRemove.preview);
-            const newArr = prev.filter((_, i) => i !== index);
-            if (newArr.length === 0) {
-            setIndex(0);
-            } else if (index >= newArr.length) {
-            setIndex(newArr.length - 1);
-            }
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 
-            return newArr;
-        })
-    }
-    return(
-        <div className="relative h-full flex items-center justify-center w-[270px]">
-            {/* left button */}
-            <button onClick={prevImg}
-            className='absolute z-10 left-0 bg-transparent hidden sm:flex text-white w-9 h-9 rounded-full items-center justify-center hover:bg-gray-600  text-lg transition duration-100'
+export default function ImageSlider({ imgArray, setArray }) {
+  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+
+  const nextImg = () => {
+    setDirection(1);
+    setIndex((prev) => (prev + 1) % imgArray.length);
+  };
+
+  const prevImg = () => {
+    setDirection(-1);
+    setIndex((prev) => (prev - 1 + imgArray.length) % imgArray.length);
+  };
+
+  const removeFile = () => {
+    setArray((prev) => {
+      const toRemove = prev[index];
+      if (toRemove) URL.revokeObjectURL(toRemove.preview);
+      const newArr = prev.filter((_, i) => i !== index);
+
+      if (newArr.length === 0) {
+        setIndex(0);
+      } else if (index >= newArr.length) {
+        setIndex(newArr.length - 1);
+      }
+
+      return newArr;
+    });
+  };
+
+  const variants = {
+    enter: (dir) => ({
+      x: dir > 0 ? 300 : -300,
+      opacity: 0,
+    }),
+    center: { x: 0, opacity: 1, zIndex: 1 },
+    exit: (dir) => ({
+      x: dir > 0 ? -300 : 300,
+      opacity: 0,
+      zIndex: 0,
+    }),
+  };
+
+  const swipePower = (offset, velocity) => Math.abs(offset) * velocity;
+  const swipeConstHold = 10000;
+
+  return (
+    <div className="relative h-full flex items-center justify-center w-[320px]">
+      {/* left arrow */}
+      <button
+        onClick={prevImg}
+        className="absolute z-10 left-0 bg-transparent hidden sm:flex text-white w-9 h-9 rounded-full items-center justify-center hover:bg-gray-600 text-lg transition duration-100"
+      >
+        ⟵
+      </button>
+
+      {/* delete button */}
+      <button
+        onClick={removeFile}
+        className="absolute cursor-pointer z-10 right-0 top-0 bg-transparent text-red-600 w-9 h-9 rounded-full flex items-center justify-center hover:bg-gray-600 text-lg transition duration-100"
+      >
+        X
+      </button>
+
+      {/* slider container (your original setup) */}
+      <div className="my-scroll h-full flex items-center z-1 w-[300px] rounded-2xl bg-skin-bg relative overflow-hidden touch-pan-y">
+        <AnimatePresence initial={false} custom={direction}>
+          {imgArray.length > 0 && (
+            <motion.div
+              key={index}
+              className="absolute w-full h-full flex items-center justify-center"
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.1 },
+              }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(event, info) => {
+                const offsetX = info.offset.x;
+                const offsetY = info.offset.y;
+                const velocityX = info.velocity.x;
+
+                // ignore vertical scroll
+                if (Math.abs(offsetY) > Math.abs(offsetX)) return;
+
+                const swipe = swipePower(offsetX, velocityX);
+
+                if (swipe < -swipeConstHold) nextImg();
+                else if (swipe > swipeConstHold) prevImg();
+              }}
             >
-                ⟵
-            </button>
-            <button onClick={removeFile} className='absolute cursor-pointer z-10 right-0 top-0 bg-transparent text-red-600 w-9 h-9 rounded-full flex items-center justify-center hover:bg-gray-600  text-lg transition duration-100'>
-                X
-            </button>
-            {/* slider or imgCOntainer */}
-            <div className='my-scroll h-full flex items-center z-1 w-[300px] rounded-2xl bg-skin-bg'>
-                <motion.div
-                className='flex gap-5 items-center'
-                animate={{x: -index * 270}}
-                transition={{type:"spring",stiffness:200,damping:20}}
-                drag="x"
-                dragConstraints={{left:0,right:0}}
-                onDragEnd={(evnt,info)=>{
-                    if (info.offset.x < -100) nextImg()
-                    else if(info.offset.x > 100) prevImg()
-                     }}
-                > 
-                        {
-                            imgArray.map(({file,preview})=>{
-                            return(
-                                        <motion.img
-                                            title={file.name}
-                                            key={file.name}
-                                            src={preview}
-                                            className={`h-full w-full object-cover  rounded-2xl flex`}
-                                        />
-                            )})
-                        }
-                </motion.div>
-            </div>
-            {/* right button */}
-            <button onClick={nextImg}
-            className='absolute z-10 right-0 bg-transparent text-white w-9 h-9 rounded-full hidden sm:flex items-center justify-center hover:bg-gray-600  text-lg transition duration-100'
-            >
-                ⟶
-            </button>
-        </div>
-    )
+              {/* ⬇️ preserve aspect ratio & bg visibility */}
+              <img
+                key={imgArray[index].file.name}
+                src={imgArray[index].preview}
+                title={imgArray[index].file.name}
+                className="max-h-full max-w-full object-contain rounded-2xl"
+                draggable={false}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* right arrow */}
+      <button
+        onClick={nextImg}
+        className="absolute z-10 right-0 bg-transparent text-white w-9 h-9 rounded-full hidden sm:flex items-center justify-center hover:bg-gray-600 text-lg transition duration-100"
+      >
+        ⟶
+      </button>
+    </div>
+  );
 }

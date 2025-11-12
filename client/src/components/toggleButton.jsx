@@ -36,7 +36,7 @@ export default function ThemeButton() {
       <button
         ref={btnRef}
         onClick={() => setOpen((prev) => !prev)}
-        className="flex items-center gap-2 px-3 py-2 bg-skin-bg text-skin-text rounded-full shadow-md border border-[text-skin-ptext]/30 hover:bg-gray-800/10 transition-all duration-300"
+        className="flex items-center gap-2 px-2 py-1 bg-skin-bg text-skin-text rounded-full shadow-md border border-[text-skin-ptext]/30 hover:bg-gray-800/10 transition-all duration-300"
       >
         {theme === "light" && "☀️ Light"}
         {theme === "dark-yellow" && "🌕 Yellow"}
@@ -47,13 +47,13 @@ export default function ThemeButton() {
       {open && (
         <div
           ref={dropdownRef}
-          className="absolute -top-28 left-full -translate-x-1/2 bg-skin-bg border border-[text-skin-ptext]/20 rounded-xl shadow-lg p-2 flex flex-col items-start min-w-[120px] z-50"
+          className="absolute -top-28 left-full -translate-x-1/2 bg-skin-bg border border-[text-skin-ptext]/20 rounded-xl shadow-lg p-1 flex flex-col items-start min-w-[90px] z-50"
         >
           {themes.map((t) => (
             <button
               key={t}
               onClick={() => handleThemeChange(t)}
-              className={`w-full text-left cursor-pointer px-3 py-1.5 rounded-lg text-skin-text hover:bg-gray-800/10 transition-all ${
+              className={`w-full text-left cursor-pointer px-2 py-1 rounded-lg text-skin-text hover:bg-gray-800/10 transition-all ${
                 t === theme ? "font-semibold" : "opacity-70"
               }`}
             >

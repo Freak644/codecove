@@ -20,7 +20,7 @@ export default function Creater({Images,handler}) {
                 <ImageSlider imgArray={Images} setArray={handler} />
             </div>
             <div className="captionAndVisiblity">
-
+                
             </div>
         </div>
     )

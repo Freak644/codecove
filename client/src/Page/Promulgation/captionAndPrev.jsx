@@ -19,11 +19,36 @@ export default function Creater({Images,handler}) {
                 <ImageSlider imgArray={Images} setArray={handler} />
             </div>
             <div className="captionAndVisiblity flex items-center flex-col md:flex-row w-full px-2
-            border shadow-lg">
+            border shadow-lg text-skin-text">
+                <div className="innerCaption">
+                    <h2>Privacy Panel</h2>
+                    <div className="optionDiv">
+                        <div className="SecDiv">
+                            <strong>Post Visibility : </strong>
+                            <select name="" id="Visibility">
+                                <option value={true}>Public</option>
+                                <option value={false}>Privat</option>
+                            </select>
+                        </div>
+                        <div className="SecDiv">
+                            <strong>Comment Setting : </strong>
+                            <select name="" id="Comment">
+                                <option value={true}>ON</option>
+                                <option value={false}>OFF</option>
+                            </select>
+                        </div>
+                        <div className="SecDiv">
+                            <strong>Show Like Count : </strong>
+                            <select name="" id="Like">
+                                <option value={true}>ON</option>
+                                <option value={false}>OFF</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div className="innerCaption">
 
                 </div>
-                <div className="innerCaption"></div>
             </div>
         </div>
     )

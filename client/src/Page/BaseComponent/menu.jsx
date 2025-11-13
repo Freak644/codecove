@@ -140,7 +140,7 @@ export default function MenuEL(params) {
                         <ul className='flex gap-2 flex-col'>
                             <li><i className='bx bx-cog'></i><span>Setting</span></li>
                             <li><i className='bx bx-chart'></i><span>Your Activity</span></li>
-                            <li> <ThemeButton/> </li>
+                            <li className='z-50'> <ThemeButton/> </li>
                             <li><i className='bx bx-bookmark'></i><span>Save</span></li>
                             <li><i className='bx bx-error-circle'></i><span className='flex items-center justify-center z-20'>Report an issue</span></li>
                             <li onClick={handleLogout}><i className='bx bxs-log-in'></i><span>Logout</span></li>

@@ -1,9 +1,9 @@
 import geoip from 'geoip-lite';
 import {UAParser} from "ua-parser-js";
 import { database } from '../../Controllers/myConnectionFile.js';
-import {v4 as uuidV4} from 'uuid';
+import {nanoid} from 'nanoid'
 export const SaveThisSession = async (rkv,userID) => {
-    let session_id = uuidV4();
+    let session_id = nanoid();
     const ip = rkv.clientIp?.replace(/^::ffff:/,"") || "0.0.0.0";
     const userAgent = rkv.headers["user-agent"] || "";
     const geo = geoip.lookup(ip)

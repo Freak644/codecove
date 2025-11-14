@@ -71,6 +71,18 @@ CREATE TABLE IF NOT EXISTS posts (
   INDEX idx_user_id (id)
 );
 
+CREATE TABLE IF NOT EXISTS likes (
+  like_id INT AUTO_INCREMENT PRIMARY KEY,
+  id CHAR(36) NOT NULL,
+  post_id CHAR(36) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(post_id,id),
+  FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_user_id (id),
+  INDEX idx_post_id (post_id)
+)
+
 /*
 ===================================
   🖼️ blocked bad words 

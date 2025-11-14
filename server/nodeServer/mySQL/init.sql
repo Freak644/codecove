@@ -63,7 +63,122 @@ CREATE TABLE IF NOT EXISTS posts (
   image_url VARCHAR(255),
   caption TEXT,
   visibility BOOLEAN DEFAULT TRUE,
+  comment BOOLEAN  DEFAULT TRUE,
+  likecount BOOLEAN DEFAULT TRUE,
+  saveop BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_user_id (id)
 );
+
+/*
+===================================
+  🖼️ blocked bad words 
+===================================
+*/
+
+CREATE TABLE blocked_words (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  word VARCHAR(255) NOT NULL,
+  category VARCHAR(50) NOT NULL
+);
+
+/*
+===================================
+  🖼️ words data 
+===================================
+*/
+
+
+INSERT INTO blocked_words (word, category) VALUES
+('idiot', 'Abuse'),
+('stupid', 'Abuse'),
+('dumb', 'Abuse'),
+('fool', 'Abuse'),
+('trash', 'Abuse'),
+('loser', 'Abuse'),
+('moron', 'Abuse'),
+('nonsense', 'Abuse'),
+('ugly', 'Abuse'),
+('pig', 'Abuse'),
+('clown', 'Abuse'),
+('jerk', 'Abuse'),
+('shut up', 'Abuse'),
+('nasty', 'Abuse'),
+('pathetic', 'Abuse'),
+('weak', 'Abuse'),
+('useless', 'Abuse'),
+('worthless', 'Abuse'),
+('bastard', 'Abuse'),
+('toxic', 'Abuse'),
+('disgusting', 'Abuse'),
+('hate', 'Abuse'),
+('hateful', 'Abuse');
+
+INSERT INTO blocked_words (word, category) VALUES
+('kill', 'Violence'),
+('murder', 'Violence'),
+('attack', 'Violence'),
+('shoot', 'Violence'),
+('stab', 'Violence'),
+('blood', 'Violence'),
+('knife', 'Violence'),
+('gun', 'Violence'),
+('explode', 'Violence'),
+('bomb', 'Violence'),
+('terror', 'Violence'),
+('fight', 'Violence'),
+('beat', 'Violence'),
+('hurt', 'Violence'),
+('burn', 'Violence'),
+('torture', 'Violence'),
+('rape', 'Violence'),
+('hang', 'Violence'),
+('strangle', 'Violence'),
+('assault', 'Violence'),
+('dead', 'Violence'),
+('death', 'Violence');
+
+INSERT INTO blocked_words (word, category) VALUES
+('free money', 'Spam'),
+('discount here', 'Spam'),
+('click here', 'Spam'),
+('earn cash', 'Spam'),
+('crypto scam', 'Spam'),
+('win prize', 'Spam'),
+('lottery win', 'Spam'),
+('investment scam', 'Spam'),
+('buy now', 'Spam'),
+('limited offer', 'Spam'),
+('act fast', 'Spam'),
+('subscribe now', 'Spam'),
+('followers cheap', 'Spam'),
+('views cheap', 'Spam'),
+('fake followers', 'Spam'),
+('giveaway scam', 'Spam'),
+('promo code spam', 'Spam'),
+('adult webcam', 'Spam'),
+('xxx', 'Spam'),
+('porn', 'Spam'),
+('nsfw', 'Spam');
+
+INSERT INTO blocked_words (word, category) VALUES
+('http', 'Link'),
+('https', 'Link'),
+('www', 'Link'),
+('dot com', 'Link'),
+('.com', 'Link'),
+('.net', 'Link'),
+('.org', 'Link'),
+('.io', 'Link'),
+('.link', 'Link'),
+('redirect', 'Link'),
+('url', 'Link'),
+('click link', 'Link'),
+('visit site', 'Link'),
+('open link', 'Link'),
+('shortlink', 'Link'),
+('bit.ly', 'Link'),
+('tinyurl', 'Link'),
+('go to this link', 'Link');
+

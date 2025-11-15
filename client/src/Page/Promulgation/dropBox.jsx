@@ -2,13 +2,11 @@ import { motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {useDropzone} from 'react-dropzone';
 import {Upload,X,File} from 'lucide-react';
-import axios from 'axios';
 import { Loader } from '../../lib/loader';
 import Creater from './captionAndPrev';
 import {toast} from 'react-toastify'
 export default function DragDropBox() {
     const [imgFiles,setImgFiles] = useState([])
-    const scrollConRef = useRef(null);
     const {isTrue, toggleLoader} = Loader();
     useEffect(()=>{
         return ()=> {
@@ -27,7 +25,7 @@ export default function DragDropBox() {
     const onDrop = useCallback((acceptedFiles) => {
         if (acceptedFiles.length > 5) return toast.info("You can only attach 5 file in single Post")
         const allowTypes = ["png", "jpeg", "jpg"];
-        const maxSize = 5 * 1024 * 1024; // 5MB per file
+        const maxSize = 3 * 1024 * 1024; // 5MB per file
 
         const validFiles = [];
         const errors = [];
@@ -66,84 +64,78 @@ export default function DragDropBox() {
     const {getRootProps,getInputProps,isDragActive} = useDropzone({
         onDrop,
         multiple: true,
-        maxSize: 5 * 1024 * 1024, // size 5MB
+        maxSize: 3 * 1024 * 1024, // size 5MB
     });
 
-    const scrollCon = ()=>{
-      if (scrollConRef.current) {
-        scrollConRef.current.scrollBy({top:70, behavior: "smooth" });
-      }
-    }
+// const uploadFiles = async () => {
+//   if(isTrue) return;
+//   toggleLoader(true);
+//   for (const img of imgFiles) {
+//     try {
+//       const formData = new FormData();
+//       formData.append("postFile", img.file);
 
-const uploadFiles = async () => {
-  if(isTrue) return;
-  toggleLoader(true);
-  for (const img of imgFiles) {
-    try {
-      const formData = new FormData();
-      formData.append("postFile", img.file);
+//       if (img.uploaded || img.error) continue;
+//       setImgFiles((prev) =>
+//         prev.map((file) =>
+//           file.file.name === img.file.name
+//             ? { ...file, uploading: true, error: false }
+//             : file
+//         )
+//       );
 
-      if (img.uploaded || img.error) continue;
-      setImgFiles((prev) =>
-        prev.map((file) =>
-          file.file.name === img.file.name
-            ? { ...file, uploading: true, error: false }
-            : file
-        )
-      );
+//       const res = await axios.post("/myServer/CreatePost", formData, {
+//         onUploadProgress: (event) => {
+//           const percent = Math.round((event.loaded * 100) / event.total);
+//           setImgFiles((prev) =>
+//             prev.map((file) =>
+//               file.file.name === img.file.name
+//                 ? { ...file, progress: percent }
+//                 : file
+//             )
+//           );
+//         },
+//       });
 
-      const res = await axios.post("/myServer/CreatePost", formData, {
-        onUploadProgress: (event) => {
-          const percent = Math.round((event.loaded * 100) / event.total);
-          setImgFiles((prev) =>
-            prev.map((file) =>
-              file.file.name === img.file.name
-                ? { ...file, progress: percent }
-                : file
-            )
-          );
-        },
-      });
+//       scrollCon();
 
-      scrollCon();
+//       setImgFiles((prev) =>
+//         prev.map((file) =>
+//           file.file.name === img.file.name
+//             ? { ...file, uploaded: true, uploading: false }
+//             : file
+//         )
+//       );
 
-      setImgFiles((prev) =>
-        prev.map((file) =>
-          file.file.name === img.file.name
-            ? { ...file, uploaded: true, uploading: false }
-            : file
-        )
-      );
+//       console.log("✅ Uploaded:", res.data);
+//     } catch (error) {
+//       toggleLoader(false)
+//       console.error("❌ Upload failed:", error);
 
-      console.log("✅ Uploaded:", res.data);
-    } catch (error) {
-      toggleLoader(false)
-      console.error("❌ Upload failed:", error);
+//       let message = "Something went wrong while uploading.";
 
-      let message = "Something went wrong while uploading.";
+//       if (error.response) {
+//         message = error.response.data?.err || "Server error during upload.";
+//       } else if (error.request) {
+//         message = "Network error: Server not reachable.";
+//       } else {
+//         message = error.message;
+//       }
 
-      if (error.response) {
-        message = error.response.data?.err || "Server error during upload.";
-      } else if (error.request) {
-        message = "Network error: Server not reachable.";
-      } else {
-        message = error.message;
-      }
-
-      setImgFiles((prev) =>
-        prev.map((file) =>
-          file.file.name === img.file.name
-            ? { ...file, uploading: false, error: true }
-            : file
-        )
-      );
-      // optional: show alert only once, not for every file
-      console.warn(message);
-      // 👇 continue to next file automatically (no return!)
-    }
-  }
-  toggleLoader(false);
-};
+//       setImgFiles((prev) =>
+//         prev.map((file) =>
+//           file.file.name === img.file.name
+//             ? { ...file, uploading: false, error: true }
+//             : file
+//         )
+//       );
+//       // optional: show alert only once, not for every file
+//       console.warn(message);
+//       // 👇 continue to next file automatically (no return!)
+//     }
+//   }
+//   toggleLoader(false);
+// };
 
 
 

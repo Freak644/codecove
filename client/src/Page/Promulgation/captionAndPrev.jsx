@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { UnivuUserInfo } from "../../lib/basicUserinfo";
 import ImageSlider from "./sliderCom";
 import { toast } from "react-toastify";
+import axios from 'axios';
 
 export default function Creater({Images,handler}) {
     let {userInfo} = UnivuUserInfo();
@@ -15,6 +16,22 @@ export default function Creater({Images,handler}) {
         setCharCount(maxLength-value.length)
     }
     
+    const handleSubmit = async () => {
+        console.log(Images)
+        let formData = new FormData();
+        Images.forEach(img => {
+            formData.append("postFiles",img.file)
+        });
+        try {
+            await axios.post("/myServer/CreatePost",formData,{
+            headers:{
+                "Content-Type":"multipart/form-data"
+            }
+           });
+        } catch (error) {
+            console.log(error)
+        }
+    }
     return(
         <div className="underTaker gap-2.5">
             <div className="flex p-1 relative h-[450px] w-[320px] items-center justify-center shrink-0">
@@ -87,7 +104,7 @@ export default function Creater({Images,handler}) {
                                 <label htmlFor="Violence">Violence</label>
                             </div>
                         </div>
-                        <button className="btn w-48">Uploade</button>
+                        <button onClick={(evnt)=>handleSubmit()} className="btn w-48">Uploade</button>
                     </div>
                 </div>
             </div>

@@ -2,6 +2,7 @@ import express from 'express';
 import chalk from 'chalk';
 import cookieParser from 'cookie-parser';
 import requestIp from 'request-ip';
+import {diskUpload} from './Controllers/diskMulter.js'
 let port = 3222;
 import fs from 'fs';
 //import path from 'path';
@@ -41,7 +42,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
     storage,
     fileFilter,
-    limits: { fileSize: 5 * 1024 * 1024 } 
+    limits: { fileSize: 3 * 1024 * 1024 } 
 });
 
 myApp.get("/getUsername",getUsers);
@@ -55,7 +56,7 @@ myApp.post("/Logout",Auth,loggedMeOut);
 myApp.get("/checkActive",ActivityInfo);
 myApp.put("/upDatePass",changePassSecure);
 myApp.post("/sendForgotMail",forgotPass);
-myApp.post("/CreatePost",upload.single("postFile"),Auth,CreatePost);
+myApp.post("/CreatePost",diskUpload.array("postFiles",5),Auth,CreatePost);
 myApp.listen(port,()=>{
     console.log(chalk.greenBright.yellow.italic.bold("server is start on "+port))
 });

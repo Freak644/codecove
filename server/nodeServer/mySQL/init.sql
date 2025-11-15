@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS likes (
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_user_id (id),
   INDEX idx_post_id (post_id)
-)
+);
 
 /*
 ===================================
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS likes (
 ===================================
 */
 
-CREATE TABLE blocked_words (
+CREATE TABLE IF NOT EXISTS blocked_words (
   id INT AUTO_INCREMENT PRIMARY KEY,
   word VARCHAR(255) NOT NULL,
   category VARCHAR(50) NOT NULL

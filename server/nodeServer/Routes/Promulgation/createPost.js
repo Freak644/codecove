@@ -41,17 +41,23 @@ export const CreatePost = async (rkv,rspo) => {
       imgArray.push(file.filename);
     });
       try {
+        const cloudLiks = [];
         let [row] = await database.query("SELECT username FROM users WHERE id=?",
           [id]
         );
-        if(row.length<1) return rspo.status(401).send({err:"No user found"});
-        for (let imgfile of imgArray) {
-          
+        if(row.length<1) {
+          await clearTemp(imgArray);
+          return rspo.status(401).send({err:"No user found"});}
+        for (const crntImg of rkv.files) {
+          let rekvst = await FileChecker(crntImg.path,crntImg.size);
+          if (rekvst.err) {
+            await clearTemp(imgArray);
+            return rspo.status(400).send(rekvst.err);
+          }
+          const cloudRkv = await cloudinary.uploader.upload(crntImg.path, { folder: row[0].username });
+          cloudLiks.push(cloudRkv.secure_url);
+          await fs.promises.unlink(crntImg.path);
         }
-        const result = await cloudinary.uploader.upload(imgPath,{
-          folder:row[0].username,
-          resource_type:"image"
-        })
         rspo.status(200).send({pass:"done"})
       } catch (error) {
         await clearTemp(imgArray);

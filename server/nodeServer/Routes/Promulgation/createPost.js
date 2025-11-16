@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
 import { FileChecker } from './fileChecker.js';
+import  {nanoid} from 'nanoid';
 import { database } from '../../Controllers/myConnectionFile.js';
 /* THe flow will be 
 React (FormData)
@@ -37,7 +38,6 @@ export const CreatePost = async (rkv,rspo) => {
     let {id} = rkv.authData;
     if (fileArray.length == 0) return rspo.status(401).send({err:"no file found"});
     let {Visibility, Comment, Like, Save, Caption, Absuse, Spam, Link, Violence} = rkv.body;
-    console.log( Visibility, Comment, Like, Save, Caption, Absuse, Spam, Link, Violence)
     let imgArray = []
     fileArray.forEach(file => {
       imgArray.push(file.filename);
@@ -56,13 +56,17 @@ export const CreatePost = async (rkv,rspo) => {
             await clearTemp(imgArray);
             return rspo.status(400).send(rekvst.err);
           }
-          // const cloudRkv = await cloudinary.uploader.upload(crntImg.path, { folder: row[0].username });
-          // cloudLiks.push(cloudRkv.secure_url);
+          const cloudRkv = await cloudinary.uploader.upload(crntImg.path, { folder: row[0].username });
+          cloudLiks.push(cloudRkv.secure_url);
           await fs.promises.unlink(crntImg.path);
         }
-        rspo.status(200).send({pass:"done"})
+        let post_id = nanoid();
+        await database.query("INSERT INTO posts (post_id, id, images_url, caption, blockCat, visibility, comment, showcount, saveop) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          [post_id, id, JSON.stringify(cloudLiks), Caption, JSON.stringify({Absuse,Spam,Link,Violence}), Visibility ? 1 : 0, Comment ? 1 : 0,Like ? 1 : 0, Save ? 1 : 0]
+        )
+        rspo.status(200).send({pass:"post created"})
       } catch (error) {
-        await clearTemp(imgArray);
+        console.log(error.message)
         return rspo.status(500).send({err:"server side error",details:error.message});
       }
 }

@@ -9,29 +9,38 @@ export default function Creater({Images,handler}) {
     const [charCount,setCharCount] = useState(300)
     const [caption,setCaption] = useState("");
     let {isTrue,toggleLoader} = Loader();
-    
+    const [blockThings,setBockThings] = useState({
+        Absuse:false,
+        Link:false,
+        Spam:false,
+        Violence:false
+    })
     const handleCaption = value=>{
         let maxLength = 300;
         if (value.length > maxLength) return toast.warning("You reach the Character Limit");
         setCaption(value);
         setCharCount(maxLength-value.length)
     }
-    
+
     const handleSubmit = async (evnt) => {
         evnt.preventDefault();
         toggleLoader(true)
         let formData = new FormData(evnt.target);
-        let { Visibility, Comment, Like, Save, Caption, Absuse, Spam, Link, Violence} = Object.fromEntries(formData);
-        
+        formData.set("Absuse",blockThings.Absuse)
+        formData.set("Link",blockThings.Link)
+        formData.set("Spam",blockThings.Spam)
+        formData.set("Violence",blockThings.Violence)
         Images.forEach(img => {
             formData.append("postFiles",img.file)
         });
+        
         try {
             await axios.post("/myServer/CreatePost",formData,{
             headers:{
                 "Content-Type":"multipart/form-data"
             }
            });
+           handler([])
         } catch (error) {
             toast.error(error.response.data)
         }finally{
@@ -95,19 +104,19 @@ export default function Creater({Images,handler}) {
                         <div className="blockCat">
                             <h2>Block Comment :</h2>
                             <div className="checkBoxDiv">
-                                <input type="checkbox" name="Absuse" id="Absuse" />
+                                <input   onChange={(evnt)=>setBockThings({...blockThings,[evnt.target.name]:evnt.target.checked})} type="checkbox" name="Absuse" id="Absuse" />
                                 <label htmlFor="Absuse">Absuse</label>
                             </div>
                             <div className="checkBoxDiv">
-                                <input type="checkbox" name="Spam" id="Spam" />
+                                <input   onChange={(evnt)=>setBockThings({...blockThings,[evnt.target.name]:evnt.target.checked})} type="checkbox" name="Spam" id="Spam" />
                                 <label htmlFor="Spam">Spam</label>
                             </div>
                             <div className="checkBoxDiv">
-                                 <input type="checkbox" name="Link" id="Link" />
+                                 <input  onChange={(evnt)=>setBockThings({...blockThings,[evnt.target.name]:evnt.target.checked})}  type="checkbox" name="Link" id="Link" />
                                 <label htmlFor="Link">Link</label>
                             </div>
                             <div className="checkBoxDiv">
-                                <input type="checkbox" name="Violence" id="Violence" />
+                                <input  onChange={(evnt)=>setBockThings({...blockThings,[evnt.target.name]:evnt.target.checked})} type="checkbox" name="Violence" id="Violence" />
                                 <label htmlFor="Violence">Violence</label>
                             </div>
                         </div>

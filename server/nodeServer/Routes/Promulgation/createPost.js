@@ -36,6 +36,8 @@ export const CreatePost = async (rkv,rspo) => {
     const fileArray = rkv.files
     let {id} = rkv.authData;
     if (fileArray.length == 0) return rspo.status(401).send({err:"no file found"});
+    let {Visibility, Comment, Like, Save, Caption, Absuse, Spam, Link, Violence} = rkv.body;
+    console.log( Visibility, Comment, Like, Save, Caption, Absuse, Spam, Link, Violence)
     let imgArray = []
     fileArray.forEach(file => {
       imgArray.push(file.filename);
@@ -54,8 +56,8 @@ export const CreatePost = async (rkv,rspo) => {
             await clearTemp(imgArray);
             return rspo.status(400).send(rekvst.err);
           }
-          const cloudRkv = await cloudinary.uploader.upload(crntImg.path, { folder: row[0].username });
-          cloudLiks.push(cloudRkv.secure_url);
+          // const cloudRkv = await cloudinary.uploader.upload(crntImg.path, { folder: row[0].username });
+          // cloudLiks.push(cloudRkv.secure_url);
           await fs.promises.unlink(crntImg.path);
         }
         rspo.status(200).send({pass:"done"})

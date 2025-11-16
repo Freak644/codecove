@@ -3,11 +3,12 @@ import { UnivuUserInfo } from "../../lib/basicUserinfo";
 import ImageSlider from "./sliderCom";
 import { toast } from "react-toastify";
 import axios from 'axios';
-
+import {Loader} from '../../lib/loader';
 export default function Creater({Images,handler}) {
     let {userInfo} = UnivuUserInfo();
     const [charCount,setCharCount] = useState(300)
     const [caption,setCaption] = useState("");
+    let {isTrue,toggleLoader} = Loader();
     
     const handleCaption = value=>{
         let maxLength = 300;
@@ -16,9 +17,12 @@ export default function Creater({Images,handler}) {
         setCharCount(maxLength-value.length)
     }
     
-    const handleSubmit = async () => {
-        console.log(Images)
-        let formData = new FormData();
+    const handleSubmit = async (evnt) => {
+        evnt.preventDefault();
+        toggleLoader(true)
+        let formData = new FormData(evnt.target);
+        let { Visibility, Comment, Like, Save, Caption, Absuse, Spam, Link, Violence} = Object.fromEntries(formData);
+        
         Images.forEach(img => {
             formData.append("postFiles",img.file)
         });
@@ -29,7 +33,9 @@ export default function Creater({Images,handler}) {
             }
            });
         } catch (error) {
-            console.log(error)
+            toast.error(error.response.data)
+        }finally{
+            toggleLoader(false)
         }
     }
     return(
@@ -43,34 +49,35 @@ export default function Creater({Images,handler}) {
                 </div>
                 <ImageSlider imgArray={Images} setArray={handler} />
             </div>
+            <form action="" onSubmit={handleSubmit}>
             <div className="captionAndVisiblity gap-3 sm:gap-0 flex items-center justify-center flex-wrap w-full px-2 shadow-lg text-skin-ptext">
                 <div className="innerCaption">
                     <h2>Privacy Panel</h2>
                     <div className="optionDiv">
                         <div className="SecDiv">
                             <strong>Post Visibility : </strong>
-                            <select name="" id="Visibility">
+                            <select name="Visibility" id="Visibility">
                                 <option value={true}>Public</option>
                                 <option value={false}>Privat</option>
                             </select>
                         </div>
                         <div className="SecDiv">
                             <strong>Comment Setting : </strong>
-                            <select name="" id="Comment">
+                            <select name="Comment" id="Comment">
                                 <option value={true}>ON</option>
                                 <option value={false}>OFF</option>
                             </select>
                         </div>
                         <div className="SecDiv">
                             <strong>Show Like & Comment Count : </strong>
-                            <select name="" id="Like">
+                            <select name="Like" id="Like">
                                 <option value={true}>ON</option>
                                 <option value={false}>OFF</option>
                             </select>
                         </div>
                         <div className="SecDiv">
                             <strong>Allow viewer can save : </strong>
-                            <select name="" id="Save">
+                            <select name="Save" id="Save">
                                 <option value={true}>ON</option>
                                 <option value={false}>OFF</option>
                             </select>
@@ -82,32 +89,33 @@ export default function Creater({Images,handler}) {
                     <div className="controllerDiv">
                         <div className="promulgatDiv">
                         <p>Chracter Remain: {charCount}</p>
-                        <textarea value={caption} onChange={(evnt)=>handleCaption(evnt.target.value)} name="caption" id="caption" placeholder="Write a caption....">
+                        <textarea value={caption} onChange={(evnt)=>handleCaption(evnt.target.value)} name="Caption" id="caption" placeholder="Write a caption....">
                         </textarea>
                         </div>
                         <div className="blockCat">
                             <h2>Block Comment :</h2>
                             <div className="checkBoxDiv">
-                                <input type="checkbox" name="" id="Absuse" />
+                                <input type="checkbox" name="Absuse" id="Absuse" />
                                 <label htmlFor="Absuse">Absuse</label>
                             </div>
                             <div className="checkBoxDiv">
-                                <input type="checkbox" name="" id="Spam" />
+                                <input type="checkbox" name="Spam" id="Spam" />
                                 <label htmlFor="Spam">Spam</label>
                             </div>
                             <div className="checkBoxDiv">
-                                 <input type="checkbox" name="" id="Link" />
+                                 <input type="checkbox" name="Link" id="Link" />
                                 <label htmlFor="Link">Link</label>
                             </div>
                             <div className="checkBoxDiv">
-                                <input type="checkbox" id="Violence" />
+                                <input type="checkbox" name="Violence" id="Violence" />
                                 <label htmlFor="Violence">Violence</label>
                             </div>
                         </div>
-                        <button onClick={(evnt)=>handleSubmit()} className="btn w-48">Uploade</button>
+                        <button disabled={isTrue} type="submit" className="btn w-48 flex items-center justify-center">{isTrue ? <div className="miniLoader"></div> : "Uploade"}</button>
                     </div>
                 </div>
             </div>
+            </form>
         </div>
     )
 }

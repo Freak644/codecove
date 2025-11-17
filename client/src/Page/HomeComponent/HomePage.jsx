@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import {io} from 'socket.io-client';
+import HomeSkeleton from './skeletonForHome';
 export default function HonePage() {
     const socket = io("", {
       transports: ["websocket"],
@@ -22,10 +23,8 @@ export default function HonePage() {
     };
   }, []);
     return (
-      <div className="p-4 border rounded-lg w-60">
-        <div className="bg-gray-500 h-16 w-16 rounded-full animate-pulse"></div>
-        <div className="bg-gray-500 h-4 w-40 mt-4 rounded animate-pulse"></div>
-        <div className="bg-gray-500 h-4 w-28 mt-2 rounded animate-pulse"></div>
+      <div className="underTaker">
+        <HomeSkeleton/>
       </div>
     );
 }

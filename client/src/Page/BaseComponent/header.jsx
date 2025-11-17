@@ -23,7 +23,7 @@ export default function Header() {
         }
     }
     return(
-        <div className="headerContainer h-[9vh] cursor-pointer lg:bg-gray-500! lg:h-10 lg:w-[200px] lg:rounded-4xl lg:absolute lg:top-1601 lg:right-30! w-full  rounded flex items-center justify-between
+        <div className="headerContainer h-[9vh] cursor-pointer lg:bg-gray-500! lg:h-10 lg:w-[200px] lg:rounded-4xl lg:absolute lg:top-4/5 lg:right-30! w-full  rounded flex items-center justify-between
         lg:bg-linear-to-tr lg:from-yellow-400 lg:via-purple-600 lg:to-pink-500 
         bg-size-[200%_200%] hover:bg-position[200%_0%] lg:text-white! lg:hover:text-skin-text! transition-all duration-500 ease-in-out text-skin-text! border-b border-gray-500">
             <div className="firstHalf lg:hidden w-1/2 flex items-center ">

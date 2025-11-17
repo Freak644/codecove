@@ -20,6 +20,7 @@ import { ActivityInfo } from './Routes/Login/getSessionInfo.js';
 import { changePassSecure } from './Routes/Secure/SecureAccount.js';
 import { forgotPass } from './Routes/Secure/forgotPassMail.js';
 import { CreatePost } from './Routes/Promulgation/createPost.js';
+import { GetPosts } from './Routes/usersPOSTAPIs/getPost.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -59,6 +60,7 @@ myApp.get("/checkActive",ActivityInfo);
 myApp.put("/upDatePass",changePassSecure);
 myApp.post("/sendForgotMail",forgotPass);
 myApp.post("/CreatePost",diskUpload.array("postFiles",5),Auth,CreatePost);
+myApp.get("/getPost",Auth,GetPosts);
 
 
 const myServer = http.createServer(myApp);

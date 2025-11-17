@@ -35,6 +35,7 @@ export default defineConfig({
       "/myServer": {
         target: "http://127.0.0.1:3222",
         changeOrigin: true,
+        ws:true,
         rewrite: (path) => path.replace(/^\/myServer/, ""),
       },
     },

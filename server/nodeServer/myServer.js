@@ -1,4 +1,6 @@
 import express from 'express';
+import http from 'http';
+import {Server} from 'socket.io';
 import chalk from 'chalk';
 import cookieParser from 'cookie-parser';
 import requestIp from 'request-ip';
@@ -57,6 +59,21 @@ myApp.get("/checkActive",ActivityInfo);
 myApp.put("/upDatePass",changePassSecure);
 myApp.post("/sendForgotMail",forgotPass);
 myApp.post("/CreatePost",diskUpload.array("postFiles",5),Auth,CreatePost);
-myApp.listen(port,()=>{
-    console.log(chalk.greenBright.yellow.italic.bold("server is start on "+port))
+
+
+const myServer = http.createServer(myApp);
+const io = new Server(myServer, {
+    path: "/socket.io"
 });
+
+io.on("connection", (socket) => {
+    console.log("User came online", socket.id);
+
+    socket.on("disconnect", () => {
+        console.log("User leave", socket.id);
+    });
+});
+
+myServer.listen(port,()=>{
+    console.log(chalk.greenBright.yellow.italic.bold("Server + Socket.IO running on " + port));
+})

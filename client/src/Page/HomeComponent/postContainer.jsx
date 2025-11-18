@@ -7,8 +7,15 @@ export default function PostsCon({posts,fetch}) {
 
                 </div>
                 {
-                    posts.map(({caption,comment,imgages_url,saveop,post_id})=>{
-
+                    posts.map(({caption,comment,imgages_url,saveop,post_id,username,avatar})=>{
+                        return(
+                            <div key={post_id} className="flex items-center flex-col gap-2">
+                                <div className="ownInfo flex items-center flex-row p-1 gap-1.5 text-skin-text">
+                                    <img src={`/myServer/${avatar}`} className="h-9 w-9 rounded-full" alt="Avatar" />
+                                    <p>{username}</p>
+                                </div>
+                            </div>
+                        )
                     })
                 }
             </div>

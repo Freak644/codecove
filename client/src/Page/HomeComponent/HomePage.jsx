@@ -16,6 +16,10 @@ export default function HonePage() {
         console.log("Connected to WS →", socket.id);
       });
 
+      socket.on("new-post",(newPost)=>{
+        setPosts(prev=>[newPost,...prev])
+      })
+
       socket.on("disconnect", () => {
         console.log("Disconnected");
       });
@@ -32,7 +36,7 @@ export default function HonePage() {
     if (data.err) {
      return  console.log(data.err)
     }
-    setPosts(prev=>[...prev,...data.post]);
+    setPosts(data.post);
     setOffset(offset+15)
     console.log(data.post)
   }

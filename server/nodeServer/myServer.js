@@ -21,6 +21,7 @@ import { changePassSecure } from './Routes/Secure/SecureAccount.js';
 import { forgotPass } from './Routes/Secure/forgotPassMail.js';
 import { CreatePost } from './Routes/Promulgation/createPost.js';
 import { GetPosts } from './Routes/usersPOSTAPIs/getPost.js';
+import postSocket from './socketIO/postSocket.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -71,10 +72,17 @@ const io = new Server(myServer, {
 io.on("connection", (socket) => {
     console.log("User came online", socket.id);
 
+    postSocket(io,socket);
+
     socket.on("disconnect", () => {
         console.log("User leave", socket.id);
     });
 });
+
+export function getIO() {
+    if (!io) throw new Error("Socket.io not initialized!");
+    return io;
+}
 
 myServer.listen(port,()=>{
     console.log(chalk.greenBright.yellow.italic.bold("Server + Socket.IO running on " + port));

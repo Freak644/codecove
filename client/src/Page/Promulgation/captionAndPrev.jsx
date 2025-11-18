@@ -40,6 +40,7 @@ export default function Creater({Images,handler}) {
                 "Content-Type":"multipart/form-data"
             }
            });
+           toast.success("Your post is Post😅")
            handler([])
         } catch (error) {
             toast.error(error.response.data)

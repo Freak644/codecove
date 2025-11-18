@@ -5,6 +5,7 @@ import fs from 'fs';
 import { FileChecker } from './fileChecker.js';
 import  {nanoid} from 'nanoid';
 import { database } from '../../Controllers/myConnectionFile.js';
+import {getIO} from '../../myServer.js';
 /* THe flow will be 
 React (FormData)
    ↓
@@ -39,6 +40,7 @@ export const CreatePost = async (rkv,rspo) => {
     if (fileArray.length == 0) return rspo.status(401).send({err:"no file found"});
     let {Visibility, Comment, Like, Save, Caption, Absuse, Spam, Link, Violence} = rkv.body;
     let imgArray = []
+    console.log(Visibility == "true" ? 1 : 0)
     fileArray.forEach(file => {
       imgArray.push(file.filename);
     });
@@ -62,8 +64,13 @@ export const CreatePost = async (rkv,rspo) => {
         }
         let post_id = nanoid();
         await database.query("INSERT INTO posts (post_id, id, images_url, caption, blockCat, visibility, comment, showcount, saveop) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-          [post_id, id, JSON.stringify(cloudLiks), Caption, JSON.stringify({Absuse,Spam,Link,Violence}), Visibility ? 1 : 0, Comment ? 1 : 0,Like ? 1 : 0, Save ? 1 : 0]
+          [post_id, id, JSON.stringify(cloudLiks), Caption, JSON.stringify({Absuse,Spam,Link,Violence}), Visibility == "true" ? 1 : 0, Comment == "true" ? 1 : 0,Like == "true" ? 1 : 0, Save == "true" ? 1 : 0]
         )
+        let [rows] = await database.query(`SELECT u.username, u.avatar, p.*
+                      FROM posts p INNER JOIN users u ON u.id = p.id WHERE
+                      p.post_id = ? AND p.visibility <> 0`,[post_id]);
+        const io = getIO();
+        io.emit("new-post",rows[0])
         rspo.status(200).send({pass:"post created"})
       } catch (error) {
         console.log(error.message)

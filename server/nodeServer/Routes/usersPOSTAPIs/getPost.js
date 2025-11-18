@@ -8,7 +8,7 @@ export const GetPosts = async (rkv,rspo) => {
         limit=10;
     }
     try {
-        const [rows] = await database.query("SELECT * FROM posts ORDER BY created_at DESC LIMIT ? OFFSET ?",
+        const [rows] = await database.query("SELECT u.username, u.avatar, p.* FROM posts p INNER JOIN users u ON u.id = p.id ORDER BY created_at DESC LIMIT ? OFFSET ?",
         [limit,offset])
         rspo.status(201).send({pass:"Found",post:rows})
     } catch (error) {

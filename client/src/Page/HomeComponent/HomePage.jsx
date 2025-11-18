@@ -37,7 +37,7 @@ export default function HonePage() {
     console.log(data.post)
   }
   useEffect(()=>{
-    // fetchPost();
+     fetchPost();
   },[])
   
   const fetchMorePost = async () => {

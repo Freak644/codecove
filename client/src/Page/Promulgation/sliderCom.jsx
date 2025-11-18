@@ -57,14 +57,14 @@ export default function ImageSlider({ imgArray, setArray }) {
         ⟵
       </button>
 
-      {/* delete button */}
+      { setArray &&
       <button
         onClick={removeFile}
         className="absolute cursor-pointer z-10 right-0 top-0 bg-transparent text-red-600 w-9 h-9 rounded-full flex items-center justify-center hover:bg-gray-600 text-lg transition duration-100"
       >
         X
       </button>
-
+      }
       {/* slider container (your original setup) */}
       <div className="h-[450px] flex items-center z-1 w-[300px] rounded-2xl bg-black/40 relative overflow-hidden touch-pan-y">
         <AnimatePresence initial={false} custom={direction}>

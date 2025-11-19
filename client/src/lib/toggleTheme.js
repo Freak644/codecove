@@ -16,3 +16,4 @@ export const mngCrop = create((set)=>({
     setURL: (url)=> set(()=>({fileURL:url})),
     setIMG: (file) => set(()=>({finalIMG:file}))
 }));
+

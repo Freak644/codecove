@@ -14,6 +14,7 @@ import NotFound from '../Page/BaseComponent/404NotFound';
 import '../assets/style/paseTwo.css'
 import DragDropBox from '../Page/Promulgation/dropBox';
 import HomePage from '../Page/HomeComponent/HomePage'
+import AbsoluteMenu from './absoluteMenu';
 export default function MyApp() {
     let {fileURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);
@@ -24,6 +25,7 @@ export default function MyApp() {
     const [winddowHerder,setHeader] = useState(true);
     const {isTrue,toggleLoader} = Loader();
     const [isChecking,setCheck] = useState(false)
+    let [stateRef,setRef] = useState(false)
     useEffect(() => {
         const setVH = () => {
             const vh = window.visualViewport?.height
@@ -89,13 +91,14 @@ export default function MyApp() {
     return(
         <PageTransition location={currentLocation} key={currentLocation.pathname}>
             {isTrue && <LoaderEL/>}
-            {winddowHerder && !isLogin && <WindowHerder/>}
-           {!isLogin && <Header/>}
+            {winddowHerder && !isLogin && <WindowHerder setRef={setRef}/>}
+           {!isLogin && <Header setRef={setRef} />}
            {!isLogin && <MenuEL/>}
            {isCropping && <CropperEL prevImg={fileURL} />}
+           <AbsoluteMenu menuRef={stateRef} setRef={setRef}/>
            {(isLogin && !isChecking) && (<div className='loginContainer flex items-center content-center h-screen w-screen'>{<LoginEL/>}</div>)}
             {(!isLogin || isChecking) && (<Routes>
-                <Route path='/' element={<div className='routeContainer  my-scroll'><HomePage/></div>} />
+                <Route path='/' element={<div className='routeContainer my-scroll'><HomePage/></div>} />
                 <Route path='/CheckInfo/:session_id' element={<div className='my-scroll flex items-center justify-center h-screen w-screen'>{<CheckInfo/>}</div>} />
                 <Route path='/Create' element={<div className='routeContainer my-scroll'><DragDropBox/></div>} />
 

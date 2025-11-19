@@ -25,7 +25,8 @@
 body{
     margin: 0px; padding: 0px;
     background-color: var(--bg-color);
-    background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://i.postimg.cc/m212M1nM/local_HOst.jpg');
+    /* background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://i.postimg.cc/m212M1nM/local_HOst.jpg'); */
+    background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://i.postimg.cc/bNSNbS5G/kiara_Anime.jpg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -648,7 +649,7 @@ form>h1>span{
                 li{
                     font-size: 28px;
                 }
-                li:nth-child(3),li:nth-child(4){
+                li:nth-child(2),li:nth-child(3){
                     display: none;
                 }
 
@@ -686,6 +687,14 @@ form>h1>span{
         .Logotxt,.secul{
             display: none;
         }
+    }
+    .scondHalf{
+        div:nth-child(2){
+            display: none;
+        }
+    }
+    .userMenu{
+        display: none;
     }
     /* .formDiv{
         .inputDiv{
@@ -755,7 +764,6 @@ form>h1>span{
 }
 .routeContainer{
     height: 93.5vh; width: 87vw;
-    /* border: 1px solid yellow; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -764,10 +772,14 @@ form>h1>span{
     top: 50px;
     z-index: -1;
     padding-bottom: 10px;
+    transition: all .7s;
 }
 @media (max-width:1024px) {
     .routeContainer{
         top: 9vh;
+    }
+    #secBtn{
+        display: none;
     }
 }
 @keyframes slideIn {
@@ -781,6 +793,16 @@ form>h1>span{
         }
 }
 
+.hideMenu.menuDiv{
+    width: 2vw;
+    div{
+        display: none;
+    }
+}
+.hideMenu.routeContainer{
+    width: 98vw;
+    left: 2vw;
+}
 /* .container{
     height: 80vh; width: 80vw;
     background-color: var(--mini-bg-color);

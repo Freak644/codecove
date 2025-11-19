@@ -9,7 +9,7 @@ export default function NotFound() {
       {/* subtle blurred glow background */}
       <div className="absolute inset-0 bg-linear-to-br from-cyan-900/20 via-transparent to-blue-900/20 blur-3xl" />
 
-      <div className="errorContainer flex items-center gap-24 z-10 flex-row">
+      <div className="errorContainer my-scroll flex items-center justify-center flex-wrap gap-24 md:gap-10 z-10">
         {/* Left Side: Face with Eyes */}
         <div
           className="faceWeye relative h-80 w-[500px] rounded-2xl

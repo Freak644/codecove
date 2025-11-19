@@ -2,14 +2,13 @@ import ThemeButton from "../../components/toggleButton";
 import React, { useEffect, useState } from 'react'
 import { UnivuUserInfo } from "../../lib/basicUserinfo";
 import { useLocation } from "react-router-dom";
-export default function Header() {
+export default function Header({setRef}) {
     const [isToggle,setToggle] = useState(false)
     const [isHome,setHome] = useState(true)
     const [userData,setdata] = useState({});
     let {userInfo} = UnivuUserInfo();
     let crntLocation = useLocation();
     useEffect(()=>{
-
         setdata(userInfo);
     },[userInfo])
 
@@ -35,9 +34,9 @@ export default function Header() {
         <>
         {(Object.keys(userData).length !== 0 && isHome) && <div className="headerContainer h-[9vh] cursor-pointer lg:h-10 lg:w-[200px] lg:rounded-4xl lg:absolute lg:top-4/5 lg:right-30! w-full  rounded flex items-center justify-between
                 lg:bg-linear-to-tr lg:from-yellow-400 lg:via-purple-600 lg:to-pink-500 bg-blue-800/10 backdrop-blur-lg
-                bg-size-[200%_200%] lg:hover:via-yellow-500 lg:text-white hover:text-skin-text transition-all duration-500 ease-in-out text-skin-text border-b border-gray-500">
+                bg-size-[200%_200%] lg:hover:via-blue-500 lg:text-white hover:text-skin-text transition-all duration-500 ease-in-out text-skin-text border-b border-gray-500">
                 <div className="firstHalf lg:hidden w-1/2 flex items-center pl-3 gap-2">
-                <div className="h-10 w-10 flex items-center justify-center text-3xl border-gray-500 border rounded-lg"><i className="bx bx-menu text-skin-ptext"></i></div>
+                <div onClick={()=>setRef(prev=>!prev)} className="h-10 w-10 menuBTN flex items-center justify-center text-3xl border-gray-500 border rounded-lg"><i className="bx bx-menu text-skin-ptext"></i></div>
                         <i className="bx bx-code-block text-3xl bg-size-[200%_200%]
                             bg-linear-to-tr from-purple-500 via-yellow-500 to-blue-600
                             bg-clip-text text-transparent">

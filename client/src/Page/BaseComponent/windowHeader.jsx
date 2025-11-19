@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom"
 import { UnivuUserInfo } from "../../lib/basicUserinfo";
-export default function WindowHerder(params) {
+export default function WindowHerder({setRef}) {
     let location = useLocation();
     let [pathName,setPath] = useState("");
     let [userData,setData] = useState({});
@@ -24,8 +24,9 @@ export default function WindowHerder(params) {
         <div className="mainheaderCom relative w-screen h-[50px] flex items-center justify-between p-1 
             border-amber-200 border-b border-b-gray-500 bg-blue-800/10 backdrop-blur-lg
         ">
+            
             <div className="leftHeader text-4xl flex flex-1 gap-4 pl-5">
-                <div className="h-10 w-10 flex logotxt items-center justify-center text-3xl border-skin-ptext/30 border rounded-full"><i className="bx bx-menu text-skin-ptext"></i></div>
+                <div onClick={()=>setRef(prev=>!prev)} className="h-10 menuBTN cursor-pointer w-10 flex logotxt items-center justify-center text-3xl border-skin-ptext/30 border rounded-full"><i className="bx bx-menu text-skin-ptext"></i></div>
                 <i className="bx bx-code-block transition-all duration-500
                 ease-in-out bg-size-[200%_200%] bg-linear-to-br from-purple-500 via-yellow-400 to-blue-600 
                 bg-clip-text text-transparent

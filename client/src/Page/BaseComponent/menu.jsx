@@ -8,6 +8,7 @@ export default function MenuEL(params) {
     const [currentTab,setTab] = useState('Home');
     const [logoimg,setlogo] = useState("");
     const [isDD,setDD] = useState(false);
+    const [isHidden,setHidden] = useState(false)
     const {setInfo} = UnivuUserInfo();
     const dropRef = useRef();
     const navi = useNavigate();
@@ -64,12 +65,30 @@ export default function MenuEL(params) {
         document.addEventListener("click",handleClick);
         return ()=> document.removeEventListener("click",handleClick)
     },[])
+
+    useEffect(()=>{
+        let routeContainer = document.querySelector('.routeContainer')
+        let menuDiv = document.querySelector('.menuDiv')
+        if (!routeContainer ||
+            !menuDiv
+        ) {
+            return
+        }
+        if (isHidden) {
+            routeContainer.classList.add('hideMenu');
+            menuDiv.classList.add('hideMenu')
+        }else{
+            routeContainer.classList.remove('hideMenu');
+            menuDiv.classList.remove('hideMenu')
+        }
+    },[isHidden])
+
     return(
         <>
-        {logoimg.length < 2 ? <MenuSkeleton/> : <div className="menuDiv   relative left-0 border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
+        {logoimg.length < 2 ? <MenuSkeleton/> : <div className="menuDiv transition-all duration-700 relative left-0 border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
         flex items-center flex-col gap-5
         bg-blue-800/10 backdrop-blur-lg
-        ">
+        "> <p id='secBtn' onClick={()=>setHidden(prev=>!prev)} className="h-8 w-8 flex logotxt items-center justify-center text-2xl cursor-pointer border-skin-ptext/30 border rounded-full absolute top-3 -right-2"><i className="bx bx-menu text-skin-ptext"></i></p>
             <div className="Logotxt flex items-center lg:mt-3.5! flex-col w-[120px]">
                 <i className='bx bx-code-block text-5xl
                 transition-all duration-500 ease-in-out bg-size-[200%_200%]
@@ -81,11 +100,18 @@ export default function MenuEL(params) {
                 bg-clip-text text-transparent'>CodeCove</h2>
             </div>
             <div className='menuContainer flex items-center flex-col gap-10 lg:text-[18px] sm:text-2xl text-skin-text'>
-                <ul className='topU flex items-start flex-col gap-5 border-b-2 border-gray-400'>
+                <ul className='topU flex items-start flex-col gap-3 border-b-2 border-gray-400 my-scroll'>
                     <li>
                         <Link to="/">
                         <i className={`bx ${currentTab === 'Home' ? "bxs" : "bx"}-home text-skin-text`}></i>
                         <span>Home</span>
+                        </Link>
+                    </li>
+
+                    <li>
+                        <Link to="/Explore">
+                        <i className={`bx ${currentTab === 'Explore' ? "bxs" : "bx"}-compass text-skin-text`}></i>
+                        <span className='flex items-center'>Explore<i className={`bx bx-chevron-right mt-0.5`}></i></span>
                         </Link>
                     </li>
 
@@ -100,13 +126,6 @@ export default function MenuEL(params) {
                         <Link to="/Chat">
                         <i className={`bx ${currentTab === 'Chat' ? "bxs" : "bx"}-chat text-skin-text`}></i>
                         <span>DM</span>
-                        </Link>
-                    </li>
-
-                    <li>
-                        <Link to="/Explore">
-                        <i className={`bx ${currentTab === 'Explore' ? "bxs" : "bx"}-compass text-skin-text`}></i>
-                        <span>Explore</span>
                         </Link>
                     </li>
 
@@ -137,7 +156,7 @@ export default function MenuEL(params) {
                         </Link>
                     </li>
                     </ul>
-                <ul className='secul flex items-start flex-col gap-5'>
+                <ul className='secul flex items-start justify-start flex-wrap gap-5'>
                     <li ref={dropRef} onClick={()=>{setDD(prev=>!prev)}} className='relative'><i className='bx bx-menu'></i><span>Settings</span>
                     {isDD && <div onClick={(evnt)=>evnt.stopPropagation()} className="dropdownMenu flex items-center flex-col rounded-2xl w-50 h-60 bg-skin-bg my-scroll my-scroll-visible">
                         <ul className='flex gap-2 flex-col'>

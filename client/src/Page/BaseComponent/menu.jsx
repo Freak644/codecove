@@ -66,6 +66,7 @@ export default function MenuEL(params) {
     return(
         <div className="menuDiv   relative left-0 border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
         flex items-center flex-col gap-5
+        bg-blue-800/10 backdrop-blur-lg
         ">
             <div className="Logotxt flex items-center lg:mt-3.5! flex-col w-[120px]">
                 <i className='bx bx-code-block text-5xl
@@ -77,8 +78,8 @@ export default function MenuEL(params) {
                 bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
                 bg-clip-text text-transparent'>CodeCove</h2>
             </div>
-            <div className='menuContainer flex items-center flex-col gap-10 lg:text-[18px] sm:text-3xl text-skin-text'>
-                <ul className='flex items-start flex-col gap-5 border-b-2 border-gray-400'>
+            <div className='menuContainer flex items-center flex-col gap-10 lg:text-[18px] sm:text-2xl text-skin-text'>
+                <ul className='topU flex items-start flex-col gap-5 border-b-2 border-gray-400'>
                     <li>
                         <Link to="/">
                         <i className={`bx ${currentTab === 'Home' ? "bxs" : "bx"}-home text-skin-text`}></i>
@@ -96,7 +97,7 @@ export default function MenuEL(params) {
                     <li>
                         <Link to="/Chat">
                         <i className={`bx ${currentTab === 'Chat' ? "bxs" : "bx"}-chat text-skin-text`}></i>
-                        <span>Messages</span>
+                        <span>DM</span>
                         </Link>
                     </li>
 
@@ -110,7 +111,7 @@ export default function MenuEL(params) {
                     <li>
                         <Link to="/Create">
                         <i className={`bx ${currentTab === 'Create' ? "bxs" : "bx"}-plus-circle text-skin-text`}></i>
-                        <span>Create</span>
+                        <span>New Moment</span>
                         </Link>
                     </li>
 
@@ -122,7 +123,7 @@ export default function MenuEL(params) {
                     </li>
 
                     <li>
-                        <Link to="/Profile">
+                        <Link to="/myLab">
                         <div className='imgDiv h-8 w-8 md:h-9 md:w-9 border rounded-full flex items-center justify-center'>
                             <img
                             className='h-full w-full'
@@ -130,24 +131,24 @@ export default function MenuEL(params) {
                             alt=""
                             />
                         </div>
-                        <span>Profile</span>
+                        <span>My Lab</span>
                         </Link>
                     </li>
                     </ul>
                 <ul className='secul flex items-start flex-col gap-5'>
-                    <li ref={dropRef} onClick={()=>{setDD(prev=>!prev)}} className='relative'><i className='bx bx-menu'></i><span>Menu</span>
-                    {isDD && <div onClick={(evnt)=>evnt.stopPropagation()} className="dropdownMenu flex items-center flex-col rounded-2xl w-52 bg-skin-bg">
+                    <li ref={dropRef} onClick={()=>{setDD(prev=>!prev)}} className='relative'><i className='bx bx-menu'></i><span>Settings</span>
+                    {isDD && <div onClick={(evnt)=>evnt.stopPropagation()} className="dropdownMenu flex items-center flex-col rounded-2xl w-50 h-60 bg-skin-bg my-scroll my-scroll-visible">
                         <ul className='flex gap-2 flex-col'>
                             <li><i className='bx bx-cog'></i><span>Setting</span></li>
                             <li><i className='bx bx-chart'></i><span>Your Activity</span></li>
-                            <li className='z-50'> <ThemeButton/> </li>
+                            <li className='z-50 flex items-center p-0! mb-3'> <ThemeButton/> </li>
                             <li><i className='bx bx-bookmark'></i><span>Save</span></li>
                             <li><i className='bx bx-error-circle'></i><span className='flex items-center justify-center z-20'>Report an issue</span></li>
                             <li onClick={handleLogout}><i className='bx bxs-log-in'></i><span>Logout</span></li>
                         </ul>
                     </div>}
                     </li>
-                    <li ><i className='bx bx-menu-alt-left'></i><span>DevTools</span></li>
+                    <li ><i className='bx bx-menu-alt-left'></i><span>Tools</span></li>
                 </ul>
             </div>
         </div>

@@ -100,3 +100,29 @@
     flex-direction: column;
   }
 }
+
+#themeBtn {
+  anchor-name: --toggle-menu;
+}
+
+#themeMenu {
+  position-anchor: --toggle-menu;
+  position: absolute;
+
+  top: anchor(--toggle-menu center);
+  left: anchor(--toggle-menu right);
+
+  position-try: --below-left, --below-right;
+}
+
+@position-try --below-left {
+  inset: unset;
+  top: anchor(--toggle-menu bottom);
+  left: anchor(--toggle-menu left);
+}
+
+@position-try --below-right {
+  inset: unset;
+  top: anchor(--toggle-menu bottom);
+  right: anchor(--toggle-menu right);
+}

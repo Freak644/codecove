@@ -33,9 +33,10 @@ export default function Header() {
     return(
         <>
         { isHome && <div className="headerContainer h-[9vh] cursor-pointer lg:bg-gray-500! lg:h-10 lg:w-[200px] lg:rounded-4xl lg:absolute lg:top-4/5 lg:right-30! w-full  rounded flex items-center justify-between
-                lg:bg-linear-to-tr lg:from-yellow-400 lg:via-purple-600 lg:to-pink-500 
+                lg:bg-linear-to-tr lg:from-yellow-400 lg:via-purple-600 lg:to-pink-500 bg-blue-800/10 backdrop-blur-lg
                 bg-size-[200%_200%] hover:bg-position[200%_0%] lg:text-white! lg:hover:text-skin-text! transition-all duration-500 ease-in-out text-skin-text! border-b border-gray-500">
-                <div className="firstHalf lg:hidden w-1/2 flex items-center ">
+                <div className="firstHalf lg:hidden w-1/2 flex items-center pl-3 gap-2">
+                <div className="h-10 w-10 flex items-center justify-center text-3xl border-gray-500 border rounded-lg"><i className="bx bx-menu text-skin-ptext"></i></div>
                         <i className="bx bx-code-block text-3xl bg-size-[200%_200%]
                     bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
                     bg-clip-text text-transparent"></i><p className="text-2xl bg-size-[200%_200%]
@@ -44,7 +45,11 @@ export default function Header() {
                 </div>
                 {/* <ThemeButton/> */}
                 <div className="scondHalf  lg:w-full w-1/3 flex items-center justify-around text-2xl">
-                    <i className="bx bxl-github lg:hidden!" ></i>
+                    <div className="lg:hidden cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-gray-600 rounded-lg flex items-center justify-center">
+                        <i className="bx bx-ghost m-1 border-r"></i>
+                        <i className='bx bx-chevron-down text-[18px]'></i>
+                    </div>
+                    <i className="bx bxl-github lg:hidden! border p-2 rounded-lg" ></i>
                     <i className="bx bx-cog lg:hidden!"></i>
                     <i className='bx bx-message-rounded-detail'><span className="lg:inline hidden">Message</span></i>
                 </div>

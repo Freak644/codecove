@@ -9,6 +9,7 @@ export default function Header() {
     let {userInfo} = UnivuUserInfo();
     let crntLocation = useLocation();
     useEffect(()=>{
+
         setdata(userInfo);
     },[userInfo])
 
@@ -32,26 +33,41 @@ export default function Header() {
     }
     return(
         <>
-        { isHome && <div className="headerContainer h-[9vh] cursor-pointer lg:bg-gray-500! lg:h-10 lg:w-[200px] lg:rounded-4xl lg:absolute lg:top-4/5 lg:right-30! w-full  rounded flex items-center justify-between
+        {(Object.keys(userData).length !== 0 && isHome) && <div className="headerContainer h-[9vh] cursor-pointer lg:h-10 lg:w-[200px] lg:rounded-4xl lg:absolute lg:top-4/5 lg:right-30! w-full  rounded flex items-center justify-between
                 lg:bg-linear-to-tr lg:from-yellow-400 lg:via-purple-600 lg:to-pink-500 bg-blue-800/10 backdrop-blur-lg
-                bg-size-[200%_200%] hover:bg-position[200%_0%] lg:text-white! lg:hover:text-skin-text! transition-all duration-500 ease-in-out text-skin-text! border-b border-gray-500">
+                bg-size-[200%_200%] lg:hover:via-yellow-500 lg:text-white hover:text-skin-text transition-all duration-500 ease-in-out text-skin-text border-b border-gray-500">
                 <div className="firstHalf lg:hidden w-1/2 flex items-center pl-3 gap-2">
                 <div className="h-10 w-10 flex items-center justify-center text-3xl border-gray-500 border rounded-lg"><i className="bx bx-menu text-skin-ptext"></i></div>
                         <i className="bx bx-code-block text-3xl bg-size-[200%_200%]
-                    bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
-                    bg-clip-text text-transparent"></i><p className="text-2xl bg-size-[200%_200%]
-                    bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
-                    bg-clip-text text-transparent font-bold">CodeCove</p>
+                            bg-linear-to-tr from-purple-500 via-yellow-500 to-blue-600
+                            bg-clip-text text-transparent">
+
+                        </i>
+                        <p className="text-2xl bg-size-[200%_200%]
+                            bg-linear-to-tr from-purple-500 via-yellow-500 to-blue-600
+                            bg-clip-text text-transparent font-bold">CodeCove
+                        </p>
+                </div>
+
+                <div className="middleWhr lg:hidden relative flex items-center flex-row">
+                    <i className="absolute left-1.5 bx bx-code-block transition-all duration-500
+                ease-in-out bg-size-[200%_200%] bg-linear-to-br from-purple-500 via-yellow-400 to-blue-600 
+                bg-clip-text text-transparent text-2xl
+                "></i>
+                    <input type="text" />
                 </div>
                 {/* <ThemeButton/> */}
                 <div className="scondHalf  lg:w-full w-1/3 flex items-center justify-around text-2xl">
-                    <div className="lg:hidden cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-gray-600 rounded-lg flex items-center justify-center">
+                    <div className="lg:hidden cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">
                         <i className="bx bx-ghost m-1 border-r"></i>
                         <i className='bx bx-chevron-down text-[18px]'></i>
                     </div>
-                    <i className="bx bxl-github lg:hidden! border p-2 rounded-lg" ></i>
-                    <i className="bx bx-cog lg:hidden!"></i>
-                    <i className='bx bx-message-rounded-detail'><span className="lg:inline hidden">Message</span></i>
+                    <div className="lg:hidden cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">
+                        <i title="Source Code" className="bx bxl-github m-1 pr-1 border-r"></i>
+                        <i title="Report an issue" className="bx bx-info-circle m-0.5"></i>
+                    </div>
+                    {/* <i className="bx bx-cog lg:hidden!"></i> */}
+                    <i className='bx bx-message-rounded-detail lg:border-0 border-2 border-skin-ptext/30 p-1 rounded-lg'><span className="lg:inline hidden">Message</span></i>
                 </div>
                 <div className="userMenu relative flex items-center lg:hidden text-skin-text!">
                     <div onClick={()=>setToggle(prev=>!prev)} className=" h-10 w-10 bg-black rounded-full flex items-center justify-center border-2 border-amber-200">

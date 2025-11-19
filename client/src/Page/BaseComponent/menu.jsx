@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import ThemeButton from '../../components/toggleButton';
 import { UnivuUserInfo } from '../../lib/basicUserinfo';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
+import MenuSkeleton from './menuSkel';
 export default function MenuEL(params) {
     const [currentTab,setTab] = useState('Home');
     const [logoimg,setlogo] = useState("");
@@ -64,18 +65,19 @@ export default function MenuEL(params) {
         return ()=> document.removeEventListener("click",handleClick)
     },[])
     return(
-        <div className="menuDiv   relative left-0 border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
+        <>
+        {logoimg.length < 2 ? <MenuSkeleton/> : <div className="menuDiv   relative left-0 border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
         flex items-center flex-col gap-5
         bg-blue-800/10 backdrop-blur-lg
         ">
             <div className="Logotxt flex items-center lg:mt-3.5! flex-col w-[120px]">
                 <i className='bx bx-code-block text-5xl
                 transition-all duration-500 ease-in-out bg-size-[200%_200%]
-                bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
+                bg-linear-to-tr from-purple-500 via-yellow-500 to-blue-600
                 bg-clip-text text-transparent
                 '></i>
                 <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
-                bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
+                bg-linear-to-tr from-purple-500 via-yellow-500 to-blue-600
                 bg-clip-text text-transparent'>CodeCove</h2>
             </div>
             <div className='menuContainer flex items-center flex-col gap-10 lg:text-[18px] sm:text-2xl text-skin-text'>
@@ -151,6 +153,7 @@ export default function MenuEL(params) {
                     <li ><i className='bx bx-menu-alt-left'></i><span>Tools</span></li>
                 </ul>
             </div>
-        </div>
+        </div>}
+        </>
     )
 }

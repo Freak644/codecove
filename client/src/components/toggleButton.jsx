@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useThemeStore } from "../lib/toggleTheme";
-
+import '../assets/style/Error404.css'
 export default function ThemeButton() {
   const { theme, toggleTheme } = useThemeStore();
   const [open, setOpen] = useState(false);

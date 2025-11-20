@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom"
 import { UnivuUserInfo } from "../../lib/basicUserinfo";
-export default function WindowHerder({setRef}) {
+import { toggleABMenu } from "../../lib/toggleTheme";
+export default function WindowHerder() {
     let location = useLocation();
     let [pathName,setPath] = useState("");
     let [userData,setData] = useState({});
+    const isMenuToggling = toggleABMenu(state => state.isMenuToggling);
+    const toggleMenu = toggleABMenu(state => state.toggleMenu);
     let {userInfo} = UnivuUserInfo();
     useEffect(()=>{
         setData(userInfo)
@@ -26,7 +29,7 @@ export default function WindowHerder({setRef}) {
         ">
             
             <div className="leftHeader text-4xl flex flex-1 gap-4 pl-5">
-                <div onClick={()=>setRef(prev=>!prev)} className="h-10 menuBTN cursor-pointer w-10 flex logotxt items-center justify-center text-3xl border-skin-ptext/30 border rounded-full"><i className="bx bx-menu text-skin-ptext"></i></div>
+                <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 menuBTN cursor-pointer w-10 flex logotxt items-center justify-center text-3xl border-skin-ptext/30 border rounded-full"><i className="bx bx-menu text-skin-ptext"></i></div>
                 <i className="bx bx-code-block transition-all duration-500
                 ease-in-out bg-size-[200%_200%] bg-linear-to-br from-purple-500 via-yellow-400 to-blue-600 
                 bg-clip-text text-transparent

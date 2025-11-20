@@ -17,3 +17,10 @@ export const mngCrop = create((set)=>({
     setIMG: (file) => set(()=>({finalIMG:file}))
 }));
 
+export const toggleABMenu = create((set)=>({
+    isMenuToggling:false,
+    toggleMenu: (val) =>
+        set(() => ({
+        isMenuToggling: val,
+        })),
+}))

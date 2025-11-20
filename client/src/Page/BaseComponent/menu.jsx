@@ -4,6 +4,7 @@ import ThemeButton from '../../components/toggleButton';
 import { UnivuUserInfo } from '../../lib/basicUserinfo';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import MenuSkeleton from './menuSkel';
+import { toggleABMenu } from '../../lib/toggleTheme';
 export default function MenuEL(params) {
     const [currentTab,setTab] = useState('Home');
     const [logoimg,setlogo] = useState("");
@@ -13,6 +14,7 @@ export default function MenuEL(params) {
     const dropRef = useRef();
     const navi = useNavigate();
     const crntLocation = useLocation();
+    const toggleMenu = toggleABMenu(state=>state.toggleMenu);
     useEffect(()=>{
         getUserInfo();
     },[])
@@ -48,6 +50,7 @@ export default function MenuEL(params) {
         }
     }
     useEffect(()=>{
+        toggleMenu(false)
         let crntRoute = crntLocation.pathname.split("/")
         if (!crntRoute[1].trim()) {
             return setTab("Home")

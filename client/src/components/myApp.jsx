@@ -25,7 +25,6 @@ export default function MyApp() {
     const [winddowHerder,setHeader] = useState(true);
     const {isTrue,toggleLoader} = Loader();
     const [isChecking,setCheck] = useState(false)
-    let [stateRef,setRef] = useState(false)
     useEffect(() => {
         const setVH = () => {
             const vh = window.visualViewport?.height
@@ -91,11 +90,11 @@ export default function MyApp() {
     return(
         <PageTransition location={currentLocation} key={currentLocation.pathname}>
             {isTrue && <LoaderEL/>}
-            {winddowHerder && !isLogin && <WindowHerder setRef={setRef}/>}
-           {!isLogin && <Header setRef={setRef} />}
+            {winddowHerder && !isLogin && <WindowHerder/>}
+           {!isLogin && <Header/>}
            {!isLogin && <MenuEL/>}
            {isCropping && <CropperEL prevImg={fileURL} />}
-           <AbsoluteMenu menuRef={stateRef} setRef={setRef}/>
+           <AbsoluteMenu/>
            {(isLogin && !isChecking) && (<div className='loginContainer flex items-center content-center h-screen w-screen'>{<LoginEL/>}</div>)}
             {(!isLogin || isChecking) && (<Routes>
                 <Route path='/' element={<div className='routeContainer my-scroll'><HomePage/></div>} />

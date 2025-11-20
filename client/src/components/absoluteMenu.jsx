@@ -1,19 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import React from "react";
+import { toggleABMenu } from "../lib/toggleTheme";
+import { Link } from "react-router-dom";
 
 export default function AbsoluteMenu({menuRef,setRef}) {
     let mainRef = useRef();
-
+    const isMenuToggling = toggleABMenu(state => state.isMenuToggling);
+    const toggleMenu = toggleABMenu(state => state.toggleMenu);
     useEffect(() => {
         const menuDiv = document.querySelector(".absoluteMenu");
         if (!menuDiv) return;
 
-        if (menuRef) {
+        if (isMenuToggling) {
             menuDiv.classList.add("activeAbMenu");
         } else {
             menuDiv.classList.remove("activeAbMenu");
         }
-    }, [menuRef]);
+    }, [isMenuToggling]);
 
     useEffect(() => {
         const handleClick = (evnt) => {
@@ -26,19 +29,19 @@ export default function AbsoluteMenu({menuRef,setRef}) {
                 }
             })
             if (
-                menuRef &&
+                isMenuToggling &&
                 mainRef.current &&
                 !mainRef.current.contains(evnt.target) &&
                 tmpArray.length === 0
             ) {
-                setRef(false)
+                toggleMenu(false);
             }
         };
 
         document.addEventListener("click", handleClick);
 
         return () => document.removeEventListener("click", handleClick);
-    }, [menuRef]);
+    }, [isMenuToggling]);
     return(
         <div ref={mainRef} className="absoluteMenu z-99  absolute flex top-[9vh] h-[90vh] items-center justify-center flex-wrap
         p-4 -left-[350px] opacity-0 transition-all duration-500 bg-blue-800/10 backdrop-blur-lg w-3xs">
@@ -53,9 +56,14 @@ export default function AbsoluteMenu({menuRef,setRef}) {
                 bg-clip-text text-transparent'>CodeCove</h2>
             </div>
             <div className="AbMenuDiv my-scroll w-full h-4/5 my-scroll 
-            flex items-center flex-col">
+            flex items-center flex-col text-lg text-skin-text">
                 <ul>
-                    <li><i className="bx bxs-dashboard"></i><span>Dashbord</span></li>
+                    <li>
+                        <Link to="/DashBord">
+                        <i className="bx bxs-dashboard"></i>
+                        <span>Dashbord</span>
+                        </Link>
+                    </li>
                 </ul>
             </div>
         </div>

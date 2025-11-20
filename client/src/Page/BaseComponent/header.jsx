@@ -2,12 +2,15 @@ import ThemeButton from "../../components/toggleButton";
 import React, { useEffect, useState } from 'react'
 import { UnivuUserInfo } from "../../lib/basicUserinfo";
 import { useLocation } from "react-router-dom";
-export default function Header({setRef}) {
+import {toggleABMenu} from '../../lib/toggleTheme';
+export default function Header() {
     const [isToggle,setToggle] = useState(false)
     const [isHome,setHome] = useState(true)
     const [userData,setdata] = useState({});
     let {userInfo} = UnivuUserInfo();
     let crntLocation = useLocation();
+    const isMenuToggling = toggleABMenu(state => state.isMenuToggling);
+    const toggleMenu = toggleABMenu(state => state.toggleMenu);
     useEffect(()=>{
         setdata(userInfo);
     },[userInfo])
@@ -36,7 +39,7 @@ export default function Header({setRef}) {
                 lg:bg-linear-to-tr lg:from-yellow-400 lg:via-purple-600 lg:to-pink-500 bg-blue-800/10 backdrop-blur-lg
                 bg-size-[200%_200%] lg:hover:via-blue-500 lg:text-white hover:text-skin-text transition-all duration-500 ease-in-out text-skin-text border-b border-gray-500">
                 <div className="firstHalf lg:hidden w-1/2 flex items-center pl-3 gap-2">
-                <div onClick={()=>setRef(prev=>!prev)} className="h-10 w-10 menuBTN flex items-center justify-center text-3xl border-gray-500 border rounded-lg"><i className="bx bx-menu text-skin-ptext"></i></div>
+                <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 w-10 menuBTN flex items-center justify-center text-3xl border-gray-500 border rounded-lg"><i className="bx bx-menu text-skin-ptext"></i></div>
                         <i className="bx bx-code-block text-3xl bg-size-[200%_200%]
                             bg-linear-to-tr from-purple-500 via-yellow-500 to-blue-600
                             bg-clip-text text-transparent">

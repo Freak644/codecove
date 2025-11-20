@@ -6,30 +6,30 @@ export default function HonePage() {
   const [Posts,setPosts] = useState([])
   const [offset,setOffset] = useState(0)
   const [isEnd,setEnd] = useState(false)
-    const socket = io("", {
-      transports: ["websocket"],
-      path: "/myServer/socket.io",   
-    });
+  //   const socket = io("", {
+  //     transports: ["websocket"],
+  //     path: "/myServer/socket.io",   
+  //   });
 
-    useEffect(() => {
-      socket.on("connect", () => {
-        console.log("Connected to WS →", socket.id);
-      });
+  //   useEffect(() => {
+  //     socket.on("connect", () => {
+  //       console.log("Connected to WS →", socket.id);
+  //     });
 
-      socket.on("new-post",(newPost)=>{
-        setPosts(prev=>[newPost,...prev])
-      })
+  //     socket.on("new-post",(newPost)=>{
+  //       setPosts(prev=>[newPost,...prev])
+  //     })
 
-      socket.on("disconnect", () => {
-        console.log("Disconnected");
-      });
+  //     socket.on("disconnect", () => {
+  //       console.log("Disconnected");
+  //     });
 
-      // cleanup on unmount
-      return () => {
-        socket.off("connect");
-        socket.off("disconnect");
-      };
-  }, []);
+  //     // cleanup on unmount
+  //     return () => {
+  //       socket.off("connect");
+  //       socket.off("disconnect");
+  //     };
+  // }, []);
   const fetchPost = async () => {
     let rqst = await fetch(`/myServer/getPost?limit=15&offset=${offset}`);
     const data = await rqst.json();

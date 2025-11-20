@@ -4,7 +4,7 @@ import ThemeButton from '../../components/toggleButton';
 import { UnivuUserInfo } from '../../lib/basicUserinfo';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import MenuSkeleton from './menuSkel';
-import { toggleABMenu } from '../../lib/toggleTheme';
+import { toggleABMenu, useThemeStore } from '../../lib/toggleTheme';
 export default function MenuEL(params) {
     const [currentTab,setTab] = useState('Home');
     const [logoimg,setlogo] = useState("");
@@ -15,6 +15,7 @@ export default function MenuEL(params) {
     const navi = useNavigate();
     const crntLocation = useLocation();
     const toggleMenu = toggleABMenu(state=>state.toggleMenu);
+    const crntTheme = useThemeStore(state=> state.theme);
     useEffect(()=>{
         getUserInfo();
     },[])
@@ -86,6 +87,13 @@ export default function MenuEL(params) {
         }
     },[isHidden])
 
+    const getColor = () => {
+        switch (crntTheme) {
+            case "dark-white" : return "from-purple-500 via-pink-500 to-blue-600";
+            case "dark-yellow" : return "from-purple-500 via-yellow-500 to-blue-600";
+            default: return "from-fuchsia-500  via-rose-400 to-purple-500";
+        }
+    }
     return(
         <>
         {logoimg.length < 2 ? <MenuSkeleton/> : <div className="menuDiv transition-all duration-700 relative left-0 border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
@@ -93,14 +101,14 @@ export default function MenuEL(params) {
         bg-blue-800/10 backdrop-blur-lg
         "> <p id='secBtn' onClick={()=>setHidden(prev=>!prev)} className="h-8 w-8 flex logotxt items-center justify-center text-2xl cursor-pointer border-skin-ptext/30 border rounded-full absolute top-3 -right-2"><i className="bx bx-menu text-skin-ptext"></i></p>
             <div className="Logotxt flex items-center lg:mt-3.5! flex-col w-[120px]">
-                <i className='bx bx-code-block text-5xl
+                <i className={`bx bx-code-block text-5xl
                 transition-all duration-500 ease-in-out bg-size-[200%_200%]
-                bg-linear-to-tr from-purple-500 via-yellow-500 to-blue-600
+                bg-linear-to-tr ${getColor()}
                 bg-clip-text text-transparent
-                '></i>
-                <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
-                bg-linear-to-tr from-purple-500 via-yellow-500 to-blue-600
-                bg-clip-text text-transparent'>CodeCove</h2>
+                `}></i>
+                <h2 className={`font-extrabold! text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
+                bg-linear-to-tr ${getColor()}
+                bg-clip-text text-transparent`}>CodeCove</h2>
             </div>
             <div className='menuContainer flex items-center flex-col gap-10 lg:text-[18px] sm:text-2xl text-skin-text'>
                 <ul className='topU flex items-start flex-col gap-3 border-b-2 border-gray-400 my-scroll'>

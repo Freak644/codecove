@@ -3,6 +3,7 @@ import FaceToggle, { toggleMini } from "../../../lib/tabToggle";
 import {toast} from 'react-toastify'
 import verifyZu from "../../../lib/verifyZu";
 import { Loader } from "../../../lib/loader";
+import LogoCom from "../../../utils/logoComp";
 export default function UserNameEl({stoggle}) {
     const {setTab} = FaceToggle();
     const {setMail,setTUsername,setVTab,emailStatus,email,Tusername} = verifyZu();
@@ -153,16 +154,7 @@ export default function UserNameEl({stoggle}) {
             <div className="nameComDiv flex items-center justify-center">
                 <div className="formDiv">
                     <form action="" onSubmit={handleSubmit}>
-                        <div className="Logotxt flex items-center flex-col w-[120px]">
-                            <i className='bx bx-code-block text-5xl
-                            transition-all duration-500 ease-in-out bg-size-[200%_200%]
-                            bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
-                            bg-clip-text text-transparent
-                            '></i>
-                            <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
-                            bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
-                            bg-clip-text text-transparent'>CodeCove</h2>
-                        </div>
+                        <LogoCom/>
                         {/* <h1 className="flex items-center justify-center text-red-600 font-bold">Stay 
                             <span>
                                 <span>Safe, Stay Anonymous</span>

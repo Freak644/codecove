@@ -4,6 +4,7 @@ import FaceToggle, { toggleMini } from "../../../lib/tabToggle";
 import { Loader } from "../../../lib/loader";
 import verifyZu from "../../../lib/verifyZu";
 import { toast } from "react-toastify";
+import LogoCom from "../../../utils/logoComp";
 export default function CpassEL() {
     const [myImage,setimg] = useState({
         file:null,
@@ -212,16 +213,7 @@ export default function CpassEL() {
             <div className="picPass flex items-center justify-center">
                 <div className="formDiv">
                     <form action="" onSubmit={handleSubmit}>
-                        <div className="Logotxt flex items-center flex-col w-[120px] ">
-                            <i className='bx bx-code-block text-5xl
-                            transition-all duration-500 ease-in-out bg-size-[200%_200%]
-                            bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
-                            bg-clip-text text-transparent
-                            '></i>
-                            <h2 className='font-bold text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
-                            bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
-                            bg-clip-text text-transparent'>CodeCove</h2>
-                        </div>
+                        <LogoCom/>
                         <div className="inputDiv flex-col! h-20!  items-center!">
                             <input type="file" onChange={(evnt)=>handleImg(evnt)} style={{display:"none"}} id="files" name="files" accept="image/*" multiple={false} />
                             <label className="left-[40%]! top-13! cursor-pointer!" htmlFor="files"><i className="bx bx-image text-blue-500">Avatar</i></label>

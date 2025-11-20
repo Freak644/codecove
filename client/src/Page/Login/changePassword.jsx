@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import verifyZu from "../../lib/verifyZu";
 import FaceToggle from "../../lib/tabToggle";
+import LogoCom from "../../utils/logoComp";
 
 export default function ChangePassword({toggle}) {
     let {setEstatus} = verifyZu();
@@ -83,16 +84,7 @@ export default function ChangePassword({toggle}) {
                         backdrop-blur-lg">
                 <div className="formDiv mt-[10%] ">
                     <form action="" onSubmit={handleSubmit} className="bg-skin-bg p-10! rounded-lg shadow-[0_0_30px_rgba(0,255,255,0.15)]">
-                        <div className="Logotxt flex items-center lg:mt-3.5! flex-col w-[120px]  left-2">
-                <i className='bx bx-code-block text-5xl
-                transition-all duration-500 ease-in-out bg-size-[200%_200%]
-                bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
-                bg-clip-text text-transparent
-                '></i>
-                <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
-                bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
-                bg-clip-text text-transparent'>CodeCove</h2>
-            </div>
+                        <LogoCom/>
                         <div className="inputDiv">
                             <i onClick={(evnt)=>togglePassword(evnt.target)} className="bx bx-show absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer"></i>
                             <input value={mgmtPassword.basePass} onChange={(evnt)=>setPassword(prev=>({

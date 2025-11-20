@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import '../../assets/style/Error404.css'
 import ChangePassword from "./changePassword";
 import { toast } from "react-toastify";
+import LogoCom from "../../utils/logoComp";
 export default function CheckInfo(params) {
     let {session_id} = useParams();
     const [isChanging,setchanging] = useState(false)
@@ -28,16 +29,7 @@ export default function CheckInfo(params) {
     return(
         <div className="h-screen w-screen flex items-center flex-col bg-skin-bg absolute top-0 z-40">
            {isChanging && <ChangePassword toggle={setchanging} />}
-            <div className="Logotxt flex items-center lg:mt-3.5! flex-col w-[120px] absolute top-3 left-2">
-                <i className='bx bx-code-block text-5xl
-                transition-all duration-500 ease-in-out bg-size-[200%_200%]
-                bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
-                bg-clip-text text-transparent
-                '></i>
-                <h2 className=' font-bold text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
-                bg-linear-to-tr from-purple-500 via-pink-500 to-blue-600
-                bg-clip-text text-transparent'>CodeCove</h2>
-            </div>
+            <LogoCom/>
             <div className="flex items-center flex-col gap-2 text-white">
                 <div className="container relative flex items-center md:justify-center gap-5 h-screen p-4">
                     <div

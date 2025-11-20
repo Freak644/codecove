@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom"
 import { UnivuUserInfo } from "../../lib/basicUserinfo";
-import { toggleABMenu,useThemeStore } from "../../lib/toggleTheme";
+import { toggleABMenu } from "../../lib/toggleTheme";
+import {getColor} from '../../utils/getGradnt';
 export default function WindowHerder() {
     let location = useLocation();
     let [pathName,setPath] = useState("");
     let [userData,setData] = useState({});
-    const crntTheme = useThemeStore(state=>state.theme)
     const isMenuToggling = toggleABMenu(state => state.isMenuToggling);
     const toggleMenu = toggleABMenu(state => state.toggleMenu);
     let {userInfo} = UnivuUserInfo();
+    let gradColor = getColor();
     useEffect(()=>{
         setData(userInfo)
     },[userInfo])
@@ -25,13 +26,6 @@ export default function WindowHerder() {
         }
     },[location.pathname])
 
-    const getColor = () => {
-        switch (crntTheme) {
-            case "dark-white" : return "from-purple-500 via-pink-500 to-blue-600";
-            case "dark-yellow" : return "from-purple-500 via-yellow-500 to-blue-600";
-            default: return "from-fuchsia-700  via-rose-500 to-purple-500";
-        }
-    }
 
     return(
         <div className="mainheaderCom relative w-screen h-[50px] flex items-center justify-between p-1 
@@ -41,7 +35,7 @@ export default function WindowHerder() {
             <div className="leftHeader text-4xl flex flex-1 gap-4 pl-5">
                 <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 menuBTN cursor-pointer w-10 flex logotxt items-center justify-center text-3xl border-skin-ptext/30 border rounded-full"><i className="bx bx-menu text-skin-ptext"></i></div>
                 <i className={`bx bx-code-block transition-all duration-500
-                ease-in-out bg-size-[200%_200%] bg-linear-to-tr ${getColor()}
+                ease-in-out bg-size-[200%_200%] bg-linear-to-tr ${gradColor}
                 bg-clip-text text-transparent
                 `}></i>
                 <span className="text-skin-ptext text-[15px]  flex items-center">{pathName}</span>
@@ -53,7 +47,7 @@ export default function WindowHerder() {
                     w-64
                     " />
                     <i className={`absolute left-2.5 bx bx-code-block transition-all duration-500
-                ease-in-out bg-size-[200%_200%] bg-linear-to-tr ${getColor()} 
+                ease-in-out bg-size-[200%_200%] bg-linear-to-tr ${gradColor} 
                 bg-clip-text text-transparent text-2xl
                 `}></i>
                     <div className=" cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">

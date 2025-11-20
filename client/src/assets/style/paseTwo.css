@@ -141,8 +141,50 @@
 .activeAbMenu.absoluteMenu{
     opacity: 1;
     left: 0px;
-    border-radius: 16px;
+    border-radius: 10px;
     box-shadow: 0px 15px 15px 5px rgba(0, 0, 0, 0.419);
-    border: 1px 1px 1px 0px solid whitesmoke;
-    
+    border-style: solid;
+    border-color: whitesmoke;
+    border-width: 1px 1px 1px 0px;
 }
+.absoluteMenu{
+
+    ul{
+       
+        li{
+            width: 100%;
+            padding: 2px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            a{
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+            }
+        }
+    }
+}
+.tree {
+  position: relative;
+  padding-left: 16px;
+  border-left: 2px solid gray;
+}
+
+.tree li {
+  position: relative;
+  padding-left: 12px;
+}
+
+.tree li::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  width: 12px;
+  height: 2px;
+  background: gray;
+  transform: translateY(-50%);
+}
+

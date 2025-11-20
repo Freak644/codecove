@@ -135,9 +135,9 @@ export default function MenuEL(params) {
                     </li>
 
                     <li>
-                        <Link to="/Create">
-                        <i className={`bx ${currentTab === 'Create' ? "bxs" : "bx"}-plus-circle text-skin-text`}></i>
-                        <span>New Moment</span>
+                        <Link to="/Commit" title='Commit Your thought'>
+                        <i className={`bx ${currentTab === 'Commit' ? "bxs" : "bx"}-plus-circle text-skin-text`}></i>
+                        <span>Commit</span>
                         </Link>
                     </li>
 

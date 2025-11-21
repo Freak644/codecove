@@ -2,25 +2,22 @@ import { motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {useDropzone} from 'react-dropzone';
 import {Upload,X,File} from 'lucide-react';
-import { Loader } from '../../lib/loader';
-import Creater from './captionAndPrev';
 import {toast} from 'react-toastify'
+import {usePostStore} from '../../lib/basicUserinfo'
 export default function DragDropBox() {
-    const [imgFiles,setImgFiles] = useState([])
-    const {isTrue, toggleLoader} = Loader();
+    const [imgFiles,setImgFiles] = useState([]);
+    let {setPostOBJ} = usePostStore();
     useEffect(()=>{
         return ()=> {
             imgFiles.forEach(f=>URL.revokeObjectURL(f.preview));
         };
     },[])
-    const removeFile = (name) => {
-      toggleLoader(false)
-        setImgFiles((prev) => {
-        const toRemove = prev.find((p) => p.file.name === name);
-        if (toRemove) URL.revokeObjectURL(toRemove.preview);
-        return prev.filter((f) => f.file.name !== name);
-        });
-    };
+
+    useEffect(()=>{
+      if (imgFiles.length>0) {
+        setPostOBJ(imgFiles)
+      }
+    },[imgFiles])
 
     const onDrop = useCallback((acceptedFiles) => {
         if (acceptedFiles.length > 5) return toast.info("You can only attach 5 file in single Post")
@@ -39,7 +36,7 @@ export default function DragDropBox() {
             }
 
             if (file.size > maxSize) {
-            errors.push(`${file.name}: File size exceeds 5MB limit`);
+            errors.push(`${file.name}: File size exceeds 3MB limit`);
             return;
             }
 
@@ -53,7 +50,7 @@ export default function DragDropBox() {
         });
 
         if (errors.length > 0) {
-            alert(errors.join("\n")); // you can replace this with toast or UI message
+            toast.warning(errors[0])
         }
 
         if (validFiles.length > 0) {
@@ -64,78 +61,8 @@ export default function DragDropBox() {
     const {getRootProps,getInputProps,isDragActive} = useDropzone({
         onDrop,
         multiple: true,
-        maxSize: 3 * 1024 * 1024, // size 5MB
+        maxSize: 3 * 1024 * 1024, 
     });
-
-// const uploadFiles = async () => {
-//   if(isTrue) return;
-//   toggleLoader(true);
-//   for (const img of imgFiles) {
-//     try {
-//       const formData = new FormData();
-//       formData.append("postFile", img.file);
-
-//       if (img.uploaded || img.error) continue;
-//       setImgFiles((prev) =>
-//         prev.map((file) =>
-//           file.file.name === img.file.name
-//             ? { ...file, uploading: true, error: false }
-//             : file
-//         )
-//       );
-
-//       const res = await axios.post("/myServer/CreatePost", formData, {
-//         onUploadProgress: (event) => {
-//           const percent = Math.round((event.loaded * 100) / event.total);
-//           setImgFiles((prev) =>
-//             prev.map((file) =>
-//               file.file.name === img.file.name
-//                 ? { ...file, progress: percent }
-//                 : file
-//             )
-//           );
-//         },
-//       });
-
-//       scrollCon();
-
-//       setImgFiles((prev) =>
-//         prev.map((file) =>
-//           file.file.name === img.file.name
-//             ? { ...file, uploaded: true, uploading: false }
-//             : file
-//         )
-//       );
-
-//       console.log("✅ Uploaded:", res.data);
-//     } catch (error) {
-//       toggleLoader(false)
-//       console.error("❌ Upload failed:", error);
-
-//       let message = "Something went wrong while uploading.";
-
-//       if (error.response) {
-//         message = error.response.data?.err || "Server error during upload.";
-//       } else if (error.request) {
-//         message = "Network error: Server not reachable.";
-//       } else {
-//         message = error.message;
-//       }
-
-//       setImgFiles((prev) =>
-//         prev.map((file) =>
-//           file.file.name === img.file.name
-//             ? { ...file, uploading: false, error: true }
-//             : file
-//         )
-//       );
-//       // optional: show alert only once, not for every file
-//       console.warn(message);
-//       // 👇 continue to next file automatically (no return!)
-//     }
-//   }
-//   toggleLoader(false);
-// };
 
 
 
@@ -168,93 +95,14 @@ return (
             ? "Drop files here"
             : "Drag & drop or click to browse"}
         </p>
-        <p className="text-sm text-gray-500">Max 5MB per image (png, jpg, jpeg)</p>
+        <p className="text-sm text-gray-500">Max 3MB per image (png, jpg, jpeg)</p>
       </motion.div>
     </motion.div>}
 
-    {imgFiles.length > 0 &&
+    {/* {imgFiles.length > 0 &&
       <Creater Images={imgFiles} handler={setImgFiles}/>
-    }
+    } */}
   </div>
 );
 
 }
-
-// {imgFiles.length > 0 && (
-//       <motion.div
-//         initial={{ opacity: 0, y: 10 }}
-//         animate={{ opacity: 1, y: 0 }}
-//         className="w-full relative max-w-xl bg-black/70 border border-gray-700 rounded-2xl p-5 shadow-inner shadow-cyan-400/10"
-//       >
-//         <h2 className="text-gray-200 text-lg font-semibold mb-3">
-//           Files Ready to Upload
-//         </h2>
-//         <div
-//         ref={scrollConRef}
-//         className="space-y-3 max-h-60 my-scroll">
-//           {imgFiles.map(({ file, preview, progress, uploaded,uploading,error }) => (
-//             <motion.div
-//               key={file.name}
-//               initial={{ opacity: 0, x: -10 }}
-//               animate={{ opacity: 1, x: 0 }}
-//               className={`${error && "bg-red-400/70"} flex items-center justify-between bg-gray-900/70 px-4 py-3 rounded-lg border border-gray-700 hover:border-cyan-400/30 transition-all`}
-//             >
-//               <div className="flex items-center gap-3">
-//                 <img
-//                   src={preview}
-//                   alt={file.name}
-//                   loading="lazy"
-//                   className="w-10 h-10 object-cover rounded-lg border border-gray-700"
-//                 />
-//                 <div>
-//                   <p className="font-medium text-gray-100">{file.name}</p>
-//                   <p className="text-sm text-gray-500">
-//                     {error ? "Failed" :(file.size / 1024).toFixed(2)+"KB"}
-//                   </p>
-//                   {progress > 0 && (
-//                     <div className="w-40 bg-gray-800 rounded-full mt-1 h-2 overflow-hidden">
-//                       <div
-//                         className={`${error ? "bg-red-500":"bg-green-500"} h-2 transition-all`}
-//                         style={{ width: `${progress}%` }}
-//                       />
-//                     </div>
-//                   )}
-//                 </div>
-//               </div>
-
-//               <div className="flex items-center gap-2">
-//                 {uploaded && (
-//                   <span className="text-green-400 text-sm">Uploaded</span>
-//                 )}
-//                 <button
-//                   onClick={() => removeFile(file.name)}
-//                   className="text-red-400 hover:text-red-500 transition"
-//                 >
-//                   {uploading?<div className='miniLoader'></div>:<X className="w-5 h-5" />}
-//                 </button>
-//               </div>
-//             </motion.div>
-//           ))}
-//         </div>
-
-//         <div className="mt-5 flex gap-3">
-//           <motion.button ref={btnRef}
-//             onClick={uploadFiles}
-//             whileTap={{ scale: 0.97 }}
-//             className="flex-1 cursor-pointer bg-cyan-500 hover:bg-cyan-800 text-white font-medium py-2.5 rounded-lg shadow-md shadow-cyan-500/20 transition"
-//           >
-//             Upload Files
-//           </motion.button>
-
-//           <button disabled={isTrue}
-//             onClick={() => {
-//               imgFiles.forEach((f) => URL.revokeObjectURL(f.preview));
-//               setImgFiles([]);
-//             }}
-//             className="px-4 py-2.5 rounded-lg border border-gray-600 text-gray-300 hover:text-white hover:border-cyan-500 transition"
-//           >
-//             Clear
-//           </button>
-//         </div>
-//       </motion.div>
-//     )}

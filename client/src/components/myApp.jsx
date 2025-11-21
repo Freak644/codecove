@@ -12,9 +12,9 @@ import WindowHerder from '../Page/BaseComponent/windowHeader';
 import CheckInfo from '../Page/Login/checkinfo';
 import NotFound from '../Page/BaseComponent/404NotFound';
 import '../assets/style/paseTwo.css'
-import DragDropBox from '../Page/Promulgation/dropBox';
 import HomePage from '../Page/HomeComponent/HomePage'
 import AbsoluteMenu from './absoluteMenu';
+import BaseCreate from '../Page/Promulgation/baseCreateCom';
 export default function MyApp() {
     let {fileURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);
@@ -99,7 +99,7 @@ export default function MyApp() {
             {(!isLogin || isChecking) && (<Routes>
                 <Route path='/' element={<div className='routeContainer my-scroll'><HomePage/></div>} />
                 <Route path='/CheckInfo/:session_id' element={<div className='my-scroll flex items-center justify-center h-screen w-screen'>{<CheckInfo/>}</div>} />
-                <Route path='/Commit' element={<div className='routeContainer my-scroll'><DragDropBox/></div>} />
+                <Route path='/Commit' element={<div className='routeContainer my-scroll'><BaseCreate/></div>} />
 
                 <Route path='*' element={<NotFound/>} />
             </Routes>)}

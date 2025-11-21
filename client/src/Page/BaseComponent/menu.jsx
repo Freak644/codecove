@@ -116,7 +116,7 @@ export default function MenuEL(params) {
                     <li>
                         <Link to="/Explore">
                         <i className={`bx ${currentTab === 'Explore' ? "bxs" : "bx"}-compass text-skin-text`}></i>
-                        <span className='flex items-center'>Explore<i className={`bx bx-chevron-right mt-0.5`}></i></span>
+                        <span className='flex items-center'>Explore</span>
                         </Link>
                     </li>
 

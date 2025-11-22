@@ -1,35 +1,115 @@
-import { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
+import { useRef, useState, useEffect } from "react";
+
 export default function CaptionEl() {
-  const [text,setText] = useState("")
+  const editorRef = useRef(null);
+  const [active, setActive] = useState({
+    bold: false,
+    italic: false,
+    underline: false,
+    strike: false
+  });
 
 
+  const updateActive = () => {
+    setActive({
+      bold: document.queryCommandState("bold"),
+      italic: document.queryCommandState("italic"),
+      underline: document.queryCommandState("underline"),
+      strike: document.queryCommandState("strikeThrough")
+    });
+  };
 
+  useEffect(() => {
+    document.addEventListener("selectionchange", updateActive);
+    return () => document.removeEventListener("selectionchange", updateActive);
+  }, []);
 
-  const handleInp = evnt=>{
-    setText(evnt.target.value);
-  }
-  return(
-      <div className="myCapDiv flex items-center flex-col p-1">
-        <div className="flex items-center p-2 border-b-2 border-skin-ptext/30">
-            <div className="navBar flex items-center justify-center gap-2">
-              <button className='capBtn' title='Bold'><i className='bx bx-bold'></i></button>
-              <button className='capBtn' title='Italic'><i className='bx bx-italic'></i></button>
-              <button className='capBtn' title='Code'><i className='bx bx-code'></i></button>
-              <button className='capBtn' title='Code Block'><i className='bx bx-code-block'></i></button>
-              <button className='capBtn' title='Heading'><i className='bx bx-heading'></i></button>
-              <button className='capBtn' title='Attach URL' ><i className='bx bx-link'></i></button>
-            </div>
-        </div>
-        <div className="flex">
-          <textarea name="" id="md-textarea"
-            value={text}
-            onChange={handleInp}
-            placeholder='Write Your caption using markdown...'
-            className='w-full min-h-44 outline-none p-3'
-          />
-        </div>
+  const exec = (cmd, value = null) => {
+    editorRef.current.focus();
+    document.execCommand(cmd, false, value);
+    updateActive();
+  };
+
+  const insertLink = () => {
+    const url = prompt("Enter URL:");
+    if (!url) return;
+    exec("createLink", url);
+  };
+
+  const insertCodeBlock = () => {
+    const sel = window.getSelection();
+    const range = sel.getRangeAt(0);
+
+    const pre = document.createElement("pre");
+    pre.className = "bg-black text-skin-text p-2 rounded break-words";
+
+    const code = document.createElement("code");
+    code.textContent = "your code here";
+
+    pre.appendChild(code);
+    range.insertNode(pre);
+  };
+
+  return (
+    <div className="w-full flex flex-col gap-2">
+
+      <div className="flex gap-2 items-center">
+
+        <button
+          className={`capBtn ${active.bold ? "bg-gray-500/50" : ""}`}
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => exec("bold")}
+        >
+          <i className="bx bx-bold"></i>
+        </button>
+
+        <button
+          className={`capBtn ${active.italic ? "bg-gray-500/50" : ""}`}
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => exec("italic")}
+        >
+          <i className="bx bx-italic"></i>
+        </button>
+
+        <button
+          className={`capBtn ${active.underline ? "bg-gray-500/50" : ""}`}
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => exec("underline")}
+        >
+          <i className="bx bx-underline"></i>
+        </button>
+
+        <button
+          className={`capBtn ${active.strike ? "bg-gray-500/50" : ""}`}
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => exec("strikeThrough")}
+        >
+          <i className="bx bx-strikethrough"></i>
+        </button>
+
+        <button
+          className="capBtn"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={insertLink}
+        >
+          <i className="bx bx-link"></i>
+        </button>
+
+        <button
+          className="capBtn"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={insertCodeBlock}
+        >
+          <i className="bx bx-code-block"></i>
+        </button>
       </div>
-  )
+
+      <div
+        ref={editorRef}
+        contentEditable
+        spellCheck={false}
+        className="min-h-[140px] max-w-[500px] p-2 wrap-break-word outline-none text-skin-text caret-skin-text"
+      />
+    </div>
+  );
 }

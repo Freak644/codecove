@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { getColor } from "../../utils/getGradnt"
+import CaptionEl from "./miniComp/Caption";
 
 export default function BaseCreate() {
     let gradColor = getColor();
@@ -18,7 +19,7 @@ export default function BaseCreate() {
         }))
     }
     return(
-        <div className="h-full w-full flex items-center pl-[5%]">
+        <div className="h-full w-full flex items-center pl-[5%] border">
             <div className="mainCreate h-full flex items-start flex-col p-8 text-skin-text gap-10">
                 <div className="headerDiv flex items-center flex-col gap-4">
                     <h2 className={`font-extrabold! text-2xl transition-all duration-500 ease-in-out bg-size-[200%_100%]
@@ -26,8 +27,8 @@ export default function BaseCreate() {
                     bg-clip-text text-transparent`}>New Moment</h2>
                     <div className="postType flex items-center justify-center p-2">
                         
-                        <select className=" focus:border-skin-text/30" name="" id="">
-                            <option value={null} disabled>Moment(?)</option>
+                        <select className=" focus:border-skin-text/30" name="" id="" defaultValue="">
+                            <option value="" disabled>def Moment(?)</option>
                             <option value="Meme" title="Meme Zone for Devs">🤖 Dev Memes</option>
                             <option value="Bugs" title="Bug Reports & Errors">👾 Bugs</option>
                         </select>
@@ -40,8 +41,8 @@ export default function BaseCreate() {
                         <li onClick={()=>handleTabs("uc")} className={`${crntTab.uc ? "navSlider":""}`}>Upload & Control</li>
                     </ul>
                 </div>
-                <div className="comSpace">
-                        
+                <div className="comSpace border h-auto">
+                        <CaptionEl/>
                 </div>
             </div>
         </div>

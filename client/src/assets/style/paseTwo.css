@@ -124,3 +124,17 @@ select{
 .navSlider::after{
     transform: translateX(-50%) scaleX(0.8) !important;
 }
+
+.capBtn{
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px; width: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  i{
+    font-size: larger;
+  }
+}

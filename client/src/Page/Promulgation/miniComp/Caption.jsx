@@ -1,69 +1,35 @@
-import { useState,useRef } from "react";
-
+import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
 export default function CaptionEl() {
-  const editorRef = useRef();
+  const [text,setText] = useState("")
 
-  const exec = (command, value = null) => {
-    document.execCommand(command, false, value);
-    editorRef.current.focus();
-  };
 
-  const handleInput = () => {
-    const html = editorRef.current.innerHTML;
-    onChange && onChange(html);
-  };
 
-  return (
-    <div className="space-y-3">
-      {/* Toolbar */}
-      <div className="flex flex-wrap gap-2 p-2 border rounded bg-gray-50">
-        <button className="btn" onClick={() => exec("bold")}>B</button>
-        <button className="btn italic" onClick={() => exec("italic")}>I</button>
-        <button className="btn underline" onClick={() => exec("underline")}>U</button>
-        <button className="btn line-through" onClick={() => exec("strikeThrough")}>S</button>
 
-        <button className="btn" onClick={() => exec("formatBlock", "h1")}>H1</button>
-        <button className="btn" onClick={() => exec("formatBlock", "h2")}>H2</button>
-        <button className="btn" onClick={() => exec("formatBlock", "h3")}>H3</button>
-
-        <button className="btn" onClick={() => exec("insertHTML", "<code>code</code>")}>
-          {"</>"}
-        </button>
-
-        <button
-          className="btn"
-          onClick={() =>
-            exec("insertHTML", "<pre><code>Your code here</code></pre>")
-          }
-        >
-          Code Block
-        </button>
-
-        <button
-          className="btn"
-          onClick={() => {
-            const url = prompt("Enter link URL:");
-            if (url) exec("createLink", url);
-          }}
-        >
-          Link
-        </button>
-
-        <button
-          className="btn"
-          onClick={() => exec("insertHTML", "😊")}
-        >
-          😊
-        </button>
+  const handleInp = evnt=>{
+    setText(evnt.target.value);
+  }
+  return(
+      <div className="myCapDiv flex items-center flex-col p-1">
+        <div className="flex items-center p-2 border-b-2 border-skin-ptext/30">
+            <div className="navBar flex items-center justify-center gap-2">
+              <button className='capBtn' title='Bold'><i className='bx bx-bold'></i></button>
+              <button className='capBtn' title='Italic'><i className='bx bx-italic'></i></button>
+              <button className='capBtn' title='Code'><i className='bx bx-code'></i></button>
+              <button className='capBtn' title='Code Block'><i className='bx bx-code-block'></i></button>
+              <button className='capBtn' title='Heading'><i className='bx bx-heading'></i></button>
+              <button className='capBtn' title='Attach URL' ><i className='bx bx-link'></i></button>
+            </div>
+        </div>
+        <div className="flex">
+          <textarea name="" id="md-textarea"
+            value={text}
+            onChange={handleInp}
+            placeholder='Write Your caption using markdown...'
+            className='w-full min-h-44 outline-none p-3'
+          />
+        </div>
       </div>
-
-      {/* Editor Area */}
-      <div
-        ref={editorRef}
-        contentEditable
-        onInput={handleInput}
-        className="min-h-40 p-3 border rounded leading-relaxed focus:outline-none prose max-w-none"
-      />
-    </div>
-  );
+  )
 }

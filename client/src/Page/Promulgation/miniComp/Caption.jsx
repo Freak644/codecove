@@ -65,9 +65,9 @@ export default function CaptionEl() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2 relative">
+    <div className="w-full flex flex-col gap-2 relative border-2 border-skin-ptext/30">
 
-      <div className="flex h-12 gap-2 items-center sticky top-0 bg-skin-bg">
+      <div className="flex h-12 gap-2 items-center sticky top-0 bg-skin-bg rounded-2xl">
 
         <button
           className={`capBtn ${active.bold ? "bg-gray-500/50" : ""}`}

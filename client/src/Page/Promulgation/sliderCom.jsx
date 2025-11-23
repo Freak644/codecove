@@ -48,7 +48,7 @@ export default function ImageSlider({ imgArray, setArray }) {
   const swipeConstHold = 10000;
 
   return (
-    <div className="relative h-full flex items-center justify-center w-[320px]">
+    <div className="relative h-[400px] flex items-center justify-center w-[320px]">
       {/* left arrow */}
       <button
         onClick={prevImg}

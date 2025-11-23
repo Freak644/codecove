@@ -2,6 +2,8 @@ import { useState } from "react";
 import { getColor } from "../../utils/getGradnt"
 import CaptionEl from "./miniComp/Caption";
 import { usePostStore } from "../../lib/basicUserinfo";
+import CompAnim from "../../assets/animations/compAnimation";
+import DragDropBox from "./dropBox";
 
 export default function BaseCreate() {
     let gradColor = getColor();
@@ -43,8 +45,14 @@ export default function BaseCreate() {
                         <li onClick={()=>handleTabs("uc")} className={`${crntTab.uc ? "navSlider":""}`}>Upload & Control</li>
                     </ul>
                 </div>
-                <div className="comSpace border-2 border-skin-ptext/30 rounded-lg my-scroll h-auto sm:w-3/5 w-full">
-                        <CaptionEl/>
+                <div className="comSpace  rounded-lg my-scroll h-auto sm:w-3/5 w-full">
+                        <CompAnim key={
+                            crntTab.caption ? "caption" : 
+                            crntTab.image ? "image" : "none"
+                        } >
+                            {crntTab.caption && <CaptionEl/>}
+                            {crntTab.image && <DragDropBox/>}
+                        </CompAnim>
                 </div>
             </div>
         </div>

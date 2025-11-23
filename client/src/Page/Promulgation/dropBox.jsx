@@ -3,7 +3,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import {useDropzone} from 'react-dropzone';
 import {Upload,X,File} from 'lucide-react';
 import {toast} from 'react-toastify'
-import {usePostStore} from '../../lib/basicUserinfo'
+import ImageSlider from './sliderCom';
+import { usePostStore } from '../../lib/basicUserinfo';
 export default function DragDropBox() {
     const [imgFiles,setImgFiles] = useState([]);
     let {setPostOBJ} = usePostStore();
@@ -14,9 +15,7 @@ export default function DragDropBox() {
     },[])
 
     useEffect(()=>{
-      if (imgFiles.length>0) {
-        setPostOBJ(imgFiles)
-      }
+      setPostOBJ({imgFiles});
     },[imgFiles])
 
     const onDrop = useCallback((acceptedFiles) => {
@@ -68,7 +67,7 @@ export default function DragDropBox() {
 
 
 return (
-  <div className="underTaker my-scroll">
+  <div className="flex items-center justify-center p-2 my-scroll">
 
     {imgFiles.length === 0 &&<motion.div
       {...getRootProps()}
@@ -99,9 +98,9 @@ return (
       </motion.div>
     </motion.div>}
 
-    {/* {imgFiles.length > 0 &&
-      <Creater Images={imgFiles} handler={setImgFiles}/>
-    } */}
+   {imgFiles.length > 0 &&
+      <ImageSlider imgArray={imgFiles} setArray={setImgFiles}/>
+    }
   </div>
 );
 

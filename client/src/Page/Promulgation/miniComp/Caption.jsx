@@ -3,7 +3,9 @@ import { usePostStore } from "../../../lib/basicUserinfo";
 
 export default function CaptionEl() {
   const editorRef = useRef(null);
+  const LIMIT = 300;
   let {postOBJ,setPostOBJ} = usePostStore();
+  const [textLenght,setLength] = useState(0);
   const [active, setActive] = useState({
     bold: false,
     italic: false,
@@ -64,6 +66,38 @@ export default function CaptionEl() {
     range.insertNode(pre);
   };
 
+  const handleInput = () => {
+    const el = editorRef.current;
+    const text = el.innerText;
+    setLength(text.length)
+    if (text.length > LIMIT) {
+      const allowed = text.substring(0, LIMIT);
+      el.innerText = allowed;
+
+      const range = document.createRange();
+      const sel = window.getSelection();
+      range.selectNodeContents(el);
+      range.collapse(false);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+};
+
+  const handlePaste = (e) => {
+    e.preventDefault();
+
+    const el = editorRef.current;
+    const clipboard = (e.clipboardData || window.clipboardData).getData("text");
+    const current = el.innerText;
+    const remaining = LIMIT - current.length;
+
+    if (remaining <= 0) return setLength(300);
+
+    const toInsert = clipboard.substring(0, remaining);
+    document.execCommand("insertText", false, toInsert);
+};
+
+
   return (
     <div className="w-full flex flex-col gap-2 relative border-2 border-skin-ptext/30">
 
@@ -116,11 +150,19 @@ export default function CaptionEl() {
         >
           <i className="bx bx-code-block"></i>
         </button>
+
+        <div className="counter absolute right-2">
+          <p className="text-[12px]">{`${textLenght}`}/{LIMIT}</p>
+        </div>
+
       </div>
+
 
       <div
         ref={editorRef}
         contentEditable
+        onInput={handleInput}
+        onPaste={handlePaste}
         spellCheck={false}
         className=" min-h-68 sm:min-h-[180px]  my-scroll w-full p-2 wrap-break-word outline-none text-skin-text caret-skin-text"
       />

@@ -4,6 +4,7 @@ import CaptionEl from "./miniComp/Caption";
 import { usePostStore } from "../../lib/basicUserinfo";
 import CompAnim from "../../assets/animations/compAnimation";
 import DragDropBox from "./dropBox";
+import UploadController from "./miniComp/controller";
 
 export default function BaseCreate() {
     let gradColor = getColor();
@@ -45,13 +46,15 @@ export default function BaseCreate() {
                         <li onClick={()=>handleTabs("uc")} className={`${crntTab.uc ? "navSlider":""}`}>Upload & Control</li>
                     </ul>
                 </div>
-                <div className="comSpace  rounded-lg my-scroll h-auto sm:w-3/5 w-full">
+                <div className="comSpace  rounded-lg my-scroll h-auto sm:w-3/5 w-full ">
                         <CompAnim key={
                             crntTab.caption ? "caption" : 
-                            crntTab.image ? "image" : "none"
+                            crntTab.image ? "image" : 
+                            crntTab.uc ? "UC" : "none"
                         } >
                             {crntTab.caption && <CaptionEl/>}
                             {crntTab.image && <DragDropBox/>}
+                            {crntTab.uc && <UploadController/>}
                         </CompAnim>
                 </div>
             </div>

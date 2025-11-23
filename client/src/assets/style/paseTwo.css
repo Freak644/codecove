@@ -139,3 +139,10 @@ select{
     font-size: larger;
   }
 }
+
+.comSpace{
+  background: rgba(20, 20, 30 , 0.4);
+        backdrop-filter: blur(10px);
+        border-radius: 8px;
+        -webkit-backdrop-filter: blur(10px);
+}

@@ -1,7 +1,9 @@
 import { useRef, useState, useEffect } from "react";
+import { usePostStore } from "../../../lib/basicUserinfo";
 
 export default function CaptionEl() {
   const editorRef = useRef(null);
+  let {postOBJ,setPostOBJ} = usePostStore();
   const [active, setActive] = useState({
     bold: false,
     italic: false,
@@ -18,6 +20,18 @@ export default function CaptionEl() {
       strike: document.queryCommandState("strikeThrough")
     });
   };
+
+  useEffect(()=>{
+    setPostOBJ({caption:editorRef.current?.innerHTML})
+  },[active])
+
+  useEffect(()=>{
+    editorRef.current.focus();
+    if (postOBJ.caption?.length>1) {
+      console.log(postOBJ)
+        editorRef.current.innerHTML = postOBJ.caption;
+    }
+  },[])
 
   useEffect(() => {
     document.addEventListener("selectionchange", updateActive);
@@ -51,9 +65,9 @@ export default function CaptionEl() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2">
+    <div className="w-full flex flex-col gap-2 relative">
 
-      <div className="flex gap-2 items-center">
+      <div className="flex h-12 gap-2 items-center sticky top-0 bg-skin-bg">
 
         <button
           className={`capBtn ${active.bold ? "bg-gray-500/50" : ""}`}
@@ -108,7 +122,7 @@ export default function CaptionEl() {
         ref={editorRef}
         contentEditable
         spellCheck={false}
-        className="min-h-[140px] max-w-[500px] p-2 wrap-break-word outline-none text-skin-text caret-skin-text"
+        className=" min-h-68 sm:min-h-[180px]  my-scroll w-full p-2 wrap-break-word outline-none text-skin-text caret-skin-text"
       />
     </div>
   );

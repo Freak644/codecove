@@ -99,6 +99,7 @@ select{
       justify-content: center;
       padding: 5px;
       position: relative;
+      font-weight: 500;
       cursor: pointer;
 
       &::after {
@@ -130,7 +131,7 @@ select{
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 30px; width: 30px;
+  height: 35px; width: 35px;
   border-radius: 50%;
   overflow: hidden;
 

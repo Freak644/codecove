@@ -146,3 +146,47 @@ select{
         border-radius: 8px;
         -webkit-backdrop-filter: blur(10px);
 }
+
+.ControllerbaseCon{
+  .leftDiv,.rightDiv{
+    height: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .leftDiv{
+    /* border-right: 1px solid var(--p-text-color); */
+    .selectionDiv{
+      width: 100%;
+      display: flex;
+      align-items: start;
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+
+  .rightDiv{
+    height: 100%;
+    flex-direction: column !important;
+  }
+  .shadOption{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      p{
+        font-size: small;
+        padding: 2px;
+        color: gray;
+        border-radius: 8px;
+        border: 1px solid gray;
+        cursor: pointer;
+      }
+    }
+}

@@ -187,6 +187,24 @@ select{
         border-radius: 8px;
         border: 1px solid gray;
         cursor: pointer;
+        transition: all .7s ease-in;
+
+        &:hover{
+          color: var(--p-text-color);
+          border-color: var(--p-text-color) !important;
+        }
       }
     }
+}
+
+.activeOpTrue{
+  font-weight: bold;
+  color: rgb(6, 206, 6) !important;
+  border-color: rgb(6, 206, 6) !important;
+}
+
+.activeOpFalse{
+  font-weight: bold;
+  color: rgb(206, 6, 6) !important;
+  border-color: rgb(206, 6, 6) !important;
 }

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { Loader } from "../../../lib/loader";
 
 export default function UploadController() {
     const [controlls,setControlls] = useState({
@@ -10,6 +11,17 @@ export default function UploadController() {
         Link:false,
         Violence:false
     })
+    const suBtnRef = useRef();
+    const isLoder = Loader(state=>state.isTrue);
+    let {toggleLoader} = Loader();
+
+    const setBtnAnimation = ()=>{
+        let btn = suBtnRef.current;
+        btn.classList.add('postingCommitBtn');
+        setTimeout(() => {
+            btn.classList.remove('postingCommitBtn');
+        }, 1500);
+    }
 
     return(
         <div className="underTaker">
@@ -64,7 +76,7 @@ export default function UploadController() {
                     </div>
                 </div>
 
-                <div className="rightDiv">
+                <div className="rightsideDiv gap-3.5!">
                     <h2 className="font-bold text-lg">Block Comments:-</h2>
                     <div className="shadOption">
                         <p onClick={()=>setControlls(prev=>({
@@ -84,7 +96,12 @@ export default function UploadController() {
                             Violence:!prev.Violence
                         }))} className={`${controlls.Violence && "activeOpTrue"}`}>Violence</p>
                     </div>
+                    <button ref={suBtnRef} onClick={setBtnAnimation}
+                    className="postCommitBtn flex items-center justify-center w-30 bg-linear-to-r from-purple-500 via-pink-500 to-blue-600
+                    p-2 cursor-pointer bg-size-[200%_200%] hover:bg-position-[100%_150%]  transition-all duration-700 ease-in-out overflow-hidden rounded-lg mt-5"
+                    ><div className="text-lg h-full w-full font-bold"><span>Commit</span> <i className="bx bxs-send -rotate-45"></i> </div></button>
                 </div>
+                
             </div>
         </div>
     )

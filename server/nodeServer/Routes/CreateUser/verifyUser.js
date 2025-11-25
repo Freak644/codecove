@@ -29,7 +29,7 @@ export const SendEmailVerify = async (rkv,rspo) => {
             const token = jwt.sign(payload,process.env.jwt_sec,{expiresIn:"5m"});
             rspo.cookie("otpToken", token, {
               httpOnly: true,
-              secure: true, // must be false on localhost
+              secure: true, 
               sameSite: "strict",
               maxAge: 6 * 60 * 1000
             });

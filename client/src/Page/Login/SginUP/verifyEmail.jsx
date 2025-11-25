@@ -45,7 +45,7 @@ export default function VerifyEl() {
       //}
     }
     function setCoundown() {
-        let coundown = 10;
+        let coundown = 120;
         let btn= btnRef.current;
         btn.disabled = true;
         btn.style.opacity = 0.7;

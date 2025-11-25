@@ -22,10 +22,11 @@ import { forgotPass } from './Routes/Secure/forgotPassMail.js';
 import { CreatePost } from './Routes/Promulgation/createPost.js';
 import { GetPosts } from './Routes/usersPOSTAPIs/getPost.js';
 import postSocket from './socketIO/postSocket.js';
+import { usernameCheckLimiter } from './Controllers/rateLimits.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
-myApp.set("trust proxy",true)
+myApp.set("trust proxy",1)
 myApp.use(cookieParser());
 myApp.use("/Images",express.static('Images'));
 
@@ -49,7 +50,7 @@ const upload = multer({
     limits: { fileSize: 3 * 1024 * 1024 } 
 });
 
-myApp.get("/getUsername",getUsers);
+myApp.get("/getUsername",usernameCheckLimiter,getUsers);
 myApp.post("/sendVerifyEmail",SendEmailVerify);
 myApp.post("/verifyEmail",verifyEmail);
 myApp.post("/CreateUser",upload.single("avatar"),CreateUser);

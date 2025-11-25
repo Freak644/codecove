@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { usePostStore } from "../../../lib/basicUserinfo";
+import DOMPurify from 'dompurify';
 
 export default function CaptionEl() {
   const editorRef = useRef(null);
@@ -23,8 +24,14 @@ export default function CaptionEl() {
     });
   };
 
+  const cleanHTML = dirty=>{
+    return DOMPurify.sanitize(dirty,{
+      USE_PROFILES: {html:true}
+    });
+  }
+
   useEffect(()=>{
-    setPostOBJ({caption:editorRef.current?.innerHTML})
+    setPostOBJ({caption:cleanHTML(editorRef.current?.innerHTML)})
   },[active])
 
   useEffect(()=>{
@@ -99,7 +106,7 @@ export default function CaptionEl() {
 
 
   return (
-    <div className="w-full flex flex-col gap-2 relative border-2 border-skin-ptext/30">
+    <div className="w-full flex flex-col gap-2 relative ">
 
       <div className="flex h-12 gap-2 items-center sticky top-0 bg-skin-bg rounded-2xl">
 

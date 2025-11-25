@@ -27,14 +27,14 @@ export default function UploadController() {
         btn.classList.add('postingCommitBtn');
         setTimeout(() => {
             btn.classList.remove('postingCommitBtn');
-        }, 1100);
+        }, 1300);
     }
     const handleSubmit = ()=>{
         setBtnAnimation();
         // setTimeout(()=>{
         //     toggleLoader(true)
         // },1200);
-
+        let saveVal = document.getElementById("post").value;
         let formData = new FormData();
         Object.keys(controlls).forEach(val=>{
             formData.set(val,controlls[val]);
@@ -44,6 +44,7 @@ export default function UploadController() {
         if (postData.caption.length < 1) return toast.info("Caption !== empty");
         if (!postData.imgFiles || postData.imgFiles.length < 1) 
         formData.set("caption",postData.caption);
+        formData.set("canSave",saveVal);
         postData.imgFiles.forEach(img=>{
             formData.append("postFiles",img.file)
         })
@@ -106,8 +107,8 @@ export default function UploadController() {
                     <div className="selectionDiv">
                         <strong>Who can save your Post 🔖:</strong>
                         <select name="" id="post">
-                            <option value="true">Everyone🔖</option>
-                            <option value="follower">Follower only👥</option>
+                            <option value="Everyone">Everyone🔖</option>
+                            <option value="Follower">Follower only👥</option>
                             <option value="false">NoBody🔒</option>
                         </select>
                     </div>

@@ -20,7 +20,6 @@ export const getUsers = async (rkv,rspo) => {
    let {username} = rkv.query;
     try {
     let [isrow] = await database.query('SELECT username FROM USERS WHERE username=?',[username]);
-        console.log(isrow);
     if (isrow.length===0) {
         return rspo.status(201).send({avalable:true,suggestion:[]});
     }
@@ -37,6 +36,6 @@ export const getUsers = async (rkv,rspo) => {
     const suggestion = getSuggestion(username,takenList)
     rspo.status(202).send({avalable:false,suggestion,takenList})
    } catch (error) {
-    
+    rspo.status(500).send({err:"server side error "})
    }
 }

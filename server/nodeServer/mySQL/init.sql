@@ -64,9 +64,9 @@ CREATE TABLE IF NOT EXISTS posts (
   caption TEXT,
   blockCat JSON NOT NULL,
   visibility BOOLEAN DEFAULT 1,
-  comment BOOLEAN DEFAULT 1,
-  showcount BOOLEAN DEFAULT 1,
-  saveop BOOLEAN DEFAULT 1,
+  canComment BOOLEAN DEFAULT 1,
+  likeCount BOOLEAN DEFAULT 1,
+  canSave VARCHAR(50) DEFAULT "Everyone",
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_user_id (id)

@@ -8,6 +8,7 @@ import { usePostStore } from '../../lib/basicUserinfo';
 export default function DragDropBox() {
     const [imgFiles,setImgFiles] = useState([]);
     let {setPostOBJ} = usePostStore();
+    const postData = usePostStore(state=>state.postOBJ);
     useEffect(()=>{
         return ()=> {
             imgFiles.forEach(f=>URL.revokeObjectURL(f.preview));
@@ -17,6 +18,12 @@ export default function DragDropBox() {
     useEffect(()=>{
       setPostOBJ({imgFiles});
     },[imgFiles])
+
+    useEffect(()=>{
+      if (postData.imgFiles) {
+        setImgFiles(postData.imgFiles);
+      }
+    },[])
 
     const onDrop = useCallback((acceptedFiles) => {
         if (acceptedFiles.length > 5) return toast.info("You can only attach 5 file in single Post")

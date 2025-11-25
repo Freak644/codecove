@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Loader } from "../../../lib/loader";
+import { usePostStore } from "../../../lib/basicUserinfo";
+import { toast } from "react-toastify";
 
 export default function UploadController() {
     const [controlls,setControlls] = useState({
@@ -12,15 +14,50 @@ export default function UploadController() {
         Violence:false
     })
     const suBtnRef = useRef();
-    const isLoder = Loader(state=>state.isTrue);
-    let {toggleLoader} = Loader();
+    let {isTrun,toggleLoader} = Loader();
+    const postData = usePostStore(state=>state.postOBJ);
+
+    useEffect(()=>{
+        console.log(postData)
+        setBtnAnimation();
+    },[])
 
     const setBtnAnimation = ()=>{
         let btn = suBtnRef.current;
         btn.classList.add('postingCommitBtn');
         setTimeout(() => {
             btn.classList.remove('postingCommitBtn');
-        }, 1500);
+        }, 1100);
+    }
+    const handleSubmit = ()=>{
+        setBtnAnimation();
+        // setTimeout(()=>{
+        //     toggleLoader(true)
+        // },1200);
+
+        let formData = new FormData();
+        Object.keys(controlls).forEach(val=>{
+            formData.set(val,controlls[val]);
+        })
+
+        if(Object.keys(controlls).length !== 7) return toast.info("Something went wrong");
+        if (postData.caption.length < 1) return toast.info("Caption !== empty");
+        if (!postData.imgFiles || postData.imgFiles.length < 1) 
+        formData.set("caption",postData.caption);
+        postData.imgFiles.forEach(img=>{
+            formData.append("postFiles",img.file)
+        })
+
+        let tempOBJ = Object.fromEntries(formData.entries());
+        console.log(tempOBJ);
+        try {
+            
+        } catch (error) {
+            toast.error(error.message)
+        }finally{
+            toggleLoader(false)
+        }
+
     }
 
     return(
@@ -96,9 +133,10 @@ export default function UploadController() {
                             Violence:!prev.Violence
                         }))} className={`${controlls.Violence && "activeOpTrue"}`}>Violence</p>
                     </div>
-                    <button ref={suBtnRef} onClick={setBtnAnimation}
-                    className="postCommitBtn flex items-center justify-center w-30 bg-linear-to-r from-purple-500 via-pink-500 to-blue-600
-                    p-2 cursor-pointer bg-size-[200%_200%] hover:bg-position-[100%_150%]  transition-all duration-700 ease-in-out overflow-hidden rounded-lg mt-5"
+                    <button ref={suBtnRef} onClick={handleSubmit}
+                    className={`postCommitBtn flex items-center justify-center w-30 bg-linear-to-r from-purple-500 via-pink-500 to-blue-600
+                    p-2 cursor-pointer bg-size-[200%_200%] hover:bg-position-[100%_150%]  transition-all duration-700 ease-in-out overflow-hidden rounded-lg mt-5 ${isTrun && "cursor-not-allowed"}`}
+                    
                     ><div className="text-lg h-full w-full font-bold"><span>Commit</span> <i className="bx bxs-send -rotate-45"></i> </div></button>
                 </div>
                 

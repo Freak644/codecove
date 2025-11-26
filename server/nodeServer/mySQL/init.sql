@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL CHECK (LENGTH(password) > 0),
     avatar VARCHAR(255) DEFAULT '/Images/Avtar/default.png',
     bio VARCHAR(100) DEFAULT 'Stay! Ahead, Follow the Revolution',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    acStatus BOOLEAN DEFAULT 1
 );
 
 /*

@@ -4,15 +4,18 @@ import { database } from '../../Controllers/myConnectionFile.js';
 import dotenv from 'dotenv';
 import { SaveThisSession } from './userSession.js';
 import { sendTheMail } from '../../Controllers/nodemailer.js';
+import { completeRequest } from '../../Controllers/progressTracker.js';
 dotenv.config();
 export const LoginAPI = async (rkv,rspo) => {
+    const IP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const route = rkv.originalUrl.split("?")[0];
     let {Email,Password,clientInfo} = rkv.body;
     try {
-        if (!Email?.trim() || !Password?.trim()) {
+        if (!Email?.trim() || !Password?.trim() || Object.keys(clientInfo).length !== 2) {
         return rspo.status(400).send({ err: "Please Provide proper information"})
         }
         let [isUser] = await database.execute(
-            "SELECT username,password,id,email FROM users WHERE username=? OR email=?",
+            "SELECT username,password,id,email,acStatus FROM users WHERE username=? OR email=?",
             [Email,Email]
         )
         if (!isUser.length>0) {
@@ -22,7 +25,8 @@ export const LoginAPI = async (rkv,rspo) => {
                 return rspo.status(401).send({ err: "Please check your username"})
             }
         }
-        let {password,username,email,id} = isUser[0];
+        let {password,username,email,id,acStatus} = isUser[0];
+        if (acStatus !== 1) return rspo.status(401).send({err:"Your account Block"});
         let isPassMatch = await bcrypt.compare(Password,password);
         if (!isPassMatch) {
             return rspo.status(401).send({ err: "Check your Password"})
@@ -63,6 +67,8 @@ export const LoginAPI = async (rkv,rspo) => {
         }
     } catch (error) {
         rspo.status(500).send({ err: "Sever Side Error",details:error.message});
+    } finally{
+        completeRequest(IP,route)
     }
 }
 

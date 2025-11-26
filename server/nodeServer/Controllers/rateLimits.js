@@ -22,9 +22,9 @@ const verifyEmailLiter = rateLimit({
 
 const RateLimiter = rateLimit({
   windowMs:10 * 1000,
-  max:4,
+  max:20,
   message: {error:msg}
 })
 
 
-export {usernameCheckLimiter, EmailRateLimiter, verifyEmailLiter}
+export {usernameCheckLimiter, EmailRateLimiter, verifyEmailLiter,RateLimiter}

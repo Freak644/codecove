@@ -5,6 +5,11 @@ import chalk from 'chalk';
 import cookieParser from 'cookie-parser';
 import requestIp from 'request-ip';
 import {diskUpload} from './Controllers/diskMulter.js'
+// app.use(cors({
+//   origin: "your-frontend-domain",
+//   credentials: true
+// }));
+
 let port = 3222;
 import fs from 'fs';
 //import path from 'path';
@@ -22,7 +27,8 @@ import { forgotPass } from './Routes/Secure/forgotPassMail.js';
 import { CreatePost } from './Routes/Promulgation/createPost.js';
 import { GetPosts } from './Routes/usersPOSTAPIs/getPost.js';
 import postSocket from './socketIO/postSocket.js';
-import { EmailRateLimiter, usernameCheckLimiter, verifyEmailLiter } from './Controllers/rateLimits.js';
+import { EmailRateLimiter, RateLimiter, usernameCheckLimiter, verifyEmailLiter } from './Controllers/rateLimits.js';
+import { checkRequest, startCleaner } from './Controllers/progressTracker.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -53,16 +59,17 @@ const upload = multer({
 myApp.get("/getUsername",usernameCheckLimiter,getUsers);
 myApp.post("/sendVerifyEmail",EmailRateLimiter,SendEmailVerify);
 myApp.post("/verifyEmail",verifyEmailLiter,verifyEmail);
-myApp.post("/CreateUser",upload.single("avatar"),CreateUser);
-myApp.post("/login",LoginAPI);
-myApp.get("/GetUserInfo",Auth,CrntUser);
-myApp.get("/auth",checkAuth);
-myApp.post("/Logout",Auth,loggedMeOut);
-myApp.get("/checkActive",ActivityInfo);
-myApp.put("/upDatePass",changePassSecure);
-myApp.post("/sendForgotMail",forgotPass);
-myApp.post("/CreatePost",diskUpload.array("postFiles",5),Auth,CreatePost);
-myApp.get("/getPost",Auth,GetPosts);
+myApp.post("/CreateUser",RateLimiter,upload.single("avatar"),CreateUser);
+myApp.post("/login",RateLimiter,checkRequest,LoginAPI);
+myApp.get("/GetUserInfo",RateLimiter,Auth,CrntUser);
+myApp.get("/auth",RateLimiter,checkAuth);
+myApp.post("/Logout",RateLimiter,Auth,loggedMeOut);
+myApp.get("/checkActive",RateLimiter,ActivityInfo);
+myApp.put("/upDatePass",RateLimiter,changePassSecure);
+myApp.post("/sendForgotMail",RateLimiter,forgotPass);
+myApp.post("/CreatePost",RateLimiter,diskUpload.array("postFiles",5),Auth,CreatePost);
+myApp.get("/getPost",RateLimiter,Auth,GetPosts);
+myApp.post("/test",checkRequest)
 
 
 const myServer = http.createServer(myApp);
@@ -86,5 +93,6 @@ export function getIO() {
 }
 
 myServer.listen(port,()=>{
+    startCleaner();
     console.log(chalk.greenBright.yellow.italic.bold("Server + Socket.IO running on " + port));
 })

@@ -22,7 +22,7 @@ import { forgotPass } from './Routes/Secure/forgotPassMail.js';
 import { CreatePost } from './Routes/Promulgation/createPost.js';
 import { GetPosts } from './Routes/usersPOSTAPIs/getPost.js';
 import postSocket from './socketIO/postSocket.js';
-import { usernameCheckLimiter } from './Controllers/rateLimits.js';
+import { EmailRateLimiter, usernameCheckLimiter, verifyEmailLiter } from './Controllers/rateLimits.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -51,8 +51,8 @@ const upload = multer({
 });
 
 myApp.get("/getUsername",usernameCheckLimiter,getUsers);
-myApp.post("/sendVerifyEmail",SendEmailVerify);
-myApp.post("/verifyEmail",verifyEmail);
+myApp.post("/sendVerifyEmail",EmailRateLimiter,SendEmailVerify);
+myApp.post("/verifyEmail",verifyEmailLiter,verifyEmail);
 myApp.post("/CreateUser",upload.single("avatar"),CreateUser);
 myApp.post("/login",LoginAPI);
 myApp.get("/GetUserInfo",Auth,CrntUser);

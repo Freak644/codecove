@@ -2,6 +2,7 @@ import geoip from 'geoip-lite';
 import {UAParser} from "ua-parser-js";
 import { database } from '../../Controllers/myConnectionFile.js';
 import {nanoid} from 'nanoid'
+import { completeRequest } from '../../Controllers/progressTracker.js';
 export const SaveThisSession = async (rkv,userID) => {
     let session_id = nanoid();
     const ip = rkv.clientIp?.replace(/^::ffff:/,"") || "0.0.0.0";
@@ -28,6 +29,8 @@ export const SaveThisSession = async (rkv,userID) => {
 
 export const loggedMeOut = async (rkv,rspo) => {
     let {id,session_id} = rkv.authData;
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     try {
         let rqst = await database.execute("UPDATE user_sessions SET revoked=? WHERE session_id=? AND id=?",
             [true,session_id,id]
@@ -41,6 +44,8 @@ export const loggedMeOut = async (rkv,rspo) => {
         rspo.status(200).send({pass:"Logged-Out"})
     } catch (error) {
         return rspo.status(500).send({err:error.message})
+    }finally{
+        completeRequest(crntIP,crntAPI)
     }
 
 }

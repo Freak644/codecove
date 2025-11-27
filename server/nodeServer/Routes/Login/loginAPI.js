@@ -31,11 +31,11 @@ export const LoginAPI = async (rkv,rspo) => {
         if (!isPassMatch) {
             return rspo.status(401).send({ err: "Check your Password"})
         }
-        const loginTime = new Date(); // current time
+        const loginTime = new Date();
 
-        // format it nicely
+        
         const formattedTime = loginTime.toLocaleString('en-US', {
-        timeZone: clientInfo.timeZone,   // optional: use user timezone
+        timeZone: clientInfo.timeZone,   
         weekday: 'short',
         year: 'numeric',
         month: 'short',

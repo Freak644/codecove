@@ -56,20 +56,21 @@ const upload = multer({
     limits: { fileSize: 3 * 1024 * 1024 } 
 });
 
-myApp.get("/getUsername",usernameCheckLimiter,getUsers);
-myApp.post("/sendVerifyEmail",EmailRateLimiter,SendEmailVerify);
-myApp.post("/verifyEmail",verifyEmailLiter,verifyEmail);
-myApp.post("/CreateUser",RateLimiter,upload.single("avatar"),CreateUser);
+myApp.get("/getUsername",usernameCheckLimiter,checkRequest,getUsers);
+myApp.post("/sendVerifyEmail",EmailRateLimiter,checkRequest,SendEmailVerify);
+myApp.post("/verifyEmail",verifyEmailLiter,checkRequest,verifyEmail);
+myApp.post("/CreateUser",RateLimiter,checkRequest,upload.single("avatar"),CreateUser);
 myApp.post("/login",RateLimiter,checkRequest,LoginAPI);
-myApp.get("/GetUserInfo",RateLimiter,Auth,CrntUser);
-myApp.get("/auth",RateLimiter,checkAuth);
-myApp.post("/Logout",RateLimiter,Auth,loggedMeOut);
-myApp.get("/checkActive",RateLimiter,ActivityInfo);
-myApp.put("/upDatePass",RateLimiter,changePassSecure);
-myApp.post("/sendForgotMail",RateLimiter,forgotPass);
+myApp.get("/GetUserInfo",RateLimiter,checkRequest,Auth,CrntUser);
+myApp.get("/auth",RateLimiter,checkRequest,checkAuth);
+myApp.post("/Logout",RateLimiter,checkRequest,Auth,loggedMeOut);
+myApp.get("/checkActive",RateLimiter,checkRequest,ActivityInfo);
+myApp.put("/upDatePass",RateLimiter,checkRequest,changePassSecure);
+myApp.post("/sendForgotMail",RateLimiter,checkRequest,forgotPass);
 myApp.post("/CreatePost",RateLimiter,diskUpload.array("postFiles",5),Auth,CreatePost);
-myApp.get("/getPost",RateLimiter,Auth,GetPosts);
+myApp.get("/getPost",RateLimiter,checkRequest,Auth,GetPosts);
 myApp.post("/test",checkRequest)
+myApp.get("/tests",checkRequest)
 
 
 const myServer = http.createServer(myApp);
@@ -96,3 +97,12 @@ myServer.listen(port,()=>{
     startCleaner();
     console.log(chalk.greenBright.yellow.italic.bold("Server + Socket.IO running on " + port));
 })
+
+/* 
+    We are not now that strength which in old days
+    Moved earth and heaven;
+    that which we are, we are;
+    One equal temper of heroic hearts,
+    Made weak by time and fate, but strong in will;
+    To strive, to seek, to find, and not to yield
+*/

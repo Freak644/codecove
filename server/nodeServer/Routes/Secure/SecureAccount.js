@@ -1,7 +1,10 @@
 import { database } from "../../Controllers/myConnectionFile.js";
 import bcrypt from 'bcrypt';
+import { completeRequest } from "../../Controllers/progressTracker.js";
 export const changePassSecure = async (rkv,rspo) => {
     let {basePass,session_id} = rkv.body;
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     let userID = rkv.cookies.tempID;
     let rows
     try {
@@ -24,6 +27,8 @@ export const changePassSecure = async (rkv,rspo) => {
         rspo.status(200).send({pass:"Your password changed succesfully"})
     } catch (error) {
         rspo.status(500).send({err:"Sever side Error",details:error.message})
+    }finally{
+        completeRequest(crntIP,crntAPI);
     }
 }
 

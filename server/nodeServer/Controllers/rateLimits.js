@@ -10,7 +10,7 @@ const usernameCheckLimiter = rateLimit({
 
 const EmailRateLimiter = rateLimit({
   windowMs:60 * 1000,
-  max:1,
+  max:10,
   message:{error: msg}
 });
 

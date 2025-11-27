@@ -20,6 +20,21 @@ export default function AbsoluteMenu() {
         }
     }, [isMenuToggling]);
 
+    const handleLogout = async () => {
+        let rqst = await fetch("/myServer/Logout",{
+            headers:{
+                "Content-Type":"application/json"
+            },
+            method:"POST",
+        })
+        let result = await rqst.json();
+        console.log(result)
+        if (result.pass) {
+           location.reload()
+            navi('/')            
+        }
+    }
+
     useEffect(() => {
         const handleClick = (evnt) => {
             let tmpArray = [];
@@ -160,11 +175,9 @@ export default function AbsoluteMenu() {
                             <span>Issue</span>
                         </Link>
                     </li>
-                    <li>
-                        <Link to="" title="Logout">
+                    <li onClick={handleLogout}>
                             <i>👤</i>
                             <span>Logout</span>
-                        </Link>
                     </li>
                 </ul>
             </div>

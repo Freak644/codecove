@@ -4,6 +4,7 @@ import sharp from 'sharp';
 import { fileTypeFromBuffer } from 'file-type';
 import fs from 'fs';
 import path from 'path';
+import { completeRequest } from '../../Controllers/progressTracker.js';
 
 async function checkDuplicate(sqlData, username, email) {
   if (sqlData.some(prv => prv.username === username)) return username;
@@ -11,6 +12,8 @@ async function checkDuplicate(sqlData, username, email) {
 }
 
 export const CreateUser = async (rkv, rspo) => {
+  const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+  const crntAPI = rkv.originalUrl.split("?")[0];
   const MAX_WIDTH = 8000;
   const MAX_HEIGHT = 8000;
   const MAX_PIXELS = 50_000_000;
@@ -96,5 +99,7 @@ export const CreateUser = async (rkv, rspo) => {
       try { fs.unlinkSync(avatarFileName); } catch (err) { console.error(err) };
     }
     rspo.status(500).send({ err: "Something went wrong", details: error.message });
+  }finally{
+    completeRequest(crntIP,crntAPI);
   }
 };

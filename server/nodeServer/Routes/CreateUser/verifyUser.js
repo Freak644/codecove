@@ -2,12 +2,15 @@ import {database} from '../../Controllers/myConnectionFile.js';
 import jwt from 'jsonwebtoken';
 import {sendTheMail} from '../../Controllers/nodemailer.js'
 import dotenv from 'dotenv';
+import { completeRequest } from '../../Controllers/progressTracker.js';
 dotenv.config();
 export const SendEmailVerify = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     let {username,email} = rkv.body;
     try {
         let [row] = await database.query("SELECT username, email FROM users WHERE username=? OR email=?",[username,email])
-        console.log(row)
+
         if(row.some(crntRow=>crntRow.username === username)) return rspo.status(406).send({err:`${username} is Already taken`});
         if (row.some(crntRow=>crntRow.email === email)) return rspo.status(406).send({err:`Account Exists on ${email}`});
         if (
@@ -40,40 +43,52 @@ export const SendEmailVerify = async (rkv,rspo) => {
     
     } catch (error) {
         rspo.status(500).send({err:"server side error",details:error.message});
+    }finally{
+        completeRequest(crntIP,crntAPI)
     }
     
 }
 
 export const verifyEmail = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     let {username,email,inOTP} = rkv.body;
-    let token = rkv.cookies.otpToken;
-    let tokenData = jwt.decode(token,process.env.jwt_sec)
-    let decodedTime = Math.floor(Date.now()/1000)
-    if (!token) {
-    return rspo.status(400).send({ err: "OTP Cookie is missing or expired" });
-    }
-   try {
-    if (tokenData.exp<decodedTime) {
-        return rspo.status(504).send({err:"The OTP is expire"})
-    }
     
-   if (tokenData.username !== username || tokenData.email !== email) {
-      return rspo.status(401).send({ err: "Unauthorized request" });
-    }
+   try {
+    if (
+            !username?.trim() || !email?.trim() || !inOTP?.trim()
+        ) {
+            return rspo.status(401).send({err:"Unauthorized Request"})
+        }
+        let token = rkv.cookies.otpToken;
+        let tokenData = jwt.decode(token,process.env.jwt_sec)
+        let decodedTime = Math.floor(Date.now()/1000)
+        if (!token) {
+        return rspo.status(400).send({ err: "OTP Cookie is missing or expired" });
+        }
+        if (tokenData.exp<decodedTime) {
+            return rspo.status(504).send({err:"The OTP is expire"})
+        }
+        
+    if (tokenData.username !== username || tokenData.email !== email) {
+        return rspo.status(401).send({ err: "Unauthorized request" });
+        }
 
-    // 4️⃣ Validate OTP
-    if (tokenData.otp.toString() !== inOTP) {
-      return rspo.status(400).send({ err: "Invalid OTP" });
-    }
+        // 4️⃣ Validate OTP
+        if (tokenData.otp.toString() !== inOTP) {
+        return rspo.status(400).send({ err: "Invalid OTP" });
+        }
 
-    // 5️⃣ OTP verified successfully
-   
-    if (tokenData.otp.toString() === inOTP) {
-         rspo.clearCookie("otpToken");
-        return rspo.status(200).send({ pass: "OTP verified successfully!" });
-    }
+        // 5️⃣ OTP verified successfully
+    
+        if (tokenData.otp.toString() === inOTP) {
+            rspo.clearCookie("otpToken");
+            return rspo.status(200).send({ pass: "OTP verified successfully!" });
+        }
 
    } catch (error) {
     rspo.status(500).send({err:"server side error",details:error.message})
+   }finally{
+    completeRequest(crntIP,crntAPI)
    }
 }

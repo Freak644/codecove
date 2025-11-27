@@ -2,8 +2,11 @@ import { database } from "../../Controllers/myConnectionFile.js";
 import { sendTheMail } from "../../Controllers/nodemailer.js";
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
+import { completeRequest } from "../../Controllers/progressTracker.js";
 dotenv.config();
 export const forgotPass = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     let {Email} = rkv.body;
     if (!Email) {
         Email = rkv.body.email;
@@ -42,8 +45,8 @@ export const forgotPass = async (rkv,rspo) => {
             rspo.status(200).send({pass:"Done Boss",email,username})
         }
     } catch (error) {
-        console.log(error.message)
         rspo.status(500).send({err:"Sever side error",details:error.message});
+    }finally{
+        completeRequest(crntIP,crntAPI)
     }
-    rspo.end();
 }

@@ -1,15 +1,13 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { database } from '../../Controllers/myConnectionFile.js';
-import geoip from 'geoip-lite';
 import { completeRequest } from '../../Controllers/progressTracker.js';
 dotenv.config();
 const revokedToken = async (session_id) => {
-    let rqst = await database.execute(
+     await database.execute(
             "UPDATE user_sessions SET revoked=? WHERE session_id=?",
             [true,session_id]
         )
-        console.log(rqst)
 }
 export const Auth = async (rkv,rspo,next) => {
     let token = rkv.cookies.myAuthToken;
@@ -36,7 +34,6 @@ export const checkAuth = async (rkv,rspo) => {
     const ip = rkv.clientIp?.replace(/^::ffff:/,"") || "0.0.0.0";
     const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
     const crntAPI = rkv.originalUrl.split("?")[0];
-    const geo = geoip.lookup(ip)
     let token = rkv.cookies.myAuthToken;
     try {
         if(!token) throw new Error();
@@ -51,15 +48,12 @@ export const checkAuth = async (rkv,rspo) => {
             [id,session_id]
         )
         let revoked = Number(rows[0].revoked);
-        if (revoked === 1 || rows[0].ip !== rows[0].ip) {
+        if (revoked === 1 || rows[0].ip !== ip) {
             await revokedToken(session_id)
             throw new Error("token Revoked");
         }
-        let rqst = await database.execute(
-                "UPDATE user_sessions SET ip = ?, city = ? WHERE session_id = ?",
-                [ip, geo?.city || null, session_id]
-            );
-        rspo.status(201).send({loggedIn:false,rqst})
+
+        rspo.status(201).send({loggedIn:false})
     } catch (error) {
         rspo.status(401).send({loggedIn:true,details:error.message})
     }finally{

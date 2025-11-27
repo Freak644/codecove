@@ -82,7 +82,7 @@ export default function LoginCon({toggle}) {
     }
     return(
         <div className="underTaker">
-            <div className="mainLogDiv flex items-center justify-center h-full w-full ">
+            <div className="mainLogDiv flex items-center justify-center h-full w-full">
                 <div className="formDiv">
                     <form action="" onSubmit={handleSubmit}>
                          <LogoCom/>

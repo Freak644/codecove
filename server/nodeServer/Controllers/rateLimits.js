@@ -9,14 +9,14 @@ const usernameCheckLimiter = rateLimit({
 });
 
 const EmailRateLimiter = rateLimit({
-  windowMs:60 * 1000,
-  max:10,
+  windowMs:120 * 1000,
+  max:1,
   message:{error: msg}
 });
 
 const verifyEmailLiter = rateLimit({
   windowMs:10 * 1000,
-  max:5,
+  max:10,
   message: {error:msg}
 })
 

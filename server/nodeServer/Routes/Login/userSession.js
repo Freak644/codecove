@@ -21,7 +21,7 @@ export const SaveThisSession = async (rkv,userID) => {
         uAresult.device.type || "desktop"]
          );
          // i am use || null only becuase localhost have 127.0.0.1 so this don't have geo location
-        return {session_id,device_type:uAresult.device.type || "desktop",ip,city:geo?.city,region:geo?.region,country:geo?.country};
+        return {session_id,device_type:uAresult.os.name ,ip,city:geo?.city,region:geo?.region,country:geo?.country};
     } catch (error) {
         return {err:"server side error", details: error.message}
     }
@@ -32,10 +32,9 @@ export const loggedMeOut = async (rkv,rspo) => {
     const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
     const crntAPI = rkv.originalUrl.split("?")[0];
     try {
-        let rqst = await database.execute("UPDATE user_sessions SET revoked=? WHERE session_id=? AND id=?",
+        await database.execute("UPDATE user_sessions SET revoked=? WHERE session_id=? AND id=?",
             [true,session_id,id]
         )
-        //console.log(rqst)
         rspo.clearCookie("myAuthToken",{
             httpOnly:true,
             secure:true,
@@ -45,7 +44,7 @@ export const loggedMeOut = async (rkv,rspo) => {
     } catch (error) {
         return rspo.status(500).send({err:error.message})
     }finally{
-        completeRequest(crntIP,crntAPI)
+        completeRequest(crntIP,crntAPI);
     }
 
 }

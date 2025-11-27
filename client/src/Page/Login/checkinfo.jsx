@@ -63,7 +63,7 @@ export default function CheckInfo(params) {
                             <p><strong>Location:</strong>{`${userInfo.city} ,${userInfo.region} ,${userInfo.country}`}</p>
                             <p><strong>Login Time:</strong>{userInfo.time}</p>
                         </div>
-                        <button onClick={()=>setchanging(prev=>!prev)} className="mt-4 bg-linear-to-br from-cyan-500 to-blue-600 via-pink-400 hover:from-cyan-400 hover:to-blue-500 hover:via-yellow-300
+                        <button disabled={Object.keys(userInfo).length !== 8} onClick={()=>setchanging(prev=>!prev)} className="mt-4 bg-linear-to-br from-cyan-500 to-blue-600 via-pink-400 hover:from-cyan-400 hover:to-blue-500 hover:via-yellow-300
             text-white font-semibold py-2 px-6 rounded-lg shadow-md
             transition-all duration-300 cursor-pointer">Change Password</button>
                     </div>

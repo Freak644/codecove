@@ -7,6 +7,7 @@ import { sendTheMail } from '../../Controllers/nodemailer.js';
 import { completeRequest } from '../../Controllers/progressTracker.js';
 dotenv.config();
 export const LoginAPI = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || "0.0.0.0";
     const IP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
     const route = rkv.originalUrl.split("?")[0];
     let {Email,Password,clientInfo} = rkv.body;
@@ -15,7 +16,7 @@ export const LoginAPI = async (rkv,rspo) => {
         return rspo.status(400).send({ err: "Please Provide proper information"})
         }
         let [isUser] = await database.execute(
-            "SELECT username,password,id,email,acStatus FROM users WHERE username=? OR email=?",
+            "SELECT username,password,id,email,acStatus,avatar FROM users WHERE username=? OR email=?",
             [Email,Email]
         )
         if (!isUser.length>0) {
@@ -31,9 +32,8 @@ export const LoginAPI = async (rkv,rspo) => {
         if (!isPassMatch) {
             return rspo.status(401).send({ err: "Check your Password"})
         }
+        let [rows] = await database.query("SELECT ip FROM user_sessions WHERE id = ? ORDER BY created_at DESC LIMIT 1",[id])
         const loginTime = new Date();
-
-        
         const formattedTime = loginTime.toLocaleString('en-US', {
         timeZone: clientInfo.timeZone,   
         weekday: 'short',
@@ -47,13 +47,16 @@ export const LoginAPI = async (rkv,rspo) => {
         });
         let {session_id,platform,city,country,region,device_type,ip} = await SaveThisSession(rkv,id)
         let activity_url = `http://localhost:3221/checkInfo/${session_id}`
-        let sendMail = await sendTheMail(
-            email,
-            "New Login Detected 🧐",
-            "Login",
-            {platform,city,ip,country,region,device_type,username,login_time:formattedTime,activity_url}
-        )
-        if (sendMail.rejected.length === 0) {
+        let sendMail
+        if (rows[0]?.ip !== crntIP) {
+                sendMail = await sendTheMail(
+                email,
+                "New Login Detected 🧐",
+                "Login",
+                {platform,city,ip,country,region,device_type,username,login_time:formattedTime,activity_url}
+            )
+        }
+        if (sendMail?.rejected?.length === 0 || rows[0].ip === crntIP) {
             let authToken = jwt.sign({id,session_id},process.env.jwt_sec,{expiresIn:"1d"});
             rspo.cookie("myAuthToken",authToken,{
                 httpOnly:true,
@@ -66,6 +69,7 @@ export const LoginAPI = async (rkv,rspo) => {
             rspo.status(504).send({err:"Something went wrong while Login"})
         }
     } catch (error) {
+        console.log(error.message)
         rspo.status(500).send({ err: "Sever Side Error",details:error.message});
     } finally{
         completeRequest(IP,route)

@@ -267,6 +267,7 @@ body{
     height: 100%; width: 90%;
 }
 .face{
+    padding: 2px;
     position: absolute;
     height: 100%; width: 100%;
     display: flex;
@@ -341,16 +342,24 @@ body{
             .numinp::-webkit-outer-spin-button{
                 -webkit-appearance: none !important;
                 margin: 0 !important;
-            }
+}
 
+.loginbase{
+     height: calc(var(--vh)*100) !important; 
+}
+        
 .formDiv{
     display: flex;
     align-items: center;
-    flex-direction: column;
+    justify-content: center;
     padding: 5px;
     z-index: 20;
+    height: 100%; width: 100%;
+    position: relative;
 
     form{
+        flex: 1 1 0;
+        height: 100%; width: 100%;
         padding: 10px;
         display: flex;
         align-items: center;
@@ -614,10 +623,10 @@ form>h1>span{
         padding-bottom: 90px !important;
     }
     form{
-        padding: none !important;
+        padding: 0px !important;
     }
     .rightside{
-        padding: none !important;
+        padding: 0px !important;
         .container{
             width: 350px !important;
         }

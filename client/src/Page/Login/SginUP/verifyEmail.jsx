@@ -20,7 +20,7 @@ export default function VerifyEl() {
       firstInp.focus()
     },[])
     const handleAPICall = async () => {
-     // if (btnRef.current.disabled != true) {
+      if (btnRef.current.disabled != true) {
         toggleLoader(true);
         try {
             let request = await fetch(`/myServer/${isForgotSide ? "sendForgotMail" : "sendVerifyEmail"}`,{
@@ -42,7 +42,7 @@ export default function VerifyEl() {
         } finally{
           toggleLoader(false);
         }
-      //}
+      }
     }
     function setCoundown() {
         let coundown = 120;
@@ -127,7 +127,7 @@ export default function VerifyEl() {
     vbtnRef.current.disabled = true;
     let inOTP = otp.join("");
    try {
-        console.log(inOTP,email,username)
+        
         let rqst = await fetch("/myServer/verifyEmail",{
           method:"POST",
           headers:{

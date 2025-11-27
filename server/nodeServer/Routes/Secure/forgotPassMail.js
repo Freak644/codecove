@@ -42,10 +42,14 @@ export const forgotPass = async (rkv,rspo) => {
                 sameSite:"strict",
                 maxAge:5*60*1000
             });
+            let [user,domain] = email.split("@");
+            const visible = user.slice(-4);
+            const marked = "*".replace(user.length - 4);
+            email = marked + visible + "@" + domain;
             rspo.status(200).send({pass:"Done Boss",email,username})
         }
     } catch (error) {
-        rspo.status(500).send({err:"Sever side error",details:error.message});
+        rspo.status(500).send({err:"Sever side error"});
     }finally{
         completeRequest(crntIP,crntAPI)
     }

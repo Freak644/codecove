@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { Loader } from '../../../lib/loader';
 import { toggleMini } from '../../../lib/tabToggle';
 export default function VerifyEl() {
-    const {email,Tusername,setVTab,setMail,setEstatus,isForgotSide} = verifyZu();
+    const {email,Tusername,setVTab,setMail,setEstatus} = verifyZu();
     const {isTrue,toggleLoader} = Loader();
     const [isLoader,setLoader] = useState(isTrue);
     const [username] = useState(Tusername);
@@ -23,7 +23,7 @@ export default function VerifyEl() {
       if (btnRef.current.disabled != true) {
         toggleLoader(true);
         try {
-            let request = await fetch(`/myServer/${isForgotSide ? "sendForgotMail" : "sendVerifyEmail"}`,{
+            let request = await fetch(`/myServer/sendVerifyEmail}`,{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"

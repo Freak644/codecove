@@ -43,6 +43,7 @@ export const checkAuth = async (rkv,rspo) => {
         let tokenData = jwt.decode(token,process.env.jwt_sec);
         let decodedTime = Math.floor(Date.now()/1000);
         let {id,session_id} = tokenData;
+
         if (tokenData.exp<decodedTime){
             await revokedToken(session_id)
             throw new Error("Token Expired")

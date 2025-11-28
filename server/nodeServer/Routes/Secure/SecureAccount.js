@@ -21,6 +21,7 @@ export const changePassSecure = async (rkv,rspo) => {
         if (updateQuery.affectedRows === 0) {
             return rspo.status(400).send({err:"User not found"})
         }
+        await database.query("UPDATE validationToken SET isUsed = ? WHERE token_id = ?",[1,token])
         let [final] = await database.query("DELETE v, s FROM validationToken v JOIN user_sessions s ON v.id = s.id WHERE v.id = ?;",[id])
         rspo.status(200).send({pass:"Your password changed succesfully"})
     } catch (error) {

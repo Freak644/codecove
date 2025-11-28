@@ -66,7 +66,7 @@ myApp.get("/auth",RateLimiter,checkRequest,checkAuth);
 myApp.post("/Logout",RateLimiter,checkRequest,Auth,loggedMeOut);
 myApp.get("/checkActive",RateLimiter,checkRequest,ActivityInfo);
 myApp.put("/upDatePass",RateLimiter,checkRequest,changePassSecure);
-myApp.post("/sendForgotMail",RateLimiter,checkRequest,forgotPass);
+myApp.post("/vfindUser",RateLimiter,checkRequest,forgotPass);
 myApp.post("/CreatePost",RateLimiter,diskUpload.array("postFiles",5),Auth,CreatePost);
 myApp.get("/getPost",RateLimiter,checkRequest,Auth,GetPosts);
 myApp.post("/test",checkRequest)

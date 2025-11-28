@@ -1,14 +1,17 @@
 import { toast } from "react-toastify";
 import FaceToggle from "../../lib/tabToggle"
-import verifyZu from "../../lib/verifyZu";
 import { Loader } from "../../lib/loader";
 import ChangePassword from "./changePassword";
 import LogoCom from "../../utils/logoComp";
+import { useState } from "react";
 
 export default function ForgotEl() {
     let {setTab} = FaceToggle();
-    let {setMail,setTUsername,setVTab,setForgotSide,emailStatus} = verifyZu();
     let {isTrue,toggleLoader} = Loader();
+    const [isFinding,setFinding] = useState({
+        whatTo:"",
+        isFindst:false
+    });
     const handleBlur = (inp)=>{
         if (inp && inp.value) {
             let labl = inp.nextElementSibling;
@@ -32,27 +35,33 @@ export default function ForgotEl() {
     const handleSubmit = async (evnt) => {
         evnt.preventDefault();
         toggleLoader(true)
-        setForgotSide(true)
         let formData = new FormData(evnt.target);
-        let {Email} = Object.fromEntries(formData);
+        let {Email,e_mail} = Object.fromEntries(formData);
+        
         try {
             if(!Email.trim()) throw new Error("Field is requird");
-            let rqst = await fetch("/myServer/sendForgotMail",{
+            let rqst = await fetch("/myServer/vfindUser",{
                 headers:{
                     "Content-Type":"application/json"
                 },
                 method:"POST",
-                body:JSON.stringify({Email})
+                body:JSON.stringify({Email,e_mail})
             })
             let result = await rqst.json();
             if (result.err) {
                 console.log(result.err)
                 throw new Error(result.err);
             }
-            console.log(result)
-            setTUsername(result.username)
-            setMail(result.email)
-            setVTab();
+            if (result.find) {
+                setFinding({
+                    whatTo:result.find,
+                    isFindst:true
+                })
+                alert(` we can send Reset Link on: ${result.mail}   Please Confirm your ${result.find}`)
+            }
+            if (result.pass) {
+                toast.success(result.pass)
+            }
         } catch (error) {
             toast.error(error.message)
         } finally{
@@ -61,7 +70,6 @@ export default function ForgotEl() {
     }
     return(
         <div className="underTaker">
-            {emailStatus && <ChangePassword/>}
             <div className="formDiv">
                 <form action="" onSubmit={handleSubmit}>
                     <LogoCom/>
@@ -69,6 +77,10 @@ export default function ForgotEl() {
                         <div className="inputDiv">
                             <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="USEmail" required />
                             <label htmlFor="USEmail"><i className="bx bx-user">Email OR userName</i></label>
+                        </div>
+                        <div className={`inputDiv ${isFinding.isFindst ? "" : "pointer-events-none"}`}>
+                            <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="e_mail" id="e_mail" />
+                            <label htmlFor="e_mail"><i className="bx bx-user">{isFinding.whatTo || ""}</i></label>
                         </div>
                         <div className="inputDiv twobtnInput">
                             <button type="submit" className="btn bigBtn">{isTrue ? <div className="miniLoader"></div> : "Find Account"}</button>

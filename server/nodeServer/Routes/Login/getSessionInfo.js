@@ -3,16 +3,17 @@ import { completeRequest } from "../../Controllers/progressTracker.js";
 
 export const ActivityInfo = async (rkv,rspo) => {
     let {token} = rkv.query;
+    console.log(token)
     const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
     const crntAPI = rkv.originalUrl.split("?")[0];
     try {
-        let [rows] = await database.execute(`Select u.username, u.avatar,s.ip,s.country,s.city,s.region,s.os, s.isp, s.browser,v.created_at
-            FROM validationToken v
-            INNER JOIN users u ON u.id = v.id
-            INNER JOIN user_sessions s ON s.session_id = v.session_id
-            WHERE token_id = ?`,
+        let [rows] = await database.execute(`SELECT u.username, u.avatar,s.ip,s.country,s.city,s.region,s.os, s.isp, s.browser,v.created_at
+                    FROM validationToken v
+                    LEFT JOIN users u ON u.id = v.id
+                    LEFT JOIN user_sessions s ON s.session_id = v.session_id
+                    WHERE v.token_id = ?`,
             [token]
-        )
+        );
         if (rows.length<1) return rspo.status(401).send({err:"Invalid token",details:"The token is Expired or Used"});
         let timeInMs = new Date(rows[0].created_at).getTime(); //get Time in ms
         let now = Date.now();

@@ -2,20 +2,22 @@ import { database } from "../../Controllers/myConnectionFile.js";
 import { completeRequest } from "../../Controllers/progressTracker.js";
 
 export const ActivityInfo = async (rkv,rspo) => {
-    let {session_id} = rkv.query;
+    let {token} = rkv.query;
     const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
     const crntAPI = rkv.originalUrl.split("?")[0];
     try {
-        let [rows] = await database.execute(`Select u.username,s.ip,s.country,s.city,s.region,s.device_type,s.created_at FROM user_sessions s
-            INNER JOIN users u ON u.id = s.id
-            WHERE session_id = ?`,
-            [session_id]
+        let [rows] = await database.execute(`Select u.username, u.avatar,s.ip,s.country,s.city,s.region,s.os, s.isp, s.browser,v.created_at
+            FROM validationToken v
+            INNER JOIN users u ON u.id = v.id
+            INNER JOIN user_sessions s ON s.session_id = v.session_id
+            WHERE token_id = ?`,
+            [token]
         )
         if (rows.length<1) return rspo.status(401).send({err:"Invalid token",details:"The token is Expired or Used"});
-        let timeInms = new Date(rows[0].created_at).getTime(); //get Time in ms
+        let timeInMs = new Date(rows[0].created_at).getTime(); //get Time in ms
         let now = Date.now();
-        let diffHours = (now - timeInms) / (1000 * 60 * 60) //conver ms into H⌛
-        if (diffHours > 20) {
+       const isExpired = (now - timeInMs) >= (48 * 60 * 60 * 1000);
+        if (isExpired) {
             return rspo.status(401).send({err:"Bad request",details:"The Token is now expire"});
         }
         const utcTime = rows[0].created_at;

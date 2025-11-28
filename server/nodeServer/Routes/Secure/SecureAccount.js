@@ -2,13 +2,16 @@ import { database } from "../../Controllers/myConnectionFile.js";
 import bcrypt from 'bcrypt';
 import { completeRequest } from "../../Controllers/progressTracker.js";
 export const changePassSecure = async (rkv,rspo) => {
-    let {basePass,session_id} = rkv.body;
+    let {basePass,token} = rkv.body;
     const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
     const crntAPI = rkv.originalUrl.split("?")[0];
     let rows
     try {
-        [rows] = await database.query(`SELECT u.password,u.id,s.ip FROM user_sessions s
-        INNER JOIN users u ON s.id = u.id WHERE session_id = ?`,[session_id]);
+        if (token.length !== 32) {
+            return rspo.status(401).send({err:"Don't be too smart",details:"Invalid Token"})
+        }
+        [rows] = await database.query(`SELECT u.password,u.id FROM validationToken v
+        INNER JOIN users u ON v.id = u.id WHERE token_id = ?`,[token]);
         if (rows.length<1) return rspo.status(401).send({err:"something went wrong",details:"Something went wrong"});
         let {password,id} = rows[0]
         let match = await bcrypt.compare(basePass,password)
@@ -18,7 +21,7 @@ export const changePassSecure = async (rkv,rspo) => {
         if (updateQuery.affectedRows === 0) {
             return rspo.status(400).send({err:"User not found"})
         }
-        let [final] = await database.query("DELETE FROM user_sessions WHERE id=?",[id])
+        let [final] = await database.query("DELETE v, s FROM validationToken v JOIN user_sessions s ON v.id = s.id WHERE v.id = ?;",[id])
         rspo.status(200).send({pass:"Your password changed succesfully"})
     } catch (error) {
         rspo.status(500).send({err:"Sever side Error",details:error.message})

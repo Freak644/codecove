@@ -22,6 +22,9 @@ export const Auth = async (rkv,rspo,next) => {
     let [rows] = await database.execute("SELECT revoked FROM user_sessions WHERE id=? AND session_id=?",
             [id,session_id]
     )
+    if (rows.length === 0) {
+        return rspo.status(404).send({login:"Token is removed on Invalid"})
+    }
     let revoked = Number(rows[0].revoked)
     if(revoked===1) {
         return rspo.status(401).send({login:"Token rovoked"})
@@ -47,6 +50,9 @@ export const checkAuth = async (rkv,rspo) => {
         let [rows] = await database.execute("SELECT revoked,ip FROM user_sessions WHERE id=? AND session_id=?",
             [id,session_id]
         )
+        if (rows.length === 0) {
+        return rspo.status(404).send({loggedIn:true})
+        }
         let revoked = Number(rows[0].revoked);
         if (revoked === 1 || rows[0].ip !== ip) {
             await revokedToken(session_id)
@@ -55,6 +61,7 @@ export const checkAuth = async (rkv,rspo) => {
 
         rspo.status(201).send({loggedIn:false})
     } catch (error) {
+        console.log(error.message)
         rspo.status(401).send({loggedIn:true,details:error.message})
     }finally{
         completeRequest(crntIP,crntAPI);

@@ -1,31 +1,33 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import '../../assets/style/Error404.css'
 import ChangePassword from "./changePassword";
 import { toast } from "react-toastify";
 import LogoCom from "../../utils/logoComp";
 export default function CheckInfo(params) {
-    let {session_id} = useParams();
+    let {token} = useParams();
     const [isChanging,setchanging] = useState(false)
     const [userInfo,setInfo] = useState({})
+    const navi = useNavigate();
     const getSessionInfo = async () => {
         try {
-            let rqst = await fetch(`/myServer/checkActive?session_id=${session_id}`)
+            let rqst = await fetch(`/myServer/checkActive?token=${token}`)
             let result = await rqst.json();
             if (result.err) {
                 console.log(result.err)
                 throw new Error(result.details);
             }
+            console.log(Object.keys(result.data).length)
             setInfo(result.data);
         } catch (error) {
             toast.error(error.message);
+            navi('/')
         }
     }
 
     useEffect(()=>{
-        if(session_id.length < 2) return;
         getSessionInfo()
-    },[session_id])
+    },[token])
     return(
         <div className="h-screen w-screen flex items-center flex-col bg-skin-bg absolute top-0 z-40">
            {isChanging && <ChangePassword toggle={setchanging} />}
@@ -56,14 +58,15 @@ export default function CheckInfo(params) {
                         bg-linear-to-br from-white/10 via-white/5 to-transparent
                         border border-cyan-500/20 shadow-[0_0_30px_rgba(0,255,255,0.15)]
                         backdrop-blur-md">
-                        <p className="big404">Hello 👋 {userInfo.username}</p>
+                            <img src={`/myServer/${userInfo.avatar}`} className="h-14 w-14 rounded-full border border-amber-200" alt="" />
+                            <p className="big404">Hello 👋 {userInfo.username}</p>
                         <div className="flex items-center flex-col gap-3">
-                            <p><strong>Device:</strong>{userInfo.device_type}</p>
-                            <p><strong>IP:</strong>{userInfo.ip}</p>
-                            <p><strong>Location:</strong>{`${userInfo.city} ,${userInfo.region} ,${userInfo.country}`}</p>
-                            <p><strong>Login Time:</strong>{userInfo.time}</p>
+                            <p><strong className="text-skin-ptext">Device:</strong>{userInfo.os +"," + userInfo.browser}</p>
+                            <p><strong className="text-skin-ptext">IP:</strong>{userInfo.ip + ", & The isp is:"+ userInfo.isp}</p>
+                            <p><strong className="text-skin-ptext">Location:</strong>{`${userInfo.city} ,${userInfo.region} ,${userInfo.country}`}</p>
+                            <p><strong className="text-skin-ptext">Login Time:</strong>{userInfo.time}</p>
                         </div>
-                        <button disabled={Object.keys(userInfo).length !== 8} onClick={()=>setchanging(prev=>!prev)} className="mt-4 bg-linear-to-br from-cyan-500 to-blue-600 via-pink-400 hover:from-cyan-400 hover:to-blue-500 hover:via-yellow-300
+                        <button disabled={Object.keys(userInfo).length !== 11 } onClick={()=>setchanging(prev=>!prev)} className="mt-4 bg-linear-to-br from-cyan-500 to-blue-600 via-pink-400 hover:from-cyan-400 hover:to-blue-500 hover:via-yellow-300
             text-white font-semibold py-2 px-6 rounded-lg shadow-md
             transition-all duration-300 cursor-pointer">Change Password</button>
                     </div>

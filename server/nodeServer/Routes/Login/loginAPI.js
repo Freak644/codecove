@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { SaveThisSession } from './userSession.js';
 import { sendTheMail } from '../../Controllers/nodemailer.js';
 import { completeRequest } from '../../Controllers/progressTracker.js';
+import { nanoid } from 'nanoid';
 dotenv.config();
 export const LoginAPI = async (rkv,rspo) => {
     const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || "0.0.0.0";
@@ -26,12 +27,13 @@ export const LoginAPI = async (rkv,rspo) => {
                 return rspo.status(401).send({ err: "Please check your username"})
             }
         }
-        let {password,username,email,id,acStatus} = isUser[0];
+        let {password,username,email,id,acStatus,avatar} = isUser[0];
         if (acStatus !== 1) return rspo.status(401).send({err:"Your account Block"});
         let isPassMatch = await bcrypt.compare(Password,password);
         if (!isPassMatch) {
             return rspo.status(401).send({ err: "Check your Password"})
         }
+        let token_id = nanoid(32);
         let [rows] = await database.query("SELECT ip FROM user_sessions WHERE id = ? ORDER BY created_at DESC LIMIT 1",[id])
         const loginTime = new Date();
         const formattedTime = loginTime.toLocaleString('en-US', {
@@ -46,14 +48,19 @@ export const LoginAPI = async (rkv,rspo) => {
         hour12: true
         });
         let {session_id,platform,city,country,region,device_type,ip} = await SaveThisSession(rkv,id)
-        let activity_url = `http://localhost:3221/checkInfo/${session_id}`
+
+        await database.query("INSERT INTO validationToken (token_id, id, session_id, username, email) VALUES (?,?,?,?,?);"
+            ,[token_id,id,session_id,username,email]
+        )
+
+        let activity_url = `http://localhost:3221/checkInfo/${token_id}`
         let sendMail
         if (rows[0]?.ip !== crntIP) {
                 sendMail = await sendTheMail(
                 email,
                 "New Login Detected 🧐",
                 "Login",
-                {platform,city,ip,country,region,device_type,username,login_time:formattedTime,activity_url}
+                {platform,city,ip,country,region,device_type,username,login_time:formattedTime,activity_url,img_url:`http://localhost:3222${avatar}`}
             )
         }
         if (sendMail?.rejected?.length === 0 || rows[0].ip === crntIP) {

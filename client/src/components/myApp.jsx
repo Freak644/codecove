@@ -98,7 +98,7 @@ export default function MyApp() {
            {(isLogin && !isChecking) && (<div className='loginContainer flex items-center content-center h-screen w-screen'>{<LoginEL/>}</div>)}
             {(!isLogin || isChecking) && (<Routes>
                 <Route path='/' element={<div className='routeContainer my-scroll'><HomePage/></div>} />
-                <Route path='/CheckInfo/:session_id' element={<div className='my-scroll flex items-center justify-center h-screen w-screen'>{<CheckInfo/>}</div>} />
+                <Route path='/CheckInfo/:token' element={<div className='my-scroll flex items-center justify-center h-screen w-screen'>{<CheckInfo/>}</div>} />
                 <Route path='/Commit' element={<div className='routeContainer my-scroll'><BaseCreate/></div>} />
 
                 <Route path='*' element={<NotFound/>} />

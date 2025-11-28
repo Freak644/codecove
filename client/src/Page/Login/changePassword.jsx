@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import verifyZu from "../../lib/verifyZu";
 import FaceToggle from "../../lib/tabToggle";
 import LogoCom from "../../utils/logoComp";
 
 export default function ChangePassword({toggle}) {
-    let {setEstatus} = verifyZu();
-    let {session_id} = useParams();
+    let {token}= useParams();
     let {setTab} = FaceToggle();
+    const navi = useNavigate()
     const [mgmtPassword,setPassword] = useState({
         basePass:"",
         confPass:"",
@@ -46,7 +46,7 @@ export default function ChangePassword({toggle}) {
                     "Content-Type":"application/json"
                 },
                 method:"PUT",
-                body:JSON.stringify({basePass,session_id})
+                body:JSON.stringify({basePass,token})
             })
             let result = await rqst.json();
             if (result.err) {
@@ -54,7 +54,7 @@ export default function ChangePassword({toggle}) {
                 throw new Error(result.details || result.err);
             }
             toast.success(result.pass);
-            setEstatus();
+            navi('/')
             if (toggle) {
                 toggle(prev=>!prev)
             }
@@ -82,9 +82,10 @@ export default function ChangePassword({toggle}) {
                         bg-linear-to-br from-white/10 via-white/5 to-transparent
                         border border-cyan-500/20 shadow-[0_0_30px_rgba(0,255,255,0.15)]
                         backdrop-blur-lg">
-                <div className="formDiv mt-[10%] ">
+                <div className="formDiv mt-[10%] relative">
                     <form action="" onSubmit={handleSubmit} className="bg-skin-bg p-10! rounded-lg shadow-[0_0_30px_rgba(0,255,255,0.15)]">
                         <LogoCom/>
+                        <button className="text-2xl text-red-600 absolute top-0 right-0 font-bold cursor-pointer" onClick={()=>toggle(false)} type="button">X</button>
                         <div className="inputDiv">
                             <i onClick={(evnt)=>togglePassword(evnt.target)} className="bx bx-show absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer"></i>
                             <input value={mgmtPassword.basePass} onChange={(evnt)=>setPassword(prev=>({

@@ -53,6 +53,23 @@ CREATE TABLE IF NOT EXISTS user_sessions (
 );
 
 /*
+ recovery like
+*/
+
+CREATE TABLE IF NOT EXISTS validationToken (
+  token_id CHAR(36) NOT NULL PRIMARY KEY,
+  id CHAR(36) NOT NULL,
+  session_id CHAR(36) NOT NULL,
+  username CHAR(50) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  isUsed TINYINT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_user_id (id)
+);
+
+
+/*
 ===================================
   🖼️ POST Table
 ===================================

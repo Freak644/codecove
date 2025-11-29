@@ -1,6 +1,5 @@
 import { database } from "../../Controllers/myConnectionFile.js";
 import { sendTheMail } from "../../Controllers/nodemailer.js";
-import jwt from 'jsonwebtoken'
 import geoip from 'geoip-lite';
 import dotenv from 'dotenv';
 import { completeRequest } from "../../Controllers/progressTracker.js";

@@ -19,3 +19,7 @@ html[data-theme="dark-white"]{
     --color-skin-ptext: rgb(245,245,245);
     --color-skin-login:rgb(255,255,255);
 }
+@utility h-screen-vh {
+  height: calc(var(--vh) * 100) !important;
+}
+

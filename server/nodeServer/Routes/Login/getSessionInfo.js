@@ -3,11 +3,10 @@ import { completeRequest } from "../../Controllers/progressTracker.js";
 
 export const ActivityInfo = async (rkv,rspo) => {
     let {token} = rkv.query;
-    console.log(token)
     const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
     const crntAPI = rkv.originalUrl.split("?")[0];
     try {
-        let [rows] = await database.execute(`SELECT u.username, u.avatar,s.ip,s.country,s.city,s.region,s.os, s.isp, s.browser,v.created_at
+        let [rows] = await database.execute(`SELECT u.username, u.avatar,s.ip,s.country,s.city,s.region,s.os, s.isp, s.browser,v.created_at, v.session_id
                     FROM validationToken v
                     LEFT JOIN users u ON u.id = v.id
                     LEFT JOIN user_sessions s ON s.session_id = v.session_id
@@ -15,6 +14,7 @@ export const ActivityInfo = async (rkv,rspo) => {
             [token]
         );
         if (rows.length<1) return rspo.status(401).send({err:"Invalid token",details:"The token is Expired or Used"});
+        if (rows[0].session_id.length<10) return rspo.status(401).send({err:"Bad Request", details:"....Wrong Route"})
         let timeInMs = new Date(rows[0].created_at).getTime(); //get Time in ms
         let now = Date.now();
        const isExpired = (now - timeInMs) >= (48 * 60 * 60 * 1000);

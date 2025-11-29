@@ -15,6 +15,7 @@ import '../assets/style/paseTwo.css'
 import HomePage from '../Page/HomeComponent/HomePage'
 import AbsoluteMenu from './absoluteMenu';
 import BaseCreate from '../Page/Promulgation/baseCreateCom';
+import ResetBase from '../Page/Login/resetPasswordEL/resetBase';
 export default function MyApp() {
     let {fileURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);
@@ -49,7 +50,7 @@ export default function MyApp() {
     },[])
     useEffect(()=>{
         let currentPath = currentLocation.pathname.split("/")
-        if (currentPath[1] === "checkInfo") {
+        if (currentPath[1] === "checkInfo" || currentPath[1] === "ForgotPassword") {
             setCheck(true)
         }
         const handler = ()=> toggleLoader(false);
@@ -98,8 +99,9 @@ export default function MyApp() {
            {(isLogin && !isChecking) && (<div className='loginContainer flex items-center content-center h-screen w-screen'>{<LoginEL/>}</div>)}
             {(!isLogin || isChecking) && (<Routes>
                 <Route path='/' element={<div className='routeContainer my-scroll'><HomePage/></div>} />
-                <Route path='/CheckInfo/:token' element={<div className='my-scroll flex items-center justify-center h-screen w-screen'>{<CheckInfo/>}</div>} />
-                <Route path='/Commit' element={<div className='routeContainer my-scroll'><BaseCreate/></div>} />
+                <Route path='/CheckInfo/:token' element={<div className='my-scroll flex items-center absolute bg-skin-bg/30 backdrop-blur-lg justify-center h-screen-vh w-screen'>{<CheckInfo/>}</div>} />
+                <Route path='/ForgotPassword/:token' element={<div className='my-scroll flex absolute items-center bg-skin-bg/30 backdrop-blur-lg justify-center h-screen-vh w-screen'>{<ResetBase/>}</div>} />
+                <Route path='/Commit' element={<div className='routeContainer my-scroll'>{<BaseCreate/>}</div>} />
 
                 <Route path='*' element={<NotFound/>} />
             </Routes>)}

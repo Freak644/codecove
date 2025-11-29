@@ -11,6 +11,7 @@ export const LoginAPI = async (rkv,rspo) => {
     const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || "0.0.0.0";
     const IP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
     const route = rkv.originalUrl.split("?")[0];
+    let token_id = nanoid(32);
     let {Email,Password,clientInfo} = rkv.body;
     try {
         if (!Email?.trim() || !Password?.trim() || Object.keys(clientInfo).length !== 2) {
@@ -33,7 +34,6 @@ export const LoginAPI = async (rkv,rspo) => {
         if (!isPassMatch) {
             return rspo.status(401).send({ err: "Check your Password"})
         }
-        let token_id = nanoid(32);
         let [rows] = await database.query("SELECT ip FROM user_sessions WHERE id = ? ORDER BY created_at DESC LIMIT 1",[id])
         const loginTime = new Date();
         const formattedTime = loginTime.toLocaleString('en-US', {
@@ -76,7 +76,8 @@ export const LoginAPI = async (rkv,rspo) => {
             rspo.status(504).send({err:"Something went wrong while Login"})
         }
     } catch (error) {
-        console.log(error.message)
+        rspo.clearCookie("myAuthToken");
+        await database.query("DELETE v,s FROM validationToken v JOIN user_sessions s ON v.session_id = s.session_id WHERE v.token_id = ?",[token_id]);
         rspo.status(500).send({ err: "Sever Side Error",details:error.message});
     } finally{
         completeRequest(IP,route)

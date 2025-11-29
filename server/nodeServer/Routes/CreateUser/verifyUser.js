@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import {sendTheMail} from '../../Controllers/nodemailer.js'
 import dotenv from 'dotenv';
 import { completeRequest } from '../../Controllers/progressTracker.js';
+import { Decrypt, Encrypt } from '../../utils/Encryption.js';
 dotenv.config();
 export const SendEmailVerify = async (rkv,rspo) => {
     const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
@@ -30,7 +31,8 @@ export const SendEmailVerify = async (rkv,rspo) => {
         let payload = {email,otp,username}
         if (send.rejected.length===0) {
             const token = jwt.sign(payload,process.env.jwt_sec,{expiresIn:"5m"});
-            rspo.cookie("otpToken", token, {
+            let encryptedToken = await Encrypt(token);
+            rspo.cookie("otpToken", encryptedToken, {
               httpOnly: true,
               secure: true, 
               sameSite: "strict",
@@ -42,7 +44,8 @@ export const SendEmailVerify = async (rkv,rspo) => {
         }
     
     } catch (error) {
-        rspo.status(500).send({err:"server side error",details:error.message});
+        console.log(error.message)
+        rspo.status(500).send({err:"server side error"});
     }finally{
         completeRequest(crntIP,crntAPI)
     }
@@ -61,7 +64,8 @@ export const verifyEmail = async (rkv,rspo) => {
             return rspo.status(401).send({err:"Unauthorized Request"})
         }
         let token = rkv.cookies.otpToken;
-        let tokenData = jwt.decode(token,process.env.jwt_sec)
+        let decryptedToken = await Decrypt(token);
+        let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec)
         let decodedTime = Math.floor(Date.now()/1000)
         if (!token) {
         return rspo.status(400).send({ err: "OTP Cookie is missing or expired" });

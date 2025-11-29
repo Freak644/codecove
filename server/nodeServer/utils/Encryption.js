@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const Encrypt = async (plainText) => {
-    console.log("KEY OK:", Buffer.from(process.env.encryption_Key, "hex").length === 32);
     const key = Buffer.from(process.env.encryption_Key,"hex"); 
     const iv = crypto.randomBytes(12); 
 

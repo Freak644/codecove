@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { database } from '../../Controllers/myConnectionFile.js';
 import { completeRequest } from '../../Controllers/progressTracker.js';
+import { Decrypt } from '../../utils/Encryption.js';
 dotenv.config();
 const revokedToken = async (session_id) => {
      await database.execute(
@@ -12,7 +13,8 @@ const revokedToken = async (session_id) => {
 export const Auth = async (rkv,rspo,next) => {
     let token = rkv.cookies.myAuthToken;
     if(!token) return rspo.status(401).send({login: "Please Login"});
-    let tokenData = jwt.decode(token,process.env.jwt_sec);
+    let decryptedToken = await Decrypt(token);
+    let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec);
     let decodedTime = Math.floor(Date.now()/1000);
     let {session_id,id} = tokenData;
     if (tokenData.exp<decodedTime) {
@@ -40,7 +42,8 @@ export const checkAuth = async (rkv,rspo) => {
     let token = rkv.cookies.myAuthToken;
     try {
         if(!token) throw new Error();
-        let tokenData = jwt.decode(token,process.env.jwt_sec);
+        let decryptedToken = await Decrypt(token);
+        let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec);
         let decodedTime = Math.floor(Date.now()/1000);
         let {id,session_id} = tokenData;
 

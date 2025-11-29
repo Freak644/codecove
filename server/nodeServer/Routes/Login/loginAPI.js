@@ -6,6 +6,7 @@ import { SaveThisSession } from './userSession.js';
 import { sendTheMail } from '../../Controllers/nodemailer.js';
 import { completeRequest } from '../../Controllers/progressTracker.js';
 import { nanoid } from 'nanoid';
+import { Encrypt } from '../../utils/Encryption.js';
 dotenv.config();
 export const LoginAPI = async (rkv,rspo) => {
     const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || "0.0.0.0";
@@ -65,7 +66,9 @@ export const LoginAPI = async (rkv,rspo) => {
         }
         if (sendMail?.rejected?.length === 0 || rows[0].ip === crntIP) {
             let authToken = jwt.sign({id,session_id},process.env.jwt_sec,{expiresIn:"1d"});
-            rspo.cookie("myAuthToken",authToken,{
+            let encryptedToken = await Encrypt(authToken);
+            console.log(encryptedToken)
+            rspo.cookie("myAuthToken",encryptedToken,{
                 httpOnly:true,
                 secure:true,
                 sameSite:"strict",

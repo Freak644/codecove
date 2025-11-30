@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS user_sessions (
   browser VARCHAR(64),
   browser_version VARCHAR(32),
   os VARCHAR(64),
+  isProccesing BOOLEAN DEFAULT 0,
   device_type VARCHAR(64) DEFAULT 'desktop',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   revoked BOOLEAN DEFAULT FALSE,
@@ -63,6 +64,7 @@ CREATE TABLE IF NOT EXISTS validationToken (
   username CHAR(50) NOT NULL,
   email VARCHAR(100) NOT NULL,
   isUsed TINYINT DEFAULT 0,
+  isProccesing BOOLEAN DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_user_id (id)

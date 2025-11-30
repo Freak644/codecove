@@ -10,10 +10,11 @@ export const changePassSecure = async (rkv,rspo) => {
         if (token.length !== 32) {
             return rspo.status(401).send({err:"Don't be too smart",details:"Invalid Token"})
         }
-        [rows] = await database.query(`SELECT u.password,u.id FROM validationToken v
+        [rows] = await database.query(`SELECT u.password,u.id, v.session_id FROM validationToken v
         INNER JOIN users u ON v.id = u.id WHERE token_id = ?`,[token]);
         if (rows.length<1) return rspo.status(401).send({err:"something went wrong",details:"Something went wrong"});
-        let {password,id} = rows[0]
+        let {password,id,session_id} = rows[0]
+        if(session_id.length === 0) return rspo.status(401).send({err:"Something went wrong",details:"Don't dare be too smart"})
         let match = await bcrypt.compare(basePass,password)
         if (match) return rspo.status(400).send({err:"Something went wrong",details:"New_password !== old_password"});
         let newHashPass = await bcrypt.hash(basePass,10);

@@ -100,7 +100,7 @@ export default function MyApp() {
             {(!isLogin || isChecking) && (<Routes>
                 <Route path='/' element={<div className='routeContainer my-scroll'><HomePage/></div>} />
                 <Route path='/CheckInfo/:token' element={<div className='my-scroll flex items-center absolute bg-skin-bg/30 backdrop-blur-lg justify-center h-screen-vh w-screen'>{<CheckInfo/>}</div>} />
-                <Route path='/ForgotPassword/:token' element={<div className='my-scroll flex absolute items-center bg-skin-bg/30 backdrop-blur-lg justify-center h-screen-vh w-screen'>{<ResetBase/>}</div>} />
+                <Route path='/resetPassword/:token' element={<div className='my-scroll flex absolute items-center bg-skin-bg/30 backdrop-blur-lg justify-center h-screen-vh w-screen'>{<ResetBase/>}</div>} />
                 <Route path='/Commit' element={<div className='routeContainer my-scroll'>{<BaseCreate/>}</div>} />
 
                 <Route path='*' element={<NotFound/>} />

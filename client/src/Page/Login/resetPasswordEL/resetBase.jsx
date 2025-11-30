@@ -1,11 +1,22 @@
-import { useState } from "react"
-import VerifyCon from "./verifyConEL"
+import { useState } from "react";
+import VerifyCon from "./verifyConEL";
+import CompAnim from "../../../assets/animations/compAnimation";
+import ChangePassword from "./changePassword";
 
 export default function ResetBase() {
     const [tabTogle,setToggle] = useState({
         verifyCon:true,
         passCon:false
     })
+
+    const Toggler = (value) =>{
+
+        setToggle(prev=>({
+            ...prev,
+            verifyCon: value === "verify",
+            passCon: value === "pass"
+        }))
+    }
     return(
         <div className="underTaker">
             <div className="baseContainerReset bg-skin-bg flex items-center flex-row h-3/5 w-3/5 ">
@@ -17,7 +28,13 @@ export default function ResetBase() {
                     
                 </div>
                 <div className="rightSideReset h-full flex-1 ">
-                    <VerifyCon toggle={setToggle}/>
+                    <CompAnim key={
+                        tabTogle.verifyCon ? "Email" :
+                        tabTogle.passCon ? "pass" : "none"
+                    } >
+                        {tabTogle.verifyCon && <VerifyCon toggle={Toggler} />}
+                        {tabTogle.passCon && <ChangePassword toggle={Toggler}/>}
+                    </CompAnim>
                 </div>
             </div>
         </div>

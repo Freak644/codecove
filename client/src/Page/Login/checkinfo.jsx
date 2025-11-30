@@ -17,7 +17,6 @@ export default function CheckInfo(params) {
                 console.log(result.err)
                 throw new Error(result.details);
             }
-            console.log(Object.keys(result.data).length)
             setInfo(result.data);
         } catch (error) {
             toast.error(error.message);

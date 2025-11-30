@@ -33,6 +33,7 @@ export const ActivityInfo = async (rkv,rspo) => {
             minute: "2-digit",
             second: "2-digit",
         });
+        delete rows[0].session_id;
         rspo.status(201).send({pass:"Data found",data:rows[0]})
     } catch (error) {
         rspo.status(500).send({err:"Sever Side Error",details:error.message})

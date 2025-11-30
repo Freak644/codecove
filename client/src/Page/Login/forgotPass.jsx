@@ -40,7 +40,7 @@ export default function ForgotEl() {
         
         try {
             if(!Email.trim()) throw new Error("Field is requird");
-            let rqst = await fetch("/myServer/vfindUser",{
+            let rqst = await fetch("/myServer/ForgotPassword",{
                 headers:{
                     "Content-Type":"application/json"
                 },
@@ -61,11 +61,12 @@ export default function ForgotEl() {
             }
             if (result.pass) {
                 toast.success(result.pass)
+                setTab("front")
             }
         } catch (error) {
             toast.error(error.message)
         } finally{
-            toggleLoader(false)
+            toggleLoader(false);
         }
     }
     return(

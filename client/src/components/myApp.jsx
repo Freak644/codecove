@@ -50,7 +50,7 @@ export default function MyApp() {
     },[])
     useEffect(()=>{
         let currentPath = currentLocation.pathname.split("/")
-        if (currentPath[1] === "checkInfo" || currentPath[1] === "ForgotPassword") {
+        if (currentPath[1] === "checkInfo" || currentPath[1] === "resetPassword") {
             setCheck(true)
         }
         const handler = ()=> toggleLoader(false);

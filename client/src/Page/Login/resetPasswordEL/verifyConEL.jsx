@@ -30,6 +30,7 @@ export default function VerifyCon({toggle}) {
 
     const handleSubmit = async (evnt) => {
         evnt.preventDefault();
+        toggleLoader(true)
         let formData = new FormData(evnt.target);
         let {Username,Email} = Object.fromEntries(formData);
         try {

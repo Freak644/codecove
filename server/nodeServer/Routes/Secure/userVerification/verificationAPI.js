@@ -14,10 +14,10 @@ const verification = async (rkv,rspo) => {
         let {username,email,created_at,session_id} = rows[0];
         if(session_id.length !== 0) return rspo.status(401).send({err:"Don't Dare to be oversmart"});
 
-        // if (Date.now() - new Date(created_at).getTime() > 10 * 60 * 1000) {
-        //     await database.query("DELETE FROM validationToken WHERE token_id = ?",[token]);
-        //     return rspo.status(401).send({ err: "The token is expired" });
-        // }
+        if (Date.now() - new Date(created_at).getTime() > 10 * 60 * 1000) {
+            await database.query("DELETE FROM validationToken WHERE token_id = ?",[token]);
+            return rspo.status(401).send({ err: "The token is expired" });
+        }
         
         if (Username !== username || Email !== email) return rspo.status(401).send({err:"Invalid credentials"});
         await database.query("UPDATE validationToken SET isProccesing=1 WHERE token_id=?",[token]);

@@ -251,5 +251,19 @@ select{
 .baseContainerReset{
   box-shadow: 0 0 20px 6px rgba(105, 105, 105, 0.419);
   border-radius: 16px;
+}
 
+@media (max-width:1024px) {
+  .baseContainerReset{
+    
+    .leftSideReset{
+      display: none;
+    }
+  }
+}
+
+@media (max-width:500px) {
+  .baseContainerReset{
+    width: 100%;
+  }
 }

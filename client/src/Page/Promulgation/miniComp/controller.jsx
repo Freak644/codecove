@@ -76,9 +76,15 @@ export default function UploadController() {
 
     return(
         <div className="underTaker">
-            <div className="progressBar flex items-center justify-center ">
+            {progress>0 && <div className="progressBar overflow-hidden relative flex items-center justify-start h-2 w-full border border-skin-ptext/50 rounded-md">
+                <div className={`innerBar h-full w-[${progress}%] bg-blue-500`}>
 
-            </div>
+                </div>
+                <div className={`innerBarO h-full w-[${progress}%] animate-ping absolute bg-blue-500`}>
+
+                </div>
+
+            </div>}
             <div className="ControllerbaseCon flex items-center md:flex-row md:gap-0 gap-4 flex-col p-4 h-full">
                 <div className="leftDiv">
                     <div className="selectionDiv">
@@ -131,6 +137,15 @@ export default function UploadController() {
                 </div>
 
                 <div className="rightsideDiv gap-3.5!">
+                    {progress> 0 && <div className="wrapper h-40 w-40 rounded-full relative overflow-hidden border border-skin-ptext/50">
+                        <div style={{
+                                    background: `conic-gradient(#00be0a ${progress * 3.6}deg,#ffffff ${progress * 3.6}deg)`
+                                }} className={`progressBar h-full w-full rounded-full flex items-center justify-center animate-pulse`}>
+                            <div className="numberDiv h-9/10 w-9/10 rounded-full bg-skin-bg flex items-center justify-center">
+                                <p className="text-skin-text">{`${progress}%`}</p>
+                            </div>
+                        </div>
+                    </div>}
                     <h2 className="font-bold text-lg">Block Comments:-</h2>
                     <div className="shadOption">
                         <p onClick={()=>setControlls(prev=>({

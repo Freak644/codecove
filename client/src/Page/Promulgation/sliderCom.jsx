@@ -1,10 +1,18 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function ImageSlider({ imgArray, setArray }) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [containerWidth,setWidth] = useState(0);
+  let containerRef = useRef(null);
 
+  useEffect(()=>{
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setWidth(rect.width)
+    }
+  },[])
   const nextImg = () => {
     setDirection(1);
     setIndex((prev) => (prev + 1) % imgArray.length);
@@ -33,12 +41,12 @@ export default function ImageSlider({ imgArray, setArray }) {
 
   const variants = {
     enter: (dir) => ({
-      x: dir > 0 ? 300 : -300,
+      x: dir > 0 ? containerWidth : -containerWidth,
       opacity: 0,
     }),
     center: { x: 0, opacity: 1, zIndex: 1 },
     exit: (dir) => ({
-      x: dir > 0 ? -300 : 300,
+      x: dir > 0 ? -containerWidth : containerWidth,
       opacity: 0,
       zIndex: 0,
     }),
@@ -48,7 +56,7 @@ export default function ImageSlider({ imgArray, setArray }) {
   const swipeConstHold = 10000;
 
   return (
-    <div className="relative h-[400px] flex items-center justify-center w-[320px]">
+    <div ref={containerRef} className="relative h-full flex items-center justify-center w-full">
       {/* left arrow */}
       <button
         onClick={prevImg}
@@ -66,7 +74,11 @@ export default function ImageSlider({ imgArray, setArray }) {
       </button>
       }
       {/* slider container (your original setup) */}
-      <div className="h-[450px] flex items-center z-1 w-[300px] rounded-2xl bg-black/40 relative overflow-hidden touch-pan-y">
+      <div className={`h-full flex items-center z-1 rounded-2xl bg-black/40 relative overflow-hidden touch-pan-y`}
+      style={{
+        width:`${containerWidth}px`,
+      }}
+      >
         <AnimatePresence initial={false} custom={direction}>
           {imgArray.length > 0 && (
             <motion.div
@@ -78,7 +90,7 @@ export default function ImageSlider({ imgArray, setArray }) {
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
+                x: { type: "spring", stiffness: containerWidth, damping: 30 },
                 opacity: { duration: 0.1 },
               }}
               drag="x"
@@ -100,9 +112,9 @@ export default function ImageSlider({ imgArray, setArray }) {
             >
               {/* ⬇️ preserve aspect ratio & bg visibility */}
               <img
-                key={imgArray[index].file.name}
-                src={imgArray[index].preview}
-                title={imgArray[index].file.name}
+                key={imgArray[index]}
+                src={imgArray[index].preview || imgArray[index]}
+                title={imgArray[index]?.file?.name}
                 className="max-h-full max-w-full object-contain rounded-2xl"
                 draggable={false}
               />

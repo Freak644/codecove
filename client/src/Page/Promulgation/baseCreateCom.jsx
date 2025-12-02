@@ -36,11 +36,49 @@ export default function BaseCreate() {
                     bg-clip-text text-transparent`}>New Moment</h2>
                     <div className="postType flex items-center justify-center p-2">
                         
-                        <select onChange={(evnt)=>setPostOBJ({postGroup:evnt.target.value})} className=" focus:border-skin-text/30" name="" id="" defaultValue="">
-                            <option value="" disabled>def Moment(?)</option>
-                            <option value="Meme" title="Meme Zone for Devs">🤖 Dev Memes</option>
-                            <option value="Bugs" title="Bug Reports & Errors">👾 Bugs</option>
-                        </select>
+                        <select
+                            onChange={(evnt) =>
+                                setPostOBJ({ postGroup: evnt.target.value })
+                            }
+                            className="focus:border-skin-text/30"
+                            defaultValue=""
+                            >
+                            <option value="" disabled>
+                                def Moment(?)
+                            </option>
+                            <option value="Bugs" title="Bug Reports & Errors">
+                                👾 Bugs
+                            </option>
+
+                            <option value="TIL" title="Today I Learned">
+                                🎒 TIL
+                            </option>
+
+                            <option value="Snippets" title="Code Snippets & Demos">
+                                💻 Snippets
+                            </option>
+
+                            <option value="Mini Blog" title="Mini Tech Blogs">
+                                ✍️ Mini Blog
+                            </option>
+
+                            <option value="Setup Showcase" title="Workstation & Setup Showcase">
+                                🖥️ Setup Showcase
+                            </option>
+
+                            <option value="QuickTips" title="Tips, Tricks & Micro Skills">
+                                ⚡ QuickTips
+                            </option>
+
+                            <option value="Meme" title="Meme Zone for Devs">
+                                🤖 Dev Memes
+                            </option>
+
+                            <option value="WIP" title="Share Your Work-in-Progress">
+                                🛠️ WIP
+                            </option>
+                            </select>
+
                     </div>
                 </div>
                 <div className="navBar flex items-center-safe pl-10">

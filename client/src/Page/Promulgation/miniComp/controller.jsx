@@ -7,6 +7,7 @@ import axios from "axios";
 
 export default function UploadController() {
     const navi = useNavigate();
+    let {setPostOBJ} = usePostStore();
     const [controlls,setControlls] = useState({
         visibility:true,
         likeCount:true,
@@ -22,7 +23,7 @@ export default function UploadController() {
     const postData = usePostStore(state=>state.postOBJ);
 
     useEffect(()=>{
-        console.table(postData)
+        console.log(postData)
         setBtnAnimation();
     },[])
 
@@ -35,9 +36,6 @@ export default function UploadController() {
     }
     const handleSubmit = async ()=>{
         setBtnAnimation();
-        setTimeout(()=>{
-            toggleLoader(true)
-        },12);
         let saveVal = document.getElementById("post").value;
         let formData = new FormData();
         Object.keys(controlls).forEach(val=>{
@@ -48,26 +46,35 @@ export default function UploadController() {
             if(Object.keys(controlls).length !== 7) return toast.info("Something went wrong");
             if (postData.caption.length < 1) return toast.info("Caption !== empty");
             if (!postData.imgFiles || postData.imgFiles.length < 1) return toast.warning("Please Attach an Image");
+           if (!postData.postGroup.trim()) return toast.info("Please Select a Moment..")
             formData.set("caption",postData.caption);
             formData.set("canSave",saveVal);
+            formData.set("postGroup",postData.postGroup)
             postData.imgFiles.forEach(img=>{
                 formData.append("postFiles",img.file)
             })
             // let tempOBJ = Object.fromEntries(formData.entries());
-            // console.log(tempOBJ);
+            // console.table(tempOBJ);
             await axios.post("/myServer/CreatePost",formData,{
                 headers:{
                     "Content-Type":"multipart/form-data"
                 },
                 onUploadProgress: (progressEvent) =>{
-                    const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                    setProgress(percent);
+                    if (progressEvent.total) {
+                        
+                        const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                        setProgress(percent);
+                    }
                 }
             });
             toast.success("New Moment Shared🎉");
+            setProgress(0)
+            setPostOBJ({});
             navi("/")
         } catch (error) {
-            toast.error(error.message)
+            console.log(error)
+            setProgress(0)
+            toast.error(error.response.data.err)
         }finally{
             toggleLoader(false)
         }
@@ -77,10 +84,14 @@ export default function UploadController() {
     return(
         <div className="underTaker">
             {progress>0 && <div className="progressBar overflow-hidden relative flex items-center justify-start h-2 w-full border border-skin-ptext/50 rounded-md">
-                <div className={`innerBar h-full w-[${progress}%] bg-blue-500`}>
+                <div className={`innerBar h-full bg-blue-500`} style={{
+                    width:`${progress}%`
+                }}>
 
                 </div>
-                <div className={`innerBarO h-full w-[${progress}%] animate-ping absolute bg-blue-500`}>
+                <div className={`innerBarO h-full animate-ping absolute bg-blue-500`}style={{
+                    width:`${progress}%`
+                }}>
 
                 </div>
 

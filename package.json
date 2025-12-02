@@ -30,6 +30,7 @@
     "framer-motion": "^12.23.16",
     "geoip-lite": "^1.4.10",
     "handlebars": "^4.7.8",
+    "isomorphic-dompurify": "^2.33.0",
     "jsdom": "^27.2.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.552.0",

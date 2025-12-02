@@ -70,7 +70,7 @@ myApp.put("/upDatePass",RateLimiter,checkRequest,changePassSecure);
 myApp.post("/ForgotPassword",RateLimiter,checkRequest,forgotPass);
 myApp.post("/ForgotPassword/verify",RateLimiter,checkRequest,verification);
 myApp.put("/ForgotPassword/reset",RateLimiter,checkRequest,resetPassword);
-myApp.post("/CreatePost",RateLimiter,diskUpload.array("postFiles",5),Auth,CreatePost);
+myApp.post("/CreatePost",RateLimiter,checkRequest,diskUpload.array("postFiles",5),Auth,CreatePost);
 myApp.get("/getPost",RateLimiter,checkRequest,Auth,GetPosts);
 myApp.post("/test",checkRequest)
 myApp.get("/tests",checkRequest)

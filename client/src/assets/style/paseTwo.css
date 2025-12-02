@@ -272,3 +272,7 @@ select{
 .comSpace{
   box-shadow: 0 0 25px 6px rgba(105, 105, 105, 0.419);
 }
+
+.singlePost{
+  background-color: black;
+}

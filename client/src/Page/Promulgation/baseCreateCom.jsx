@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getColor } from "../../utils/getGradnt"
 import CaptionEl from "./miniComp/Caption";
 import { usePostStore } from "../../lib/basicUserinfo";
@@ -14,6 +14,10 @@ export default function BaseCreate() {
         image:false,
         uc:false
     });
+
+    useEffect(()=>{
+        setPostOBJ({postGroup:""})
+    },[])
 
     const handleTabs = value=>{
         setTab(prev=>({
@@ -46,7 +50,7 @@ export default function BaseCreate() {
                         <li onClick={()=>handleTabs("uc")} className={`${crntTab.uc ? "navSlider":""}`}>Upload & Control</li>
                     </ul>
                 </div>
-                <div className="comSpace  rounded-lg bg-black/5 backdrop-blur-md my-scroll h-auto sm:w-3/5 w-full ">
+                <div className="comSpace  rounded-lg bg-blue-900/10 backdrop-blur-md my-scroll h-auto sm:w-3/5 w-full ">
                         <CompAnim key={
                             crntTab.caption ? "caption" : 
                             crntTab.image ? "image" : 

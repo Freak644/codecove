@@ -2,8 +2,11 @@ import { useEffect, useRef, useState } from "react"
 import { Loader } from "../../../lib/loader";
 import { usePostStore } from "../../../lib/basicUserinfo";
 import { toast } from "react-toastify";
+import {useNavigate} from 'react-router-dom';
+import axios from "axios";
 
 export default function UploadController() {
+    const navi = useNavigate();
     const [controlls,setControlls] = useState({
         visibility:true,
         likeCount:true,
@@ -13,12 +16,13 @@ export default function UploadController() {
         Link:false,
         Violence:false
     })
+    const [progress,setProgress] = useState(0);
     const suBtnRef = useRef();
     let {isTrun,toggleLoader} = Loader();
     const postData = usePostStore(state=>state.postOBJ);
 
     useEffect(()=>{
-        console.log(postData)
+        console.table(postData)
         setBtnAnimation();
     },[])
 
@@ -29,30 +33,39 @@ export default function UploadController() {
             btn.classList.remove('postingCommitBtn');
         }, 1300);
     }
-    const handleSubmit = ()=>{
+    const handleSubmit = async ()=>{
         setBtnAnimation();
-        // setTimeout(()=>{
-        //     toggleLoader(true)
-        // },1200);
+        setTimeout(()=>{
+            toggleLoader(true)
+        },12);
         let saveVal = document.getElementById("post").value;
         let formData = new FormData();
         Object.keys(controlls).forEach(val=>{
             formData.set(val,controlls[val]);
         })
 
-        if(Object.keys(controlls).length !== 7) return toast.info("Something went wrong");
-        if (postData.caption.length < 1) return toast.info("Caption !== empty");
-        if (!postData.imgFiles || postData.imgFiles.length < 1) 
-        formData.set("caption",postData.caption);
-        formData.set("canSave",saveVal);
-        postData.imgFiles.forEach(img=>{
-            formData.append("postFiles",img.file)
-        })
-
-        let tempOBJ = Object.fromEntries(formData.entries());
-        console.log(tempOBJ);
         try {
-            
+            if(Object.keys(controlls).length !== 7) return toast.info("Something went wrong");
+            if (postData.caption.length < 1) return toast.info("Caption !== empty");
+            if (!postData.imgFiles || postData.imgFiles.length < 1) return toast.warning("Please Attach an Image");
+            formData.set("caption",postData.caption);
+            formData.set("canSave",saveVal);
+            postData.imgFiles.forEach(img=>{
+                formData.append("postFiles",img.file)
+            })
+            // let tempOBJ = Object.fromEntries(formData.entries());
+            // console.log(tempOBJ);
+            await axios.post("/myServer/CreatePost",formData,{
+                headers:{
+                    "Content-Type":"multipart/form-data"
+                },
+                onUploadProgress: (progressEvent) =>{
+                    const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    setProgress(percent);
+                }
+            });
+            toast.success("New Moment Shared🎉");
+            navi("/")
         } catch (error) {
             toast.error(error.message)
         }finally{
@@ -63,6 +76,9 @@ export default function UploadController() {
 
     return(
         <div className="underTaker">
+            <div className="progressBar flex items-center justify-center ">
+
+            </div>
             <div className="ControllerbaseCon flex items-center md:flex-row md:gap-0 gap-4 flex-col p-4 h-full">
                 <div className="leftDiv">
                     <div className="selectionDiv">

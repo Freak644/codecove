@@ -110,6 +110,7 @@ select{
         transform: translateX(-50%) scaleX(0);
         width: 80%;
         height: 5px;
+        border-radius: 4px;
         background-color: var(--p-text-color);
         transform-origin: center;
         transition: transform 0.7s ease-in-out;
@@ -150,7 +151,7 @@ select{
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 15px;
   }
 
   .leftDiv{
@@ -266,4 +267,8 @@ select{
   .baseContainerReset{
     width: 100%;
   }
+}
+
+.comSpace{
+  box-shadow: 0 0 25px 6px rgba(105, 105, 105, 0.419);
 }

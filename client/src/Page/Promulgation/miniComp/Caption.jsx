@@ -37,7 +37,6 @@ export default function CaptionEl() {
   useEffect(()=>{
     editorRef.current.focus();
     if (postOBJ.caption?.length>1) {
-      console.log(postOBJ)
         editorRef.current.innerHTML = postOBJ.caption;
     }
   },[])

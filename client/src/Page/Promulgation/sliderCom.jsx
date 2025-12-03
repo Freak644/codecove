@@ -7,12 +7,20 @@ export default function ImageSlider({ imgArray, setArray }) {
   const [containerWidth,setWidth] = useState(0);
   let containerRef = useRef(null);
 
-  useEffect(()=>{
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setWidth(rect.width)
-    }
-  },[])
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new ResizeObserver(() => {
+      setWidth(el.getBoundingClientRect().width);
+      console.log(el.getBoundingClientRect().width)
+    });
+
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, []);
+
   const nextImg = () => {
     setDirection(1);
     setIndex((prev) => (prev + 1) % imgArray.length);
@@ -56,7 +64,7 @@ export default function ImageSlider({ imgArray, setArray }) {
   const swipeConstHold = 10000;
 
   return (
-    <div ref={containerRef} className="relative h-full flex items-center justify-center w-full">
+    <div ref={containerRef} className="relative h-full flex items-center justify-center w-full p-0!">
       {/* left arrow */}
       <button
         onClick={prevImg}
@@ -74,10 +82,10 @@ export default function ImageSlider({ imgArray, setArray }) {
       </button>
       }
       {/* slider container (your original setup) */}
-      <div className={`h-full flex items-center z-1 rounded-2xl bg-black/40 relative overflow-hidden touch-pan-y`}
-      style={{
-        width:`${containerWidth}px`,
-      }}
+      <div className={`h-full w-full flex items-center z-1 rounded-2xl bg-black/40 relative overflow-hidden touch-pan-y`}
+      // style={{
+      //   width:`${containerWidth}px`,
+      // }}
       >
         <AnimatePresence initial={false} custom={direction}>
           {imgArray.length > 0 && (

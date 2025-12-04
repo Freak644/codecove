@@ -13,6 +13,11 @@ export const GetPosts = async (rkv,rspo) => {
     try {
         const [rows] = await database.query("SELECT u.username, u.avatar, p.* FROM posts p INNER JOIN users u ON u.id = p.id WHERE p.visibility <> 0 ORDER BY created_at DESC LIMIT ? OFFSET ?",
         [limit,offset])
+        if (rows.length === 0) {
+            return rspo.status(404).send({err:"No posts"})
+        }
+        delete rows[0].blockCat;
+        delete rows[0].likeCount;
         rspo.status(201).send({pass:"Found",post:rows})
     } catch (error) {
         rspo.status(500).send({err:error.message})

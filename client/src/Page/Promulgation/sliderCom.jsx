@@ -13,7 +13,6 @@ export default function ImageSlider({ imgArray, setArray }) {
 
     const observer = new ResizeObserver(() => {
       setWidth(el.getBoundingClientRect().width);
-      console.log(el.getBoundingClientRect().width)
     });
 
     observer.observe(el);

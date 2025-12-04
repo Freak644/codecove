@@ -1,7 +1,10 @@
+import { useEffect } from "react";
 import { UnivuUserInfo } from "../../../lib/basicUserinfo"
+import axios from "axios";
 
 export default function MiniDropDown({postInfo,toggle}) {
     const userInfo = UnivuUserInfo(stat=>stat.userInfo);
+
     const downloadAll = async () => {
         let imgLikeArray = postInfo?.images_url;
         for (let i = 0; i < imgLikeArray.length; i++) {
@@ -23,6 +26,14 @@ export default function MiniDropDown({postInfo,toggle}) {
         }
     }
 
+    const handleClick = async (setting,post_id) => {
+        console.log(setting,post_id)
+        try {
+            // await axios.put("myServer/toggle")
+        } catch (error) {
+            
+        }
+    }
 
 
     return(
@@ -32,9 +43,9 @@ export default function MiniDropDown({postInfo,toggle}) {
                 {postInfo.username !== userInfo.username && <li className="text-red-500 font-bold"><i className="bx bx-user"></i>Follow</li>}
                 <li onClick={downloadAll}><i className="bx bx-download"></i> Download</li>
                 {postInfo.username === userInfo.username && <>
-                <li><i className="bx bxs-start"></i>Show start Count</li>
-                <li><i className="bx bx-comment"></i>Trun Off Comment</li>
-                <li><i className="bx bx-lock"></i>Make Private</li> </>}
+                <li data-setting={"likeCount"} onClick={(evnt)=>handleClick(evnt.target.dataset.setting,postInfo.post_id)} ><i name="likeCount" className="bx bxs-start"></i>{(postInfo.likeCount === 1) ? "Hide Star Count":"Show start Count"}</li>
+                <li data-setting={"canComment"} onClick={(evnt)=>handleClick(evnt.target.dataset.setting,postInfo.post_id)} ><i className="bx bx-comment"></i>{(postInfo.canComment === 1) ? "Trun Off Comment":"Trun On Comment"}</li>
+                <li data-setting={"visibility"} onClick={(evnt)=>handleClick(evnt.target.dataset.setting,postInfo.post_id)} ><i className="bx bx-lock"></i>{(postInfo.visibility === 1) ? "Make Private" :"Make Public"}</li> </>}
                 <li onClick={()=>toggle(false)}>Cancel</li>
             </ul>
         </div>

@@ -70,7 +70,6 @@ export const CreatePost = async (rkv,rspo) => {
           await clearTemp(imgArray);
           return rspo.status(400).send(rekvst.err);
         }
-        console.log({path:crntImg.path,folderName:row[0].username})
         const cloudRkv = await cloudinary.uploader.upload(crntImg.path, { folder: row[0].username, timeout: 60000 });
         cloudLiks.push(cloudRkv.secure_url);
 

@@ -43,7 +43,6 @@ export const CreatePost = async (rkv,rspo) => {
         "true","false","Bugs","TIL","Snippets","Mini Blog","Setup Showcase",
         "QuickTips","Meme","WIP","Everyone","Follower"
       ];
-
       const payload = { Absuse, Link, Spam, Violence, canComment, canSave, likeCount, visibility, postGroup };
 
       for (let key in payload) {
@@ -71,13 +70,15 @@ export const CreatePost = async (rkv,rspo) => {
           await clearTemp(imgArray);
           return rspo.status(400).send(rekvst.err);
         }
-        const cloudRkv = await cloudinary.uploader.upload(crntImg.path, { folder: row[0].username });
+        console.log({path:crntImg.path,folderName:row[0].username})
+        const cloudRkv = await cloudinary.uploader.upload(crntImg.path, { folder: row[0].username, timeout: 60000 });
         cloudLiks.push(cloudRkv.secure_url);
+
         await fs.promises.unlink(crntImg.path);
       }
       let post_id = nanoid();
-      await database.query("INSERT INTO posts (post_id, id, images_url, caption, blockCat, visibility, canComment, likeCount, canSave) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        [post_id, id, JSON.stringify(cloudLiks), caption, JSON.stringify({Absuse,Spam,Link,Violence}), visibility == "true" ? 1 : 0, canComment == "true" ? 1 : 0,likeCount == "true" ? 1 : 0, canSave]
+      await database.query("INSERT INTO posts (post_id, id, images_url, caption, blockCat, visibility, canComment, likeCount, canSave, post_moment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [post_id, id, JSON.stringify(cloudLiks), caption, JSON.stringify({Absuse,Spam,Link,Violence}), visibility == "true" ? 1 : 0, canComment == "true" ? 1 : 0,likeCount == "true" ? 1 : 0, canSave, postGroup]
       )
       let [rows] = await database.query(`SELECT u.username, u.avatar, p.*
                     FROM posts p INNER JOIN users u ON u.id = p.id WHERE
@@ -88,7 +89,9 @@ export const CreatePost = async (rkv,rspo) => {
       rspo.status(200).send({pass:"Your Post is POst"})
 
     } catch (error) {
-        return rspo.status(500).send({err:"server side error",details:error.message});
+      console.log(error)
+        await clearTemp(imgArray);
+        return rspo.status(500).send({err:"server side error"});
     }finally{
       completeRequest(crntIP,crntAPI);
     }

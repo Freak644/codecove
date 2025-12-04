@@ -3,7 +3,8 @@ import ImageSlider from "../Promulgation/sliderCom"
 import Caption from "./miniCom/captionCom";
 
 export default function PostsCon({posts,fetch}) {
-    let captionRef = useRef(null);
+
+    
     function formatCount(num) {
         if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "b";
         if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, "") + "m";
@@ -13,15 +14,15 @@ export default function PostsCon({posts,fetch}) {
 
     return(
         
-            <div className="pl-[8vw] pr-[8vw] h-full flex items-center justify-center p-5 flex-wrap my-scroll gap-6">
+            <div className="pl-[8vw] pr-[8vw] h-9/10 flex items-center justify-center p-5 flex-wrap my-scroll gap-6">
                 {
-                    posts.map(({caption,caComment,images_url,canSave,post_id,username,avatar})=>{
+                    posts.map(({caption,caComment,images_url,canSave,post_id,username,avatar,post_moment})=>{
                         return(
                             <div key={post_id} className="flex items-start flex-col h-full gap-3 w-[450px] singlePost rounded-lg">
                                 <div className="ownInfo h-2/12 flex items-start justify-between flex-wrap p-1 gap-1.5 text-skin-text w-full rounded-lg">
                                     <div className="innerINFODiv p-1 flex items-start flex-1 gap-2.5">
                                         <img src={`/myServer/${avatar}`} className="h-9 w-9 rounded-full border border-amber-300" alt="Avatar" />
-                                        <p className="text-lg">{username}</p>
+                                        <p className="text-lg flex items-center gap-2"><span>{username}</span> <span className="font-bold text-sm">/{post_moment}</span></p>
                                     </div>
                                     <div className="innerINFODiv flex-1 flex items-center justify-end relative!">
                                         <i className='bx bx-dots-vertical-rounded text-2xl'></i>

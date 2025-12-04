@@ -11,12 +11,15 @@ export default  function Caption({ text }) {
             ? "whitespace-pre-wrap"
             : "caption-1-5-lines whitespace-pre-wrap"
         }
+        style={{
+          cursor:"text"
+        }}
         dangerouslySetInnerHTML={{ __html: text }}
       />
 
       {!expanded && (
         <button
-          className="text-skin-text text-sm font-semibold ml-1"
+          className="text-skin-text cursor-pointer text-sm font-semibold ml-1"
           onClick={() => setExpanded(true)}
         >
           ...more
@@ -25,7 +28,7 @@ export default  function Caption({ text }) {
 
       {expanded && (
         <button
-          className="text-skin-text text-sm font-semibold ml-1"
+          className="text-skin-text cursor-pointer text-sm font-semibold ml-1"
           onClick={() => setExpanded(false)}
         >
           show less

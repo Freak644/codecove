@@ -82,6 +82,7 @@ CREATE TABLE IF NOT EXISTS posts (
   caption TEXT,
   blockCat JSON NOT NULL,
   visibility BOOLEAN DEFAULT 1,
+  post_moment VARCHAR(100) NOT NULL,
   canComment BOOLEAN DEFAULT 1,
   likeCount BOOLEAN DEFAULT 1,
   canSave VARCHAR(50) DEFAULT "Everyone",

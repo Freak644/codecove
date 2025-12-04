@@ -1,35 +1,36 @@
 import { useEffect, useState } from 'react';
-import {io} from 'socket.io-client';
 import HomeSkeleton from './skeletonForHome';
 import PostsCon from './postContainer';
+import socket from '../../utils/socket';
 export default function HonePage() {
   const [Posts,setPosts] = useState([])
   const [offset,setOffset] = useState(0)
   const [isEnd,setEnd] = useState(false)
-    const socket = io("", {
-      transports: ["websocket"],
-      path: "/myServer/socket.io",   
+
+  useEffect(() => {
+
+    socket.on("connect", () => {
+      console.log("Connected →", socket.id);
     });
 
-    useEffect(() => {
-      socket.on("connect", () => {
-        console.log("Connected to WS →", socket.id);
-      });
+    socket.on("new-post", (newPost) => {
+      setPosts(prev => [newPost, ...prev]);
+    });
 
-      socket.on("new-post",(newPost)=>{
-        setPosts(prev=>[newPost,...prev])
-      })
+    socket.on("disconnect", () => {
+      console.log("Disconnected");
+    });
 
-      socket.on("disconnect", () => {
-        console.log("Disconnected");
-      });
+    // cleanup listeners
+    return () => {
+      socket.off("connect");
+      socket.off("new-post");
+      socket.off("disconnect");
+    };
 
-      // cleanup on unmount
-      return () => {
-        socket.off("connect");
-        socket.off("disconnect");
-      };
   }, []);
+
+
   const fetchPost = async () => {
     let rqst = await fetch(`/myServer/getPost?limit=15&offset=${offset}`);
     const data = await rqst.json();
@@ -64,7 +65,7 @@ export default function HonePage() {
         }
         </div>
 
-        <div className="rightHome flex-1">
+        <div className="rightHome flex-1 border border-amber-200 h-full">
 
         </div>
       </div>

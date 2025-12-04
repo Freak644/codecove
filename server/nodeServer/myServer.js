@@ -30,6 +30,7 @@ import postSocket from './socketIO/postSocket.js';
 import { EmailRateLimiter, RateLimiter, usernameCheckLimiter, verifyEmailLiter } from './Controllers/rateLimits.js';
 import { checkRequest, startCleaner } from './Controllers/progressTracker.js';
 import { resetPassword, verification } from './Routes/Secure/userVerification/verificationAPI.js';
+import { starPost } from './Routes/usersPOSTAPIs/writeThings/likePost.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -71,9 +72,9 @@ myApp.post("/ForgotPassword",RateLimiter,checkRequest,forgotPass);
 myApp.post("/ForgotPassword/verify",RateLimiter,checkRequest,verification);
 myApp.put("/ForgotPassword/reset",RateLimiter,checkRequest,resetPassword);
 myApp.post("/CreatePost",RateLimiter,checkRequest,diskUpload.array("postFiles",5),Auth,CreatePost);
+
 myApp.get("/getPost",RateLimiter,checkRequest,Auth,GetPosts);
-myApp.post("/test",checkRequest)
-myApp.get("/tests",checkRequest)
+myApp.post("/Post/:post_id/star",RateLimiter,checkRequest,Auth,starPost)
 
 
 const myServer = http.createServer(myApp);

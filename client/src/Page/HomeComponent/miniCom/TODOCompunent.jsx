@@ -6,9 +6,9 @@ export default function TODOList({crntPost}) {
         commentCount:null,
     })
     const [isFetching,setFetching] = useState(true);
-    useEffect(()=>{
-        console.log(crntPost)
-    },[])
+    // useEffect(()=>{
+    //     console.log(userInfo)
+    // },[])
 
     function formatCount(num) {
         if(num === null) return;
@@ -19,7 +19,7 @@ export default function TODOList({crntPost}) {
     }
     return(
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
-            <div className="TodoInner">
+            <div name="" className="TodoInner">
                 <i className="bx bx-star"></i>
                 <span>{formatCount(countArray.likeCount)}</span>
             </div>

@@ -1,9 +1,29 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ImageSlider from "../Promulgation/sliderCom"
 import Caption from "./miniCom/captionCom";
 import TODOList from "./miniCom/TODOCompunent";
+import MiniDropDown from "./miniCom/threedotDropDown";
 
 export default function PostsCon({posts,fetch}) {
+    const [isDropDown,setDropDown] = useState({});
+    const Refs = useRef({});
+    const setCallback = (id)=> (el) =>{
+        Refs.current[id] = el;
+    }
+       
+
+    useEffect(()=>{
+        const handleClick = evnt=>{
+            const el = Refs.current[isDropDown.p_id];
+            if (el && !el.contains(evnt.target)) {
+                setDropDown(false);
+            }
+        }
+
+        document.addEventListener("click",handleClick);
+        return ()=> document.removeEventListener("click",handleClick)
+    },[isDropDown])
+
 
     return(
         
@@ -17,15 +37,16 @@ export default function PostsCon({posts,fetch}) {
                                         <img src={`/myServer/${avatar}`} className="h-9 w-9 rounded-full border border-amber-300" alt="Avatar" />
                                         <p className="text-lg flex items-center gap-2"><span>{username}</span> <span className="font-bold text-sm text-nowrap flex items-center flex-row">/{post_moment}</span></p>
                                     </div>
-                                    <div className="innerINFODiv flex-1 flex items-center justify-end relative!">
-                                        <i className='bx bx-dots-vertical-rounded text-2xl'></i>
+                                    <div ref={setCallback(post_id)} className="innerINFODiv flex-1 flex items-center justify-end relative!">
+                                        <i onClick={()=>setDropDown({...isDropDown,p_id:post_id,isTrue:true})} className='bx bx-dots-vertical-rounded text-2xl cursor-pointer'></i>
+                                        {(isDropDown?.p_id===post_id && isDropDown.isTrue) && <MiniDropDown postInfo={{username,images_url}} toggle={setDropDown}/>}
                                     </div>
                                     <Caption text={caption} />
                                 </div>
                                 <div className="imgContainer w-full h-7/10 flex items-center">
                                      <ImageSlider imgArray={images_url} />
                                 </div>
-                                <TODOList crntPost={{canComment,canSave, post_id}} />
+                                <TODOList crntPost={{canComment,canSave, post_id,images_url}} />
                             </div>
                         )
                     })

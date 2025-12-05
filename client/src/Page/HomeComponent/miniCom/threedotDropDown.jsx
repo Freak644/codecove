@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { UnivuUserInfo } from "../../../lib/basicUserinfo"
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function MiniDropDown({postInfo,toggle}) {
     const userInfo = UnivuUserInfo(stat=>stat.userInfo);
@@ -29,9 +30,14 @@ export default function MiniDropDown({postInfo,toggle}) {
     const handleClick = async (setting,post_id) => {
         console.log(setting,post_id)
         try {
-            // await axios.put("myServer/toggle")
+             await axios.put("myServer/PostControll/toggle",{setting,post_id},{
+                headers:{
+                    "Content-Type": "application/json"
+                }
+             })
+             location.reload();
         } catch (error) {
-            
+            toast.error(error)
         }
     }
 

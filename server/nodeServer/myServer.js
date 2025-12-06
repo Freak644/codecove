@@ -32,6 +32,7 @@ import { checkRequest, startCleaner } from './Controllers/progressTracker.js';
 import { resetPassword, verification } from './Routes/Secure/userVerification/verificationAPI.js';
 import { starPost } from './Routes/usersPOSTAPIs/writeThings/likePost.js';
 import { miniToggleDy } from './Routes/usersPOSTAPIs/writeThings/miniToggleAPIs.js';
+import { getNews } from './utils/getNews.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -75,7 +76,7 @@ myApp.put("/ForgotPassword/reset",RateLimiter,checkRequest,resetPassword);
 myApp.post("/CreatePost",RateLimiter,checkRequest,diskUpload.array("postFiles",5),Auth,CreatePost);
 myApp.put("/PostControll/toggle",RateLimiter,checkRequest,Auth,miniToggleDy)
 myApp.get("/getPost",RateLimiter,checkRequest,Auth,GetPosts);
-myApp.post("/Post/star",RateLimiter,checkRequest,Auth,starPost)
+myApp.get("/getNews",RateLimiter,checkRequest,Auth,getNews)
 
 
 const myServer = http.createServer(myApp);

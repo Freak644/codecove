@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import HomeSkeleton from './skeletonForHome';
 import PostsCon from './postContainer';
 import socket from '../../utils/socket';
+import NewsComp from './miniCom/newsTech';
 export default function HonePage() {
   const [Posts,setPosts] = useState([])
   const [offset,setOffset] = useState(0)
@@ -65,8 +66,8 @@ export default function HonePage() {
         }
         </div>
 
-        <div className="rightHome flex-1 border border-amber-200 h-full">
-
+        <div className="rightHome flex-1 h-full">
+            <NewsComp/>
         </div>
       </div>
     );

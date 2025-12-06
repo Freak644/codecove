@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
+import NewsSkel from "../skeleton/newsSkeleton";
 
 export default function NewsComp() {
-    const [news,setnews] = useState();
+    const [news,setnews] = useState([]);
 
     const fetchData = async () => {
         let data = await fetch("/myServer/getNews");
@@ -16,8 +17,7 @@ export default function NewsComp() {
 
     return(
         <div className="underTaker border border-rose-500 my-scroll">
-            {
-                news?.map(news=>{
+            { news.map(news=>{
                     let {image,url,title} = news;
                     return(
                         <div key={url} onClick={()=>window.open(url)} className="newsDiv flex items-center flex-row relative w-full p-2 overflow-hidden">

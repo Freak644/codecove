@@ -17,7 +17,7 @@ export default function NewsComp() {
 
     return(
         <div className="underTaker border border-rose-500 my-scroll">
-            { news.map(news=>{
+            { news.length !== 0 ? (news.map(news=>{
                     let {image,url,title} = news;
                     return(
                         <div key={url} onClick={()=>window.open(url)} className="newsDiv flex items-center flex-row relative w-full p-2 overflow-hidden">
@@ -28,7 +28,7 @@ export default function NewsComp() {
                             bg-black/5 absolute p-4 backdrop-blur-md">{title}</p>
                         </div>
                     )
-                })
+                })) : (<NewsSkel/>)
             }
         </div>
     )

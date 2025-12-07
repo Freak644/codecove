@@ -47,7 +47,7 @@ export default function WindowHerder() {
             
             <div className="rightHeader flex justify-end flex-1 text-skin-text ">
                 <form action="" className="flex relative items-center justify-start gap-1 p-2  border-skin-ptext/30">
-                    <input type="text" placeholder="Type to search" className="p-1 pl-8 border-2 placeholder:text-skin-ptext/50 transition-all duration-1000 rounded-sm border-skin-ptext/30
+                    <input name="searchBox" type="text" placeholder="Type to search" className="p-1 pl-8 border-2 placeholder:text-skin-ptext/50 transition-all duration-1000 rounded-sm border-skin-ptext/30
                     w-64
                     " />
                     <i className={`absolute left-2.5 bx bx-code-block transition-all duration-500

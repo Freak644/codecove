@@ -3,13 +3,15 @@ import HomeSkeleton from './skeletonForHome';
 import PostsCon from './postContainer';
 import socket from '../../utils/socket';
 import NewsComp from './miniCom/newsTech';
+import { UnivuUserInfo } from '../../lib/basicUserinfo';
 export default function HonePage() {
   const [Posts,setPosts] = useState([])
   const [offset,setOffset] = useState(0)
   const [isEnd,setEnd] = useState(false)
+  const [currentTab,setTab] = useState(true);
+  const userInfo = UnivuUserInfo(stat=>stat.userInfo);
 
   useEffect(() => {
-
     socket.on("connect", () => {
       console.log("Connected →", socket.id);
     });
@@ -30,6 +32,7 @@ export default function HonePage() {
     };
 
   }, []);
+
 
 
   const fetchPost = async () => {
@@ -66,7 +69,16 @@ export default function HonePage() {
         }
         </div>
 
-        <div className="rightHome flex-1 h-full">
+        <div className="rightHome flex-1 h-full p-2">
+            <div className="h-1/10 w-full p-3 flex items-center justify-end flex-row gap-2.5 text-skin-text">
+                <div className="h-10 w-10 border rounded-full flex items-center justify-center overflow-hidden">
+                  <img src={Object.keys(userInfo).length > 0 ? `/myServer${userInfo?.avatar}` : ""} alt="" />  
+                </div>            
+                <p>{userInfo.username || "username"}</p>
+                <button
+                className='flex items-center outline-0 border-0 text-blue-500 text-[14px]
+                cursor-pointer hover:text-blue-400'>Switch</button>
+            </div>
             <NewsComp/>
         </div>
       </div>

@@ -16,7 +16,7 @@ export default function NewsComp() {
     },[])
 
     return(
-        <div className="underTaker border border-rose-500 my-scroll">
+        <div className="underTaker h-9/10! border border-rose-500 my-scroll p-4">
             { news.length !== 0 ? (news.map(news=>{
                     let {image,url,title} = news;
                     return(

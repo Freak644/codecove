@@ -58,7 +58,7 @@ export default function Header() {
                 ease-in-out bg-size-[200%_200%] bg-linear-to-br ${gradColor} 
                 bg-clip-text text-transparent text-2xl`}
                 ></i>
-                    <input type="text" />
+                    <input type="text" name="searchBox1" />
                 </div>
                 {/* <ThemeButton/> */}
                 <div className="scondHalf  lg:w-full w-1/3 flex items-center justify-around text-2xl">

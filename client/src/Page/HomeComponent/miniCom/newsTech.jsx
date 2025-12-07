@@ -8,7 +8,7 @@ export default function NewsComp() {
         let data = await fetch("/myServer/getNews");
         let newsArray = await data.json();
         console.log(newsArray)
-        setnews(newsArray)
+        setnews(newsArray.formatted)
     }
 
     useEffect(()=>{
@@ -16,7 +16,7 @@ export default function NewsComp() {
     },[])
 
     return(
-        <div className="underTaker h-9/10! my-scroll p-4">
+        <div className="underTaker my-scroll p-4">
             { news.length !== 0 ? (news.map(news=>{
                     let {image,url,title} = news;
                     return(

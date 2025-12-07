@@ -46,7 +46,7 @@ export const getNews = async (rkv, rspo) => {
       })
       .filter(item => item.image);
 
-    rspo.json(formatted);
+    rspo.json({formatted});
 
   } catch (err) {
     console.log("Reddit fetch error:", err.message);

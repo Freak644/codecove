@@ -19,4 +19,20 @@ export const toggleMini = create((set) => ({
     }),
 }));
 
+export const toggleSlider = create((set)=>({
+  isMiniTab: {
+    news:false,
+    charts:true,
+    message:false,
+  },
+  toggleMiniTab: (value)=> 
+    set({
+      isMiniTab:{
+        news: value === "news",
+        charts: value === "chats",
+        message: value === "msg"
+      },
+    })
+}))
+
 export default FaceToggle;

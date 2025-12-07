@@ -4,12 +4,15 @@ import PostsCon from './postContainer';
 import socket from '../../utils/socket';
 import NewsComp from './miniCom/newsTech';
 import { UnivuUserInfo } from '../../lib/basicUserinfo';
+import ChartsEL from './miniCom/miniCharts';
+import { toggleSlider } from '../../lib/tabToggle';
+import CompAnim from '../../assets/animations/compAnimation';
 export default function HonePage() {
   const [Posts,setPosts] = useState([])
   const [offset,setOffset] = useState(0)
   const [isEnd,setEnd] = useState(false)
-  const [currentTab,setTab] = useState(true);
   const userInfo = UnivuUserInfo(stat=>stat.userInfo);
+  const crntTab = toggleSlider(stat=>stat.isMiniTab);
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -35,6 +38,7 @@ export default function HonePage() {
 
 
 
+
   const fetchPost = async () => {
     let rqst = await fetch(`/myServer/getPost?limit=15&offset=${offset}`);
     const data = await rqst.json();
@@ -43,7 +47,6 @@ export default function HonePage() {
     }
     setPosts(data.post);
     setOffset(offset+15)
-    console.table(data.post)
   }
   useEffect(()=>{
      fetchPost();
@@ -79,7 +82,17 @@ export default function HonePage() {
                 className='ml-10 flex items-center outline-0 border-0 text-blue-500 text-[14px]
                 cursor-pointer hover:text-blue-400'>Switch</button>
             </div>
-            <NewsComp/>
+            <CompAnim
+            className="flex items-center justify-center h-9/10 w-full p-1 flex-wrap"
+            key={
+              crntTab.news ? "news" :
+              crntTab.charts ? "charts" :
+              crntTab.message ? "msg" : "none"
+            } >
+              {crntTab.news && <NewsComp/>}
+              {crntTab.charts && <ChartsEL/>}
+              {crntTab.message && ""}
+            </CompAnim>
         </div>
       </div>
     );

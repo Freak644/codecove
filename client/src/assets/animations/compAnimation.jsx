@@ -1,9 +1,10 @@
 import {motion,AnimatePresence} from 'framer-motion';
 
-export default function CompAnim({children}) {
+export default function CompAnim({children,className = ""}) {
     return(
         <AnimatePresence mode="wait">
               <motion.div
+                className={className}
                 key={children.key || "step"}
                 initial={{ opacity: 0, rotateX: 90, y: 50 }}
                 animate={{ opacity: 1, rotateX: 0, y: 0 }}

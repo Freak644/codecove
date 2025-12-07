@@ -65,7 +65,7 @@ export default function Header() {
                     <div className="lg:hidden cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">
                         <i className="bx bx-ghost m-1 border-r"></i>
                         <i className='bx bx-chevron-down text-[18px]'></i>
-                    </div>
+                  </div>
                     <div className="lg:hidden cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">
                         <i title="Source Code" className="bx bxl-github m-1 pr-1 border-r"></i>
                         <i title="Report an issue" className="bx bx-info-circle m-0.5"></i>

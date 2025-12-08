@@ -16,7 +16,7 @@ export default function NewsComp() {
     },[])
 
     return(
-        <div className="underTaker my-scroll p-4">
+        <div className="underTaker flex-wrap my-scroll p-4">
             { news.length !== 0 ? (news.map(news=>{
                     let {image,url,title} = news;
                     return(

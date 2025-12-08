@@ -39,7 +39,7 @@ export default function Header() {
     return(
         <>
         {(Object.keys(userData).length !== 0 && isHome) && <div className={`headerContainer h-[9vh] cursor-pointer lg:h-10 lg:w-[200px] lg:rounded-4xl lg:absolute lg:top-4/5  w-full  rounded flex items-center justify-between
-                lg:bg-linear-to-tr lg:from-yellow-400 lg:via-purple-600 lg:to-pink-500 bg-blue-800/10 backdrop-blur-lg ${toggleBtn ? "lg:left-full!":"lg:left-4/5!"} 
+                lg:bg-linear-to-tr lg:from-yellow-400 lg:via-purple-600 lg:to-pink-500 bg-blue-800/10 backdrop-blur-lg ${(toggleBtn && isHome) ? "lg:left-full!":"lg:left-4/5!"} 
                 bg-size-[200%_200%] lg:hover:via-blue-500 lg:text-white hover:text-skin-text transition-all duration-700 ease-in-out text-skin-text border-b border-gray-500`}>
                 <div className="firstHalf lg:hidden w-1/2 flex items-center pl-3 gap-2">
                 <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 w-10 menuBTN flex items-center justify-center text-3xl border-gray-500 border rounded-lg"><i className="bx bx-menu text-skin-ptext"></i></div>

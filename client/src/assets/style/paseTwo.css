@@ -365,3 +365,13 @@ select{
     }
   }
 }
+.rightHome{
+  flex: 0 0 1;
+  padding: 4px;
+}
+
+@media (max-width: 1020px) {
+  .rightHome{
+    display: none;
+  }
+}

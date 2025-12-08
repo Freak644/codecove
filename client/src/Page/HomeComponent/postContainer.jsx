@@ -27,11 +27,11 @@ export default function PostsCon({posts,fetch}) {
 
     return(
         
-            <div className="pl-[8vw] pr-[8vw] h-9/10 flex items-center justify-center p-5 flex-wrap my-scroll gap-6">
+            <div className="h-9/10 w-auto flex items-center justify-center p-5 flex-wrap my-scroll gap-6">
                 {
                     posts.map(({caption,canComment,images_url,canSave, post_id,username,avatar,post_moment,likeCount,visibility})=>{
                         return(
-                            <div key={post_id} className="flex items-start flex-col h-full gap-3 w-[450px] singlePost rounded-lg">
+                            <div key={post_id} className="flex items-start flex-col h-full gap-3 w-[450px] singlePost rounded-lg m-3">
                                 <div className="ownInfo h-2/12 flex items-start justify-between flex-wrap p-1 gap-1.5 text-skin-text w-full rounded-lg">
                                     <div className="innerINFODiv p-1 flex items-start flex-1 gap-2.5">
                                         <img src={`/myServer/${avatar}`} className="h-9 w-9 rounded-full border border-amber-300" alt="Avatar" />

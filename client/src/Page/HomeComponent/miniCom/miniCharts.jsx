@@ -37,7 +37,7 @@ export default function ChartsEL() {
         const avrgPost = posts.reduce((sum,p)=> sum + p.likes,0) / posts.length;
 
     return(
-        <div className="underTaker gap-4 border border-amber-300 my-scroll">
+        <div className="underTaker gap-4 my-scroll bg-black/5 backdrop-blur-md flex-wrap">
             <div className="lineChart flex-1 h-1/2">
                 <Line 
                     data={{

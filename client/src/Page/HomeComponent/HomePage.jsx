@@ -73,14 +73,20 @@ export default function HonePage() {
         </div>
 
         <div className="rightHome flex-1 h-full p-2">
-            <div className="h-1/10 w-full p-3 flex items-center justify-end flex-row gap-2.5 text-skin-text">
+            <div className="h-1/10 w-full p-3 flex items-center justify-center flex-row gap-2.5 text-skin-text overflow-hidden">
                 <div className="h-10 w-10 border rounded-full flex items-center justify-center overflow-hidden">
                   <img src={Object.keys(userInfo).length > 0 ? `/myServer${userInfo?.avatar}` : ""} alt="" />  
                 </div>            
                 <p>{userInfo.username || "username"}</p>
                 <button
-                className='ml-10 flex items-center outline-0 border-0 text-blue-500 text-[14px]
-                cursor-pointer hover:text-blue-400'>Switch</button>
+                className='ml-5 mainSwitchBtn flex items-center outline-0 border-0 text-blue-500 text-[14px]
+                cursor-pointer hover:text-blue-400 relative'>Switch
+                 <div className="miniDropSwitch">
+                  <button>📈</button>
+                  <button>🗞️</button>
+                  <button>💬</button>
+                </div>
+                </button>
             </div>
             <CompAnim
             className="flex items-center justify-center h-9/10 w-full p-1 flex-wrap"

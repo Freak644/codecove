@@ -66,7 +66,7 @@ export default function ChartsEL() {
                     options={{
                         elements:{
                             line:{
-                                tension:0.5
+                                tension:0.4
                             }
                         },
                         plugins:{

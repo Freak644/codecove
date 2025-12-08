@@ -8,6 +8,7 @@ export default function Header() {
     const [isToggle,setToggle] = useState(false)
     const [isHome,setHome] = useState(true)
     const [userData,setdata] = useState({});
+    const [toggleBtn,setBtn] = useState(true)
     let {userInfo} = UnivuUserInfo();
     let gradColor = getColor();
     let crntLocation = useLocation();
@@ -37,9 +38,9 @@ export default function Header() {
     }
     return(
         <>
-        {(Object.keys(userData).length !== 0 && isHome) && <div className="headerContainer h-[9vh] cursor-pointer lg:h-10 lg:w-[200px] lg:rounded-4xl lg:absolute lg:top-4/5 lg:right-30! w-full  rounded flex items-center justify-between
-                lg:bg-linear-to-tr lg:from-yellow-400 lg:via-purple-600 lg:to-pink-500 bg-blue-800/10 backdrop-blur-lg
-                bg-size-[200%_200%] lg:hover:via-blue-500 lg:text-white hover:text-skin-text transition-all duration-500 ease-in-out text-skin-text border-b border-gray-500">
+        {(Object.keys(userData).length !== 0 && isHome) && <div className={`headerContainer h-[9vh] cursor-pointer lg:h-10 lg:w-[200px] lg:rounded-4xl lg:absolute lg:top-4/5  w-full  rounded flex items-center justify-between
+                lg:bg-linear-to-tr lg:from-yellow-400 lg:via-purple-600 lg:to-pink-500 bg-blue-800/10 backdrop-blur-lg ${toggleBtn ? "lg:left-full!":"lg:left-4/5!"} 
+                bg-size-[200%_200%] lg:hover:via-blue-500 lg:text-white hover:text-skin-text transition-all duration-700 ease-in-out text-skin-text border-b border-gray-500`}>
                 <div className="firstHalf lg:hidden w-1/2 flex items-center pl-3 gap-2">
                 <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 w-10 menuBTN flex items-center justify-center text-3xl border-gray-500 border rounded-lg"><i className="bx bx-menu text-skin-ptext"></i></div>
                         <i className={`bx bx-code-block text-3xl bg-size-[200%_200%]
@@ -71,7 +72,7 @@ export default function Header() {
                         <i title="Report an issue" className="bx bx-info-circle m-0.5"></i>
                     </div>
                     {/* <i className="bx bx-cog lg:hidden!"></i> */}
-                    <i className='bx bx-message-rounded-detail lg:border-0 border-2 border-skin-ptext/30 p-1 rounded-lg'><span className="lg:inline hidden">Message</span></i>
+                    <i className='bx bx-message-rounded-detail lg:border-0 border-2 border-skin-ptext/30 p-1 rounded-lg relative'><span className="lg:inline hidden">Message</span> <i onClick={()=>setBtn(prev=>!prev)} className={`${toggleBtn ? "absolute bx bxs-left-arrow-square -left-[70px]": "bx bxs-right-arrow-square"}`}></i></i>
                 </div>
                 <div className="userMenu relative flex items-center lg:hidden text-skin-text!">
                     <div onClick={()=>setToggle(prev=>!prev)} className=" h-10 w-10 bg-black rounded-full flex items-center justify-center border-2 border-amber-200">

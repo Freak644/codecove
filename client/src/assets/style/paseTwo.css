@@ -330,3 +330,38 @@ select{
     }
   }
 }
+
+.mainSwitchBtn{
+
+  &:hover .miniDropSwitch{
+    transform: translateX(0%);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .miniDropSwitch{
+    border: 1px solid white;
+    padding: 10px;
+    position: absolute;
+    bottom: -10px;
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-direction: row;
+    text-wrap: nowrap;
+    z-index: 2;
+    border-radius: 10px;
+    background: rgba(105, 105, 105, 0.319);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    opacity: .3;
+    transform: translateX(100%);
+    transition: all .7s;
+
+    button{
+      cursor: pointer;
+      font-size: larger;
+    }
+  }
+}

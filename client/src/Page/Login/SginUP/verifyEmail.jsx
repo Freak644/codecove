@@ -152,8 +152,8 @@ export default function VerifyEl() {
    }
   }
     return(
-        <div className="underTaker flex items-center justify-center">
-            <div className="verifyDiv flex items-center justify-center">
+        <div className="underTaker my-scroll">
+            <div className="verifyDiv flex items-center justify-center h-full w-full">
                 <div className="formDiv">
                     <form action="" onSubmit={handleSubmit}>
                         <div className="txtDiv flex items-center flex-col p-2 gap-2">

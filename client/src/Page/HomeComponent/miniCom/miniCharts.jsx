@@ -64,6 +64,20 @@ export default function ChartsEL() {
                         ]
                     }}
                     options={{
+                        scales:{
+                            x:{
+                                grid:{
+                                    display:true,
+                                    color:"rgba(255,255,255,0.1)"
+                                }
+                            },
+                            y:{
+                                grid:{
+                                    display:true,
+                                    color:"rgba(255,255,255,0.1)"
+                                }
+                            }
+                        },
                         elements:{
                             line:{
                                 tension:0.4

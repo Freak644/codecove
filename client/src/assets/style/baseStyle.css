@@ -538,7 +538,8 @@ form>h1>span{
 }
 
 .baseverifyDiv{
-    height: 100vh; width: 100vw;
+    height: calc(var(--vh)*100) !important; 
+    width: 100vw;
     position: absolute;
     top: 0px;
     background: rgba(80, 90, 80, 0.3);
@@ -618,7 +619,7 @@ form>h1>span{
     .routeContainer{
         width: 100vw !important;
         left: 0px !important;
-        padding-bottom: 90px !important;
+        padding-bottom: 120px !important;
     }
     form{
         padding: 0px !important;

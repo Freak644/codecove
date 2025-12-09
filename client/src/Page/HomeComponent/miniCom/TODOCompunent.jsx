@@ -3,17 +3,14 @@ import { UnivuUserInfo } from "../../../lib/basicUserinfo";
 
 export default function TODOList({crntPost}) {
     const toggleRef = useRef(null);
-    let {canCommen,canSave, post_id, images_url, username} = crntPost;
+    let {canCommen,canSave,totalLike,isLiked,post_id, images_url, username} = crntPost;
     const [countArray,setCounts] = useState({
         likeCount:null,
         commentCount:null,
+        isCrntUserLike:false
     })
     const index = UnivuUserInfo(stat=>stat.index);
     const [isToggle,setToggle] = useState(false);
-    const [isFetching,setFetching] = useState(true);
-    // useEffect(()=>{
-    //     console.log(userInfo)
-    // },[])
 
     function formatCount(num) {
         if(num === null) return;
@@ -60,6 +57,7 @@ export default function TODOList({crntPost}) {
     }
 
     useEffect(()=>{
+        setCounts({...countArray,"likeCount":totalLike})
         const handleClick = evnt=>{
             const el = toggleRef.current;
             if (el && !el.contains(evnt.target)) {
@@ -72,17 +70,29 @@ export default function TODOList({crntPost}) {
     },[])
 
     const handleStar = async () => {
-        
+        try {
+            let rqst = await fetch("/myServer/writePost/addStar",{
+                method:"POST",
+                headers:{
+                    "Content-Type": "application/json"
+                },
+                body:JSON.stringify({post_id})
+            })
+            let result = await rqst.json();
+            console.log(result)
+        } catch (error) {
+            console.log(error)
+        }
     }
     return(
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
-                <i onClick={handleStar} className="bx bx-star"></i>
+                <i onClick={handleStar} className={`${isLiked ? "bx bxs-star" : "bx bx-star"}`}></i>
                 <span>{formatCount(countArray.likeCount)}</span>
             </div>
             <div className="TodoInner">
                 <i className="bx bx-comment"></i>
-                <span>{formatCount(countArray.commentCount)}</span>
+               
             </div>
             <div ref={toggleRef} className="TodoInner relative">
                 <i className="bx bx-download" onClick={()=>{

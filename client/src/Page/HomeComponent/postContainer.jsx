@@ -46,7 +46,7 @@ export default function PostsCon({posts,fetch}) {
                                 <div className="imgContainer w-full h-7/10 flex items-center">
                                      <ImageSlider imgArray={images_url} />
                                 </div>
-                                <TODOList crntPost={{canComment,canSave, post_id,images_url}} />
+                                <TODOList crntPost={{canComment,canSave, post_id,images_url,username}} />
                             </div>
                         )
                     })

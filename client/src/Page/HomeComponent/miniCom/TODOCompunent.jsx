@@ -1,10 +1,15 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { UnivuUserInfo } from "../../../lib/basicUserinfo";
 
 export default function TODOList({crntPost}) {
+    const toggleRef = useRef(null);
+    let {canCommen,canSave, post_id, images_url, username} = crntPost;
     const [countArray,setCounts] = useState({
         likeCount:null,
         commentCount:null,
     })
+    const index = UnivuUserInfo(stat=>stat.index);
+    const [isToggle,setToggle] = useState(false);
     const [isFetching,setFetching] = useState(true);
     // useEffect(()=>{
     //     console.log(userInfo)
@@ -17,18 +22,78 @@ export default function TODOList({crntPost}) {
         if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "k";
         return num.toString();
     }
+    const downloadAll = async (choice) => {
+        setToggle(false)
+        if (choice) {
+            try {
+                let rkv = await fetch(images_url[index]);
+                let blog = await rkv.blob();
+
+                let link = document.createElement("a");
+                link.href = URL.createObjectURL(blog);
+                link.download = `ImageFrom-${username}_${Date.now()}.jpg`;
+                link.click();
+
+                URL.revokeObjectURL(link.href);
+            } catch (error) {
+                console.log("Download Failed",error);
+            } 
+        } else {
+            for (let i = 0; i < images_url.length; i++) {
+                let url = images_url[i];
+    
+                try{
+                    let rkv = await fetch(url);
+                    let blog = await rkv.blob();
+                    
+                    let link = document.createElement("a");
+                    link.href = URL.createObjectURL(blog);
+                    link.download = `ImageFrom-${username}.${i}_${Date.now()}.jpg`;
+                    link.click();
+    
+                    URL.revokeObjectURL(link.href);
+                } catch (error) {
+                    console.log("Download Failed", error);
+                }
+            }
+        }
+    }
+
+    useEffect(()=>{
+        const handleClick = evnt=>{
+            const el = toggleRef.current;
+            if (el && !el.contains(evnt.target)) {
+                setToggle(false)
+            }
+        }
+
+        document.addEventListener("click",handleClick);
+        return ()=> document.removeEventListener("click", handleClick);
+    },[])
+
+    const handleStar = async () => {
+        
+    }
     return(
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
-                <i className="bx bx-star"></i>
+                <i onClick={handleStar} className="bx bx-star"></i>
                 <span>{formatCount(countArray.likeCount)}</span>
             </div>
             <div className="TodoInner">
                 <i className="bx bx-comment"></i>
                 <span>{formatCount(countArray.commentCount)}</span>
             </div>
-            <div className="TodoInner">
-                <i className="bx bx-download"></i>
+            <div ref={toggleRef} className="TodoInner relative">
+                <i className="bx bx-download" onClick={()=>{
+                    images_url.length === 1 ? downloadAll() : setToggle(prev=>!prev);
+                }}></i>
+                {
+                    isToggle &&<div className="flex items-center flex-col absolute bottom-1 z-50 p-2 border border-skin-ptext/30 bg-black/5 backdrop-blur-lg rounded-2xl"> 
+                        <p onClick={()=>downloadAll(true)} className="border-b border-gray-500/50 p-2 text-nowrap">Only this one</p>
+                        <p onClick={()=>downloadAll(false)} className="border-b border-gray-500/50 p-2 text-nowrap">Download All {images_url.length}</p>
+                    </div>
+                }
             </div>
             <div className="TodoInner">
                 <i className="bx bx-bookmark"></i>

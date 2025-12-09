@@ -17,7 +17,7 @@ export default function MiniDropDown({postInfo,toggle}) {
 
                 let link = document.createElement("a");
                 link.href = URL.createObjectURL(blog);
-                link.download = `ImageFrom-${userInfo.username}.${i}.jpg`;
+                link.download = `ImageFrom-${postInfo.username}.${i}.jpg`;
                 link.click();
 
                 URL.revokeObjectURL(link.href);

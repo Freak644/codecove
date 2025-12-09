@@ -76,7 +76,9 @@ myApp.put("/ForgotPassword/reset",RateLimiter,checkRequest,resetPassword);
 myApp.post("/CreatePost",RateLimiter,checkRequest,diskUpload.array("postFiles",5),Auth,CreatePost);
 myApp.put("/PostControll/toggle",RateLimiter,checkRequest,Auth,miniToggleDy)
 myApp.get("/getPost",RateLimiter,checkRequest,Auth,GetPosts);
-myApp.get("/getNews",RateLimiter,checkRequest,Auth,getNews)
+myApp.get("/getNews",RateLimiter,checkRequest,Auth,getNews);
+myApp.post("/writePost/addStar",RateLimiter,checkRequest,Auth,starPost);
+
 
 
 const myServer = http.createServer(myApp);

@@ -1,11 +1,17 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { UnivuUserInfo } from "../../lib/basicUserinfo";
 
 export default function ImageSlider({ imgArray, setArray }) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [containerWidth,setWidth] = useState(0);
   let containerRef = useRef(null);
+  const {setIndx} = UnivuUserInfo();
+
+    useEffect(()=>{
+      setIndx(index);
+    },[index])
 
   useEffect(() => {
     const el = containerRef.current;
@@ -65,12 +71,12 @@ export default function ImageSlider({ imgArray, setArray }) {
   return (
     <div ref={containerRef} className="relative h-full flex items-center justify-center w-full p-0!">
       {/* left arrow */}
-      <button
+      { index >= 1  && <button
         onClick={prevImg}
         className="absolute z-10 left-0 bg-transparent hidden sm:flex text-white w-9 h-9 rounded-full items-center justify-center hover:bg-gray-600 text-lg transition duration-100"
       >
         ⟵
-      </button>
+      </button>}
 
       { setArray &&
       <button
@@ -131,12 +137,12 @@ export default function ImageSlider({ imgArray, setArray }) {
       </div>
 
       {/* right arrow */}
-      <button
+      { (imgArray.length > 1 && imgArray.length-1 !== index) && <button
         onClick={nextImg}
         className="absolute z-10 right-0 bg-transparent text-white w-9 h-9 rounded-full hidden sm:flex items-center justify-center hover:bg-gray-600 text-lg transition duration-100"
       >
         ⟶
-      </button>
+      </button>}
     </div>
   );
 }

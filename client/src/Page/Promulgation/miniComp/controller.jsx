@@ -82,7 +82,7 @@ export default function UploadController() {
     }
 
     return(
-        <div className="underTaker">
+        <div className="underTaker flex-wrap">
             {progress>0 && <div className="progressBar overflow-hidden relative flex items-center justify-start h-2 w-full border border-skin-ptext/50 rounded-md">
                 <div className={`innerBar h-full bg-blue-500`} style={{
                     width:`${progress}%`

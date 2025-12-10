@@ -29,7 +29,7 @@ export default function PostsCon({posts,fetch}) {
         
             <div className="h-9/10 w-auto flex items-center justify-center p-5 flex-wrap my-scroll gap-6">
                 {
-                    posts.map(({caption,canComment,images_url,canSave, post_id,username,avatar,post_moment,likeCount, isLiked,visibility,totalLike})=>{
+                    posts.map(({caption,canComment,images_url,canSave, post_id,username,avatar,post_moment,likeCount, isLiked,visibility,totalLike,id})=>{
                         return(
                             <div key={post_id} className="flex items-start flex-col h-full gap-3 w-[450px] singlePost rounded-lg m-3">
                                 <div className="ownInfo h-2/12 flex items-start justify-between flex-wrap p-1 gap-1.5 text-skin-text w-full rounded-lg">
@@ -46,7 +46,7 @@ export default function PostsCon({posts,fetch}) {
                                 <div className="imgContainer w-full h-7/10 flex items-center">
                                      <ImageSlider imgArray={images_url} />
                                 </div>
-                                <TODOList crntPost={{canComment,canSave, post_id,images_url,username,totalLike, isLiked}} />
+                                <TODOList crntPost={{canComment,canSave, post_id,images_url,username,totalLike, isLiked, id}} />
                             </div>
                         )
                     })

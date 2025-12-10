@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react"
 import { UnivuUserInfo } from "../../../lib/basicUserinfo";
+import socket from "../../../utils/socket";
 
 export default function TODOList({crntPost}) {
     const toggleRef = useRef(null);
-    let {canCommen,canSave,totalLike,isLiked,post_id, images_url, username} = crntPost;
+    let {canCommen,canSave,totalLike, id,isLiked,post_id, images_url, username} = crntPost;
     const [countArray,setCounts] = useState({
         likeCount:null,
         commentCount:null,
@@ -11,6 +12,27 @@ export default function TODOList({crntPost}) {
     })
     const index = UnivuUserInfo(stat=>stat.index);
     const [isToggle,setToggle] = useState(false);
+
+    useEffect(()=>{
+        socket.emit("joinPost",post_id);
+
+        const handleLike = ({post_id : pid,user_id,like})=>{
+            if (pid === post_id) {
+                setCounts(prev=>({
+                    ...prev,
+                    likeCount:like ? prev.likeCount + 1 : prev.likeCount - 1,
+                    isCrntUserLike:like && user_id === id
+                }))
+            }
+        };
+
+        socket.on("newLike",handleLike);
+
+        return () =>{
+             socket.emit("leavePost",post_id);
+             socket.off("newLike",handleLike);
+        }
+    },[post_id])
 
     function formatCount(num) {
         if(num === null) return;
@@ -57,7 +79,7 @@ export default function TODOList({crntPost}) {
     }
 
     useEffect(()=>{
-        setCounts({...countArray,"likeCount":totalLike})
+        setCounts({...countArray,"likeCount":totalLike,"isCrntUserLike":isLiked})
         const handleClick = evnt=>{
             const el = toggleRef.current;
             if (el && !el.contains(evnt.target)) {
@@ -87,7 +109,7 @@ export default function TODOList({crntPost}) {
     return(
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
-                <i onClick={handleStar} className={`${isLiked ? "bx bxs-star" : "bx bx-star"}`}></i>
+                <i onClick={handleStar} className={`${countArray.isCrntUserLike ? "bx bxs-star" : "bx bx-star"}`}></i>
                 <span>{formatCount(countArray.likeCount)}</span>
             </div>
             <div className="TodoInner">

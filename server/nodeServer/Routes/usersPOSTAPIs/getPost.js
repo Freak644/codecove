@@ -16,7 +16,7 @@ export const GetPosts = async (rkv,rspo) => {
         if (rows.length === 0) {
             return rspo.status(404).send({err:"No posts"})
         }
-        console.log(rows[0])
+        // console.log(rows[0])
         // delete rows[0].blockCat;
         rspo.status(201).send({pass:"Found",post:rows})
     } catch (error) {

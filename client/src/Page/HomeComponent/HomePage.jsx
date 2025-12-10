@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import HomeSkeleton from './skeletonForHome';
-import PostsCon from './postContainer';
 import socket from '../../utils/socket';
 import NewsComp from './miniCom/newsTech';
 import { UnivuUserInfo } from '../../lib/basicUserinfo';
 import ChartsEL from './miniCom/miniCharts';
 import { toggleSlider } from '../../lib/tabToggle';
 import CompAnim from '../../assets/animations/compAnimation';
+import PostFeedMGMT from './postFeed';
 export default function HonePage() {
   const [Posts,setPosts] = useState([])
   const [offset,setOffset] = useState(0)
@@ -59,17 +59,17 @@ export default function HonePage() {
     let data = await rqst.json();
     setPosts(prev=>[...prev,...data.post]);
     if (data.post.length<10) {
-      setEnd(false);
+      setEnd(true);
     }
     setOffset(offset+10);
   }
     return (
       <div className="underTaker">
         <div className="leftHome h-full w-full flex-1 lg:flex-2 flex items-center justify-center flex-wrap">
-          <div className='h-1/10'></div>
+          <div className='h-1/10 border border-blue-500'></div>
           {
           Posts.length === 0 ? (<HomeSkeleton/>) :
-           (<PostsCon posts={Posts} fetch={fetchMorePost} />)
+           (<PostFeedMGMT posts={Posts} fetcher={fetchMorePost} />)
         }
         </div>
 

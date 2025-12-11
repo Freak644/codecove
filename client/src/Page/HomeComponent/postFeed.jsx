@@ -13,12 +13,11 @@ export default function PostFeedMGMT({posts,fetcher}) {
     })
 
     useEffect(()=>{
-        console.log(posts)
         let virtualItme = rowVirtulizer.getVirtualItems();
         let last = virtualItme[virtualItme.length - 1];
         
         if (last && last.index >= posts.length -2) {
-            // fetcher();
+           fetcher();
         }
 
     },[rowVirtulizer.getVirtualItems()]);

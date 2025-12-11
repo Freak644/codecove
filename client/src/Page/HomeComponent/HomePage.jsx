@@ -7,6 +7,7 @@ import ChartsEL from './miniCom/miniCharts';
 import { toggleSlider } from '../../lib/tabToggle';
 import CompAnim from '../../assets/animations/compAnimation';
 import PostFeedMGMT from './postFeed';
+import { toast } from 'react-toastify';
 export default function HonePage() {
   const [Posts,setPosts] = useState([])
   const [offset,setOffset] = useState(0)
@@ -55,13 +56,19 @@ export default function HonePage() {
   
   const fetchMorePost = async () => {
     if(isEnd) return;
-    let rqst = await fetch(`/myServer/getPost?limit=10&offset=${offset}`);
-    let data = await rqst.json();
-    setPosts(prev=>[...prev,...data.post]);
-    if (data.post.length<10) {
-      setEnd(true);
+    try {
+      let rqst = await fetch(`/myServer/getPost?limit=10&offset=${offset}`); 
+      let data = await rqst.json();
+      if (data.err || data.post.length<10) {
+        setEnd(true);
+        throw new Error("No more post there");
+      }
+      setPosts(prev=>[...prev,...data.post]);
+    } catch (error) {
+      toast.info(error.message)
+    } finally {
+      setOffset(offset+10);
     }
-    setOffset(offset+10);
   }
     return (
       <div className="underTaker">

@@ -19,7 +19,7 @@ export const starPost = async (rkv,rspo) => {
             io.emit("newLike",{post_id,user_id:id,like:false})
         }
 
-        rspo.send({test:"done"});
+        rspo.status(200).send({test:"done"});
     } catch (error) {
         rspo.status(500).send({err:"Server Side error "});
     } finally {

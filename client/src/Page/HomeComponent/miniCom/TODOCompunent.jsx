@@ -4,13 +4,14 @@ import socket from "../../../utils/socket";
 
 export default function TODOList({crntPost}) {
     const toggleRef = useRef(null);
-    let {canCommen,canSave,totalLike, id,isLiked,post_id, images_url, username} = crntPost;
+    let {canCommen,canSave,totalLike,isLiked,post_id, images_url, username} = crntPost;
     const [countArray,setCounts] = useState({
         likeCount:null,
         commentCount:null,
         isCrntUserLike:false
     })
     const index = UnivuUserInfo(stat=>stat.index);
+    const uID = UnivuUserInfo(stat=>stat.userInfo?.id)
     const [isToggle,setToggle] = useState(false);
 
     useEffect(()=>{
@@ -21,7 +22,7 @@ export default function TODOList({crntPost}) {
                 setCounts(prev=>({
                     ...prev,
                     likeCount:like ? prev.likeCount + 1 : prev.likeCount - 1,
-                    isCrntUserLike:like && user_id === id
+                    isCrntUserLike:like && user_id === uID
                 }))
             }
         };

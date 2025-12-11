@@ -8,6 +8,7 @@ import { toggleSlider } from '../../lib/tabToggle';
 import CompAnim from '../../assets/animations/compAnimation';
 import PostFeedMGMT from './postFeed';
 import { toast } from 'react-toastify';
+import { Loader } from '../../lib/loader';
 export default function HonePage() {
   const [Posts,setPosts] = useState([])
   const [offset,setOffset] = useState(0)
@@ -15,6 +16,7 @@ export default function HonePage() {
   const userInfo = UnivuUserInfo(stat=>stat.userInfo);
   const crntTab = toggleSlider(stat=>stat.isMiniTab);
   let {toggleMiniTab} = toggleSlider();
+  let {toggleLoader} = Loader();
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -42,32 +44,37 @@ export default function HonePage() {
 
 
   const fetchPost = async () => {
-    let rqst = await fetch(`/myServer/getPost?limit=15&offset=${offset}`);
+    let rqst = await fetch(`/myServer/getPost?limit=10&offset=${offset}`);
     const data = await rqst.json();
     if (data.err) {
-     return  console.log(data.err)
+     return  toast.error(data.err);
     }
     setPosts(data.post);
-    setOffset(offset+15)
+    setOffset(prev=>prev+10)
   }
   useEffect(()=>{
+    console.log("i am in empty ")
      fetchPost();
   },[])
+
   
-  const fetchMorePost = async () => {
-    if(isEnd) return;
+  const fetchMorePost = async (crntSet) => {
+    toggleLoader(true)
+    if (isEnd) return;
     try {
-      let rqst = await fetch(`/myServer/getPost?limit=10&offset=${offset}`); 
+      let rqst = await fetch(`/myServer/getPost?limit=10&offset=${crntSet}`); 
       let data = await rqst.json();
-      if (data.err || data.post.length<10) {
-        setEnd(true);
-        throw new Error("No more post there");
+      if (data.err || data.post.length < 1) {
+        setEnd(true)
+        throw new Error("");
+        
       }
+      setOffset(crntSet+10);
       setPosts(prev=>[...prev,...data.post]);
     } catch (error) {
       toast.info(error.message)
     } finally {
-      setOffset(offset+10);
+      toggleLoader(false)
     }
   }
     return (
@@ -76,7 +83,7 @@ export default function HonePage() {
           <div className='h-1/10 border border-blue-500'></div>
           {
           Posts.length === 0 ? (<HomeSkeleton/>) :
-           (<PostFeedMGMT posts={Posts} fetcher={fetchMorePost} />)
+           (<PostFeedMGMT posts={Posts} fetcher={fetchMorePost} isEnd={isEnd} />)
         }
         </div>
 

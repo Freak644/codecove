@@ -10,12 +10,32 @@ export const GetPosts = async (rkv,rspo) => {
     if (limit>15) {
         limit=10;
     }
+    console.log(limit,offset)
     try {
-        let [rows] = await database.query("SELECT  u.username, u.avatar, p.*, COUNT(l.like_id) AS totalLike, EXISTS(SELECT 1 FROM likes li WHERE li.id = ? AND li.post_id = p.post_id) AS isLiked FROM posts p INNER JOIN users u ON u.id = p.id LEFT JOIN likes l ON l.post_id = p.post_id WHERE p.visibility <> 0 GROUP BY p.post_id ORDER BY p.created_at DESC LIMIT ? OFFSET ?; ",
-        [id,limit,offset])
-        if (rows.length === 0) {
-            return rspo.status(404).send({err:"No posts"})
-        }
+        let [rows] = await database.query(`SELECT 
+            p.*,
+            u.username,
+            u.avatar,
+            COALESCE(l.totalLike, 0) AS totalLike,
+            EXISTS(
+                SELECT 1 
+                FROM likes li 
+                WHERE li.id = ? 
+                AND li.post_id = p.post_id
+            ) AS isLiked
+            FROM posts p
+            INNER JOIN users u ON u.id = p.id
+            LEFT JOIN (
+                SELECT post_id, COUNT(*) AS totalLike
+                FROM likes
+                GROUP BY post_id
+            ) l ON l.post_id = p.post_id
+            WHERE p.visibility <> 0
+            ORDER BY p.created_at DESC
+            LIMIT ? OFFSET ?;
+            `,
+        [id,limit,offset]); // i like to write a query in a single row but this query  i have to write it like this because in a single row it too hard to find which thing came from where
+        if (rows.length < 1) return rspo.status(404).send({err:"No posts"});
         // console.log(rows[0])
         rows = rows.map((row)=>{
             delete row.blockCat;
@@ -25,7 +45,8 @@ export const GetPosts = async (rkv,rspo) => {
 
         rspo.status(201).send({pass:"Found",post:rows})
     } catch (error) {
-        rspo.status(500).send({err:error.message})
+        console.log(error.messge)
+        rspo.status(500).send({err:"Server side error"})
     }finally{
         completeRequest(crntIP,crntAPI);
     }

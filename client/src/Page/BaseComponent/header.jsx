@@ -72,7 +72,7 @@ export default function Header() {
                         <i title="Report an issue" className="bx bx-info-circle m-0.5"></i>
                     </div>
                     {/* <i className="bx bx-cog lg:hidden!"></i> */}
-                    <i className='bx bx-message-rounded-detail lg:border-0 border-2 border-skin-ptext/30 p-1 rounded-lg relative'><span className="lg:inline hidden">Message</span> <i onClick={()=>setBtn(prev=>!prev)} className={`${toggleBtn ? "absolute bx bxs-left-arrow-square -left-[70px]": "bx bxs-right-arrow-square"}`}></i></i>
+                    <i className='bx bx-message-rounded-detail lg:border-0 border-2 border-skin-ptext/30 p-1 rounded-lg relative'><span className="lg:inline hidden">Message</span> <i id="badBtnToobad" onClick={()=>setBtn(prev=>!prev)} className={`${toggleBtn ? "absolute bx bxs-left-arrow-square -left-[70px]": "bx bxs-right-arrow-square"}`}></i></i>
                 </div>
                 <div className="userMenu relative flex items-center lg:hidden text-skin-text!">
                     <div onClick={()=>setToggle(prev=>!prev)} className=" h-10 w-10 bg-black rounded-full flex items-center justify-center border-2 border-amber-200">

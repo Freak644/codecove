@@ -129,7 +129,7 @@ export default function ImageSlider({ imgArray, setArray }) {
                 src={imgArray[index].preview || imgArray[index]}
                 title={imgArray[index]?.file?.name}
                 className="max-h-full max-w-full object-contain rounded-2xl"
-                draggable={false}
+                draggable={false} alt="Post"
               />
             </motion.div>
           )}

@@ -63,14 +63,14 @@ const createCropedIMG = async () => {
       (blob) => {
         if (!blob) return;
 
-        const croppedFile = new File([blob], "avatar.png", { type: "image/png" });
+        const croppedFile = new File([blob], "avatar.webp", { type: "image/webp" });
         //console.log(croppedFile);
         setIMG(croppedFile);
-        setURL(null); // close cropper if needed
+        setURL(null); 
         setPorc(false);
       },
       "image/png",
-      0.6
+      0.8
     );
   } catch (err) {
     console.error("Crop failed:", err);
@@ -79,7 +79,7 @@ const createCropedIMG = async () => {
 };
 
 
-  // Load image as HTMLImageElement
+
   const createIMG = (img) => {
     return new Promise((res, rej) => {
       const image = new Image();

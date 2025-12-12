@@ -24,28 +24,47 @@ export const CreateUser = async (rkv, rspo) => {
   //if (!file) return rspo.status(400).send({ err: "Please upload an Avtar" });
 
   try {
-    // 1️⃣ Validate file type
     if (file) {
-        const type = await fileTypeFromBuffer(file.buffer);
-        if (!type || !['image/png', 'image/jpg', 'image/jpeg'].includes(type.mime)) {
-          return rspo.status(400).send({ err: "Invalid file type" });
+        if (!Buffer.isBuffer(file.buffer)) {
+            return rspo.status(400).send({ err: "Invalid file buffer" });
         }
 
-        // 2️⃣ Validate image dimensions
-        const metaData = await sharp(file.buffer).metadata();
-        if (!metaData.width || !metaData.height) {
-          return rspo.status(400).send({ err: "Can't read image dimensions" });
+        const MAX_FILE_SIZE = 2 * 1024 * 1024; 
+        if (file.buffer.length > MAX_FILE_SIZE) {
+            return rspo.status(413).send({ err: "File too large" });
         }
+
+        const type = await fileTypeFromBuffer(file.buffer);
+        const allowed = ['image/webp','image/avif']; 
+        if (!type || !allowed.includes(type.mime)) {
+            return rspo.status(400).send({ err: "Invalid file type" });
+        }
+
+        let metaData;
+        try {
+            metaData = await sharp(file.buffer).metadata();
+        } catch (err) {
+            return rspo.status(400).send({ err: "Invalid or corrupted image" });
+        }
+
+        if (!metaData.width || !metaData.height) {
+            return rspo.status(400).send({ err: "Can't read image dimensions" });
+        }
+
+        const MAX_WIDTH = 4096;
+        const MAX_HEIGHT = 4096;
+        const MAX_PIXELS = 4096 * 4096;
+
         if (
-          metaData.width > MAX_WIDTH ||
-          metaData.height > MAX_HEIGHT ||
-          metaData.width * metaData.height > MAX_PIXELS
+            metaData.width > MAX_WIDTH ||
+            metaData.height > MAX_HEIGHT ||
+            metaData.width * metaData.height > MAX_PIXELS
         ) {
-          return rspo.status(413).send({ err: "Image is too large" });
+            return rspo.status(413).send({ err: "Image is too large" });
         }
     }
 
-    // 3️⃣ Validate user input
+
     if (!email?.trim() || !username?.trim() || !password?.trim()) {
       return rspo.status(400).send({ err: "Please provide proper information" });
     }
@@ -59,7 +78,7 @@ export const CreateUser = async (rkv, rspo) => {
       return rspo.status(400).send({ err: "Password must be strong (6 chars, uppercase, number, symbol)" });
     }
 
-    // 4️⃣ Check duplicates
+
     const [existing] = await database.query(
       "SELECT username,email FROM users WHERE username=? OR email=?",
       [username, email]
@@ -69,7 +88,6 @@ export const CreateUser = async (rkv, rspo) => {
       return rspo.status(302).send({ err: `${duplicate} already has an account` });
     }
 
-    // 5️⃣ All validations passed → Save the file
     const dir = "./Images/Avtar";
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
@@ -82,7 +100,7 @@ export const CreateUser = async (rkv, rspo) => {
 
     const avatar = `Images/Avtar/${avatarFileName}`;
 
-    // 6️⃣ Hash password and save user
+
     const hashPass = await bcrypt.hash(password, 10);
     const createQuery = "INSERT INTO users (username,email,password,avatar) VALUES (?,?,?,?)";
     await database.query(createQuery, [username, email, hashPass, avatar]);

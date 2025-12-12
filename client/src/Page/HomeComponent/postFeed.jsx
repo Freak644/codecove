@@ -137,14 +137,15 @@ export default function PostFeedMGMT({ posts, fetcher, isEnd }) {
   return (
     <Virtuoso
       style={{
-        height: "90vh",
+        height: "90%",
         width: "100%",
       }}
+      className="my-scroll"
 
       data={posts}
 
       itemContent={(index, post) => (
-        <div className="w-full flex justify-center py-3">
+        <div className="w-full flex justify-center">
           <PostsCon posts={post} />
         </div>
       )}

@@ -105,6 +105,10 @@ body{
 }
 @media (max-width:1025px) {
     
+    #badBtnToobad{
+        display: none;
+    }
+
     .menuDiv{
         width: 50px;
         .Logotxt{

@@ -15,6 +15,8 @@ export const UnivuUserInfo = create((set)=>({
 export const usePostStore = create((set) => ({
   postOBJ: {},
 
+  setEmpty:()=> set({postOBJ:{}}),
+
   setPostOBJ: (data) =>
     set((state) => ({
       postOBJ: {

@@ -44,16 +44,15 @@ export default function HonePage() {
 
 
   const fetchPost = async () => {
-    let rqst = await fetch(`/myServer/getPost?limit=10&offset=${offset}`);
+    let rqst = await fetch(`/myServer/getPost?limit=15&offset=${offset}`);
     const data = await rqst.json();
     if (data.err) {
      return  toast.error(data.err);
     }
     setPosts(data.post);
-    setOffset(prev=>prev+10)
+    setOffset(prev=>prev+15)
   }
   useEffect(()=>{
-    console.log("i am in empty ")
      fetchPost();
   },[])
 
@@ -80,7 +79,6 @@ export default function HonePage() {
     return (
       <div className="underTaker">
         <div className="leftHome h-full w-full flex-1 lg:flex-2 flex items-center justify-center flex-wrap">
-          <div className='h-1/10 border border-blue-500'></div>
           {
           Posts.length === 0 ? (<HomeSkeleton/>) :
            (<PostFeedMGMT posts={Posts} fetcher={fetchMorePost} isEnd={isEnd} />)

@@ -7,7 +7,7 @@ import axios from "axios";
 
 export default function UploadController() {
     const navi = useNavigate();
-    let {setPostOBJ} = usePostStore();
+    let {setEmpty} = usePostStore();
     const [controlls,setControlls] = useState({
         visibility:true,
         likeCount:true,
@@ -67,14 +67,15 @@ export default function UploadController() {
                     }
                 }
             });
+            
             toast.success("New Moment Shared🎉");
+            setEmpty();
             setProgress(0)
-            setPostOBJ({});
             navi("/")
         } catch (error) {
             console.log(error)
             setProgress(0)
-            toast.error(error.response.data.err)
+            toast.error(error.response.data.err || error.message)
         }finally{
             toggleLoader(false)
         }

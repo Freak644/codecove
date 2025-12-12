@@ -86,6 +86,9 @@ export default function ImageSlider({ imgArray, setArray }) {
         X
       </button>
       }
+      {imgArray.length > 1 && <div className="flex items-center justify-center p-2 absolute z-10 right-4 bottom-2 bg-black/5 backdrop-blur-md text-white rounded-full overflow-hidden">
+        {`${index+1}/${imgArray.length}`}
+      </div>}
       {/* slider container (your original setup) */}
       <div className={`h-full w-full flex items-center z-1 rounded-2xl bg-black/40 relative overflow-hidden touch-pan-y`}
       // style={{

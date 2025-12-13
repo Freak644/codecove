@@ -9,7 +9,7 @@ export default function PageTransition({children,location}) {
                 exit={{x:"-100%",opacity:0,scale: .8}}
 
                 transition={{
-                    duration: .8,
+                    duration: .5,
                     ease : [0.43,0.13,0.23,0.96],
                 }}
                 style={{

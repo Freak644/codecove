@@ -41,7 +41,7 @@ export const GetPosts = async (rkv,rspo) => {
             delete row.blockCat;
             // row.id = id;
             return row
-        })
+        });
 
         rspo.status(201).send({pass:"Found",post:rows})
     } catch (error) {

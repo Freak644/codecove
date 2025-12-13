@@ -375,3 +375,15 @@ select{
     display: none;
   }
 }
+
+.thonePrincess{
+  position: absolute;
+  height: calc(var(--vh) * 100) !important;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(105, 105, 105, 0.319);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}

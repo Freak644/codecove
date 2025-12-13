@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import { UnivuUserInfo } from "../../../lib/basicUserinfo";
+import {Link} from 'react-router-dom';
 import socket from "../../../utils/socket";
+import MaximizeContainer from "../maximizeThings/baseContainer";
 
 export default function TODOList({crntPost}) {
     const toggleRef = useRef(null);
@@ -18,6 +20,7 @@ export default function TODOList({crntPost}) {
         socket.emit("joinPost",post_id);
 
         const handleLike = ({post_id : pid,user_id,like})=>{
+            console.log(pid)
             if (pid === post_id) {
                 setCounts(prev=>({
                     ...prev,
@@ -113,9 +116,10 @@ export default function TODOList({crntPost}) {
                 <i onClick={handleStar} className={`${countArray.isCrntUserLike ? "bx bxs-star" : "bx bx-star"}`}></i>
                 <span>{formatCount(countArray.likeCount)}</span>
             </div>
-            <div className="TodoInner">
+            <div className="TodoInner"> <Link to={`/post/${post_id}`}>
                 <i className="bx bx-comment"></i>
-               
+                <span></span>
+                </Link>
             </div>
             <div ref={toggleRef} className="TodoInner relative">
                 <i className="bx bx-download" onClick={()=>{

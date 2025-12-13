@@ -215,3 +215,18 @@ INSERT INTO blocked_words (word, category) VALUES
 ('tinyurl', 'Link'),
 ('go to this link', 'Link');
 
+/*
+=========================
+      💬Comment table
+=========================
+*/
+CREATE TABLE IF NOT EXISTS comments (
+  commentsID INT AUTO_INCREMENT PRIMARY KEY,
+  post_id CHAR(36) NOT NULL,
+  id CHAR(36) NOT NULL,
+  comment TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_post_id (post_id)
+);

@@ -1,5 +1,5 @@
 import PageTransition from '../assets/animations/framerMotion'
-import {Routes,Route, useLocation, useNavigate} from 'react-router-dom';
+import {Routes,Route, useLocation, useNavigate, BrowserRouter} from 'react-router-dom';
 import LoginEL from '../Page/Login/baseFIle';
 import Header from '../Page/BaseComponent/header';
 import MenuEL from '../Page/BaseComponent/menu';
@@ -16,6 +16,7 @@ import HomePage from '../Page/HomeComponent/HomePage'
 import AbsoluteMenu from './absoluteMenu';
 import BaseCreate from '../Page/Promulgation/baseCreateCom';
 import ResetBase from '../Page/Login/resetPasswordEL/resetBase';
+import MaximizeContainer from '../Page/HomeComponent/maximizeThings/baseContainer';
 export default function MyApp() {
     let {fileURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);
@@ -89,7 +90,7 @@ export default function MyApp() {
     },[fileURL]);
 
     return(
-        <PageTransition location={currentLocation} key={currentLocation.pathname}>
+        <>
             {isTrue && <LoaderEL/>}
             {winddowHerder && !isLogin && <WindowHerder/>}
            {!isLogin && <Header/>}
@@ -97,15 +98,22 @@ export default function MyApp() {
            {isCropping && <CropperEL prevImg={fileURL} />}
            <AbsoluteMenu/>
            {(isLogin && !isChecking) && (<div className='loginContainer flex items-center content-center h-screen w-screen'>{<LoginEL/>}</div>)}
-            {(!isLogin || isChecking) && (<Routes>
-                <Route path='/' element={<div className='routeContainer my-scroll'><HomePage/></div>} />
-                <Route path='/CheckInfo/:token' element={<div className='my-scroll flex items-center absolute bg-skin-bg/30 backdrop-blur-lg justify-center h-screen-vh w-screen'>{<CheckInfo/>}</div>} />
-                <Route path='/resetPassword/:token' element={<div className='my-scroll flex absolute items-center bg-skin-bg/30 backdrop-blur-lg justify-center h-screen-vh w-screen'>{<ResetBase/>}</div>} />
-                <Route path='/Commit' element={<div className='routeContainer my-scroll'>{<BaseCreate/>}</div>} />
 
-                <Route path='*' element={<NotFound/>} />
-            </Routes>)}
-        </PageTransition>
+            <div className='routeContainer my-scroll'>
+                  <PageTransition location={currentLocation} key={currentLocation.pathname} >
+                
+                    {(!isLogin || isChecking) && (<Routes>
+                        <Route path='/' element={<HomePage/>} />
+                        <Route path='/CheckInfo/:token' element={<div className='my-scroll flex items-center absolute bg-skin-bg/30 backdrop-blur-lg justify-center h-screen-vh w-screen'>{<CheckInfo/>}</div>} />
+                        <Route path='/resetPassword/:token' element={<div className='my-scroll flex absolute items-center bg-skin-bg/30 backdrop-blur-lg justify-center h-screen-vh w-screen'>{<ResetBase/>}</div>} />
+                        <Route path='/Commit' element={<BaseCreate/>} />
+                        <Route path='/post/:pID' element={<MaximizeContainer/>} />
+                        <Route path='*' element={<NotFound/>} />
+                    </Routes>)}
+                </PageTransition>
+            </div>
+
+         </>
     )
 }
 

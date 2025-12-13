@@ -53,7 +53,9 @@ export default function HonePage() {
     setOffset(prev=>prev+15)
   }
   useEffect(()=>{
-     fetchPost();
+     if (Posts.length < 15) {
+      fetchPost()
+     }
   },[])
 
   
@@ -78,7 +80,7 @@ export default function HonePage() {
   }
     return (
       <div className="underTaker">
-        <div className="leftHome h-full w-full flex-1 lg:flex-2 flex items-center justify-center flex-wrap">
+        <div className="leftHome h-full w-full flex-1 lg:flex-2 flex items-center justify-center flex-wrap my-scroll">
           {
           Posts.length === 0 ? (<HomeSkeleton/>) :
            (<PostFeedMGMT posts={Posts} fetcher={fetchMorePost} isEnd={isEnd} />)

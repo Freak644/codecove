@@ -352,9 +352,9 @@ select{
     text-wrap: nowrap;
     z-index: 2;
     border-radius: 10px;
-    background: rgba(105, 105, 105, 0.319);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    background: rgba(33, 33, 33, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     opacity: .3;
     transform: translateX(100%);
     transition: all .7s;

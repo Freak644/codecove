@@ -1,4 +1,3 @@
-import PageTransition from '../assets/animations/framerMotion'
 import {Routes,Route, useLocation, useNavigate, BrowserRouter} from 'react-router-dom';
 import LoginEL from '../Page/Login/baseFIle';
 import Header from '../Page/BaseComponent/header';
@@ -9,14 +8,10 @@ import LoaderEL from '../assets/animations/loadingBar';
 import { mngCrop, useThemeStore } from '../lib/toggleTheme';
 import CropperEL from './cropperEL';
 import WindowHerder from '../Page/BaseComponent/windowHeader';
-import CheckInfo from '../Page/Login/checkinfo';
-import NotFound from '../Page/BaseComponent/404NotFound';
 import '../assets/style/paseTwo.css'
-import HomePage from '../Page/HomeComponent/HomePage'
 import AbsoluteMenu from './absoluteMenu';
-import BaseCreate from '../Page/Promulgation/baseCreateCom';
-import ResetBase from '../Page/Login/resetPasswordEL/resetBase';
-import MaximizeContainer from '../Page/HomeComponent/maximizeThings/baseContainer';
+import AnimateRoute from './miniRoutes/AnimateRoute';
+import NoAnimRoutes from './miniRoutes/noAnimationRoute';
 export default function MyApp() {
     let {fileURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);
@@ -53,6 +48,8 @@ export default function MyApp() {
         let currentPath = currentLocation.pathname.split("/")
         if (currentPath[1] === "checkInfo" || currentPath[1] === "resetPassword") {
             setCheck(true)
+        }else{
+            setCheck(false)
         }
         const handler = ()=> toggleLoader(false);
         if (document.readyState === "complete") {
@@ -92,26 +89,16 @@ export default function MyApp() {
     return(
         <>
             {isTrue && <LoaderEL/>}
-            {winddowHerder && !isLogin && <WindowHerder/>}
-           {!isLogin && <Header/>}
-           {!isLogin && <MenuEL/>}
+            {(winddowHerder && !isLogin && !isChecking) && <WindowHerder/>}
+           {(!isLogin && !isChecking) && <Header/>}
+           {(!isLogin && !isChecking) && <MenuEL/>}
            {isCropping && <CropperEL prevImg={fileURL} />}
            <AbsoluteMenu/>
            {(isLogin && !isChecking) && (<div className='loginContainer flex items-center content-center h-screen w-screen'>{<LoginEL/>}</div>)}
 
-            <div className='routeContainer my-scroll'>
-                  <PageTransition location={currentLocation} key={currentLocation.pathname} >
-                
-                    {(!isLogin || isChecking) && (<Routes>
-                        <Route path='/' element={<HomePage/>} />
-                        <Route path='/CheckInfo/:token' element={<div className='my-scroll flex items-center absolute bg-skin-bg/30 backdrop-blur-lg justify-center h-screen-vh w-screen'>{<CheckInfo/>}</div>} />
-                        <Route path='/resetPassword/:token' element={<div className='my-scroll flex absolute items-center bg-skin-bg/30 backdrop-blur-lg justify-center h-screen-vh w-screen'>{<ResetBase/>}</div>} />
-                        <Route path='/Commit' element={<BaseCreate/>} />
-                        <Route path='/post/:pID' element={<MaximizeContainer/>} />
-                        <Route path='*' element={<NotFound/>} />
-                    </Routes>)}
-                </PageTransition>
-            </div>
+            {(!isLogin || isChecking) && (
+                isChecking ? <NoAnimRoutes/> : <AnimateRoute location={currentLocation} />
+            )}
 
          </>
     )

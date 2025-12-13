@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function MaximizeContainer() {
-    
+    let {pID} = useParams();
+
     return(
             <div className="underTaker">
                 <div className="closeBtn flex items-center justify-center p-3 rounded-full text-2xl font-bold text-red-500 absolute top-10 right-2">
@@ -9,6 +10,7 @@ export default function MaximizeContainer() {
                         X
                     </Link>
                 </div>
+                
             </div>
     )
 }

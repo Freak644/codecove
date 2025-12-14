@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react"
 import { UnivuUserInfo } from "../../../lib/basicUserinfo";
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import socket from "../../../utils/socket";
 import MaximizeContainer from "../maximizeThings/baseContainer";
 
 export default function TODOList({crntPost}) {
     const toggleRef = useRef(null);
+    const crntLocation = useLocation();
     let {canCommen,canSave,totalLike,isLiked,post_id, images_url, username} = crntPost;
     const [countArray,setCounts] = useState({
         likeCount:null,
@@ -116,7 +117,9 @@ export default function TODOList({crntPost}) {
                 <i onClick={handleStar} className={`${countArray.isCrntUserLike ? "bx bxs-star" : "bx bx-star"}`}></i>
                 <span>{formatCount(countArray.likeCount)}</span>
             </div>
-            <div className="TodoInner"> <Link to={`/post/${post_id}`}>
+            <div className="TodoInner"> <Link to={`/post/${post_id}`}
+                state={{background:crntLocation}}
+            >
                 <i className="bx bx-comment"></i>
                 <span></span>
                 </Link>

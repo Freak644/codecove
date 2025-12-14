@@ -28,8 +28,8 @@ export default function BaseCreate() {
         }))
     }
     return(
-        <div className="h-full w-full flex items-center sm:pl-[5%] border">
-            <div className="mainCreate h-full flex items-start flex-col p-4 sm:p-8 text-skin-text gap-10 w-full">
+        <div className="h-full w-full flex items-center sm:pl-[5%] border border-amber-300 relative">
+            <div className="mainCreate h-full flex items-start flex-col p-4 sm:p-8 text-skin-text gap-10 w-full my-scroll">
                 <div className="headerDiv flex items-center flex-col gap-4">
                     <h2 className={`font-extrabold! text-2xl transition-all duration-500 ease-in-out bg-size-[200%_100%]
                     bg-linear-to-tr ${gradColor}
@@ -88,7 +88,7 @@ export default function BaseCreate() {
                         <li onClick={()=>handleTabs("uc")} className={`${crntTab.uc ? "navSlider":""}`}>Upload & Control</li>
                     </ul>
                 </div>
-                <div className="comSpace  rounded-lg bg-blue-900/10 backdrop-blur-md my-scroll min-h-3/10 max-h-4/5 sm:w-3/5 w-full ">
+                <div className="comSpace  rounded-lg bg-blue-900/10 backdrop-blur-md min-h-3/10 max-h-4/5 sm:w-3/5 w-full ">
                         <CompAnim key={
                             crntTab.caption ? "caption" : 
                             crntTab.image ? "image" : 

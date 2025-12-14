@@ -383,7 +383,8 @@ select{
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(105, 105, 105, 0.319);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(50, 50, 105, 0.219);
+  backdrop-filter: blur(10px);
+  z-index: 21;
+  -webkit-backdrop-filter: blur(10px);
 }

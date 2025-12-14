@@ -2,6 +2,7 @@ import {Routes,Route} from 'react-router-dom';
 import PageTransition from "../../assets/animations/framerMotion";
 import HomePage from '../../Page/HomeComponent/HomePage'
 import BaseCreate from '../../Page/Promulgation/baseCreateCom';
+import NotFound from '../../Page/BaseComponent/404NotFound';
 import MaximizeContainer from '../../Page/HomeComponent/maximizeThings/baseContainer';
 export default function AnimateRoute({location}) {
     const noAnimetArray = ['/']
@@ -16,6 +17,8 @@ export default function AnimateRoute({location}) {
                         <Route path='/Commit' element={<BaseCreate/>} />
                         <Route path='/myLab' element={<div><input type="text" className='border border-amber-200' /></div>} />
 
+
+                        <Route path='*' element={<NotFound/>} />
                     </Routes>
                 </PageTransition>
             </div>

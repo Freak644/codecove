@@ -781,7 +781,6 @@ form>h1>span{
 .routeContainer{
     height:93.5dvh; width: 87vw;
     display: flex;
-    border: 2px solid blue;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;

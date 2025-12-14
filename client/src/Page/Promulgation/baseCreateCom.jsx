@@ -15,6 +15,8 @@ export default function BaseCreate() {
         uc:false
     });
 
+
+
     useEffect(()=>{
         setPostOBJ({postGroup:""})
     },[])
@@ -28,10 +30,10 @@ export default function BaseCreate() {
         }))
     }
     return(
-        <div className="h-full w-full flex items-center sm:pl-[5%] border border-amber-300 relative">
-            <div className="mainCreate h-full flex items-start flex-col p-4 sm:p-8 text-skin-text gap-10 w-full my-scroll">
-                <div className="headerDiv flex items-center flex-col gap-4">
-                    <h2 className={`font-extrabold! text-2xl transition-all duration-500 ease-in-out bg-size-[200%_100%]
+        <div className="underTaker ">
+            <div className="mainCreate h-full flex items-start justify-start flex-wrap p-4 sm:p-8 text-skin-text gap-5 w-full">
+                <div className="headerDiv w-full flex items-start flex-col gap-4">
+                    <h2 className={`font-extrabold! text-2xl pl-4 transition-all duration-500 ease-in-out bg-size-[200%_100%]
                     bg-linear-to-tr ${gradColor}
                     bg-clip-text text-transparent`}>New Moment</h2>
                     <div className="postType flex items-center justify-center p-2">
@@ -81,19 +83,19 @@ export default function BaseCreate() {
 
                     </div>
                 </div>
-                <div className="navBar flex items-center-safe pl-10">
+                <div className="navBar flex items-center-safe pl-10 w-full">
                     <ul className="flex items-center-safe flex-row gap-10">
                         <li onClick={()=>handleTabs("cap")} className={`${crntTab.caption ? "navSlider":""}`}>Caption</li>
                         <li onClick={()=>handleTabs("img")} className={`${crntTab.image ? "navSlider":""}`}>Image</li>
                         <li onClick={()=>handleTabs("uc")} className={`${crntTab.uc ? "navSlider":""}`}>Upload & Control</li>
                     </ul>
                 </div>
-                <div className="comSpace  rounded-lg bg-blue-900/10 backdrop-blur-md min-h-3/10 max-h-4/5 sm:w-3/5 w-full ">
+                <div className="comSpace  rounded-lg bg-blue-900/10 backdrop-blur-md h-2/3 sm:h-3/6 max-h-4/5 sm:w-3/5 w-full my-scroll">
                         <CompAnim key={
                             crntTab.caption ? "caption" : 
                             crntTab.image ? "image" : 
                             crntTab.uc ? "UC" : "none"
-                        } >
+                        }  >
                             {crntTab.caption && <CaptionEl/>}
                             {crntTab.image && <DragDropBox/>}
                             {crntTab.uc && <UploadController/>}

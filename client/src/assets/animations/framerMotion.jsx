@@ -2,7 +2,7 @@ import {motion,AnimatePresence} from 'framer-motion';
 export default function PageTransition({children,location,shouldAnimat}) {
     return(
         <AnimatePresence mode='wait'>
-            <motion.div className='middlerWhere'
+            <motion.div className='middlerWhere my-scroll'
                 key={shouldAnimat ? location.pathname : "static"}
                 initial={shouldAnimat ? {x:"100%",opacity:0,scale: .8} : false}
                 animate={{x:0,opacity:1,scale:1}}

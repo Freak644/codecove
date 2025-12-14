@@ -31,10 +31,11 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     transition: background-color 0.3s,color 0.3s;
-    background-attachment: fixed;
+    overscroll-behavior: none;
+    overflow: hidden;
 }
 #rootContainer,.middlerWhere{
-    height: calc(var(--vh)*100) !important; 
+    height: 100dvb; 
     width: 100vw;
     display: flex;
     align-items: flex-start;
@@ -43,13 +44,13 @@ body{
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px); */
     position: relative; 
-    overflow:unset;
+    overflow:hidden;
+    overscroll-behavior: none;
 }
 .middlerWhere{
     height: 100% !important;
     width: 100% !important;
-    z-index: 10 !important;
-
+    z-index: 9 !important;
 }
 .dropDown{
     top: 100%;
@@ -351,7 +352,7 @@ body{
 }
 
 .loginbase{
-     height: calc(var(--vh)*100) !important; 
+     height: 100dvb; 
 }
         
 .formDiv{
@@ -545,7 +546,7 @@ form>h1>span{
 }
 
 .baseverifyDiv{
-    height: calc(var(--vh)*100) !important; 
+    height: 100dvh; 
     width: 100vw;
     position: absolute;
     top: 0px;
@@ -641,7 +642,7 @@ form>h1>span{
         height: 60px;
         width: 100%;
         flex-direction: row !important;
-        position: fixed;
+        position: absolute;
         bottom: 0px;
         margin: 0px !important;
 
@@ -778,12 +779,15 @@ form>h1>span{
     }
 }
 .routeContainer{
-    height: 93.5vh; width: 87vw;
+    height:93.5dvh; width: 87vw;
     display: flex;
+    border: 2px solid blue;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
     position: absolute;
     left: 13vw;
+    padding: 2px;
     top: 50px;
     z-index: 10 !important;
     transition: all .7s;

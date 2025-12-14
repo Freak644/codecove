@@ -1,176 +1,158 @@
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { LexicalComposer } from "@lexical/react/LexicalComposer";
+import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { ContentEditable } from "@lexical/react/LexicalContentEditable";
+import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
+import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import {
+  FORMAT_TEXT_COMMAND,
+  $getSelection,
+  $isRangeSelection,
+  $getRoot,
+} from "lexical";
+import { $generateNodesFromDOM } from "@lexical/html";
+import DOMPurify from "dompurify";
 import { usePostStore } from "../../../lib/basicUserinfo";
-import DOMPurify from 'dompurify';
+
+const LIMIT = 300;
+
+/* ---------------- CONFIG ---------------- */
+
+const editorConfig = {
+  namespace: "CaptionEditor",
+  theme: {
+    text: {
+      bold: "font-bold",
+      italic: "italic",
+      underline: "underline",
+      strikethrough: "line-through",
+    },
+  },
+  onError(error) {
+    throw error;
+  },
+};
+
+
 
 export default function CaptionEl() {
-  const editorRef = useRef(null);
-  const LIMIT = 300;
-  let {postOBJ,setPostOBJ} = usePostStore();
-  const [textLenght,setLength] = useState(0);
+  return (
+    <LexicalComposer initialConfig={editorConfig}>
+      <div className="w-full flex flex-col gap-2 h-full">
+        <Toolbar />
+        <Editor />
+      </div>
+    </LexicalComposer>
+  );
+}
+
+
+
+function Toolbar() {
+  const [editor] = useLexicalComposerContext();
   const [active, setActive] = useState({
     bold: false,
     italic: false,
     underline: false,
-    strike: false
+    strikethrough: false,
   });
 
-
-  const updateActive = () => {
-    setActive({
-      bold: document.queryCommandState("bold"),
-      italic: document.queryCommandState("italic"),
-      underline: document.queryCommandState("underline"),
-      strike: document.queryCommandState("strikeThrough")
-    });
-  };
-
-  const cleanHTML = dirty=>{
-    return DOMPurify.sanitize(dirty,{
-      USE_PROFILES: {html:true}
-    });
-  }
-
-  useEffect(()=>{
-    setPostOBJ({caption:cleanHTML(editorRef.current?.innerHTML)})
-  },[active])
-
-  useEffect(()=>{
-    editorRef.current.focus();
-    if (postOBJ.caption?.length>1) {
-        editorRef.current.innerHTML = postOBJ.caption;
-    }
-  },[])
-
   useEffect(() => {
-    document.addEventListener("selectionchange", updateActive);
-    return () => document.removeEventListener("selectionchange", updateActive);
-  }, []);
+    return editor.registerUpdateListener(({ editorState }) => {
+      editorState.read(() => {
+        const selection = $getSelection();
+        if (!$isRangeSelection(selection)) return;
 
-  const exec = (cmd, value = null) => {
-    editorRef.current.focus();
-    document.execCommand(cmd, false, value);
-    updateActive();
-  };
+        setActive({
+          bold: selection.hasFormat("bold"),
+          italic: selection.hasFormat("italic"),
+          underline: selection.hasFormat("underline"),
+          strikethrough: selection.hasFormat("strikethrough"),
+        });
+      });
+    });
+  }, [editor]);
 
-  const insertLink = () => {
-    const url = prompt("Enter URL:");
-    if (!url) return;
-    exec("createLink", url);
-  };
-
-  const insertCodeBlock = () => {
-    const sel = window.getSelection();
-    const range = sel.getRangeAt(0);
-
-    const pre = document.createElement("pre");
-    pre.className = "bg-black text-skin-text p-2 rounded break-words";
-
-    const code = document.createElement("code");
-    code.textContent = "your code here";
-
-    pre.appendChild(code);
-    range.insertNode(pre);
-  };
-
-  const handleInput = () => {
-    const el = editorRef.current;
-    const text = el.innerText;
-    setLength(text.length)
-    if (text.length > LIMIT) {
-      const allowed = text.substring(0, LIMIT);
-      el.innerText = allowed;
-
-      const range = document.createRange();
-      const sel = window.getSelection();
-      range.selectNodeContents(el);
-      range.collapse(false);
-      sel.removeAllRanges();
-      sel.addRange(range);
-    }
-};
-
-  const handlePaste = (e) => {
-    e.preventDefault();
-
-    const el = editorRef.current;
-    const clipboard = (e.clipboardData || window.clipboardData).getData("text");
-    const current = el.innerText;
-    const remaining = LIMIT - current.length;
-
-    if (remaining <= 0) return setLength(300);
-
-    const toInsert = clipboard.substring(0, remaining);
-    document.execCommand("insertText", false, toInsert);
-};
-
+  const btnClass = (on) =>
+    `capBtn ${on ? "bg-[rgba(80,80,80,0.4)]" : ""}`;
 
   return (
-    <div className="w-full flex flex-col gap-2 relative ">
+    <div className="flex gap-2 sticky top-0 bg-skin-bg p-2 rounded-xl z-10">
+      <button className={btnClass(active.bold)} onMouseDown={e => e.preventDefault()} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold")}><i className="bx bx-bold" /></button>
+      <button className={btnClass(active.italic)} onMouseDown={e => e.preventDefault()} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic")}><i className="bx bx-italic" /></button>
+      <button className={btnClass(active.underline)} onMouseDown={e => e.preventDefault()} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline")}><i className="bx bx-underline" /></button>
+      <button className={btnClass(active.strikethrough)} onMouseDown={e => e.preventDefault()} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough")}><i className="bx bx-strikethrough" /></button>
+    </div>
+  );
+}
 
-      <div className="flex h-12 gap-2 items-center sticky top-0 bg-skin-bg rounded-2xl">
 
-        <button
-          className={`capBtn ${active.bold ? "bg-gray-500/50" : ""}`}
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={() => exec("bold")}
-        >
-          <i className="bx bx-bold"></i>
-        </button>
+function Editor() {
+  const { postOBJ, setPostOBJ } = usePostStore();
+  const [editor] = useLexicalComposerContext();
 
-        <button
-          className={`capBtn ${active.italic ? "bg-gray-500/50" : ""}`}
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={() => exec("italic")}
-        >
-          <i className="bx bx-italic"></i>
-        </button>
+  const initialized = useRef(false);
+  const [count, setCount] = useState(0);
 
-        <button
-          className={`capBtn ${active.underline ? "bg-gray-500/50" : ""}`}
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={() => exec("underline")}
-        >
-          <i className="bx bx-underline"></i>
-        </button>
+  const sanitize = (html) =>
+    DOMPurify.sanitize(html, {
+      ALLOWED_TAGS: ["b", "i", "strong", "em" , "u", "s", "p", "br", "pre", "code"],
+    });
 
-        <button
-          className={`capBtn ${active.strike ? "bg-gray-500/50" : ""}`}
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={() => exec("strikeThrough")}
-        >
-          <i className="bx bx-strikethrough"></i>
-        </button>
 
-        <button
-          className="capBtn"
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={insertLink}
-        >
-          <i className="bx bx-link"></i>
-        </button>
+  useEffect(() => {
 
-        <button
-          className="capBtn"
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={insertCodeBlock}
-        >
-          <i className="bx bx-code-block"></i>
-        </button>
+    if (!postOBJ?.caption) {
+      initialized.current = true;
+      return;
+    }
 
-        <div className="counter absolute right-2">
-          <p className="text-[12px]">{`${textLenght}`}/{LIMIT}</p>
-        </div>
 
+    editor.update(() => {
+      const dom = new DOMParser().parseFromString(postOBJ.caption, "text/html");
+      const nodes = $generateNodesFromDOM(editor, dom);
+      const root = $getRoot();
+
+      root.clear();
+      root.append(...nodes);
+      setCount(root.getTextContent().length);
+    });
+
+    initialized.current = true;
+  }, [editor]);
+
+  return (
+    <div className="relative h-full my-scroll p-2">
+      <RichTextPlugin
+        contentEditable={
+          <ContentEditable className="outline-none caret-skin-text text-skin-text" />
+        }
+        placeholder={<p className="absolute top-0 left-2 text-gray-400">Write a caption…</p>}
+      />
+
+      <div className="absolute bottom-0 right-3 text-xs text-gray-400">
+        {count}/{LIMIT}
       </div>
 
+      <HistoryPlugin />
 
-      <div
-        ref={editorRef}
-        contentEditable
-        onInput={handleInput}
-        onPaste={handlePaste}
-        spellCheck={false}
-        className=" min-h-68 sm:min-h-[180px]  my-scroll w-full p-2 wrap-break-word outline-none text-skin-text caret-skin-text"
+      <OnChangePlugin
+        onChange={(editorState, editor) => {
+          if (!initialized.current) return;
+
+          editorState.read(() => {
+            const root = $getRoot();
+            const len = root.getTextContent().length;
+
+            setCount(len);
+
+            if (len > LIMIT) return;
+
+            const html = sanitize(editor.getRootElement()?.innerHTML || "");
+            setPostOBJ({ caption: html });
+          });
+        }}
       />
     </div>
   );

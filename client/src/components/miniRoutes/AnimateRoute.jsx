@@ -14,6 +14,8 @@ export default function AnimateRoute({location}) {
                     <Routes location={background || location}>
                         <Route path='/' element={<HomePage/>} />
                         <Route path='/Commit' element={<BaseCreate/>} />
+                        <Route path='/myLab' element={<div><input type="text" className='border border-amber-200' /></div>} />
+
                     </Routes>
                 </PageTransition>
             </div>

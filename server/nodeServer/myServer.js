@@ -33,6 +33,7 @@ import { resetPassword, verification } from './Routes/Secure/userVerification/ve
 import { starPost } from './Routes/usersPOSTAPIs/writeThings/likePost.js';
 import { miniToggleDy } from './Routes/usersPOSTAPIs/writeThings/miniToggleAPIs.js';
 import { getNews } from './utils/getNews.js';
+import { getComment } from './Routes/usersPOSTAPIs/readThings/getCrntPostComment.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -78,6 +79,7 @@ myApp.put("/PostControll/toggle",RateLimiter,checkRequest,Auth,miniToggleDy)
 myApp.get("/getPost",RateLimiter,checkRequest,Auth,GetPosts);
 myApp.get("/getNews",RateLimiter,checkRequest,Auth,getNews);
 myApp.post("/writePost/addStar",RateLimiter,checkRequest,Auth,starPost);
+myApp.get("/readtPost/getComment",RateLimiter,checkRequest,Auth,getComment);
 
 
 

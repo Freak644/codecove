@@ -17,7 +17,7 @@ export const usePostStore = create((set) => ({
 
   setEmpty:()=> set({postOBJ:{}}),
 
-  setPostOBJ: (data) =>
+  setPostOBJ: (data = []) =>
     set((state) => ({
       postOBJ: {
         ...state.postOBJ,
@@ -25,3 +25,25 @@ export const usePostStore = create((set) => ({
       },
     })),
 }));
+
+export const univPostStore = create((set)=>({
+  posts: {},
+
+  setUnivPost: (data = {}) =>
+    set((state) => {
+      const incoming = Array.isArray(data) ? data : [data];
+
+      const map = new Map(
+        state.posts.map(post => [post.id, post])
+      );
+
+      incoming.forEach(post => {
+        map.set(post.id, post);
+      });
+
+      return {
+        posts: Array.from(map.values())
+      };
+    })
+
+}))

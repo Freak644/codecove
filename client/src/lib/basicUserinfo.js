@@ -26,24 +26,38 @@ export const usePostStore = create((set) => ({
     })),
 }));
 
-export const univPostStore = create((set)=>({
-  posts: {},
+export const univPostStore = create((set) => ({
+  postsById: {},
+  postOrder: [], 
+  MAX_POSTS: 30,
 
   setUnivPost: (data = {}) =>
     set((state) => {
-      const incoming = Array.isArray(data) ? data : [data];
+      if (!data || Object.keys(data).length === 0) return state;
 
-      const map = new Map(
-        state.posts.map(post => [post.id, post])
-      );
+      let postsById = { ...state.postsById };
+      let postOrder = [...state.postOrder];
 
-      incoming.forEach(post => {
-        map.set(post.id, post);
-      });
+      for (const id of Object.keys(data)) {
+        if (!postsById[id]) {
+          postOrder.push(id);
+        }
+
+        postsById[id] = {
+          ...(postsById[id] || {}),
+          ...data[id],
+        };
+      }
+
+      while (postOrder.length > state.MAX_POSTS) {
+        const removedId = postOrder.shift(); 
+        delete postsById[removedId];
+      }
 
       return {
-        posts: Array.from(map.values())
+        postsById,
+        postOrder,
       };
     })
+}));
 
-}))

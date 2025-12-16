@@ -83,7 +83,9 @@ export default function HonePage() {
         <div className="leftHome h-full w-full flex-1 lg:flex-2 flex items-center justify-center flex-wrap my-scroll">
           {
           Posts.length === 0 ? (<HomeSkeleton/>) :
-           (<PostFeedMGMT posts={Posts} fetcher={fetchMorePost} isEnd={isEnd} />)
+           (
+              <PostFeedMGMT posts={Posts} fetcher={fetchMorePost} isEnd={isEnd} />
+           )
         }
         </div>
 

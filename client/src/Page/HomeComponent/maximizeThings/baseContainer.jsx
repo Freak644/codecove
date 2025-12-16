@@ -29,7 +29,7 @@ export default function MaximizeContainer() {
                 </div>
                 <div className="h-4/5 w-4/6 rounded-lg p-2 flex items-center justify-center flex-wrap border border-white">
                     <div className="flex-1 flex items-center justify-center border border-green-500 h-full">
-                        <ImageSlider />
+                   
                     </div>
                     <div className="flex-1 flex items-center justify-center border border-purple-500 h-full"></div>
                 </div>

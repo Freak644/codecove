@@ -1,33 +1,37 @@
-import { useEffect, useRef, useState } from "react"
-import { UnivuUserInfo } from "../../../lib/basicUserinfo";
+import {useEffect, useRef, useState } from "react"
+import { univPostStore, UnivuUserInfo } from "../../../lib/basicUserinfo";
 import {Link, useLocation} from 'react-router-dom';
 import socket from "../../../utils/socket";
-import MaximizeContainer from "../maximizeThings/baseContainer";
-
-export default function TODOList({crntPost}) {
+export default function TODOList({crntPost_id}) {
     const toggleRef = useRef(null);
+    const [crntPost,setCrntPost] = useState({})
+    let {setUnivPost} = univPostStore();
+    const postData = univPostStore(stat=>stat.postsById[crntPost_id]);
     const crntLocation = useLocation();
     let {canCommen,canSave,totalLike,isLiked,post_id, images_url, username} = crntPost;
-    const [countArray,setCounts] = useState({
-        likeCount:null,
-        commentCount:null,
-        isCrntUserLike:false
-    })
     const index = UnivuUserInfo(stat=>stat.index);
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id)
     const [isToggle,setToggle] = useState(false);
+
+
+
+    useEffect(()=>{
+        if (Object.keys(postData || {}).length === 0) return;
+        setCrntPost(postData)
+        console.log(postData)
+    },[postData])
 
     useEffect(()=>{
         socket.emit("joinPost",post_id);
 
         const handleLike = ({post_id : pid,user_id,like})=>{
-            console.log(pid)
             if (pid === post_id) {
-                setCounts(prev=>({
-                    ...prev,
-                    likeCount:like ? prev.likeCount + 1 : prev.likeCount - 1,
-                    isCrntUserLike:like && user_id === uID
-                }))
+                setUnivPost({
+                    [post_id]:{
+                        totalLike:like ? totalLike + 1 : totalLike -1,
+                        isLiked:like && user_id === uID
+                    }
+                })
             }
         };
 
@@ -84,7 +88,6 @@ export default function TODOList({crntPost}) {
     }
 
     useEffect(()=>{
-        setCounts({...countArray,"likeCount":totalLike,"isCrntUserLike":isLiked})
         const handleClick = evnt=>{
             const el = toggleRef.current;
             if (el && !el.contains(evnt.target)) {
@@ -114,8 +117,8 @@ export default function TODOList({crntPost}) {
     return(
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
-                <i onClick={handleStar} className={`${countArray.isCrntUserLike ? "bx bxs-star" : "bx bx-star"}`}></i>
-                <span>{formatCount(countArray.likeCount)}</span>
+                <i onClick={handleStar} className={`${isLiked ? "bx bxs-star" : "bx bx-star"}`}></i>
+                <span>{formatCount(totalLike)}</span>
             </div>
             <div className="TodoInner"> <Link to={`/post/${post_id}`}
                 state={{background:crntLocation}}

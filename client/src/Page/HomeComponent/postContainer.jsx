@@ -3,15 +3,21 @@ import ImageSlider from "../Promulgation/sliderCom"
 import Caption from "./miniCom/captionCom";
 import TODOList from "./miniCom/TODOCompunent";
 import MiniDropDown from "./miniCom/threedotDropDown";
+import { univPostStore } from "../../lib/basicUserinfo";
 
-export default function PostsCon({posts,fetch}) {
+export default function PostsCon({posts}) {
     let {caption,canComment,images_url,canSave, post_id,username,avatar,post_moment,likeCount, isLiked,visibility,totalLike,id} = posts;
     const [isDropDown,setDropDown] = useState({});
+    let {postsById,setUnivPost} = univPostStore();
     const Refs = useRef({});
     const setCallback = (id)=> (el) =>{
         Refs.current[id] = el;
     }
-       
+    
+    useEffect(()=>{
+        if (!post_id || !posts || Object.keys(postsById).includes(post_id)) return;
+        setUnivPost({[post_id]:posts});
+    },[posts,post_id,postsById])
 
     useEffect(()=>{
         const handleClick = evnt=>{
@@ -46,7 +52,7 @@ export default function PostsCon({posts,fetch}) {
                                 <div className="imgContainer w-full h-7/10 flex items-center">
                                      <ImageSlider imgArray={images_url} />
                                 </div>
-                                <TODOList crntPost={{canComment,canSave, post_id,images_url,username,totalLike, isLiked, id}} />
+                                <TODOList crntPost_id={post_id} />
                             </div>
                 }
             </>

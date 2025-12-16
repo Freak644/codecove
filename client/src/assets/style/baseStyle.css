@@ -25,8 +25,8 @@
 body{
     margin: 0px; padding: 0px;
     background-color: var(--bg-color);
-    background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://i.postimg.cc/m212M1nM/local_HOst.jpg');
-    /* background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://i.postimg.cc/bNSNbS5G/kiara_Anime.jpg'); */
+    /* background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://i.postimg.cc/m212M1nM/local_HOst.jpg'); */
+    background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://i.postimg.cc/bNSNbS5G/kiara_Anime.jpg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;

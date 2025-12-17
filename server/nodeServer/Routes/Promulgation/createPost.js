@@ -82,8 +82,10 @@ export const CreatePost = async (rkv,rspo) => {
       let [rows] = await database.query(`SELECT u.username, u.avatar, p.*, COUNT(l.like_id) AS totalLike
                     FROM posts p INNER JOIN users u ON u.id = p.id LEFT JOIN likes l ON l.post_id = p.post_id WHERE
                     p.post_id = ? AND p.visibility <> 0 GROUP BY p.post_id`,[post_id]);
-      const io = getIO();
-      io.emit("new-post",rows[0])
+      if (visibility !== "false") {
+        const io = getIO();
+        io.emit("new-post",rows[0]);
+      }
       
       rspo.status(200).send({pass:"Your Post is POst"})
 

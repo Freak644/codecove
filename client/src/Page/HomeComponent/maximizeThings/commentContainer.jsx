@@ -1,13 +1,31 @@
 import React, { Suspense, useState } from "react"
+import { useParams } from "react-router-dom";
 const EmojiPicker = React.lazy(()=>import("emoji-picker-react"));
-export default function CommentEl({fun}) {
+import {toast} from 'react-toastify'
+export default function CommentEl({commentData}) {
 
 
     const [isEmoji,setEmoji] = useState(false);
     const [text,setText] = useState("");
+    const {pID} = useParams();
     
     const handleSubmit = async () => {
-        console.log(text)
+        try {
+            if(text.length<1) throw new Error("Text.length will be > 0");
+            
+            let rqst = await fetch("/myServer/writePost/addComment",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({text,post_id:commentData,pID})
+            });
+            let result = await rqst.json();
+            console.log(result)
+        } catch (error) {
+            toast.error(error.message);
+        }
+        // ] 1 { Link: 'false', Spam: 'false', Absuse: 'false', Violence: 'false' } 1
     }
     return(
         <div className="underTaker">

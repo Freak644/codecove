@@ -143,7 +143,6 @@ INSERT INTO blocked_words (word, category) VALUES
 ('useless', 'Abuse'),
 ('worthless', 'Abuse'),
 ('bastard', 'Abuse'),
-('toxic', 'Abuse'),
 ('disgusting', 'Abuse'),
 ('hate', 'Abuse'),
 ('hateful', 'Abuse');
@@ -221,12 +220,27 @@ INSERT INTO blocked_words (word, category) VALUES
 =========================
 */
 CREATE TABLE IF NOT EXISTS comments (
-  commentID INT AUTO_INCREMENT PRIMARY KEY,
+  commentID CHAR(36) PRIMARY KEY DEFAULT(UUID()),
   post_id CHAR(36) NOT NULL,
   id CHAR(36) NOT NULL,
   comment TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  INDEX idx_post_id (post_id)
+  INDEX idx_post_id (post_id),
+  INDEX idx_user_id (id)
+);
+
+CREATE TABLE IF NOT EXISTS commentLikes (
+  commentLikeID INT AUTO_INCREMENT PRIMARY KEY,
+  post_id CHAR(36) NOT NULL,
+  id CHAR(36) NOT NULL,
+  commentID CHAR(36) NOT NULL,
+  UNIQUE(post_id,commentID),
+  FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (commentID) REFERENCES comments(commentID) ON DELETE CASCADE,
+  INDEX idx_post_id (post_id),
+  INDEX idx_user_id (id),
+  INDEX idx_comment_id (commentID)
 );

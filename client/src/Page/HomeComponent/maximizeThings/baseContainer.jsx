@@ -54,7 +54,7 @@ export default function MaximizeContainer() {
                     </div>
                   {!isFull && 
                    <div className="flex-1 flex items-center justify-center border border-purple-500 h-full">
-                    <CommentEl/>
+                    <CommentEl commentData={postData.post_id} />
                     </div>}
                 </div>
             </div>

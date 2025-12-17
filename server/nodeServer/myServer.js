@@ -34,6 +34,7 @@ import { starPost } from './Routes/usersPOSTAPIs/writeThings/likePost.js';
 import { miniToggleDy } from './Routes/usersPOSTAPIs/writeThings/miniToggleAPIs.js';
 import { getNews } from './utils/getNews.js';
 import { getComment } from './Routes/usersPOSTAPIs/readThings/getCrntPostComment.js';
+import { CommentAPI } from './Routes/usersPOSTAPIs/writeThings/addComment.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -79,6 +80,7 @@ myApp.put("/PostControll/toggle",RateLimiter,checkRequest,Auth,miniToggleDy)
 myApp.get("/getPost",RateLimiter,checkRequest,Auth,GetPosts);
 myApp.get("/getNews",RateLimiter,checkRequest,Auth,getNews);
 myApp.post("/writePost/addStar",RateLimiter,checkRequest,Auth,starPost);
+myApp.post("/writePost/addComment",RateLimiter,checkRequest,Auth,CommentAPI)
 myApp.get("/readtPost/getComment",RateLimiter,checkRequest,Auth,getComment);
 
 

@@ -1,10 +1,14 @@
-import { Emoji } from "emoji-picker-react";
-import { useScroll } from "framer-motion";
 import React, { Suspense, useState } from "react"
 const EmojiPicker = React.lazy(()=>import("emoji-picker-react"));
-export default function CommentEl() {
+export default function CommentEl({fun}) {
+
+
     const [isEmoji,setEmoji] = useState(false);
     const [text,setText] = useState("");
+    
+    const handleSubmit = async () => {
+        console.log(text)
+    }
     return(
         <div className="underTaker">
             <div className="h-full w-full mainInnerCC flex items-center flex-col p-1">
@@ -15,10 +19,9 @@ export default function CommentEl() {
                     {
                         isEmoji && 
                         <Suspense fallback={null} >
-                            <div className="p-1 absolute bottom-10 w-full">
+                            <div id="emojiDiv" className="p-1 absolute left-0 bottom-10 w-full">
                                 <EmojiPicker theme="dark" onEmojiClick={(emoji)=>{
                                     setText(prev=>prev + emoji.emoji)
-                                    setEmoji(false)
                                 }
                                 } lazyLoadEmojis
                                 skinTonePickerLocation="PREVIEW"
@@ -28,14 +31,17 @@ export default function CommentEl() {
                             </div>
                         </Suspense>
                     }
-                    <i className="bx bxs-smile absolute text-2xl cursor-pointer text-white" onClick={()=>setEmoji(prev=>!prev)}></i>
-                    <textarea value={text} onChange={(evnt)=>{
-                        setText(evnt.target.value)
-                    }}  name="" id="" className="my-scroll p-1 resize-none text-skin-ptext h-full pl-10 text-[16px] border-none outline-none placeholder:pl-2 w-9/10" 
-                    placeholder="Share your thought...">
-                    </textarea>
+                    <i className={`bx bxs-${isEmoji ? "keyboard" : "smile"} absolute top-2 text-2xl cursor-pointer text-white`} onClick={()=>setEmoji(prev=>!prev)}></i>
+                    <form action="" className="h-full w-9/10">
+                        <textarea value={text} onChange={(evnt)=>{
+                                setText(evnt.target.value)
+                            }} onClick={()=>setEmoji(false)}  className="my-scroll border-none outline-none p-1 resize-none text-skin-ptext h-full pl-10 text-[16px]  placeholder:pl-2 w-full" 
+                            placeholder="Share your thought...">
+                        </textarea>
+                    </form>
                     <button
-                    className={`postCommitBtn flex items-center justify-center w-20 bg-linear-to-r from-purple-500 via-blue-500 to-pink-600
+                    onClick={handleSubmit}
+                    className={`postCommitBtn flex items-center justify-center w-20 bg-linear-to-r from-purple-500 via-blue-500 to-purple-600
                     p-1 cursor-pointer bg-size-[200%_200%] hover:bg-position-[100%_150%]  transition-all duration-700 ease-in-out overflow-hidden rounded-lg`}
                     
                     ><div className="text-md h-full w-full font-bold text-white"><span>Send</span> <i className="bx bxs-send -rotate-45"></i>

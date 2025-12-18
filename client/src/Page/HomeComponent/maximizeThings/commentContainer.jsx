@@ -21,7 +21,8 @@ export default function CommentEl({commentData}) {
                 body:JSON.stringify({text,post_id:commentData,pID})
             });
             let result = await rqst.json();
-            console.log(result)
+            if (result.err) throw new Error(result.err);
+            
         } catch (error) {
             toast.error(error.message);
         }

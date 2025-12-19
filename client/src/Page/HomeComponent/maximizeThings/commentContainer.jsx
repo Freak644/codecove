@@ -11,6 +11,8 @@ export default function CommentEl({commentData}) {
     
     const handleSubmit = async () => {
         try {
+            if (text.length > 300) throw new Error("Comment is too big");
+            
             if(text.length<1) throw new Error("Text.length will be > 0");
             
             let rqst = await fetch("/myServer/writePost/addComment",{
@@ -22,7 +24,7 @@ export default function CommentEl({commentData}) {
             });
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
-            console.log(result)
+            setText("");
         } catch (error) {
             toast.error(error.message);
         }

@@ -8,19 +8,21 @@ export default function TODOList({crntPost_id}) {
     let {setUnivPost} = univPostStore();
     const postData = univPostStore(stat=>stat.postsById[crntPost_id]);
     const crntLocation = useLocation();
-    let {canCommen,canSave,totalLike,isLiked,post_id, images_url, username} = crntPost;
+    let {canCommen,canSave,totalComment,totalLike,isLiked,post_id, images_url, username} = crntPost;
     const index = UnivuUserInfo(stat=>stat.index);
-    const uID = UnivuUserInfo(stat=>stat.userInfo?.id)
+    const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     const [isToggle,setToggle] = useState(false);
 
 
 
     useEffect(()=>{
         if (Object.keys(postData || {}).length === 0) return;
+        console.log(postData)
         setCrntPost(postData)
     },[postData])
 
     useEffect(()=>{
+        let {post_id,totalComment,totalLike} = crntPost;
         socket.emit("joinPost",post_id);
         const handleLike = ({post_id : pid,user_id,like})=>{
             if (pid === post_id) {
@@ -36,13 +38,26 @@ export default function TODOList({crntPost_id}) {
             }
         };
 
+        const handleComment = ({post_id : pid})=>{
+            console.log(pid)
+            if (pid === post_id) {
+                setUnivPost({
+                    [post_id]:{
+                        totalComment:totalComment + 1
+                    }
+                })
+            }
+        };
+
         socket.on("newLike",handleLike);
+        socket.on("newComment",handleComment);
 
         return () =>{
              socket.emit("leavePost",post_id);
              socket.off("newLike",handleLike);
+             socket.off("newComment",handleComment)
         }
-    },[post_id,totalLike])
+    },[crntPost]);
 
     function formatCount(num) {
         if(num === null || num === undefined) return;
@@ -121,11 +136,11 @@ export default function TODOList({crntPost_id}) {
                 <i onClick={handleStar} className={`${isLiked ? "bx bxs-star" : "bx bx-star"}`}></i>
                 <span>{formatCount(totalLike)}</span>
             </div>
-            <div className="TodoInner"> <Link to={`/post/${post_id}`}
+            <div className="TodoInner"> <Link className="flex items-center justify-center gap-1" to={`/post/${post_id}`}
                 state={{background:crntLocation}}
             >
                 <i className="bx bx-comment"></i>
-                <span></span>
+                <span>{formatCount(totalComment)}</span>
                 </Link>
             </div>
             <div ref={toggleRef} className="TodoInner relative">

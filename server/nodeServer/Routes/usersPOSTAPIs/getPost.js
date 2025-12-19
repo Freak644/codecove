@@ -13,16 +13,17 @@ export const GetPosts = async (rkv,rspo) => {
     console.log(limit,offset)
     try {
         let [rows] = await database.query(`SELECT 
-            p.*,
-            u.username,
-            u.avatar,
-            COALESCE(l.totalLike, 0) AS totalLike,
-            EXISTS(
-                SELECT 1 
-                FROM likes li 
-                WHERE li.id = ? 
-                AND li.post_id = p.post_id
-            ) AS isLiked
+                p.*,
+                u.username,
+                u.avatar,
+                COALESCE(l.totalLike, 0) AS totalLike,
+                COALESCE(c.totalComment, 0) AS totalComment,
+                EXISTS (
+                    SELECT 1
+                    FROM likes li
+                    WHERE li.id = ?
+                    AND li.post_id = p.post_id
+                ) AS isLiked
             FROM posts p
             INNER JOIN users u ON u.id = p.id
             LEFT JOIN (
@@ -30,6 +31,11 @@ export const GetPosts = async (rkv,rspo) => {
                 FROM likes
                 GROUP BY post_id
             ) l ON l.post_id = p.post_id
+            LEFT JOIN (
+                SELECT post_id, COUNT(*) AS totalComment
+                FROM comments
+                GROUP BY post_id
+            ) c ON c.post_id = p.post_id
             WHERE p.visibility <> 0
             ORDER BY p.created_at DESC
             LIMIT ? OFFSET ?;

@@ -22,16 +22,8 @@ export const likeSocket = (io,socket) => {
 }
 
 export const commentSocket = (io,socket) =>{
-
-    socket.on("joinPost",(postID)=>{
-        socket.join(`post-${postID}`);
-    })
-
-    socket.on("leavePost",(postID)=>{
-        socket.leave(`post-${postID}`);
-    })
-
     socket.on("addComment",(data)=>{
-        let {postID} = data;
+        let {post_id} = data;
+        io.to(`post-${post_id}`).emit("newComment",data);
     })
 }

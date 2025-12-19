@@ -16,7 +16,22 @@ export const likeSocket = (io,socket) => {
 
 
     socket.on("addLike",(data)=>{
+        let {post_id} = data;
+        io.to(`post-${post_id}`).emit("newLike",data);
+    })
+}
+
+export const commentSocket = (io,socket) =>{
+
+    socket.on("joinPost",(postID)=>{
+        socket.join(`post-${postID}`);
+    })
+
+    socket.on("leavePost",(postID)=>{
+        socket.leave(`post-${postID}`);
+    })
+
+    socket.on("addComment",(data)=>{
         let {postID} = data;
-        io.to(`post-${postID}`).emit("newLike",data);
     })
 }

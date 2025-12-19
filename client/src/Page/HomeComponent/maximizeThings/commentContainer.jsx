@@ -22,11 +22,10 @@ export default function CommentEl({commentData}) {
             });
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
-            
+            console.log(result)
         } catch (error) {
             toast.error(error.message);
         }
-        // ] 1 { Link: 'false', Spam: 'false', Absuse: 'false', Violence: 'false' } 1
     }
     return(
         <div className="underTaker">

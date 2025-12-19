@@ -17,7 +17,7 @@ const checkRequest = (rkv, rspo, next) => {
     let pendingCount = activeRequestBurst.get(crntIP) || 0;
     activeRequestBurst.set(crntIP, pendingCount + 1);
 
-    if (pendingCount >= 50) {
+    if (pendingCount >= 30) {
         blockedIPs.set(crntIP, now + 60 * 60 * 1000); 
         activeRequestBurst.delete(crntIP);
         return rspo.status(429).json({ err: "IP auto-blocked due to spam flood" });

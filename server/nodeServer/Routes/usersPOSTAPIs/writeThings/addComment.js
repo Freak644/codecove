@@ -11,13 +11,16 @@ const validateComment = async (blockCat,comment) => {
     if (hadBockedWord) return false;
     return true;
 }
+
 export const CommentAPI = async (rkv,rspo) => {
     const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || rkv.ip || "0.0.0.0";
     const crntAPI = rkv.originalUrl.split("?")[0];
+    const now = Date.now();
     let {id} = rkv.authData;
     let {post_id,text,pID} = rkv.body;
     let commentID = nanoid();
     try {
+
         if (text.length<1) return rspo.status(400).send({err:"Invalid Comment Length"});
         if (post_id !== pID) return rspo.status(401).send({err:"Something went wrong"});
         let [rows] = await database.query("SELECT visibility, id, blockCat FROM posts WHERE post_id = ? AND canComment = 1 LIMIT 1",[post_id]);

@@ -18,18 +18,19 @@ export default function TODOList({crntPost_id}) {
     useEffect(()=>{
         if (Object.keys(postData || {}).length === 0) return;
         setCrntPost(postData)
-        console.log(postData)
     },[postData])
 
     useEffect(()=>{
         socket.emit("joinPost",post_id);
-
         const handleLike = ({post_id : pid,user_id,like})=>{
             if (pid === post_id) {
                 setUnivPost({
                     [post_id]:{
-                        totalLike:like ? totalLike + 1 : totalLike -1,
-                        isLiked:like && user_id === uID
+                        totalLike:like ? totalLike + 1 : totalLike - 1,
+                        
+                        ...(user_id === uID && {
+                            isLiked:like
+                        })
                     }
                 })
             }
@@ -41,7 +42,7 @@ export default function TODOList({crntPost_id}) {
              socket.emit("leavePost",post_id);
              socket.off("newLike",handleLike);
         }
-    },[post_id])
+    },[post_id,totalLike])
 
     function formatCount(num) {
         if(num === null || num === undefined) return;

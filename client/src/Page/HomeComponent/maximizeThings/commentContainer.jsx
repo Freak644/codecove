@@ -3,8 +3,6 @@ import { useParams } from "react-router-dom";
 const EmojiPicker = React.lazy(()=>import("emoji-picker-react"));
 import {toast} from 'react-toastify'
 export default function CommentEl({commentData}) {
-
-
     const [isEmoji,setEmoji] = useState(false);
     const [text,setText] = useState("");
     const {pID} = useParams();
@@ -20,7 +18,7 @@ export default function CommentEl({commentData}) {
                 headers:{
                     "Content-Type":"application/json"
                 },
-                body:JSON.stringify({text,post_id:commentData,pID})
+                body:JSON.stringify({text,post_id:commentData[0].post_id,pID})
             });
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
@@ -30,10 +28,40 @@ export default function CommentEl({commentData}) {
         }
     }
     return(
-        <div className="underTaker">
+        <>
+       {  commentData?.length < 1 ? <div className="miniLoader h-20! w-20! rounded-full"></div> :
+         <div className="underTaker">
             <div className="h-full w-full mainInnerCC flex items-center flex-col p-1">
-                <div className="virtuoso border border-amber-200 h-9/10 w-full flex items-center justify-center flex-wrap gap-4">
+                <div className="virtuoso border border-amber-200 h-9/10 w-full flex items-center justify-center flex-wrap gap-4 my-scroll">
+                    {
+                        commentData.map((cmnt)=>{
+                            let {username,avatar,commentID,comment} = cmnt;
+                            return(
+                                <div key={commentID} className="h-auto w-full text-skin-text flex items-center justify-center">
+                                    <div className="layerOne flex items-center justify-start w-full h-auto">
+                                        <div className="userAndComment flex items-start gap-2 w-[93%] p-1 border border-amber-500">
+  
+                                            <img
+                                                src={`/myServer${avatar}`}
+                                                className="h-10 w-10 rounded-full shrink-0"
+                                                alt=""
+                                            />
 
+                                            <div className="flex flex-col gap-2">
+                                                <span className="font-semibold">{username}</span>
+                                                <p className="text-wrap wrap-break-words">{comment}</p>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="likeCommentd flex items-center justify-center w-[7%]">
+                                            <i className="bx bx-heart"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
                 </div>
                 <div className="enterComment w-full h-1/10 border-red-500 border relative p-2 flex items-center flex-row">
                     {
@@ -68,6 +96,7 @@ export default function CommentEl({commentData}) {
                      </div></button>
                 </div>
             </div>
-        </div>
+        </div>}
+        </>
     )
 }

@@ -81,7 +81,7 @@ myApp.get("/getPost",RateLimiter,checkRequest,Auth,GetPosts);
 myApp.get("/getNews",RateLimiter,checkRequest,Auth,getNews);
 myApp.post("/writePost/addStar",RateLimiter,checkRequest,Auth,starPost);
 myApp.post("/writePost/addComment",RateLimiter,checkRequest,Auth,CommentAPI)
-myApp.get("/readtPost/getComment",RateLimiter,checkRequest,Auth,getComment);
+myApp.get("/readPost/getComment",RateLimiter,checkRequest,Auth,getComment);
 
 
 

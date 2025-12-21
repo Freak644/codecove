@@ -55,7 +55,7 @@ export default function CommentEl({commentData}) {
                                         </div>
 
                                         <div className="likeCommentd flex items-center justify-center w-[7%]">
-                                            <i className="bx bx-heart"></i>
+                                            <i className="bx bx-heart cursor-pointer text-gray-500"></i>
                                         </div>
                                     </div>
                                 </div>

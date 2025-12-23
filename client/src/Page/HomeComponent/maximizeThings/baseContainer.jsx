@@ -41,10 +41,10 @@ export default function MaximizeContainer() {
 
 
     useEffect(()=>{
-        let btn = document.getElementById("closeBtn");
+    
         const handleClick = evnt=>{
             const el = containerRef.current;
-            if (el && !el.contains(evnt.target)  && !btn.contains(evnt.target)) {
+            if (el && !el.contains(evnt.target)) {
                 navi(-1);
             }
         }
@@ -56,19 +56,19 @@ export default function MaximizeContainer() {
     return(
             <div className="underTaker">
                 <div className="closeBtn flex items-center justify-center p-3 rounded-full text-2xl font-bold text-skin-ptext absolute top-5 right-2">
-                    <button className="cursor-pointer" id="closeBtn"
-                        onClick={()=>navi(-1)}
+                    <button className="cursor-pointer" 
+                    
                     >
                         X
                     </button>
                 </div>
-                <div ref={containerRef} className="h-9/10 w-5/6 rounded-lg p-2 flex items-center justify-center flex-wrap border border-white bg-black/50 backdrop-blur-lg">
-                    <div className="flex-1 flex items-center justify-center border border-green-500 h-full relative transition-all duration-200">
-                    <i className={`bx bx${isFull ? "-exit-" : "-"}fullscreen absolute bottom-4 right-5 z-20 text-skin-ptext text-2xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>setFull(prev=>!prev)}></i>
-                    <ImageSlider imgArray={crntPost.images_url || []} />
+                <div ref={containerRef} className="h-9/10 w-5/6 rounded-lg p-2 flex items-center justify-center flex-wrap bg-black/50 backdrop-blur-lg">
+                    <div className="flex-1  flex items-center justify-center h-full relative transition-all duration-200">
+                        <i className={`bx bx${isFull ? "-exit-" : "-"}fullscreen absolute bottom-4 right-5 z-20 text-skin-ptext text-2xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>setFull(prev=>!prev)}></i>
+                        <ImageSlider imgArray={crntPost.images_url || []} />
                     </div>
                   {!isFull && 
-                   <div className="flex-1 flex items-center justify-center border border-purple-500 h-full">
+                   <div className="flex-1 transition-all duration-200 flex items-center justify-center h-full">
                     <CommentEl commentData={commentData} />
                     </div>}
                 </div>

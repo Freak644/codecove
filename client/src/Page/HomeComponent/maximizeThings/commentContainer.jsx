@@ -32,14 +32,14 @@ export default function CommentEl({commentData}) {
        {  commentData?.length < 1 ? <div className="miniLoader h-20! w-20! rounded-full"></div> :
          <div className="underTaker">
             <div className="h-full w-full mainInnerCC flex items-center flex-col p-1">
-                <div className="virtuoso border border-amber-200 h-9/10 w-full flex items-center justify-center flex-wrap gap-4 my-scroll">
+                <div className="virtuoso h-9/10 w-full flex items-center justify-center flex-wrap gap-4 my-scroll">
                     {
                         commentData.map((cmnt)=>{
                             let {username,avatar,commentID,comment} = cmnt;
                             return(
-                                <div key={commentID} className="h-auto w-full text-skin-text flex items-center justify-center">
+                                <div key={commentID} className="h-auto w-full text-skin-text flex items-center flex-col">
                                     <div className="layerOne flex items-center justify-start w-full h-auto">
-                                        <div className="userAndComment flex items-start gap-2 w-[93%] p-1 border border-amber-500">
+                                        <div className="userAndComment flex items-start gap-2 w-[93%] p-2">
   
                                             <img
                                                 src={`/myServer${avatar}`}
@@ -58,12 +58,17 @@ export default function CommentEl({commentData}) {
                                             <i className="bx bx-heart cursor-pointer text-gray-500"></i>
                                         </div>
                                     </div>
+                                    <div className="layerTwo flex items-center w-full pl-10  justify-start text-gray-500 text-[13px] gap-4">
+                                        <i>like</i>
+                                        <i>10s ago</i>
+                                        <i>Report</i>
+                                    </div>
                                 </div>
                             )
                         })
                     }
                 </div>
-                <div className="enterComment w-full h-1/10 border-red-500 border relative p-2 flex items-center flex-row">
+                <div className="enterComment w-full h-1/10 relative p-2 flex items-center flex-row">
                     {
                         isEmoji && 
                         <Suspense fallback={null} >

@@ -17,7 +17,6 @@ export default function TODOList({crntPost_id}) {
 
     useEffect(()=>{
         if (Object.keys(postData || {}).length === 0) return;
-        console.log(postData)
         setCrntPost(postData)
     },[postData])
 

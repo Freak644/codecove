@@ -25,6 +25,7 @@ export default function MaximizeContainer() {
             if (result.commentrows.length < 20) {
                 setOver(true);
             }
+            console.log(result.commentrows)
         } catch (error) {
             console.log(error.message);
         }

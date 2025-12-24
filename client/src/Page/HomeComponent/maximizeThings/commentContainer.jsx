@@ -27,6 +27,24 @@ export default function CommentEl({commentData}) {
             toast.error(error.message);
         }
     }
+
+    const handleLike = async (commentID,post_id) => {
+        console.log("i am in fun",commentID,post_id)
+        if (!commentID || !post_id) return;
+        try {
+            let rqst = await fetch("/myServer/writePost/addLikeComment",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({commentID,post_id})
+            })
+            let result = await rqst.json();
+            console.log(result)
+        } catch (error) {
+            toast.error(error.message);
+        }
+    }
     return(
         <>
        {  commentData?.length < 1 ? <div className="miniLoader h-20! w-20! rounded-full"></div> :
@@ -35,7 +53,7 @@ export default function CommentEl({commentData}) {
                 <div className="virtuoso h-9/10 w-full flex items-center justify-center flex-wrap gap-4 my-scroll">
                     {
                         commentData.map((cmnt)=>{
-                            let {username,avatar,commentID,comment} = cmnt;
+                            let {username,avatar,commentID,comment,post_id,isLiked,totalLike} = cmnt;
                             return(
                                 <div key={commentID} className="h-auto w-full text-skin-text flex items-center flex-col">
                                     <div className="layerOne flex items-center justify-start w-full h-auto">
@@ -55,11 +73,11 @@ export default function CommentEl({commentData}) {
                                         </div>
 
                                         <div className="likeCommentd flex items-center justify-center w-[7%]">
-                                            <i className="bx bx-heart cursor-pointer text-gray-500"></i>
+                                            <i onClick={()=>handleLike(commentID,post_id)} className={isLiked ? "bx bxs-heart text-rose-500 cursor-pointe" : "bx bx-heart cursor-pointer text-gray-500"}></i>
                                         </div>
                                     </div>
                                     <div className="layerTwo flex items-center w-full pl-10  justify-start text-gray-500 text-[13px] gap-4">
-                                        <i>like</i>
+                                        <i>{`${totalLike} like`}</i>
                                         <i>10s ago</i>
                                         <i>Report</i>
                                     </div>

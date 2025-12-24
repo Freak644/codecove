@@ -33,7 +33,27 @@ export const CommentAPI = async (rkv,rspo) => {
         await database.query("INSERT INTO comments (commentID, post_id, id, comment) VALUES (?,?,?,?);",
             [commentID,post_id,id,text]
         )
-        const [commentRows] = await database.query("SELECT u.username,u.avatar, c.* FROM comments c INNER JOIN users u ON c.id = u.id WHERE c.commentID = ?",[commentID]);
+        const [commentRows] = await database.query(`SELECT 
+                        u.username,
+                        u.avatar,
+                        c.*,
+                        COALESCE(cl.totalLike, 0) AS totalLike,
+                        EXISTS (
+                            SELECT 1
+                            FROM commentLikes li
+                            WHERE li.id = ?
+                            AND li.commentID = c.commentID
+                        ) AS isLiked
+                    FROM comments c
+                    INNER JOIN users u 
+                        ON u.id = c.id
+                    LEFT JOIN (
+                        SELECT commentID, COUNT(*) AS totalLike
+                        FROM commentLikes
+                        GROUP BY commentID
+                    ) cl 
+                        ON cl.commentID = c.commentID
+                    WHERE c.commentID = ?;`,[id,commentID]);
         const io = getIO();
         io.emit("newComment",commentRows[0]);
         rspo.status(200).send({pass:""});

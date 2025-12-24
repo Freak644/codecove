@@ -35,12 +35,19 @@ export const likeComment = async (rkv,rspo) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {commentID,post_id} = rkv.body;
-
     try {
         let io = getIO();
         let [rows] = await database.query("SELECT visibility FROM posts WHERE post_id = ?",[post_id]);
-        if (rows[0].visibility) return rspo.status(422).send({err:"The post is private"});
-        let [row] = await database.query("SELECT comment")
+        if (!rows[0].visibility) return rspo.status(422).send({err:"The post is private"});
+        let [row] = await database.query("SELECT commentID FROM commentLikes WHERE commentID = ? AND id = ?",[commentID,id]);
+        if (row.length === 0) {
+            console.log("adding")
+            await database.query("INSERT INTO commentLikes (commentID, post_id, id) VALUES (?,?,?)",[commentID,post_id,id]);
+        } else {
+            console.log("removing")
+            await database.query("DELETE FROM commentLikes WHERE commentID = ? AND post_id = ? AND id = ?",[commentID,post_id,id]);
+        }
+        rspo.status(200).send({test:"done"});
     } catch (error) {
         console.log(error.message);
         rspo.status(500).send({err:"Server side error"});

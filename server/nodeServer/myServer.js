@@ -30,7 +30,7 @@ import postSocket, { likeSocket } from './socketIO/postSocket.js';
 import { EmailRateLimiter, RateLimiter, usernameCheckLimiter, verifyEmailLiter } from './Controllers/rateLimits.js';
 import { checkRequest, startCleaner } from './Controllers/progressTracker.js';
 import { resetPassword, verification } from './Routes/Secure/userVerification/verificationAPI.js';
-import { starPost } from './Routes/usersPOSTAPIs/writeThings/likePost.js';
+import { likeComment, starPost } from './Routes/usersPOSTAPIs/writeThings/likePost.js';
 import { miniToggleDy } from './Routes/usersPOSTAPIs/writeThings/miniToggleAPIs.js';
 import { getNews } from './utils/getNews.js';
 import { getComment } from './Routes/usersPOSTAPIs/readThings/getCrntPostComment.js';
@@ -82,6 +82,7 @@ myApp.get("/getNews",RateLimiter,checkRequest,Auth,getNews);
 myApp.post("/writePost/addStar",RateLimiter,checkRequest,Auth,starPost);
 myApp.post("/writePost/addComment",RateLimiter,checkRequest,Auth,CommentAPI)
 myApp.get("/readPost/getComment",RateLimiter,checkRequest,Auth,getComment);
+myApp.post("/writePost/addLikeComment",RateLimiter,checkRequest,Auth,likeComment);
 
 
 

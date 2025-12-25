@@ -38,7 +38,6 @@ export default function TODOList({crntPost_id}) {
         };
 
         const handleComment = ({post_id : pid})=>{
-            console.log(pid)
             if (pid === post_id) {
                 setUnivPost({
                     [post_id]:{
@@ -54,7 +53,7 @@ export default function TODOList({crntPost_id}) {
         return () =>{
              socket.emit("leavePost",post_id);
              socket.off("newLike",handleLike);
-             socket.off("newComment",handleComment)
+             socket.off("newComment",handleComment);
         }
     },[crntPost]);
 

@@ -41,11 +41,11 @@ export const likeComment = async (rkv,rspo) => {
         if (!rows[0].visibility) return rspo.status(422).send({err:"The post is private"});
         let [row] = await database.query("SELECT commentID FROM commentLikes WHERE commentID = ? AND id = ?",[commentID,id]);
         if (row.length === 0) {
-            console.log("adding")
             await database.query("INSERT INTO commentLikes (commentID, post_id, id) VALUES (?,?,?)",[commentID,post_id,id]);
+            io.emit("newCommentLike",{post_id,commentID,user_id:id,like:true});
         } else {
-            console.log("removing")
             await database.query("DELETE FROM commentLikes WHERE commentID = ? AND post_id = ? AND id = ?",[commentID,post_id,id]);
+            io.emit("newCommentLike",{post_id,commentID,user_id:id,like:false});
         }
         rspo.status(200).send({test:"done"});
     } catch (error) {

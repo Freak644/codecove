@@ -17,11 +17,10 @@ export const CommentAPI = async (rkv,rspo) => {
     const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || rkv.ip || "0.0.0.0";
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
-    let {post_id,text,pID} = rkv.body;
+    let {text,pID:post_id} = rkv.body;
     let commentID = nanoid();
     try {
         if (text.length<1 || text.length > 300) return rspo.status(400).send({err:"Invalid Comment Length"});
-        if (post_id !== pID) return rspo.status(401).send({err:"Something went wrong"});
         let [rows] = await database.query("SELECT visibility, id, blockCat FROM posts WHERE post_id = ? AND canComment = 1 LIMIT 1",[post_id]);
         if (rows.length === 0 ) return rspo.status(401).send({err:"HeHeHeHeHeHeeeeeeeee......"});
         let {visibility,blockCat} = rows[0];
@@ -33,6 +32,7 @@ export const CommentAPI = async (rkv,rspo) => {
         await database.query("INSERT INTO comments (commentID, post_id, id, comment) VALUES (?,?,?,?);",
             [commentID,post_id,id,text]
         )
+        const io = getIO();
         const [commentRows] = await database.query(`SELECT 
                         u.username,
                         u.avatar,
@@ -54,7 +54,6 @@ export const CommentAPI = async (rkv,rspo) => {
                     ) cl 
                         ON cl.commentID = c.commentID
                     WHERE c.commentID = ?;`,[id,commentID]);
-        const io = getIO();
         io.emit("newComment",commentRows[0]);
         rspo.status(200).send({pass:""});
     } catch (error) {

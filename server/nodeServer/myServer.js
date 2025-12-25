@@ -26,7 +26,7 @@ import { changePassSecure } from './Routes/Secure/SecureAccount.js';
 import { forgotPass } from './Routes/Secure/forgotPassMail.js';
 import { CreatePost } from './Routes/Promulgation/createPost.js';
 import { GetPosts } from './Routes/usersPOSTAPIs/getPost.js';
-import postSocket, { likeSocket } from './socketIO/postSocket.js';
+import postSocket, { commentLikeSocket, likeSocket } from './socketIO/postSocket.js';
 import { EmailRateLimiter, RateLimiter, usernameCheckLimiter, verifyEmailLiter } from './Controllers/rateLimits.js';
 import { checkRequest, startCleaner } from './Controllers/progressTracker.js';
 import { resetPassword, verification } from './Routes/Secure/userVerification/verificationAPI.js';
@@ -96,6 +96,7 @@ io.on("connection", (socket) => {
 
     postSocket(io,socket);
     likeSocket(io,socket);
+    commentLikeSocket(io,socket);
 
     socket.on("disconnect", () => {
         console.log("User leave", socket.id);

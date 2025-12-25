@@ -1,13 +1,96 @@
-import React, { Suspense, useState } from "react"
+import React, { Suspense, useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 const EmojiPicker = React.lazy(()=>import("emoji-picker-react"));
 import {toast} from 'react-toastify'
-export default function CommentEl({commentData}) {
+import socket from "../../../utils/socket";
+import { UnivuUserInfo } from "../../../lib/basicUserinfo";
+export default function CommentEl() {
     const [isEmoji,setEmoji] = useState(false);
     const [text,setText] = useState("");
     const {pID} = useParams();
+    const [offset,setOffset] = useState(0);
+    const [commentData,setComment] = useState([]);
+    const [isOver,setOver] = useState(false);
+    const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
+    
+    const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+    const timeAgoIntl = (dateString) => {
+        const diff = (new Date(dateString) - new Date()) / 1000;
+
+        if (Math.abs(diff) < 60)
+            return rtf.format(Math.round(diff), "second");
+
+        if (Math.abs(diff) < 3600)
+            return rtf.format(Math.round(diff / 60), "minute");
+
+        if (Math.abs(diff) < 86400)
+            return rtf.format(Math.round(diff / 3600), "hour");
+
+        return rtf.format(Math.round(diff / 86400), "day");
+    }
+
+    const getCrntPost = async (postID) => {
+        if (isOver) return;
+        try {
+            let rqst = await fetch(`/myServer/readPost/getComment?limit=20&offset=${offset}&post_id=${postID}`);
+            let result = await rqst.json();
+            if (result.err) throw new Error(result.err);
+            setComment(result.commentrows);
+            setOffset(prev=>prev+20)
+            if (result.commentrows.length < 20) {
+                setOver(true);
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    useEffect(()=>{
+        if (commentData.length > 1) return;
+        getCrntPost(pID)
+    },[pID]);
+
+    useEffect(()=>{
+        if (commentData.length<1) return;
+        let {post_id} = commentData[0];
+        console.log(commentData[0])
+        socket.emit("joinPost",post_id);
+        const handleLikes = ({commentID: CId,post_id:pid, user_id,like}) =>{
+            console.log(user_id,like)
+            if (post_id === pid) {
+                setComment(prev =>
+                    prev.map(obj => {
+                        if (CId !== obj.commentID) return obj;
+                        return {
+                        ...obj,
+                        totalLike: like ? obj.totalLike ++ : obj.totalLike --,
+                        isLiked: user_id === uID ? like : obj.isLiked
+                        };
+                    })
+                );
+            }
+        };
+
+        const handleComments = (newData) => {
+            let {post_id:pID,id} = newData;
+            if (pID === post_id && id === uID) {
+                setComment(prev=>[newData,...prev]);
+            }
+        }
+
+        socket.on("newCommentLike",handleLikes);
+        socket.on("newComment",handleComments);
+        return () => {
+            socket.emit("leavePost",post_id);
+            socket.off("newComment",handleComments);
+            socket.off("newCommentLike",handleLikes);
+        }
+    },[commentData])
+
     
     const handleSubmit = async () => {
+        setEmoji(false)
         try {
             if (text.length > 300) throw new Error("Comment is too big");
             
@@ -18,7 +101,7 @@ export default function CommentEl({commentData}) {
                 headers:{
                     "Content-Type":"application/json"
                 },
-                body:JSON.stringify({text,post_id:commentData[0].post_id,pID})
+                body:JSON.stringify({text,pID})
             });
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
@@ -29,7 +112,6 @@ export default function CommentEl({commentData}) {
     }
 
     const handleLike = async (commentID,post_id) => {
-        console.log("i am in fun",commentID,post_id)
         if (!commentID || !post_id) return;
         try {
             let rqst = await fetch("/myServer/writePost/addLikeComment",{
@@ -46,14 +128,13 @@ export default function CommentEl({commentData}) {
         }
     }
     return(
-        <>
-       {  commentData?.length < 1 ? <div className="miniLoader h-20! w-20! rounded-full"></div> :
          <div className="underTaker">
             <div className="h-full w-full mainInnerCC flex items-center flex-col p-1">
                 <div className="virtuoso h-9/10 w-full flex items-center justify-center flex-wrap gap-4 my-scroll">
                     {
-                        commentData.map((cmnt)=>{
-                            let {username,avatar,commentID,comment,post_id,isLiked,totalLike} = cmnt;
+                       commentData?.length < 1 ? <div className="miniLoader h-20! w-20! rounded-full"></div> : 
+                        commentData?.map((cmnt)=>{
+                            let {username,avatar,commentID,comment,post_id,isLiked,totalLike,created_at} = cmnt;
                             return(
                                 <div key={commentID} className="h-auto w-full text-skin-text flex items-center flex-col">
                                     <div className="layerOne flex items-center justify-start w-full h-auto">
@@ -78,7 +159,7 @@ export default function CommentEl({commentData}) {
                                     </div>
                                     <div className="layerTwo flex items-center w-full pl-10  justify-start text-gray-500 text-[13px] gap-4">
                                         <i>{`${totalLike} like`}</i>
-                                        <i>10s ago</i>
+                                        <i>{timeAgoIntl(created_at)}</i>
                                         <i>Report</i>
                                     </div>
                                 </div>
@@ -119,7 +200,6 @@ export default function CommentEl({commentData}) {
                      </div></button>
                 </div>
             </div>
-        </div>}
-        </>
+        </div>
     )
 }

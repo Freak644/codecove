@@ -1,9 +1,10 @@
-import React, { Suspense, useEffect, useState } from "react"
+import React, { Suspense, useEffect, useRef, useState } from "react"
 import { useParams } from "react-router-dom";
 const EmojiPicker = React.lazy(()=>import("emoji-picker-react"));
 import {toast} from 'react-toastify'
 import socket from "../../../utils/socket";
 import { UnivuUserInfo } from "../../../lib/basicUserinfo";
+import { Loader } from "../../../lib/loader";
 export default function CommentEl() {
     const [isEmoji,setEmoji] = useState(false);
     const [text,setText] = useState("");
@@ -11,7 +12,9 @@ export default function CommentEl() {
     const [offset,setOffset] = useState(0);
     const [commentData,setComment] = useState([]);
     const [isOver,setOver] = useState(false);
+    const observerRef = useRef(null);
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
+    let  {isTrue,toggleLoader}  = Loader();
     
     const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
@@ -30,31 +33,54 @@ export default function CommentEl() {
         return rtf.format(Math.round(diff / 86400), "day");
     }
 
-    const getCrntPost = async (postID) => {
+    const getComments = async (postID) => {
         if (isOver) return;
+        if(isTrue) return;
+        toggleLoader(true);
         try {
             let rqst = await fetch(`/myServer/readPost/getComment?limit=20&offset=${offset}&post_id=${postID}`);
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
             setComment(result.commentrows);
+            setOffset(20)
+            if (result.commentrows.length < 20) {
+                setOver(true);
+            }
+        } catch (error) {
+            console.log(error.message);
+        }finally{
+            toggleLoader(false);
+        }
+    }
+    const getMoreComments = async (postID) => {
+        if (isOver) return;
+        if(isTrue) return;
+        toggleLoader(true);
+        try {
+            let rqst = await fetch(`/myServer/readPost/getComment?limit=20&offset=${offset}&post_id=${postID}`);
+            let result = await rqst.json();
+            if (result.err) throw new Error(result.err);
+            setComment(prev=>[...prev,...result.commentrows]);
             setOffset(prev=>prev+20)
             if (result.commentrows.length < 20) {
                 setOver(true);
             }
         } catch (error) {
             console.log(error.message);
+        }finally{
+            toggleLoader(false);
         }
     }
-
+    
     useEffect(()=>{
         if (commentData.length > 1) return;
-        getCrntPost(pID)
+        getComments(pID)
     },[pID]);
 
     useEffect(()=>{
         if (commentData.length<1) return;
         let {post_id} = commentData[0];
-        console.log(commentData[0])
+        console.log(commentData.length,offset)
         socket.emit("joinPost",post_id);
         const handleLikes = ({commentID: CId,post_id:pid, user_id,like}) =>{
             console.log(user_id,like)
@@ -122,21 +148,41 @@ export default function CommentEl() {
                 body:JSON.stringify({commentID,post_id})
             })
             let result = await rqst.json();
-            console.log(result)
+            if (result.err) throw new Error(result.err);
+            
         } catch (error) {
             toast.error(error.message);
         }
     }
+
+    const secondLastRef = (node) => {
+        if (observerRef.current) observerRef.current.disconnect();
+
+        observerRef.current = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    getMoreComments(pID);
+                }
+            },
+            {
+                root: null,
+                threshold: 0.1,
+            }
+        );
+
+        if (node) observerRef.current.observe(node);
+    };
     return(
          <div className="underTaker">
             <div className="h-full w-full mainInnerCC flex items-center flex-col p-1">
                 <div className="virtuoso h-9/10 w-full flex items-center justify-center flex-wrap gap-4 my-scroll">
                     {
                        commentData?.length < 1 ? <div className="miniLoader h-20! w-20! rounded-full"></div> : 
-                        commentData?.map((cmnt)=>{
+                        commentData?.map((cmnt,index)=>{
                             let {username,avatar,commentID,comment,post_id,isLiked,totalLike,created_at} = cmnt;
+                            let isSecondLast = index === commentData.length-2;
                             return(
-                                <div key={commentID} className="h-auto w-full text-skin-text flex items-center flex-col">
+                                <div key={commentID} ref={isSecondLast ? secondLastRef : null} className="h-auto w-full text-skin-text flex items-center flex-col">
                                     <div className="layerOne flex items-center justify-start w-full h-auto">
                                         <div className="userAndComment flex items-start gap-2 w-[93%] p-2">
   
@@ -154,7 +200,7 @@ export default function CommentEl() {
                                         </div>
 
                                         <div className="likeCommentd flex items-center justify-center w-[7%]">
-                                            <i onClick={()=>handleLike(commentID,post_id)} className={isLiked ? "bx bxs-heart text-rose-500 cursor-pointe" : "bx bx-heart cursor-pointer text-gray-500"}></i>
+                                            <i onClick={()=>handleLike(commentID,post_id)} className={isLiked ? "bx bxs-heart text-rose-500 cursor-pointer" : "bx bx-heart cursor-pointer text-gray-500"}></i>
                                         </div>
                                     </div>
                                     <div className="layerTwo flex items-center w-full pl-10  justify-start text-gray-500 text-[13px] gap-4">

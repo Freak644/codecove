@@ -44,12 +44,3 @@ export const getComment = async (rkv,rspo) => {
         completeRequest(crntIP,crntAPI);
     }
 }
-// {
-// [0]     username: 'ms_3221',
-// [0]     avatar: 'Images/Avtar/1765270948429-avatar.png',
-// [0]     commentID: '5pQOf3J5rlNm5fNVTitOW',
-// [0]     post_id: 'dLpuQkAVdp9lwckHWESCH',
-// [0]     id: 'c9ba95e5-d4dd-11f0-beb0-74d4dd5e0da5',
-// [0]     comment: 'Overloard',
-// [0]     created_at: 2025-12-19T16:18:52.000Z
-// [0]   },

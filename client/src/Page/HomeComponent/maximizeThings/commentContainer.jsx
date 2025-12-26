@@ -41,9 +41,11 @@ export default function CommentEl() {
             let rqst = await fetch(`/myServer/readPost/getComment?limit=20&offset=${offset}&post_id=${postID}`);
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
-            setComment(result.commentrows);
+            if (result.commentrows.length>1) {
+                setComment(result.commentrows);
+            }
             setOffset(20)
-            if (result.commentrows.length < 20) {
+            if (result.commentrows?.length < 20) {
                 setOver(true);
             }
         } catch (error) {
@@ -66,25 +68,24 @@ export default function CommentEl() {
                 setOver(true);
             }
         } catch (error) {
-            console.log(error.message);
+            toast.warning(error.message);
         }finally{
             toggleLoader(false);
         }
     }
     
     useEffect(()=>{
-        if (commentData.length > 1) return;
+        if (commentData?.length > 1) return;
         getComments(pID)
     },[pID]);
 
     useEffect(()=>{
         if (commentData.length<1) return;
-        let {post_id} = commentData[0];
         console.log(commentData.length,offset)
-        socket.emit("joinPost",post_id);
+        socket.emit("joinPost",pID);
         const handleLikes = ({commentID: CId,post_id:pid, user_id,like}) =>{
             console.log(user_id,like)
-            if (post_id === pid) {
+            if (pID === pid) {
                 setComment(prev =>
                     prev.map(obj => {
                         if (CId !== obj.commentID) return obj;
@@ -99,8 +100,8 @@ export default function CommentEl() {
         };
 
         const handleComments = (newData) => {
-            let {post_id:pID,id} = newData;
-            if (pID === post_id && id === uID) {
+            let {post_id:pid,id} = newData;
+            if (pID === pid && id === uID) {
                 setComment(prev=>[newData,...prev]);
             }
         }
@@ -108,7 +109,7 @@ export default function CommentEl() {
         socket.on("newCommentLike",handleLikes);
         socket.on("newComment",handleComments);
         return () => {
-            socket.emit("leavePost",post_id);
+            socket.emit("leavePost",pID);
             socket.off("newComment",handleComments);
             socket.off("newCommentLike",handleLikes);
         }

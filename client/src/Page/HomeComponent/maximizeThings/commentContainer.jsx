@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useRef, useState } from "react"
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 const EmojiPicker = React.lazy(()=>import("emoji-picker-react"));
 import {toast} from 'react-toastify'
 import socket from "../../../utils/socket";
@@ -12,7 +12,19 @@ export default function CommentEl() {
     const [offset,setOffset] = useState(0);
     const [commentData,setComment] = useState([]);
     const [isOver,setOver] = useState(false);
-    const [isWidth,setWidth] = useState(false);
+    const [Ty,setTy] = useState(0);
+    const [isDragging,setDrag] = useState(false);
+    const MAX_DRAG = 300;
+
+    const progress = Math.min(Ty / MAX_DRAG, 1);
+
+
+    const startY = useRef(0);
+    const currentY = useRef(0);
+    const sheetRef = useRef(null);
+
+    const navi = useNavigate();
+
     const observerRef = useRef(null);
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     let  {isTrue,toggleLoader}  = Loader();
@@ -175,13 +187,67 @@ export default function CommentEl() {
         if (node) observerRef.current.observe(node);
     };
 
-    useEffect(()=>{
+    const onStart = (evnt)=> {
+        const isAtTop = sheetRef.current?.scrollTop === 0;
+        if (!isAtTop) return;
 
-    },[])
+        const y = evnt.touches ? evnt.touches[0].clientY : evnt.clientY;
+        startY.current = y;
+        if (y>0) {
+            setDrag(true);
+        }
+        
+    }
+
+    const onDraggin = (evnt) => {
+            if (!isDragging) return;
+
+            const y = evnt.touches ? evnt.touches[0].clientY : evnt.clientY;
+            let diff = y - startY.current;
+
+            if (diff <= 0) return;
+
+            // 👇 resistance after 120px
+            if (diff > 120) {
+                diff = 120 + (diff - 120) * 0.35;
+            }
+
+            setTy(Math.min(diff, MAX_DRAG));
+    };
+
+
+    const onExit = (evnt) => {
+        setDrag(false);
+        if (Ty > 100) {
+            navi(-1);
+        }
+    }
+
     return(
          <div className="underTaker">
-            <div className="h-full w-full mainInnerCC flex items-center flex-col p-1">
-                    
+            <div onTouchStart={onStart}
+            onMouseDown={onStart}
+            onTouchMove={onDraggin}
+            onMouseMove={onDraggin}
+            onMouseUp={onExit}
+            onTouchEnd={onExit}
+             ref={sheetRef}
+             
+             style={{
+                        transform: `
+                            translateY(${Ty}px)
+                            scale(${1 - progress * 0.03})
+                        `,
+                        boxShadow: `0 ${10 + progress * 20}px ${
+                            40 + progress * 40
+                        }px rgba(0,0,0,${0.25 + progress * 0.25})`,
+                        transition: isDragging ? "none" : "transform 0s ease, box-shadow 0.3s ease"
+                    }}
+
+             
+             
+             className={`h-full w-full mainInnerCC flex items-center flex-col p-1 touch-none`}>
+                    <div className="h-1.5 w-16 bg-skin-login absolute top-0 rounded-md md:hidden" />
                 <div className="virtuoso relative h-9/10 w-full flex items-center justify-center flex-wrap gap-4 my-scroll">
                     {
                        commentData?.length < 1 ? <div className="text-skin-ptext">Be the first commenter...💬</div> : 

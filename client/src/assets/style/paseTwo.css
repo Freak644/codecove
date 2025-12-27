@@ -400,6 +400,7 @@ select{
 
 @media (max-width:751px) {
   .commentAndImage{
+    padding-top: 20px;
     height: 100% !important; width: 100% !important;
     .ImageCon{
       display: none !important;

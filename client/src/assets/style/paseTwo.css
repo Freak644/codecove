@@ -370,15 +370,24 @@ select{
   padding: 4px;
 }
 
-@media (max-width: 1020px) {
+@media (max-width: 1022px) {
   .rightHome{
     display: none;
   }
+
+  .commentAndImage{
+    height: 95% !important;
+    width: 97% !important;
+  }
+  .closeBtn{
+    top: -10px !important;
+  }
 }
+
 
 .thonePrincess{
   position: absolute;
-  height: calc(var(--vh) * 100) !important;
+  height: 100dvh !important;
   width: 100vw;
   display: flex;
   align-items: center;
@@ -387,5 +396,14 @@ select{
   backdrop-filter: blur(10px);
   z-index: 21;
   -webkit-backdrop-filter: blur(10px);
+}
+
+@media (max-width:751px) {
+  .commentAndImage{
+    height: 100% !important; width: 100% !important;
+    .ImageCon{
+      display: none !important;
+    }
+  }
 }
 /* code block container */

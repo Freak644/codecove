@@ -12,6 +12,7 @@ export default function CommentEl() {
     const [offset,setOffset] = useState(0);
     const [commentData,setComment] = useState([]);
     const [isOver,setOver] = useState(false);
+    const [isWidth,setWidth] = useState(false);
     const observerRef = useRef(null);
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     let  {isTrue,toggleLoader}  = Loader();
@@ -173,12 +174,17 @@ export default function CommentEl() {
 
         if (node) observerRef.current.observe(node);
     };
+
+    useEffect(()=>{
+
+    },[])
     return(
          <div className="underTaker">
             <div className="h-full w-full mainInnerCC flex items-center flex-col p-1">
-                <div className="virtuoso h-9/10 w-full flex items-center justify-center flex-wrap gap-4 my-scroll">
+                    
+                <div className="virtuoso relative h-9/10 w-full flex items-center justify-center flex-wrap gap-4 my-scroll">
                     {
-                       commentData?.length < 1 ? <div className="miniLoader h-20! w-20! rounded-full"></div> : 
+                       commentData?.length < 1 ? <div className="text-skin-ptext">Be the first commenter...💬</div> : 
                         commentData?.map((cmnt,index)=>{
                             let {username,avatar,commentID,comment,post_id,isLiked,totalLike,created_at} = cmnt;
                             let isSecondLast = index === commentData.length-2;
@@ -214,37 +220,39 @@ export default function CommentEl() {
                         })
                     }
                 </div>
-                <div className="enterComment w-full h-1/10 relative p-2 flex items-center flex-row">
-                    {
-                        isEmoji && 
-                        <Suspense fallback={null} >
-                            <div id="emojiDiv" className="p-1 absolute left-0 bottom-10 w-full">
-                                <EmojiPicker theme="dark" onEmojiClick={(emoji)=>{
-                                    setText(prev=>prev + emoji.emoji)
-                                }
-                                } lazyLoadEmojis
-                                skinTonePickerLocation="PREVIEW"
-                                previewConfig={{showPreview:false}} >
+                <div className="w-full h-1/10 absolute bottom-0">
+                    <div className="enterComment w-full h-full relative p-2 flex items-center flex-row">
+                        {
+                            isEmoji && 
+                            <Suspense fallback={null} >
+                                <div id="emojiDiv" className="p-1 absolute left-0 bottom-10 w-full">
+                                    <EmojiPicker theme="dark" onEmojiClick={(emoji)=>{
+                                        setText(prev=>prev + emoji.emoji)
+                                    }
+                                    } lazyLoadEmojis
+                                    skinTonePickerLocation="PREVIEW"
+                                    previewConfig={{showPreview:false}} >
 
-                                </EmojiPicker>
-                            </div>
-                        </Suspense>
-                    }
-                    <i className={`bx bxs-${isEmoji ? "keyboard" : "smile"} absolute top-2 text-2xl cursor-pointer text-white`} onClick={()=>setEmoji(prev=>!prev)}></i>
-                    <form action="" className="h-full w-9/10">
-                        <textarea value={text} onChange={(evnt)=>{
-                                setText(evnt.target.value)
-                            }} onClick={()=>setEmoji(false)}  className="my-scroll border-none outline-none p-1 resize-none text-skin-ptext h-full pl-10 text-[16px]  placeholder:pl-2 w-full" 
-                            placeholder="Share your thought...">
-                        </textarea>
-                    </form>
-                    <button
-                    onClick={handleSubmit}
-                    className={`postCommitBtn flex items-center justify-center w-20 bg-linear-to-r from-purple-500 via-blue-500 to-purple-600
-                    p-1 cursor-pointer bg-size-[200%_200%] hover:bg-position-[100%_150%]  transition-all duration-700 ease-in-out overflow-hidden rounded-lg`}
-                    
-                    ><div className="text-md h-full w-full font-bold text-white"><span>Send</span> <i className="bx bxs-send -rotate-45"></i>
-                     </div></button>
+                                    </EmojiPicker>
+                                </div>
+                            </Suspense>
+                        }
+                        <i className={`bx bxs-${isEmoji ? "keyboard" : "smile"} absolute top-4 text-2xl cursor-pointer text-white`} onClick={()=>setEmoji(prev=>!prev)}></i>
+                        <form action="" className="h-full w-9/10">
+                            <textarea value={text} onChange={(evnt)=>{
+                                    setText(evnt.target.value)
+                                }} onClick={()=>setEmoji(false)}  className="my-scroll border-none outline-none p-1 resize-none text-skin-ptext h-full pl-10 text-[16px]  placeholder:pl-2 placeholder:pt-2 w-full" 
+                                placeholder="Share your thought...">
+                            </textarea>
+                        </form>
+                        <button
+                        onClick={handleSubmit}
+                        className={`postCommitBtn flex items-center justify-center w-22 bg-linear-to-r from-purple-500 via-blue-500 to-purple-600
+                        p-1 cursor-pointer bg-size-[200%_200%] hover:bg-position-[100%_150%]  transition-all duration-700 ease-in-out overflow-hidden rounded-lg`}
+                        
+                        ><div className="text-md h-full w-full font-bold text-white"><span>Send</span> <i className="bx bxs-send -rotate-45"></i>
+                        </div></button>
+                    </div>
                 </div>
             </div>
         </div>

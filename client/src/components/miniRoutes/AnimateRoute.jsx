@@ -4,6 +4,7 @@ import HomePage from '../../Page/HomeComponent/HomePage'
 import BaseCreate from '../../Page/Promulgation/baseCreateCom';
 import NotFound from '../../Page/BaseComponent/404NotFound';
 import MaximizeContainer from '../../Page/HomeComponent/maximizeThings/baseContainer';
+import MainLapCom from '../../Page/myLab/mainLap';
 export default function AnimateRoute({location}) {
     const noAnimetArray = ['/']
     const background = location.state?.background;
@@ -15,8 +16,7 @@ export default function AnimateRoute({location}) {
                     <Routes location={background || location}>
                         <Route path='/' element={<HomePage/>} />
                         <Route path='/Commit' element={<BaseCreate/>} />
-                        <Route path='/myLab' element={<div><input type="text" className='border border-amber-200' /></div>} />
-
+                        <Route path='/myLab' element={<MainLapCom/>} />
 
                         <Route path='*' element={<NotFound/>} />
                     </Routes>

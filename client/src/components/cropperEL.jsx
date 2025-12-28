@@ -69,8 +69,8 @@ const createCropedIMG = async () => {
         setURL(null); 
         setPorc(false);
       },
-      "image/png",
-      0.8
+      "image/webp",
+      0.7
     );
   } catch (err) {
     console.error("Crop failed:", err);
@@ -90,7 +90,7 @@ const createCropedIMG = async () => {
   };
 
   return (
-    <div className="mainCroperDiv absolute h-screen w-screen z-20 flex items-center justify-center bg-black/80 backdrop-blur-md">
+    <div className="mainCroperDiv absolute h-screen w-screen z-30 flex items-center justify-center bg-black/80 backdrop-blur-md">
       <div className="innerDiv relative h-96 w-96 bg-white/10 backdrop-blur-lg rounded-lg overflow-hidden shadow px-3">
         {/* Close button */}
         {/* <button

@@ -47,12 +47,12 @@ myApp.use("/Images",express.static('Images'));
 const storage = multer.memoryStorage();
 // File filter (only jpg, jpeg, png)
 const fileFilter = (req, file, cb) => {
-    const allowed = /jpg|jpeg|png/;
+    const allowed = /avif|webp/;
     const ext = file.mimetype.split("/")[1];
     if (allowed.test(ext)) {
         cb(null, true);
     } else {
-        cb(new Error("Only .jpg, .jpeg, .png are allowed"), false);
+        cb(new Error("Only avif, .webp are allowed"), false);
     }
 };
 // Multer middleware

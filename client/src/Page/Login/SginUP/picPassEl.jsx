@@ -36,9 +36,11 @@ export default function CpassEL() {
             return
         }
         setURL(URL.createObjectURL(myFIle))
+
+        e.target.value = null
     }
     useEffect(()=>{
-      //  console.log(finalIMG)
+        console.log(finalIMG)
         if (finalIMG) {
             setimg(prev=>({
                 ...prev,
@@ -194,7 +196,7 @@ export default function CpassEL() {
             })
             let result = await rkv.json();
             if (result.err) {
-                console.log(result.details)
+                console.log(result.err)
                 throw new Error(result.err)
             }
             toast.success(result.pass)

@@ -244,3 +244,20 @@ CREATE TABLE IF NOT EXISTS commentLikes (
   INDEX idx_user_id (id),
   INDEX idx_comment_id (commentID)
 );
+
+CREATE TABLE IF NOT EXISTS achievements (
+  achievement_id CHAR(36) PRIMARY KEY DEFAULT(UUID()),
+  achiveementURL VARCHAR(256) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+
+CREATE TABLE IF NOT EXISTS achievementsRecords (
+  ar_id CHAR(36) PRIMARY KEY,
+  id CHAR(36) NOT NULL,
+  achievement_id CHAR(36) NOT NULL,
+  progress INT DEFAULT 0,
+  get_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_user_id (id),
+  INDEX idx_achievement_id (achievement_id)
+);

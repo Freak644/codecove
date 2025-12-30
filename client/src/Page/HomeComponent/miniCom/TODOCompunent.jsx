@@ -146,7 +146,7 @@ export default function TODOList({crntPost_id}) {
                     images_url.length === 1 ? downloadAll() : setToggle(prev=>!prev);
                 }}></i>
                 {
-                    isToggle &&<div className="flex items-center flex-col absolute bottom-1 z-50 p-2 border border-skin-ptext/30 bg-black/5 backdrop-blur-lg rounded-2xl"> 
+                    isToggle && <div className="flex items-center flex-col absolute bottom-1 z-50 p-2 border border-skin-ptext/30 bg-black/5 backdrop-blur-lg rounded-2xl"> 
                         <p onClick={()=>downloadAll(true)} className="border-b border-gray-500/50 p-2 text-nowrap">Only this one</p>
                         <p onClick={()=>downloadAll(false)} className="border-b border-gray-500/50 p-2 text-nowrap">Download All {images_url.length}</p>
                     </div>

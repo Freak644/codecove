@@ -407,4 +407,26 @@ select{
     }
   }
 }
-/* code block container */
+
+.innerHalfLab{
+  flex: 1;
+  border: 2px solid rgb(6, 206, 6);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.rotate180deg{
+  animation: rotate180cog .7s forwards;
+}
+
+@keyframes rotate180cog {
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(180deg);
+  }
+}

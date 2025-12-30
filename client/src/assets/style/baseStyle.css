@@ -27,7 +27,7 @@ body{
     background-color: var(--bg-color);
     /* background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://i.postimg.cc/m212M1nM/local_HOst.jpg'); */
     /* background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://i.postimg.cc/bNSNbS5G/kiara_Anime.jpg'); */
-    background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://res.cloudinary.com/dcq0dge7f/image/upload/v1766861453/wallpaperflare.com_wallpaper_eqctuo.jpg');
+    background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://res.cloudinary.com/dcq0dge7f/image/upload/v1767022477/BeutywithPNO_clew2l.jpg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -791,6 +791,7 @@ form>h1>span{
     top: 50px;
     z-index: 10 !important;
     transition: all .7s;
+    
 }
 @media (max-width:1024px) {
     .routeContainer{

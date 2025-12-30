@@ -22,7 +22,7 @@ export default function Header() {
         if (window.innerWidth > 1023 && crntLocation.pathname !== "/") {
             setHome(false)
         }
-    },[])
+    },[crntLocation])
     const handleLogout = async () => {
         let rqst = await fetch("/myServer/Logout",{
             headers:{

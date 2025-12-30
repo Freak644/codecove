@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import { UnivuUserInfo } from "../../../lib/basicUserinfo";
+import {useParams} from "react-router-dom"
+export default function MyProfile({validation}) {
+    const [isAnim,setAnim] = useState(false);
+    const [crntData,setData] = useState([]);
+    const {username} = useParams();
 
-export default function MyProfile() {
-    const [isAnim,setAnim] = useState(false)
-    const myData = UnivuUserInfo(stat=>stat.userInfo);
+    const getData = async () => {
+        
+    }
     useEffect(()=>{
-        console.log(myData);
+        console.log(username);
     },[])
 
     return(
         <div className="underTaker">
-            <div className="myLabProfileDiv h-full w-auto flex items-center flex-col gap-2.5">
-                <img src={`/myServer${myData?.avatar}`} className="border border-skin-ptext/50 p-1 h-15 w-15 rounded-full" alt="" />
-                <p className="text-skin-text font-medium text-lg">{myData?.username}</p>
-
-                <i className={`bx bx-cog font-thin absolute right-5 top-1.5 text-skin-text text-2xl cursor-pointer hover:scale-95 transition-all duration-700 ${isAnim && "rotate180deg"}`} onClick={()=>setAnim(prev=>!prev)}></i>
+            <div className="myLabProfileDiv h-full w-4/5 border border-amber-400 flex items-center flex-col gap-2.5 rounded-lg">
+                
             </div>
         </div>
     )

@@ -21,7 +21,10 @@ CREATE TABLE IF NOT EXISTS users (
     avatar VARCHAR(255) DEFAULT '/Images/Avtar/default.png',
     bio VARCHAR(100) DEFAULT 'Stay! Ahead, Follow the Revolution',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    acStatus BOOLEAN DEFAULT 1
+    acStatus BOOLEAN DEFAULT 1,
+    follower_count BIGINT DEFAULT 0,
+    following_count BIGINT DEFAULT 0,
+    private_ac BOOLEAN DEFAULT 0
 );
 
 /*

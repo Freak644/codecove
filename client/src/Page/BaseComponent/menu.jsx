@@ -9,7 +9,7 @@ import {getColor} from '../../utils/getGradnt.js';
 export default function MenuEL(params) {
     let gradColor = getColor();
     const [currentTab,setTab] = useState('Home');
-    const [logoimg,setlogo] = useState("");
+    const [userinfo,setUserInfo] = useState({});
     const [isDD,setDD] = useState(false);
     const [isHidden,setHidden] = useState(false)
     const {setInfo} = UnivuUserInfo();
@@ -30,7 +30,7 @@ export default function MenuEL(params) {
                     sessionStorage.clear();
                     location.reload()
                 }
-                setlogo(result.userinfo[0].avatar)
+                setUserInfo(result.userinfo[0])
                 setInfo(result.userinfo[0])
         } catch (error) {
             toast.error(error.message);
@@ -90,7 +90,7 @@ export default function MenuEL(params) {
 
     return(
         <>
-        {logoimg.length < 2 ? <MenuSkeleton/> : <div className="menuDiv transition-all duration-700 relative left-0 border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
+        {userinfo.avatar?.length < 2 ? <MenuSkeleton/> : <div className="menuDiv transition-all duration-700 relative left-0 border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
         flex items-center flex-col gap-5
         bg-blue-800/10 backdrop-blur-lg z-20
         "> <p id='secBtn' onClick={()=>setHidden(prev=>!prev)} className="h-8 w-8 flex logotxt items-center justify-center text-2xl cursor-pointer border-skin-ptext/30 border rounded-full absolute top-3 -right-2"><i className="bx bx-menu text-skin-ptext"></i></p>
@@ -149,11 +149,11 @@ export default function MenuEL(params) {
                     </li>
 
                     <li>
-                        <Link to="/myLab">
+                        <Link to={`/myLab/${userinfo?.username}`}>
                         <div className='imgDiv h-8 w-8 md:h-9 md:w-9 border rounded-full flex items-center justify-center'>
                             <img
                             className='h-full w-full'
-                            src={logoimg ? `/myServer/${logoimg}` : "https://i.postimg.cc/7ZTJzX5X/icon.png"}
+                            src={userinfo.avatar?.length > 5 ? `/myServer/${userinfo.avatar}` : "https://i.postimg.cc/7ZTJzX5X/icon.png"}
                             alt=""
                             />
                         </div>

@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom"
 import { UnivuUserInfo } from "../../lib/basicUserinfo";
 import { toggleABMenu } from "../../lib/toggleTheme";
 import {getColor} from '../../utils/getGradnt';
-import LoaderEL from "../../assets/animations/loadingBar";
 export default function WindowHerder() {
     let location = useLocation();
     let [pathName,setPath] = useState("");
@@ -31,7 +30,7 @@ export default function WindowHerder() {
     return(
         <>
         <div className="spaceLoaderDiv w-screen absolute top-0 -z-1">
-        <LoaderEL/>
+        <div className=" h-1 absolute w-full bg-linear-to-l from-purple-600 via-pink-600 to-yellow-500 ]"></div>
         </div>
         <div className="mainheaderCom relative w-screen h-[50px] flex items-center justify-between p-1 
             border-amber-200 border-b border-b-gray-500 bg-blue-800/10 backdrop-blur-lg z-10

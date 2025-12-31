@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import {useParams} from "react-router-dom"
 import { toast } from "react-toastify";
+import { UnivuUserInfo } from "../../../lib/basicUserinfo";
+import {Loader} from '../../../lib/loader'
 export default function MyProfile({validation}) {
-    const [isAnim,setAnim] = useState(false);
+    const [isEditing,setEdit] = useState(false);
     const [crntData,setData] = useState({});
+    const [bio,setBio] = useState(crntData?.bio);
     const {username} = useParams();
+    let {toggleLoader} = Loader()
+    const uID = UnivuUserInfo(stat=>stat?.id);
 
     const getData = async (username) => {
         try {
@@ -19,7 +24,21 @@ export default function MyProfile({validation}) {
     }
     useEffect(()=>{
         getData(username)
-    },[username])
+    },[username]);
+
+    function formatCount(num) {
+        if(num === null || num === undefined) return;
+        if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "b";
+        if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, "") + "m";
+        if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "k";
+        return num.toString();
+    }
+
+    const submitBio = async () => {
+        if (!isEditing) return;
+        toggleLoader(true)
+        console.log("here")
+    }
 
     return(
         <div className="underTaker">
@@ -33,10 +52,11 @@ export default function MyProfile({validation}) {
                         <div className="flex items-center w-full flex-row">
                             <img src={`/myServer${crntData?.avatar}`} alt="DP" className="h-10 w-10 rounded-full" />
                             <p className="ml-1.5 font-bold text-lg">{crntData?.username}</p>
+                            <span className="ml-[25%]">Follower {formatCount(crntData?.follower_count)}</span><span className="ml-[10%]">Following {formatCount(crntData?.following_count)}</span>
                         </div>
-                        <p className="h-1/2 w-full border border-blue-600 flex items-center text-wrap
+                        <p className="h-1/2 w-full flex items-center text-wrap
                         text-skin-ptext text-sm">
-                            {crntData?.bio}
+                            {isEditing ? <textarea name="" value={bio || crntData?.bio} onChange={(evnt)=>setBio(evnt.target.value)} className="resize-none text-lg h-10 w-full text-skin-text" id="BioCap"></textarea> : crntData?.bio} <i onClick={()=>{setEdit(prev=>!prev),submitBio()}} className={`ml-2 bx ${isEditing ? "bxs-save" : "bxs-edit-alt"} cursor-pointer`}></i>
                         </p>
                     </div>
                 </div>

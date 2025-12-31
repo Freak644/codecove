@@ -5,7 +5,7 @@ export default function NotFound() {
   const navi = useNavigate();
 
   return (
-    <div className="main404 h-screen w-screen flex items-center justify-center bg-[#05080f] relative overflow-hidden">
+    <div className="main404 h-dvh w-dvw flex items-center justify-center bg-[#05080f] relative overflow-hidden">
       {/* subtle blurred glow background */}
       <div className="absolute inset-0 bg-linear-to-br from-cyan-900/20 via-transparent to-blue-900/20 blur-3xl" />
 

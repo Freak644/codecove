@@ -140,11 +140,9 @@ body{
     
 }
 .menuDiv{
-    overflow: hidden;
     ul{
         padding: 10px;
         transition: all .3s ease;
-        padding-left: 20%;
         li{
             transition: all .6s ease-out;
             display: flex;

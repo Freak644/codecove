@@ -277,9 +277,9 @@ export default function CommentEl() {
                                         </div>
                                     </div>
                                     <div className="layerTwo flex items-center w-full pl-10  justify-start text-gray-500 text-[13px] gap-4">
-                                        <i>{`${totalLike} like`}</i>
-                                        <i>{timeAgoIntl(created_at)}</i>
-                                        <i>Report</i>
+                                        <i className="bx">{`${totalLike} like`}</i>
+                                        <i className="bx">{timeAgoIntl(created_at)}</i>
+                                        <i className="bx bxs-report">Report</i>
                                     </div>
                                 </div>
                             )

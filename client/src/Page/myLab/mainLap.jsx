@@ -13,11 +13,11 @@ export default function MainLapCom() {
                 <div className="otherHalf h-full w-full flex items-center flex-row">
                     <div className="innerHalfLab">
                          <div className="profileDivD w-full h-2/3">
-                            <MyProfile validation={validation}/>
+                            <MyProfile validation={setValidation}/>
                          </div>
                     </div>
                     <div className="innerHalfLab">
-
+                        
                     </div>
                 </div>
             </div>

@@ -144,7 +144,7 @@ export default function MenuEL(params) {
                     <li>
                         <Link to="/Notifications">
                         <i className={`bx ${currentTab === 'Notification' ? "bxs" : "bx"}-bell text-skin-text`}></i>
-                        <span>Notifications</span>
+                        <span>Alert</span>
                         </Link>
                     </li>
 

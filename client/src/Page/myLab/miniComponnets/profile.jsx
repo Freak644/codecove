@@ -21,6 +21,10 @@ export default function MyProfile({validation}) {
             setData(result.userInfo);
             setBio(result.userInfo.bio);
         } catch (error) {
+            validation(prev=>({
+                ...prev,
+                isUser:false,
+            }))
             toast.error(error.message);
         }
     }
@@ -41,7 +45,7 @@ export default function MyProfile({validation}) {
         if (!isEditing) return;
         toggleLoader(true)
         try {
-            if (bio.length > 50) throw new Error("Bio.len will not be > 50");
+            if (bio.length > 100) throw new Error("Bio.len will not be > 50");
             
             let rqst = await fetch("/myServer/writeUser/changeBio",{
                 method:"PUT",
@@ -62,22 +66,29 @@ export default function MyProfile({validation}) {
 
     return(
         <div className="underTaker">
-           <div className="myLabProfileDiv h-full w-4/5 border  flex items-center justify-center gap-2.5 rounded-lg relative ">
-                <div className="h-full w-110 rounded-lg 
-                flex items-center flex-col p-2.5 bg-linear-to-br
+           <div className="myLabProfileDiv h-full w-[440px] border  flex items-center justify-center gap-2.5 rounded-lg relative ">
+                <div className="h-full w-full rounded-lg 
+                flex items-start flex-col p-2.5 bg-linear-to-br
                 from-blue-600/20 via-transparent to-transparent border border-cyan-500/20 
-                hover:bg-size-[200%_200%]
+                hover:bg-size-[200%_200%] gap-2.5 relative
                 shadow-[0_0_10px_rgba(0,255,255,0.1)] backdrop-blur-md">
-                    <div className="userNameImg flex items-center flex-col p-2.5 h-1/4 w-full border border-amber-300 relative text-skin-text">
-                        <div className="flex items-center w-full flex-row">
+                    <div className="userNameImg flex items-center flex-col p-2.5 h-1/6 w-full relative text-skin-text gap-2.5">
+                        <div className="flex items-center w-full flex-row gap-2.5">
                             <img src={`/myServer${crntData?.avatar}`} alt="DP" className="h-10 w-10 rounded-full" />
                             <p className="ml-1.5 font-bold text-lg">{crntData?.username}</p>
-                            <span className="ml-[20%] font-bold">Follower {formatCount(crntData?.follower_count)}</span><span className="ml-[10%] font-bold">Following {formatCount(crntData?.following_count)}</span>
+                            <span className="ml-15 font-bold">Follower {formatCount(crntData?.follower_count)}</span><span className=" font-bold">Following {formatCount(crntData?.following_count)}</span>
                         </div>
-                        <p className="h-1/2 w-full flex items-center text-wrap
-                        text-skin-ptext text-sm">
+                    </div>
+
+                    <p className="h-auto w-3/5 border border-amber-400 flex items-start  text-wrap
+                        text-skin-ptext text-md p-2">
                             {isEditing ? <textarea name="" value={bio} onChange={(evnt)=>setBio(evnt.target.value)} className="resize-none pl-1.5 text-lg h-10 w-full text-skin-text" id="BioCap"></textarea> : crntData?.bio} {crntData?.id === uID && <i onClick={()=>{setEdit(prev=>!prev),submitBio()}} className={`ml-2 bx ${isEditing ? "bxs-save" : "bxs-edit-alt"} cursor-pointer`}></i>}
-                        </p>
+                    </p>
+
+                    <div className="followFollowing h-1/12 w-3/5 flex items-center flex-row gap-4">
+                        <i className='bx bxs-info-circle text-2xl text-gray-600'></i>
+                        <button className="cursor-pointer hover:text-blue-500 hover:bg-amber-700/50 outline-none border-none bg-blue-700/90 pl-2 pr-2 rounded-lg text-skin-text p-1.5">Follow</button>
+                        <button className="cursor-pointer hover:text-blue-500  outline-2 outline-gray-600/50 rounded-lg border-none text-skin-text p-1.5">Connect</button>
                     </div>
                 </div>
             </div>

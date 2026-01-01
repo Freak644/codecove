@@ -96,7 +96,7 @@ export default function HonePage() {
                 </div>            
                 <p>{userInfo.username || "username"}</p>
                 <div
-                className='ml-5 mainSwitchBtn flex items-center outline-0 border-0 text-blue-500 text-[14px]
+                className='ml-5 mainSwitchBtn flex items-center outline-0 border-0 text-blue-600 font-bold text-[14px]
                 cursor-pointer hover:text-blue-400 relative'>Switch
                  <div className="miniDropSwitch">
                   <button onClick={()=>toggleMiniTab("charts")}>📈</button>

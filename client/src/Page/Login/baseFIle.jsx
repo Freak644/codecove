@@ -27,7 +27,7 @@ export default function LoginEL() {
          }
     }
     return(
-        <div className="underTaker">
+        <div className="underTaker font-bold">
 
             {isVerifying && <div className="baseverifyDiv flex items-center justify-center">
                 <VerifyEl/>

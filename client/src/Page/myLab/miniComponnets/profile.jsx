@@ -90,10 +90,13 @@ export default function MyProfile({validation}) {
                     {isEditing && <i onClick={()=>setEdit(false)} className="bx bx-x cursor-pointer ml-2 text-2xl text-skin-text"></i>}
 
                     <div className="followFollowing h-1/12 w-3/5 flex items-center flex-row gap-4 relative">
-                        <i className='bx bxs-info-circle text-2xl activaterIcon cursor-help  text-gray-600'></i>
-                        <p id="elementEl" className="backdrop-blur-lg bg-blue-900/40 font-bold">Stranger's ?</p>
-                        {crntData?.id === uID ? < button onClick={()=>setEdit(true)} className="cursor-pointer hover:text-blue-500  outline-2 outline-gray-600/50 rounded-lg border-none hover:outline-blue-600/20 text-skin-text p-1.5">Edit Profile</button> : <button className="cursor-pointer hover:text-blue-500 hover:bg-white-700/5 outline-none border-none bg-blue-700/90 pl-2 pr-2 rounded-lg text-skin-text p-1.5">Follow</button>}
+                        {crntData?.id !== uID  && <><i className='bx bxs-info-circle text-2xl activaterIcon cursor-help  text-gray-600'></i>
+                        <p id="elementEl" className="backdrop-blur-lg bg-blue-900/40 font-bold">Stranger's ?</p></> }
+                        {crntData?.id === uID ? < button onClick={()=>setEdit(true)} className="cursor-pointer hover:text-blue-500 w-full  outline-2 outline-gray-600/50 rounded-lg border-none hover:outline-blue-600/20 text-skin-text p-1.5">Edit Profile</button> : <button className="cursor-pointer hover:text-blue-500 hover:bg-white-700/5 outline-none border-none bg-blue-700/90 pl-2 pr-2 rounded-lg text-skin-text p-1.5">Follow</button>}
                         {crntData?.id !== uID &&  <button className="cursor-pointer hover:text-blue-500  outline-2 outline-gray-600/50 rounded-lg border-none text-skin-text p-1.5">Connect <i className="bx bxs-inbox"></i></button>}
+                    </div>
+                    <div className="mainAchiveHolder border border-blue-600 w-2/5 h-4/13 p-1.5 absolute top-1/5 right-0">
+                            
                     </div>
                 </div>
             </div>

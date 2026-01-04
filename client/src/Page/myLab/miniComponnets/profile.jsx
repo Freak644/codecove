@@ -3,13 +3,12 @@ import {useParams} from "react-router-dom"
 import { toast } from "react-toastify";
 import { UnivuUserInfo } from "../../../lib/basicUserinfo";
 import {Loader} from '../../../lib/loader'
-import { use } from "react";
 export default function MyProfile({validation}) {
     const [isEditing,setEdit] = useState(false);
     const [crntData,setData] = useState({});
     const [bio,setBio] = useState("");
     const {username} = useParams();
-    let {toggleLoader} = Loader()
+    let {toggleLoader} = Loader();
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
 
     const getData = async (username) => {
@@ -64,6 +63,9 @@ export default function MyProfile({validation}) {
         }
     }
 
+    const followUser = async () => {
+        
+    }
     return(
         <div className="underTaker">
            <div className="myLabProfileDiv h-full w-[440px] border  flex items-center justify-center gap-2.5 rounded-lg relative ">
@@ -73,8 +75,9 @@ export default function MyProfile({validation}) {
                 hover:bg-size-[200%_200%] gap-2.5 relative
                 shadow-[0_0_10px_rgba(0,255,255,0.1)] backdrop-blur-md">
                     <div className="userNameImg flex items-center flex-col p-2.5 h-1/6 w-full relative text-skin-text gap-2.5">
-                        <div className="flex items-center w-full flex-row gap-2.5">
+                        <div className="flex items-center w-full flex-row gap-2.5 relative">
                             <img src={`/myServer${crntData?.avatar}`} alt="DP" className="h-10 w-10 rounded-full" />
+                            {isEditing && <i className="bx bx-edit absolute text-2xl text-white bg-gray-500/10 backdrop-blur-sm cursor-pointer p-2.5 rounded-full"></i>}
                             <p className="ml-1.5 font-bold text-lg">{crntData?.username}</p>
                             <span className="ml-15 font-bold">Follower {formatCount(crntData?.follower_count)}</span><span className=" font-bold">Following {formatCount(crntData?.following_count)}</span>
                         </div>
@@ -82,13 +85,15 @@ export default function MyProfile({validation}) {
 
                     <p className="h-auto w-3/5 border border-amber-400 flex items-start  text-wrap
                         text-skin-ptext text-md p-2">
-                            {isEditing ? <textarea name="" value={bio} onChange={(evnt)=>setBio(evnt.target.value)} className="resize-none pl-1.5 text-lg h-10 w-full text-skin-text" id="BioCap"></textarea> : crntData?.bio} {crntData?.id === uID && <i onClick={()=>{setEdit(prev=>!prev),submitBio()}} className={`ml-2 bx ${isEditing ? "bxs-save" : "bxs-edit-alt"} cursor-pointer`}></i>}
+                            {isEditing ? <textarea name="" value={bio} onChange={(evnt)=>setBio(evnt.target.value)} className="resize-none my-scroll pl-1.5 text-lg h-10 w-full text-skin-text" id="BioCap"></textarea> : crntData?.bio} {isEditing && <i onClick={()=>{setEdit(prev=>!prev),submitBio()}} className={`ml-2 bx bxs-save cursor-pointer`}></i>}
                     </p>
+                    {isEditing && <i onClick={()=>setEdit(false)} className="bx bx-x cursor-pointer ml-2 text-2xl text-skin-text"></i>}
 
-                    <div className="followFollowing h-1/12 w-3/5 flex items-center flex-row gap-4">
-                        <i className='bx bxs-info-circle text-2xl text-gray-600'></i>
-                        <button className="cursor-pointer hover:text-blue-500 hover:bg-amber-700/50 outline-none border-none bg-blue-700/90 pl-2 pr-2 rounded-lg text-skin-text p-1.5">Follow</button>
-                        <button className="cursor-pointer hover:text-blue-500  outline-2 outline-gray-600/50 rounded-lg border-none text-skin-text p-1.5">Connect</button>
+                    <div className="followFollowing h-1/12 w-3/5 flex items-center flex-row gap-4 relative">
+                        <i className='bx bxs-info-circle text-2xl activaterIcon cursor-help  text-gray-600'></i>
+                        <p id="elementEl" className="backdrop-blur-lg bg-blue-900/40 font-bold">Stranger's ?</p>
+                        {crntData?.id === uID ? < button onClick={()=>setEdit(true)} className="cursor-pointer hover:text-blue-500  outline-2 outline-gray-600/50 rounded-lg border-none hover:outline-blue-600/20 text-skin-text p-1.5">Edit Profile</button> : <button className="cursor-pointer hover:text-blue-500 hover:bg-white-700/5 outline-none border-none bg-blue-700/90 pl-2 pr-2 rounded-lg text-skin-text p-1.5">Follow</button>}
+                        {crntData?.id !== uID &&  <button className="cursor-pointer hover:text-blue-500  outline-2 outline-gray-600/50 rounded-lg border-none text-skin-text p-1.5">Connect <i className="bx bxs-inbox"></i></button>}
                     </div>
                 </div>
             </div>

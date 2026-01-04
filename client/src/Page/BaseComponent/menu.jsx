@@ -150,9 +150,9 @@ export default function MenuEL(params) {
 
                     <li>
                         <Link to={`/myLab/${userinfo?.username}`}>
-                        <div className='imgDiv h-8 w-8 md:h-9 md:w-9 border rounded-full flex items-center justify-center'>
+                        <div className='h-8 w-8 md:h-9 md:w-9 border rounded-full flex items-center justify-center'>
                             <img
-                            className='h-full w-full'
+                            className='h-full rounded-full w-full'
                             src={userinfo.avatar?.length > 5 ? `/myServer/${userinfo.avatar}` : "https://i.postimg.cc/7ZTJzX5X/icon.png"}
                             alt=""
                             />

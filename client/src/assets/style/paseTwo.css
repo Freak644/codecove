@@ -447,3 +447,22 @@ select{
     background-position: 200% 200%;
   }
 }
+
+#elementEl {
+  position: absolute;
+  color: var(--p-text-color);
+  visibility: hidden;
+  padding: 8px;
+  border: 1px solid rgba(0, 213, 255,0.34);
+  border-radius: 10px;
+  left: -30%;
+  opacity: .3;
+  pointer-events: none;
+  transition: all .5s;
+}
+
+.activaterIcon:hover + #elementEl{
+  visibility: visible;
+  left: 0;
+  opacity: 1;
+}

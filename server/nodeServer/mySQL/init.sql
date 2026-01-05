@@ -264,3 +264,11 @@ CREATE TABLE IF NOT EXISTS achievementsRecords (
   INDEX idx_user_id (id),
   INDEX idx_achievement_id (achievement_id)
 );
+
+CREATE TABLE IF NOT EXISTS follows (
+  follower_id CHAR(36) NOT NULL,
+  following_id CHAR(36) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (follower_id,following_id),
+  INDEX idx
+)

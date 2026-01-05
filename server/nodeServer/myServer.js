@@ -36,7 +36,7 @@ import { getNews } from './utils/getNews.js';
 import { getComment } from './Routes/usersPOSTAPIs/readThings/getCrntPostComment.js';
 import { CommentAPI } from './Routes/usersPOSTAPIs/writeThings/addComment.js';
 import { getUserinfo } from './Routes/getUsers/prifileAPIs.js';
-import { changeBio } from './Routes/getUsers/userInfoApis.js';
+import { changeBio } from './Routes/editProfileAPIs/userInfoApis.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -87,6 +87,7 @@ myApp.get("/readPost/getComment",RateLimiter,checkRequest,Auth,getComment);
 myApp.post("/writePost/addLikeComment",RateLimiter,checkRequest,Auth,likeComment);
 myApp.get("/readUser/getUserInfo",RateLimiter,checkRequest,Auth,getUserinfo);
 myApp.put("/writeUser/changeBio",RateLimiter,checkRequest,Auth,changeBio);
+myApp.post("/writeUser/follow",RateLimiter,checkRequest,Auth,)
 
 
 

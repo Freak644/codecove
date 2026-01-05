@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom"
 import { toast } from "react-toastify";
 import { UnivuUserInfo } from "../../../lib/basicUserinfo";
 import {Loader} from '../../../lib/loader'
+import MainAchievments from "./abElement";
 export default function MyProfile({validation}) {
     const [isEditing,setEdit] = useState(false);
     const [crntData,setData] = useState({});
@@ -64,7 +65,19 @@ export default function MyProfile({validation}) {
     }
 
     const followUser = async () => {
-        
+        try {
+            let rqv = await fetch("/myServer/writeUser/follow",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({user_id:crntData.id})
+            })
+            let result = await rqv.json();
+            console.log(result);
+        } catch (error) {
+            
+        }
     }
     return(
         <div className="underTaker">
@@ -83,7 +96,7 @@ export default function MyProfile({validation}) {
                         </div>
                     </div>
 
-                    <p className="h-auto w-3/5 border border-amber-400 flex items-start  text-wrap
+                    <p className="h-auto w-3/5 flex items-start  text-wrap
                         text-skin-ptext text-md p-2">
                             {isEditing ? <textarea name="" value={bio} onChange={(evnt)=>setBio(evnt.target.value)} className="resize-none my-scroll pl-1.5 text-lg h-10 w-full text-skin-text" id="BioCap"></textarea> : crntData?.bio} {isEditing && <i onClick={()=>{setEdit(prev=>!prev),submitBio()}} className={`ml-2 bx bxs-save cursor-pointer`}></i>}
                     </p>
@@ -92,11 +105,11 @@ export default function MyProfile({validation}) {
                     <div className="followFollowing h-1/12 w-3/5 flex items-center flex-row gap-4 relative">
                         {crntData?.id !== uID  && <><i className='bx bxs-info-circle text-2xl activaterIcon cursor-help  text-gray-600'></i>
                         <p id="elementEl" className="backdrop-blur-lg bg-blue-900/40 font-bold">Stranger's ?</p></> }
-                        {crntData?.id === uID ? < button onClick={()=>setEdit(true)} className="cursor-pointer hover:text-blue-500 w-full  outline-2 outline-gray-600/50 rounded-lg border-none hover:outline-blue-600/20 text-skin-text p-1.5">Edit Profile</button> : <button className="cursor-pointer hover:text-blue-500 hover:bg-white-700/5 outline-none border-none bg-blue-700/90 pl-2 pr-2 rounded-lg text-skin-text p-1.5">Follow</button>}
+                        {crntData?.id === uID ? < button onClick={()=>setEdit(true)} className="cursor-pointer hover:text-blue-500 w-full  outline-2 outline-gray-600/50 rounded-lg border-none hover:outline-blue-600/20 text-skin-text p-1.5">Edit Profile</button> : <button onClick={followUser} className="cursor-pointer hover:text-blue-500 hover:bg-white-700/5 outline-none border-none bg-blue-700/90 pl-2 pr-2 rounded-lg text-skin-text p-1.5">Follow</button>}
                         {crntData?.id !== uID &&  <button className="cursor-pointer hover:text-blue-500  outline-2 outline-gray-600/50 rounded-lg border-none text-skin-text p-1.5">Connect <i className="bx bxs-inbox"></i></button>}
                     </div>
-                    <div className="mainAchiveHolder border border-blue-600 w-2/5 h-4/13 p-1.5 absolute top-1/5 right-0">
-                            
+                    <div className="mainAchiveHolder w-2/5 h-4/13 absolute top-1/5 right-0">
+                        <MainAchievments/>
                     </div>
                 </div>
             </div>

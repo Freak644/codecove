@@ -270,5 +270,6 @@ CREATE TABLE IF NOT EXISTS follows (
   following_id CHAR(36) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (follower_id,following_id),
-  INDEX idx
-)
+  INDEX idx_following (following_id),
+  INDEX idx_follower (follower_id)
+);

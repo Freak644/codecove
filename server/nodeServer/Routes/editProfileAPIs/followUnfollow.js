@@ -1,11 +1,24 @@
+import { database } from "../../Controllers/myConnectionFile.js";
+import { completeRequest } from "../../Controllers/progressTracker.js";
+
 export const followAPI = async (rkv,rspo) => {
     const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || rkv.ip || "0.0.0.0";
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {user_id} = rkv.body;
     let {id} = rkv.authData;
     try {
-        
+        if (user_id === id) return rspo.status(401).send({err:"U can't follow your self"});
+        let [userRows] = await database.query("SELECT EXISTS ( SELECT 1 FROM follows WHERE follower_id = ? AND following_id = ?) AS isFollow",[id,user_id]);
+        let {isFollow} = userRows[0];
+        if (isFollow) {
+            await database.query("DELETE FROM follows WHERE follower_id = ? AND following_id = ?",[id,user_id]);
+        } else {
+            await database.query("INSERT INTO follows ( follower_id, following_id) VALUES (?,?)",[id,user_id]);
+        }
     } catch (error) {
+        console.log(error.message)
         rspo.status(500).send({err:"Server side error"});
+    } finally {
+        completeRequest(crntIP,crntAPI);
     }
 }

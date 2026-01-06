@@ -10,26 +10,46 @@ export default function MyProfile({validation}) {
     const [isEditing,setEdit] = useState(false);
     const [crntData,setData] = useState({});
     const [tempBio,setBio] = useState("");
-    const [myImage,setimg] = useState({
-        file:null,
-        fileURL:""
-    })
     const {finalIMG,setURL} = mngCrop();
     const {username} = useParams();
     let {toggleLoader} = Loader();
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
 
+    const handelImg = evnt=>{
+        let myFIle = evnt.target.files[0];
+        if (!myFIle) return;
+
+        if (myFIle.size > 3 * 1024 * 1024) {
+            toast.warning("File size will not be > 3MB")
+            return;
+        }
+        setURL(URL.createObjectURL(myFIle))
+        evnt.target.value = null;
+    }
+
     const handelDP = async (img) => {
+        if (!img) return;
+        toggleLoader(true);
         try {
-            let rqst = await fetch("/mySever/writeUser/changeDP")
+            let formData = new FormData();
+            formData.append("avatar",img);
+            let rqst = await fetch("/myServer/writeUser/changeDP",{
+                method:"PUT",
+                body:formData
+            });
+            let result = await rqst.json();
+            if (result.err) throw new Error(result.err);
+            toast.success(result.pass)
         } catch (error) {
-            
+            toast.info(error.message)
+        } finally {
+            toggleLoader(false)
         }
     }
 
     useEffect(()=>{
         if (finalIMG) {
-            
+            handelDP(finalIMG);
         }
     },[finalIMG])
 
@@ -58,7 +78,6 @@ export default function MyProfile({validation}) {
         try {
             let rqst = await fetch(`/myServer/readUser/getUserInfo?username=${username}`);
             let result = await rqst.json();
-            console.log(result)
             if (result.err) throw new Error(result.err);
             setData(result.userInfo);
             setBio(result.userInfo.bio);
@@ -107,6 +126,7 @@ export default function MyProfile({validation}) {
     }
 
     const followUser = async () => {
+        toggleLoader(true);
         try {
             let rqv = await fetch("/myServer/writeUser/follow",{
                 method:"POST",
@@ -116,9 +136,14 @@ export default function MyProfile({validation}) {
                 body:JSON.stringify({user_id:crntData.id})
             })
             let result = await rqv.json();
-            console.log(result);
+            if (result.err) {
+                throw new Error(result.err);
+                
+            }
         } catch (error) {
-            
+            toast.error(error.message)
+        } finally {
+            toggleLoader(false)
         }
     }
     return(
@@ -131,8 +156,9 @@ export default function MyProfile({validation}) {
                 shadow-[0_0_10px_rgba(0,255,255,0.1)] backdrop-blur-md">
                     <div className="userNameImg flex items-center flex-col p-2.5 h-1/6 w-full relative text-skin-text gap-2.5">
                         <div className="flex items-center w-full flex-row gap-2.5 relative">
-                            <img src={`/myServer${crntData?.avatar}`} alt="DP" className="h-10 w-10 rounded-full" />
-                            {isEditing && <i className="bx bx-edit absolute text-2xl text-white bg-gray-500/10 backdrop-blur-sm cursor-pointer p-2.5 rounded-full"></i>}
+                            <img src={`/myServer${crntData?.avatar}`} alt="DP" className="h-15 w-15 rounded-full" />
+                            <input type="file" className="hidden" onChange={(evnt)=>handelImg(evnt)} name="DP" id="DP"/>
+                            {isEditing && <label htmlFor="DP" className="absolute" ><i className="bx bx-edit text-2xl text-white bg-gray-500/10 backdrop-blur-sm cursor-pointer p-2.5 rounded-full"></i></label>}
                             <p className="ml-1.5 font-bold text-lg">{crntData?.username}</p>
                             <span className="ml-15 font-bold">Follower {formatCount(crntData?.follower_count)}</span><span className=" font-bold">Following {formatCount(crntData?.following_count)}</span>
                         </div>
@@ -148,7 +174,8 @@ export default function MyProfile({validation}) {
                     <div className="followFollowing h-1/12 w-3/5 flex items-center flex-row gap-4 relative">
                         {crntData?.id !== uID  && <><i className='bx bxs-info-circle text-2xl activaterIcon cursor-help  text-gray-600'></i>
                         <p id="elementEl" className="backdrop-blur-lg bg-blue-900/40 font-bold">Stranger's ?</p></> }
-                        {crntData?.id === uID ? < button onClick={()=>setEdit(true)} className="cursor-pointer hover:text-blue-500 w-full  outline-2 outline-gray-600/50 rounded-lg border-none hover:outline-blue-600/20 text-skin-text p-1.5">Edit Profile</button> : <button onClick={followUser} className="cursor-pointer hover:text-blue-500 hover:bg-white-700/5 outline-none border-none bg-blue-700/90 pl-2 pr-2 rounded-lg text-skin-text p-1.5">Follow</button>}
+                        {crntData?.id === uID ? < button onClick={()=>setEdit(true)} className="cursor-pointer hover:text-blue-500 w-full  outline-2 outline-gray-600/50 rounded-lg border-none hover:outline-blue-600/20 text-skin-text p-1.5">Edit Profile</button> : 
+                        <button onClick={followUser} className="cursor-pointer hover:text-blue-500 hover:bg-white-700/5 outline-none border-none bg-blue-700/90 pl-2 pr-2 rounded-lg text-skin-text p-1.5">Follow</button>}
                         {crntData?.id !== uID &&  <button className="cursor-pointer hover:text-blue-500  outline-2 outline-gray-600/50 rounded-lg border-none text-skin-text p-1.5">Connect <i className="bx bxs-inbox"></i></button>}
                     </div>
                     <div className="mainAchiveHolder w-2/5 h-4/13 absolute top-1/5 right-0">

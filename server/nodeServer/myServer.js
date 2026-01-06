@@ -36,7 +36,7 @@ import { getNews } from './utils/getNews.js';
 import { getComment } from './Routes/usersPOSTAPIs/readThings/getCrntPostComment.js';
 import { CommentAPI } from './Routes/usersPOSTAPIs/writeThings/addComment.js';
 import { getUserinfo } from './Routes/getUsers/prifileAPIs.js';
-import { changeBio } from './Routes/editProfileAPIs/userInfoApis.js';
+import { changeBio, changeDP } from './Routes/editProfileAPIs/userInfoApis.js';
 import { followAPI } from './Routes/editProfileAPIs/followUnfollow.js';
 import { changeBioSocket } from './socketIO/userProfileSocket.js';
 let myApp = express();
@@ -90,7 +90,7 @@ myApp.post("/writePost/addLikeComment",RateLimiter,checkRequest,Auth,likeComment
 myApp.get("/readUser/getUserInfo",RateLimiter,checkRequest,Auth,getUserinfo);
 myApp.put("/writeUser/changeBio",RateLimiter,checkRequest,Auth,changeBio);
 myApp.post("/writeUser/follow",RateLimiter,checkRequest,Auth,followAPI);
-myApp.put("/writeUser/changeDP",RateLimiter,checkRequest,Auth);
+myApp.put("/writeUser/changeDP",RateLimiter,checkRequest,upload.single("avatar"),Auth,changeDP);
 
 
 

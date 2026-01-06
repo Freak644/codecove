@@ -91,7 +91,7 @@ export const CreateUser = async (rkv, rspo) => {
 
     let avatarFileName = "default.png";
     if (file) {
-      avatarFileName = Date.now()+"-"+file.originalname;
+      avatarFileName = username+Date.now()+"."+file.originalname;
       const avatarPath = path.join(dir, avatarFileName);
       fs.writeFileSync(avatarPath, file.buffer);
     }

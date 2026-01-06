@@ -32,7 +32,7 @@ export default function CpassEL() {
         if (!myFIle) return ;
 
         if (myFIle.size > 3 * 1024 * 1024) {
-            alert("File size <= 3MB")
+            toast.warning("File size will not be > 3MB")
             return
         }
         setURL(URL.createObjectURL(myFIle))
@@ -40,7 +40,6 @@ export default function CpassEL() {
         e.target.value = null
     }
     useEffect(()=>{
-        console.log(finalIMG)
         if (finalIMG) {
             setimg(prev=>({
                 ...prev,

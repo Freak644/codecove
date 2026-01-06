@@ -1,5 +1,6 @@
 import { database } from "../../Controllers/myConnectionFile.js";
 import { completeRequest } from "../../Controllers/progressTracker.js";
+import { getIO } from "../../myServer.js";
 
 export const changeBio = async (rkv,rspo) => {
     const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
@@ -10,6 +11,8 @@ export const changeBio = async (rkv,rspo) => {
         if (user_id !== id) return rspo.status(401).send({err:"Auth Failed"});
         if (bio.length > 100) return rspo.status(406).send({err:"Bio.len > 50"});
         await database.query("UPDATE users SET bio = ? WHERE id = ?",[bio,id]);
+        const io = getIO();
+        io.emit("bioChanged",{newBio:bio,user_id:id});
         rspo.status(200).send({pass:"Done!"});
     } catch (error) {
         console.log(error.message)

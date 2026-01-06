@@ -38,6 +38,7 @@ import { CommentAPI } from './Routes/usersPOSTAPIs/writeThings/addComment.js';
 import { getUserinfo } from './Routes/getUsers/prifileAPIs.js';
 import { changeBio } from './Routes/editProfileAPIs/userInfoApis.js';
 import { followAPI } from './Routes/editProfileAPIs/followUnfollow.js';
+import { changeBioSocket } from './socketIO/userProfileSocket.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -88,7 +89,8 @@ myApp.get("/readPost/getComment",RateLimiter,checkRequest,Auth,getComment);
 myApp.post("/writePost/addLikeComment",RateLimiter,checkRequest,Auth,likeComment);
 myApp.get("/readUser/getUserInfo",RateLimiter,checkRequest,Auth,getUserinfo);
 myApp.put("/writeUser/changeBio",RateLimiter,checkRequest,Auth,changeBio);
-myApp.post("/writeUser/follow",RateLimiter,checkRequest,Auth,followAPI)
+myApp.post("/writeUser/follow",RateLimiter,checkRequest,Auth,followAPI);
+myApp.put("/writeUser/changeDP",RateLimiter,checkRequest,Auth);
 
 
 
@@ -103,6 +105,8 @@ io.on("connection", (socket) => {
     postSocket(io,socket);
     likeSocket(io,socket);
     commentLikeSocket(io,socket);
+
+    changeBioSocket(io,socket);
 
     socket.on("disconnect", () => {
         console.log("User leave", socket.id);

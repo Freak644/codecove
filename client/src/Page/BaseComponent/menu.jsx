@@ -149,7 +149,7 @@ export default function MenuEL(params) {
                     </li>
 
                     <li>
-                        <Link to={`/myLab/${userinfo?.username}`}>
+                        <Link to={`/Lab/${userinfo?.username}`}>
                         <div className='h-8 w-8 md:h-9 md:w-9 border rounded-full flex items-center justify-center'>
                             <img
                             className='h-full rounded-full w-full'

@@ -4,13 +4,55 @@ import { toast } from "react-toastify";
 import { UnivuUserInfo } from "../../../lib/basicUserinfo";
 import {Loader} from '../../../lib/loader'
 import MainAchievments from "./abElement";
+import socket from "../../../utils/socket";
+import { mngCrop } from "../../../lib/toggleTheme";
 export default function MyProfile({validation}) {
     const [isEditing,setEdit] = useState(false);
     const [crntData,setData] = useState({});
-    const [bio,setBio] = useState("");
+    const [tempBio,setBio] = useState("");
+    const [myImage,setimg] = useState({
+        file:null,
+        fileURL:""
+    })
+    const {finalIMG,setURL} = mngCrop();
     const {username} = useParams();
     let {toggleLoader} = Loader();
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
+
+    const handelDP = async (img) => {
+        try {
+            let rqst = await fetch("/mySever/writeUser/changeDP")
+        } catch (error) {
+            
+        }
+    }
+
+    useEffect(()=>{
+        if (finalIMG) {
+            
+        }
+    },[finalIMG])
+
+    useEffect(()=>{
+        let {id:user_id} = crntData;
+        
+        socket.emit("joinProfile",user_id);
+        
+        let handleChangeBio = (data)=>{
+            if (user_id !== data.user_id) return;
+            setData(prev=>({
+                ...prev,
+                bio:data.newBio
+            }))
+        }
+
+        socket.on("bioChanged",handleChangeBio);
+
+        return ()=>{
+            socket.emit("leaveProfile",user_id);
+            socket.off("bioChanged",handleChangeBio);
+        }
+    },[crntData])
 
     const getData = async (username) => {
         try {
@@ -45,14 +87,14 @@ export default function MyProfile({validation}) {
         if (!isEditing) return;
         toggleLoader(true)
         try {
-            if (bio.length > 100) throw new Error("Bio.len will not be > 50");
+            if (tempBio.length > 100) throw new Error("Bio.len will not be > 50");
             
             let rqst = await fetch("/myServer/writeUser/changeBio",{
                 method:"PUT",
                 headers:{
                     "Content-Type":"application/json"
                 },
-                body:JSON.stringify({bio,user_id:crntData.id})
+                body:JSON.stringify({bio:tempBio,user_id:crntData.id})
             })            
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
@@ -98,7 +140,8 @@ export default function MyProfile({validation}) {
 
                     <p className="h-auto w-3/5 flex items-start  text-wrap
                         text-skin-ptext text-md p-2">
-                            {isEditing ? <textarea name="" value={bio} onChange={(evnt)=>setBio(evnt.target.value)} className="resize-none my-scroll pl-1.5 text-lg h-10 w-full text-skin-text" id="BioCap"></textarea> : crntData?.bio} {isEditing && <i onClick={()=>{setEdit(prev=>!prev),submitBio()}} className={`ml-2 bx bxs-save cursor-pointer`}></i>}
+                            {isEditing ? <textarea name="" value={tempBio} onChange={(evnt)=>setBio(evnt.target.value)} className="resize-none my-scroll pl-1.5 text-lg h-30 w-full text-skin-text" id="BioCap"></textarea> : crntData?.bio}
+                            {isEditing && <i onClick={()=>{setEdit(prev=>!prev),submitBio()}} className={`ml-2 bx bxs-save cursor-pointer`}></i>}
                     </p>
                     {isEditing && <i onClick={()=>setEdit(false)} className="bx bx-x cursor-pointer ml-2 text-2xl text-skin-text"></i>}
 

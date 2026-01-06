@@ -16,7 +16,7 @@ export default function AnimateRoute({location}) {
                     <Routes location={background || location}>
                         <Route path='/' element={<HomePage/>} />
                         <Route path='/Commit' element={<BaseCreate/>} />
-                        <Route path='/myLab/:username' element={<MainLapCom/>} />
+                        <Route path='/Lab/:username' element={<MainLapCom/>} />
 
                         <Route path='*' element={<NotFound/>} />
                     </Routes>

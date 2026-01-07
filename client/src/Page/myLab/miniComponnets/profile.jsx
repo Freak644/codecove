@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {useParams} from "react-router-dom"
+import {data, useParams} from "react-router-dom"
 import { toast } from "react-toastify";
 import { UnivuUserInfo } from "../../../lib/basicUserinfo";
 import {Loader} from '../../../lib/loader'
@@ -60,16 +60,28 @@ export default function MyProfile({validation}) {
         
         let handleChangeBio = (data)=>{
             if (user_id !== data.user_id) return;
+            setEdit(false)
             setData(prev=>({
                 ...prev,
                 bio:data.newBio
             }))
         }
 
+        let handleDPchange = (data) => {
+            if (user_id !== data.user_id) return;
+            setEdit(false)
+            setData(prev=>({
+                ...prev,
+                avatar:data.newAvtar
+            }))
+        }
+
         socket.on("bioChanged",handleChangeBio);
+        socket.on("DPchange",handleDPchange);
 
         return ()=>{
             socket.emit("leaveProfile",user_id);
+            socket.off("DPchange",handleDPchange)
             socket.off("bioChanged",handleChangeBio);
         }
     },[crntData])
@@ -158,9 +170,12 @@ export default function MyProfile({validation}) {
                         <div className="flex items-center w-full flex-row gap-2.5 relative">
                             <img src={`/myServer${crntData?.avatar}`} alt="DP" className="h-15 w-15 rounded-full" />
                             <input type="file" className="hidden" onChange={(evnt)=>handelImg(evnt)} name="DP" id="DP"/>
-                            {isEditing && <label htmlFor="DP" className="absolute" ><i className="bx bx-edit text-2xl text-white bg-gray-500/10 backdrop-blur-sm cursor-pointer p-2.5 rounded-full"></i></label>}
+                            {isEditing && <label htmlFor="DP" className="absolute" ><i className="bx bx-edit text-2xl text-white bg-gray-500/10 backdrop-blur-sm cursor-pointer p-4.5 rounded-full"></i></label>}
                             <p className="ml-1.5 font-bold text-lg">{crntData?.username}</p>
-                            <span className="ml-15 font-bold">Follower {formatCount(crntData?.follower_count)}</span><span className=" font-bold">Following {formatCount(crntData?.following_count)}</span>
+                            <div className="h-full p-2.5 flex items-center flex-row gap-4.5">
+                                <span className="ml-5 font-bold">Follower <i className="bx w-full pl-2.5"> {formatCount(crntData?.follower_count)}</i></span>
+                                <span className=" font-bold">Following  <i className="bx w-full pl-2.5">{formatCount(crntData?.following_count)}</i></span>
+                            </div>
                         </div>
                     </div>
 

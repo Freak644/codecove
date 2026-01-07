@@ -11,5 +11,6 @@ export const changeBioSocket = (io,socket) => {
     socket.on("modify",(data)=>{
         let {user_id} = data;
         io.to(`user-${user_id}`).emit("bioChanged",data);
+        io.to(`user-${user_id}`).emit("DPchange",data);
     });
 }

@@ -34,6 +34,7 @@ export const changeDP = async (rkv, rspo) => {
     let avatarPath;
 
     try {
+        const io = getIO();
         const file = rkv.file;
         if (!file || !Buffer.isBuffer(file.buffer)) {
             return rspo.status(400).send({ err: "Invalid file buffer" });
@@ -97,6 +98,8 @@ export const changeDP = async (rkv, rspo) => {
                 await fs.promises.unlink(avatar);
             } catch (_) {}
         }
+
+        io.emit("DPchange",{user_id:id,newAvtar:savePath});
 
         rspo.status(200).send({ pass: "Done!" });
 

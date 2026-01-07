@@ -12,9 +12,14 @@ export const followAPI = async (rkv,rspo) => {
         let {isFollow} = userRows[0];
         if (isFollow) {
             await database.query("DELETE FROM follows WHERE follower_id = ? AND following_id = ?",[id,user_id]);
+            await database.query("UPDATE users SET follower_count = follower_count - 1 WHERE id = ?",[user_id])
+            await database.query("UPDATE users SET following_count = following_count - 1 WHERE id = ?",[id])
         } else {
             await database.query("INSERT INTO follows ( follower_id, following_id) VALUES (?,?)",[id,user_id]);
+            await database.query("UPDATE users SET follower_count = follower_count + 1 WHERE id = ?",[user_id])
+            await database.query("UPDATE users SET following_count = following_count + 1 WHERE id = ?",[id])
         }
+        rspo.status(200).send({pass:"Done!"})
     } catch (error) {
         console.log(error.message)
         rspo.status(500).send({err:"Server side error"});

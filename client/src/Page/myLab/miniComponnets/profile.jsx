@@ -90,6 +90,7 @@ export default function MyProfile({validation}) {
         try {
             let rqst = await fetch(`/myServer/readUser/getUserInfo?username=${username}`);
             let result = await rqst.json();
+            console.log(result)
             if (result.err) throw new Error(result.err);
             setData(result.userInfo);
             setBio(result.userInfo.bio);
@@ -158,6 +159,20 @@ export default function MyProfile({validation}) {
             toggleLoader(false)
         }
     }
+
+    const getRelation = (userData)=>{
+        if(Object.keys(userData).length === 0) return;
+        const {isFollowing,isFollowMe} = crntData;
+        if (isFollowing && isFollowMe) {
+            return "Both Are following each others"
+        } else if (isFollowing) {
+            return "Followed By you!"
+        } else if (isFollowMe) {
+            return "Following you!"
+        } else {
+            return "Strangers !"
+        }
+    }
     return(
         <div className="underTaker">
            <div className="myLabProfileDiv h-full w-[440px] border  flex items-center justify-center gap-2.5 rounded-lg relative ">
@@ -188,10 +203,14 @@ export default function MyProfile({validation}) {
 
                     <div className="followFollowing h-1/12 w-3/5 flex items-center flex-row gap-4 relative">
                         {crntData?.id !== uID  && <><i className='bx bxs-info-circle text-2xl activaterIcon cursor-help  text-gray-600'></i>
-                        <p id="elementEl" className="backdrop-blur-lg bg-blue-900/40 font-bold">Stranger's ?</p></> }
+                        <p id="elementEl" className="backdrop-blur-xl bg-blue-900/50 font-bold">{getRelation(crntData)}</p></> }
                         {crntData?.id === uID ? < button onClick={()=>setEdit(true)} className="cursor-pointer hover:text-blue-500 w-full  outline-2 outline-gray-600/50 rounded-lg border-none hover:outline-blue-600/20 text-skin-text p-1.5">Edit Profile</button> : 
-                        <button onClick={followUser} className="cursor-pointer hover:text-blue-500 hover:bg-white-700/5 outline-none border-none bg-blue-700/90 pl-2 pr-2 rounded-lg text-skin-text p-1.5">Follow</button>}
-                        {crntData?.id !== uID &&  <button className="cursor-pointer hover:text-blue-500  outline-2 outline-gray-600/50 rounded-lg border-none text-skin-text p-1.5">Connect <i className="bx bxs-inbox"></i></button>}
+                        <button onClick={followUser} className={`cursor-pointer ${crntData?.isFollowing ? "outline-2 tracking-wide outline-gray-600/50" : "tracking-wide hover:tracking-wider hover:font-bold bg-linear-to-r from-purple-500 via-blue-500 to-purple-600 p-1 cursor-pointer bg-size-[200%_200%] hover:bg-position-[100%_150%] transition-all duration-700 ease-in-out outline-none"} border-none pl-2 pr-2 rounded-lg text-skin-text p-1.5`}>{crntData?.isFollowing ? "Unfollow" : "Follow"}</button>}
+                        {crntData?.id !== uID &&  <button className={`cursor-pointer bg-linear-to-l  ${crntData?.isFollowing ? "bg-linear-to-r from-purple-500 via-blue-500 to-purple-600 postCommitBtn p-1 cursor-pointer bg-size-[200%_200%] hover:bg-position-[100%_150%] transition-all duration-700 ease-in-out overflow-hidden" : "hover:text-blue-500"}  outline-2 outline-gray-600/50 rounded-lg border-none text-skin-text p-1.5`}>
+                                <div className="text-md h-full w-full font-bold">
+                                    <span>Connect</span> <i className="bx bxs-inbox"></i>
+                                </div>
+                            </button>}
                     </div>
                     <div className="mainAchiveHolder w-2/5 h-4/13 absolute top-1/5 right-0">
                         <MainAchievments/>

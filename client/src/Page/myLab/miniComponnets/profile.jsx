@@ -76,13 +76,28 @@ export default function MyProfile({validation}) {
             }))
         }
 
+        let handleFollow = (data) => {
+            if (user_id !== data.user_id) return;
+            let {isFollow,viewer_id} = data;
+            
+            setData(prev => ({
+                ...prev,
+                follower_count: Math.max(isFollow ?
+                 prev.follower_count + 1 :
+                 prev.follower_count - 1),
+                 isFollowing: viewer_id === uID ? isFollow : prev.isFollowing,
+            }))
+        }
+
         socket.on("bioChanged",handleChangeBio);
         socket.on("DPchange",handleDPchange);
+        socket.on("fnf",handleFollow);
 
         return ()=>{
             socket.emit("leaveProfile",user_id);
-            socket.off("DPchange",handleDPchange)
+            socket.off("DPchange",handleDPchange);
             socket.off("bioChanged",handleChangeBio);
+            socket.off("fnf",handleFollow)
         }
     },[crntData])
 
@@ -203,7 +218,7 @@ export default function MyProfile({validation}) {
 
                     <div className="followFollowing h-1/12 w-3/5 flex items-center flex-row gap-4 relative">
                         {crntData?.id !== uID  && <><i className='bx bxs-info-circle text-2xl activaterIcon cursor-help  text-gray-600'></i>
-                        <p id="elementEl" className="backdrop-blur-xl bg-blue-900/50 font-bold">{getRelation(crntData)}</p></> }
+                        <p id="elementEl" className="backdrop-blur-xl z-20 bg-blue-900/50 font-bold">{getRelation(crntData)}</p></> }
                         {crntData?.id === uID ? < button onClick={()=>setEdit(true)} className="cursor-pointer hover:text-blue-500 w-full  outline-2 outline-gray-600/50 rounded-lg border-none hover:outline-blue-600/20 text-skin-text p-1.5">Edit Profile</button> : 
                         <button onClick={followUser} className={`cursor-pointer ${crntData?.isFollowing ? "outline-2 tracking-wide outline-gray-600/50" : "tracking-wide hover:tracking-wider hover:font-bold bg-linear-to-r from-purple-500 via-blue-500 to-purple-600 p-1 cursor-pointer bg-size-[200%_200%] hover:bg-position-[100%_150%] transition-all duration-700 ease-in-out outline-none"} border-none pl-2 pr-2 rounded-lg text-skin-text p-1.5`}>{crntData?.isFollowing ? "Unfollow" : "Follow"}</button>}
                         {crntData?.id !== uID &&  <button className={`cursor-pointer bg-linear-to-l  ${crntData?.isFollowing ? "bg-linear-to-r from-purple-500 via-blue-500 to-purple-600 postCommitBtn p-1 cursor-pointer bg-size-[200%_200%] hover:bg-position-[100%_150%] transition-all duration-700 ease-in-out overflow-hidden" : "hover:text-blue-500"}  outline-2 outline-gray-600/50 rounded-lg border-none text-skin-text p-1.5`}>

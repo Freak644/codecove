@@ -42,6 +42,7 @@ export default function BaseCreate() {
                             onChange={(evnt) =>
                                 setPostOBJ({ postGroup: evnt.target.value })
                             }
+                            name="Selcter"
                             className="focus:border-skin-text/30"
                             defaultValue=""
                             >

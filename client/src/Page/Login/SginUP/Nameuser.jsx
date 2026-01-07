@@ -179,7 +179,7 @@ export default function UserNameEl({stoggle}) {
                             </div>
                             
                         <div className="inputDiv">
-                            <input type="text" onBlur={(evnt)=>handleBlur(evnt.target)} id="email" name="email" required />
+                            <input type="text" onBlur={(evnt)=>handleBlur(evnt.target)} id="email" name="email" required autoComplete="nn" />
                             <label htmlFor="email"><i className="bx bx-id-card">Email</i></label>
                         </div>
                         <div className="inputDiv">

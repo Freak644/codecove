@@ -76,7 +76,7 @@ export default function ForgotEl() {
                     <LogoCom/>
 
                         <div className="inputDiv">
-                            <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="USEmail" required />
+                            <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="USEmail" required autoComplete="off" />
                             <label htmlFor="USEmail"><i className="bx bx-user">Email OR userName</i></label>
                         </div>
                         <div className={`inputDiv ${isFinding.isFindst ? "" : "pointer-events-none"}`}>

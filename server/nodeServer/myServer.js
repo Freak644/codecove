@@ -25,7 +25,7 @@ import { ActivityInfo } from './Routes/Login/getSessionInfo.js';
 import { changePassSecure } from './Routes/Secure/SecureAccount.js';
 import { forgotPass } from './Routes/Secure/forgotPassMail.js';
 import { CreatePost } from './Routes/Promulgation/createPost.js';
-import { GetPosts } from './Routes/usersPOSTAPIs/getPost.js';
+import { GetPosts } from './Routes/usersPOSTAPIs/readThings/getPost.js';
 import postSocket, { commentLikeSocket, likeSocket } from './socketIO/postSocket.js';
 import { EmailRateLimiter, RateLimiter, usernameCheckLimiter, verifyEmailLiter } from './Controllers/rateLimits.js';
 import { checkRequest, startCleaner } from './Controllers/progressTracker.js';

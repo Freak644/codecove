@@ -198,7 +198,7 @@ export default function MyProfile({validation}) {
                 shadow-[0_0_10px_rgba(0,255,255,0.1)] backdrop-blur-md">
                     <div className="userNameImg flex items-center flex-col p-2.5 h-1/6 w-full relative text-skin-text gap-2.5">
                         <div className="flex items-center w-full flex-row gap-2.5 relative">
-                            <img src={`/myServer${crntData?.avatar}`} alt="DP" className="h-15 w-15 rounded-full" />
+                            {Object.keys(crntData).length > 1 && <img src={`/myServer${crntData?.avatar}`} alt="DP" className="h-15 w-15 rounded-full" />}
                             <input type="file" className="hidden" onChange={(evnt)=>handelImg(evnt)} name="DP" id="DP"/>
                             {isEditing && <label htmlFor="DP" className="absolute" ><i className="bx bx-edit text-2xl text-white bg-gray-500/10 backdrop-blur-sm cursor-pointer p-4.5 rounded-full"></i></label>}
                             <p className="ml-1.5 font-bold text-lg">{crntData?.username}</p>

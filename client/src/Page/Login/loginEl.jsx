@@ -87,7 +87,7 @@ export default function LoginCon({toggle}) {
                     <form action="" onSubmit={handleSubmit}>
                          <LogoCom/>
                             <div className="inputDiv">
-                                <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="Email" required/>
+                                <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="Email" required autoComplete="off"/>
                                 <label htmlFor="Email"><i className="bx bx-user">Username</i></label>
                             </div>
                             <div className="inputDiv mb-8">

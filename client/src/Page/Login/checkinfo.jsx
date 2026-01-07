@@ -28,7 +28,7 @@ export default function CheckInfo(params) {
         getSessionInfo()
     },[token])
     return(
-        <div className="h-screen w-screen flex items-center flex-col bg-skin-bg absolute top-0 z-40">
+        <div className="h-dvh w-dvw flex items-center flex-col bg-skin-bg absolute top-0 z-40">
            {isChanging && <ChangePassword toggle={setchanging} />}
             <LogoCom/>
             <div className="flex items-center flex-col gap-2 text-white">

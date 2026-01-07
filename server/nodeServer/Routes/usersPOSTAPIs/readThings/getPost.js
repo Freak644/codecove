@@ -1,5 +1,5 @@
-import { database } from "../../Controllers/myConnectionFile.js";
-import { completeRequest } from "../../Controllers/progressTracker.js";
+import { database } from "../../../Controllers/myConnectionFile.js";
+import { completeRequest } from "../../../Controllers/progressTracker.js";
 
 export const GetPosts = async (rkv,rspo) => {
     let {id} = rkv.authData;

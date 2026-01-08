@@ -6,7 +6,7 @@ import MiniDropDown from "./miniCom/threedotDropDown";
 import { univPostStore } from "../../lib/basicUserinfo";
 
 export default function PostsCon({posts}) {
-    let {caption,canComment,images_url,canSave, post_id,username,avatar,post_moment,likeCount, isLiked,visibility,totalLike,id} = posts;
+    let {caption,canComment,images_url,canSave, post_id,username,avatar,post_moment,likeCount, isLiked,visibility,totalLike,id,isFollowing} = posts;
     const [isDropDown,setDropDown] = useState({});
     let {postsById,setUnivPost} = univPostStore();
     const Refs = useRef({});
@@ -45,7 +45,7 @@ export default function PostsCon({posts}) {
                                     </div>
                                     <div ref={setCallback(post_id)} className="innerINFODiv flex-1 flex items-center justify-end relative!">
                                         <i onClick={()=>setDropDown({...isDropDown,p_id:post_id,isTrue:true})} className='bx bx-dots-vertical-rounded text-2xl cursor-pointer'></i>
-                                        {(isDropDown?.p_id===post_id && isDropDown.isTrue) && <MiniDropDown postInfo={{username,images_url,post_id,canComment,likeCount, visibility,}} toggle={setDropDown}/>}
+                                        {(isDropDown?.p_id===post_id && isDropDown.isTrue) && <MiniDropDown postInfo={{username,isFollowing,images_url,post_id,canComment,likeCount, visibility}} toggle={setDropDown}/>}
                                     </div>
                                     <Caption text={caption} />
                                 </div>

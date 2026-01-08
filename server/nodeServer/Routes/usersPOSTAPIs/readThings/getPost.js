@@ -23,7 +23,13 @@ export const GetPosts = async (rkv,rspo) => {
                     FROM likes li
                     WHERE li.id = ?
                     AND li.post_id = p.post_id
-                ) AS isLiked
+                ) AS isLiked,
+                 EXISTS (
+                    SELECT 1
+                    FROM follows
+                    WHERE follower_id = ?
+                    AND following_id = u.id
+                 ) AS isFollowing
             FROM posts p
             INNER JOIN users u ON u.id = p.id
             LEFT JOIN (
@@ -40,7 +46,7 @@ export const GetPosts = async (rkv,rspo) => {
             ORDER BY p.created_at DESC
             LIMIT ? OFFSET ?;
             `,
-        [id,limit,offset]); // i like to write a query in a single row but this query  i have to write it like this because in a single row it too hard to find which thing came from where
+        [id,id,limit,offset]); // i like to write a query in a single row but this query  i have to write it like this because in a single row it too hard to find which thing came from where
         if (rows.length < 1) return rspo.status(404).send({err:"No posts"});
         // console.log(rows[0])
         rows = rows.map((row)=>{

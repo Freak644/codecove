@@ -46,6 +46,7 @@ export default function HonePage() {
   const fetchPost = async () => {
     let rqst = await fetch(`/myServer/getPost?limit=15&offset=${offset}`);
     const data = await rqst.json();
+    console.table(data.post)
     if (data.err) {
      return  toast.error(data.err);
     }

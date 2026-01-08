@@ -8,7 +8,7 @@ export default function TODOList({crntPost_id}) {
     let {setUnivPost} = univPostStore();
     const postData = univPostStore(stat=>stat.postsById[crntPost_id]);
     const crntLocation = useLocation();
-    let {canCommen,canSave,totalComment,totalLike,isLiked,post_id, images_url, username} = crntPost;
+    let {canSave,totalComment,totalLike,isLiked,post_id, images_url, username} = crntPost;
     const index = UnivuUserInfo(stat=>stat.index);
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     const [isToggle,setToggle] = useState(false);
@@ -152,7 +152,7 @@ export default function TODOList({crntPost_id}) {
                     </div>
                 }
             </div>
-            <div className="TodoInner">
+            <div className={`TodoInner ${canSave ? "" : "pointer-events-none"}`}>
                 <i className="bx bx-bookmark"></i>
             </div>
             <div className="TodoInner perspective-distant">

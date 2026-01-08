@@ -300,7 +300,7 @@ export default function CommentEl() {
                                     <div className="layerTwo flex items-center w-full pl-10  justify-start text-gray-500 text-[13px] gap-4">
                                         <i className="bx">{`${totalLike} like`}</i>
                                         <i className="bx">{timeAgoIntl(created_at)}</i>
-                                        <i onClick={()=>reportComment(commentID)} className="bx bxs-report">Report</i>
+                                        <i onClick={()=>reportComment(commentID)} className="bx bxs-report cursor-pointer">Report</i>
                                     </div>
                                 </div>
                             )

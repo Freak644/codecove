@@ -19,3 +19,20 @@ export const miniToggleDy = async (rkv,rspo) => {
         completeRequest(crntIP,crntAPI);
     }
 }
+
+export const reportCommentAPI = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
+    let {id} = rkv.authData;
+    let {commentID,post_id} = rkv.body;
+    try {
+        let [rows] = await database.query("SELECT commentID FROM commentReport WHERE commentID = ? AND id = ? AND post_id = ?",
+            [commentID,id,post_id]);
+        if (rows[0].length !== 0) return rspo.status(400).send({err:"You! already Report this comment"});
+        
+    } catch (error) {
+        
+    } finally {
+        completeRequest(crntIP,crntAPI)
+    }
+}

@@ -227,6 +227,8 @@ CREATE TABLE IF NOT EXISTS comments (
   post_id CHAR(36) NOT NULL,
   id CHAR(36) NOT NULL,
   comment TEXT NOT NULL,
+  isReported INT DEFAULT 0,
+  isBlocked BOOLEAN DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
@@ -240,6 +242,20 @@ CREATE TABLE IF NOT EXISTS commentLikes (
   id CHAR(36) NOT NULL,
   commentID CHAR(36) NOT NULL,
   UNIQUE(post_id,commentID),
+  FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (commentID) REFERENCES comments(commentID) ON DELETE CASCADE,
+  INDEX idx_post_id (post_id),
+  INDEX idx_user_id (id),
+  INDEX idx_comment_id (commentID)
+);
+
+CREATE TABLE IF NOT EXISTS commentReports (
+  report_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  id CHAR(36) NOT NULL,
+  post_id CHAR(36) NOT NULL,
+  commentID CHAR(36) NOT NULL,
+  UNIQUE(id,post_id,commentID),
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (commentID) REFERENCES comments(commentID) ON DELETE CASCADE,

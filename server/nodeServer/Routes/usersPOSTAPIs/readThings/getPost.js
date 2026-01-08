@@ -39,7 +39,7 @@ export const GetPosts = async (rkv,rspo) => {
             ) l ON l.post_id = p.post_id
             LEFT JOIN (
                 SELECT post_id, COUNT(*) AS totalComment
-                FROM comments
+                FROM comments WHERE isBlocked = 0 AND isReported < 10
                 GROUP BY post_id
             ) c ON c.post_id = p.post_id
             WHERE p.visibility <> 0

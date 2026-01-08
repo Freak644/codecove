@@ -33,7 +33,7 @@ export const getComment = async (rkv,rspo) => {
                     GROUP BY commentID
                 ) cl 
                     ON cl.commentID = c.commentID
-                WHERE c.post_id = ?
+                WHERE c.post_id = ? AND c.isBlocked=0 AND c.isReported < 10
                 ORDER BY c.created_at DESC
                 LIMIT ? OFFSET ?`,[id,post_id,intLimit,intOffset]);
         rspo.send({pass:"Done h boss",commentrows})

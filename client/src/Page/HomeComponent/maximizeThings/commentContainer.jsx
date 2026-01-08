@@ -223,6 +223,23 @@ export default function CommentEl() {
         }
     }
 
+    const reportComment = async (comment_id) => {
+        try {
+            let rqst = await fetch("/myServer/writePost/reportComment",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({commentID:comment_id})
+            });
+            let result = await rqst.json();
+            if (result.err) throw new Error(result.err);
+            toast.success(result.pass);
+        } catch (error) {
+            toast.error(error.message);
+        }
+    }
+
     return(
          <div className="underTaker">
             <div onTouchStart={onStart}
@@ -279,7 +296,7 @@ export default function CommentEl() {
                                     <div className="layerTwo flex items-center w-full pl-10  justify-start text-gray-500 text-[13px] gap-4">
                                         <i className="bx">{`${totalLike} like`}</i>
                                         <i className="bx">{timeAgoIntl(created_at)}</i>
-                                        <i className="bx bxs-report">Report</i>
+                                        <i onClick={()=>reportComment(commentID)} className="bx bxs-report">Report</i>
                                     </div>
                                 </div>
                             )

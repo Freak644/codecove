@@ -45,7 +45,7 @@ export default function MiniDropDown({postInfo,toggle}) {
         <div className="miniDropHome h-auto w-[300px] flex items-center justify-center flex-wrap absolute top-full right-0">
             <ul>
                 <li className="text-red-500 font-bold"><i className="bx bx-warning"></i> Report</li>
-                {postInfo.username !== userInfo.username && <li className={`${postInfo?.isFollowing ? "text-red-500" : "text-green-500"} font-bold`}><i className="bx bx-user"></i>{postInfo?.isFollowing ? "Following" : "Follow"}</li>}
+                {postInfo.username !== userInfo.username && <li className={`${postInfo?.isFollowing ? "text-red-500" : "text-green-500"} font-bold cursor-none!`}><i className="bx bx-user"></i>{postInfo?.isFollowing ? "Following" : "Follow"}</li>}
                 <li onClick={downloadAll}><i className="bx bx-download"></i> Download</li>
                 {postInfo.username === userInfo.username && <>
                 <li data-setting={"likeCount"} onClick={(evnt)=>handleClick(evnt.target.dataset.setting,postInfo.post_id)} ><i name="likeCount" className="bx bxs-start"></i>{(postInfo.likeCount === 1) ? "Hide Star Count":"Show start Count"}</li>

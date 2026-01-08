@@ -31,7 +31,7 @@ import { EmailRateLimiter, RateLimiter, usernameCheckLimiter, verifyEmailLiter }
 import { checkRequest, startCleaner } from './Controllers/progressTracker.js';
 import { resetPassword, verification } from './Routes/Secure/userVerification/verificationAPI.js';
 import { likeComment, starPost } from './Routes/usersPOSTAPIs/writeThings/likePost.js';
-import { miniToggleDy } from './Routes/usersPOSTAPIs/writeThings/miniToggleAPIs.js';
+import { miniToggleDy, reportCommentAPI } from './Routes/usersPOSTAPIs/writeThings/miniToggleAPIs.js';
 import { getNews } from './utils/getNews.js';
 import { getComment } from './Routes/usersPOSTAPIs/readThings/getCrntPostComment.js';
 import { CommentAPI } from './Routes/usersPOSTAPIs/writeThings/addComment.js';
@@ -91,6 +91,7 @@ myApp.get("/readUser/getUserInfo",RateLimiter,checkRequest,Auth,getUserinfo);
 myApp.put("/writeUser/changeBio",RateLimiter,checkRequest,Auth,changeBio);
 myApp.post("/writeUser/follow",RateLimiter,checkRequest,Auth,followAPI);
 myApp.put("/writeUser/changeDP",RateLimiter,checkRequest,upload.single("avatar"),Auth,changeDP);
+myApp.post("/writePost/reportComment",RateLimiter,checkRequest,Auth,reportCommentAPI);
 
 
 

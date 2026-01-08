@@ -14,6 +14,7 @@ export default function CommentEl() {
     const [isOver,setOver] = useState(false);
     const [Ty,setTy] = useState(0);
     const [isDragging,setDrag] = useState(false);
+    const [canComment,setCanComnt] = useState(true);
     const MAX_DRAG = 300;
 
     const progress = Math.min(Ty / MAX_DRAG, 1);
@@ -53,7 +54,10 @@ export default function CommentEl() {
         try {
             let rqst = await fetch(`/myServer/readPost/getComment?limit=20&offset=${offset}&post_id=${postID}`);
             let result = await rqst.json();
-            if (result.err) throw new Error(result.err);
+            if (result.err) {
+                if (!result.isComment) setCanComnt(result.isComment)
+                throw new Error(result.err)
+            }
             if (result.commentrows.length>1) {
                 setComment(result.commentrows);
             }
@@ -62,7 +66,7 @@ export default function CommentEl() {
                 setOver(true);
             }
         } catch (error) {
-            console.log(error.message);
+            toast.error(error.message);
         }finally{
             toggleLoader(false);
         }
@@ -242,7 +246,7 @@ export default function CommentEl() {
 
     return(
          <div className="underTaker">
-            <div onTouchStart={onStart}
+            {canComment ? <div onTouchStart={onStart}
             onMouseDown={onStart}
             onTouchMove={onDraggin}
             onMouseMove={onDraggin}
@@ -337,7 +341,7 @@ export default function CommentEl() {
                         </div></button>
                     </div>
                 </div>
-            </div>
+            </div> : "Comment not allow"}
         </div>
     )
 }

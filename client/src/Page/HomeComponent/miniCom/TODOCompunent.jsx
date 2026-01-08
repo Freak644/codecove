@@ -8,7 +8,7 @@ export default function TODOList({crntPost_id}) {
     let {setUnivPost} = univPostStore();
     const postData = univPostStore(stat=>stat.postsById[crntPost_id]);
     const crntLocation = useLocation();
-    let {canSave,totalComment,totalLike,isLiked,post_id, images_url, username} = crntPost;
+    let {canSave,totalComment,totalLike,isLiked,post_id, images_url, username,canComment} = crntPost;
     const index = UnivuUserInfo(stat=>stat.index);
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     const [isToggle,setToggle] = useState(false);
@@ -134,11 +134,11 @@ export default function TODOList({crntPost_id}) {
                 <i onClick={handleStar} className={`${isLiked ? "bx bxs-star" : "bx bx-star"}`}></i>
                 <span>{formatCount(totalLike)}</span>
             </div>
-            <div className="TodoInner"> <Link className="flex items-center justify-center gap-1" to={`/post/${post_id}`}
+            <div className={`TodoInner ${canComment ? "" : "cursor-none pointer-events-none"}`}> <Link className="flex items-center justify-center gap-1" to={`/post/${post_id}`}
                 state={{background:crntLocation}}
             >
-                <i className="bx bx-comment"></i>
-                <span>{formatCount(totalComment)}</span>
+                <i className={`bx bx-comment`}></i>
+                {canComment && <span>{formatCount(totalComment)}</span>}
                 </Link>
             </div>
             <div ref={toggleRef} className="TodoInner relative">

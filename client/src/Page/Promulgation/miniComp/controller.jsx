@@ -23,7 +23,6 @@ export default function UploadController() {
     const postData = usePostStore(state=>state.postOBJ);
 
     useEffect(()=>{
-        console.log(postData)
         setBtnAnimation();
     },[])
 
@@ -43,18 +42,18 @@ export default function UploadController() {
         })
 
         try {
-            if(Object.keys(controlls).length !== 7) return toast.info("Something went wrong");
+            if (Object.keys(postData).length < 3 ) return toast.info("Write Cation")
             if (postData.caption.length < 1) return toast.info("Caption !== empty");
+            if(Object.keys(controlls).length !== 7) return toast.info("Something went wrong");
             if (!postData.imgFiles || postData.imgFiles.length < 1) return toast.warning("Please Attach an Image");
-           if (!postData.postGroup.trim()) return toast.info("Please Select a Moment..")
+            if (!postData.postGroup.trim()) return toast.info("Please Select a Moment..")
             formData.set("caption",postData.caption);
             formData.set("canSave",saveVal);
             formData.set("postGroup",postData.postGroup)
             postData.imgFiles.forEach(img=>{
                 formData.append("postFiles",img.file)
             })
-            // let tempOBJ = Object.fromEntries(formData.entries());
-            // console.table(tempOBJ);
+            
             await axios.post("/myServer/CreatePost",formData,{
                 headers:{
                     "Content-Type":"multipart/form-data"
@@ -75,7 +74,7 @@ export default function UploadController() {
         } catch (error) {
             console.log(error)
             setProgress(0)
-            toast.error(error.response.data.err || error.message)
+            toast.error(error?.response?.data.err || error.message)
         }finally{
             toggleLoader(false)
         }

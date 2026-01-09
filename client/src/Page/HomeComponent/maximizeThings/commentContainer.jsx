@@ -58,7 +58,7 @@ export default function CommentEl() {
                 if (!result.isComment) setCanComnt(result.isComment)
                 throw new Error(result.err)
             }
-            if (result.commentrows.length>1) {
+            if (result.commentrows.length>0) {
                 setComment(result.commentrows);
             }
             setOffset(20)
@@ -97,8 +97,8 @@ export default function CommentEl() {
     },[pID]);
 
     useEffect(()=>{
-        if (commentData.length<1) return;
-        console.log(commentData.length,offset)
+        // if (commentData.length<1) return;
+        console.log(commentData.length)
         socket.emit("joinPost",pID);
         const handleLikes = ({commentID: CId,post_id:pid, user_id,like}) =>{
             console.log(user_id,like)
@@ -119,6 +119,7 @@ export default function CommentEl() {
         const handleComments = (newData) => {
             let {post_id:pid,id} = newData;
             if (pID === pid && id === uID) {
+                console.log(newData)
                 setComment(prev=>[newData,...prev]);
             }
         }
@@ -271,7 +272,7 @@ export default function CommentEl() {
                     <div className="h-1.5 w-16 bg-skin-login absolute top-0 rounded-md md:hidden" />
                 <div className="virtuoso relative h-9/10 w-full flex items-center justify-center flex-wrap gap-4 my-scroll">
                     {
-                       commentData?.length < 1 ? <div className="text-skin-ptext">Be the first commenter...💬</div> : 
+                       commentData?.length > 0 ?
                         commentData?.map((cmnt,index)=>{
                             let {username,avatar,commentID,comment,post_id,isLiked,totalLike,created_at} = cmnt;
                             let isSecondLast = index === commentData.length-2;
@@ -304,7 +305,7 @@ export default function CommentEl() {
                                     </div>
                                 </div>
                             )
-                        })
+                        }) : <div className="text-skin-ptext">Be the first commenter...💬</div>
                     }
                 </div>
                 <div className="w-full h-1/10 absolute bottom-0">

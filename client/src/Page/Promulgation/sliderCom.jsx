@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { UnivuUserInfo } from "../../lib/basicUserinfo";
 
-export default function ImageSlider({ imgArray, setArray }) {
+export default function ImageSlider({ imgArray, setArray,toggle }) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [containerWidth,setWidth] = useState(0);
@@ -28,11 +28,17 @@ export default function ImageSlider({ imgArray, setArray }) {
 
   const nextImg = () => {
     setDirection(1);
+    if (toggle) {
+      toggle(true)
+    }
     setIndex((prev) => (prev + 1) % imgArray.length);
   };
 
   const prevImg = () => {
     setDirection(-1);
+    if (toggle) {
+      toggle(true)
+    }
     setIndex((prev) => (prev - 1 + imgArray.length) % imgArray.length);
   };
 

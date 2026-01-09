@@ -18,17 +18,16 @@ export default function MaximizeContainer() {
     },[postData]);
 
     useEffect(()=>{
-    
         const handleClick = evnt=>{
             const el = containerRef.current;
-            if (el && !el.contains(evnt.target)) {
+            if (el && !el.contains(evnt.target) && !toggleBtn) {
                 navi(-1);
             }
+            setToggel(false)
         }
-
         document.addEventListener("click",handleClick);
         return ()=> document.removeEventListener("click",handleClick);
-    },[])
+    },[toggleBtn])
 
     return(
             <div className="underTaker">
@@ -42,7 +41,7 @@ export default function MaximizeContainer() {
                 <div ref={containerRef} className="commentAndImage h-9/10 w-5/6 rounded-lg p-2 flex items-center justify-center flex-wrap bg-skin-bg md:bg-black/50 backdrop-blur-lg">
                     <div className="ImageCon flex-1  flex items-center justify-center h-full relative transition-all duration-200">
                         <i className={`bx bx${isFull ? "-exit-" : "-"}fullscreen absolute bottom-4 right-5 z-20 text-skin-ptext text-2xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>setFull(prev=>!prev)}></i>
-                        <ImageSlider imgArray={crntPost?.images_url || []} />
+                        <ImageSlider imgArray={crntPost?.images_url || []} toggle={setToggel} />
                     </div>
                    <div className={`${isFull ? "w-0!" : "flex-1"} transition-all duration-200 flex items-center justify-center h-full`}>
                         <CommentEl/>

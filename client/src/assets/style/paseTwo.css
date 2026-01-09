@@ -113,7 +113,7 @@ select{
         border-radius: 4px;
         background-color: var(--p-text-color);
         transform-origin: center;
-        transition: transform 0.7s ease-in-out;
+        transition: transform 0.3s ease-in-out;
       }
 
       &:hover::after {
@@ -183,7 +183,7 @@ select{
         border-radius: 8px;
         border: 1px solid gray;
         cursor: pointer;
-        transition: all .7s ease-in;
+        transition: all .3s ease-in;
 
         &:hover{
           color: var(--p-text-color);
@@ -213,7 +213,7 @@ select{
     justify-content: center;
     gap: 50px;
     transform: translateX(32px);
-    transition: all .7s;
+    transition: all .3s;
   }
 
   &:hover{

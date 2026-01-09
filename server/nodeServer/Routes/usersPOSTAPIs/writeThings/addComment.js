@@ -20,6 +20,7 @@ export const CommentAPI = async (rkv,rspo) => {
     let {text,pID:post_id} = rkv.body;
     let commentID = nanoid();
     try {
+        if (!text.trim() || !post_id.trim()) return rspo.status(400).send({err:"Something went Wrong"});
         if (text.length<1 || text.length > 300) return rspo.status(400).send({err:"Invalid Comment Length"});
         let [rows] = await database.query("SELECT visibility, id, blockCat FROM posts WHERE post_id = ? AND canComment = 1 LIMIT 1",[post_id]);
         if (rows.length === 0 ) return rspo.status(401).send({err:"HeHeHeHeHeHeeeeeeeee......"});

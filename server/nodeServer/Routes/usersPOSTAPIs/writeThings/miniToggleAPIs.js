@@ -8,6 +8,7 @@ export const miniToggleDy = async (rkv,rspo) => {
     let {setting,post_id} = rkv.body;
     let validationArray = ["likeCount","canComment","visibility"];
     try {
+        if (!setting.trim() || !post_id.trim()) return rspo.status(400).send({err:"Something went wrong ()"})
         if (!validationArray.includes(setting)) return rspo.status(400).send({err:"Invalid Toggle key"});
         let [row] = await database.query(`SELECT ${setting} FROM posts WHERE post_id = ? AND id = ?`,[post_id,id]);
         if (row.length === 0) return rspo.status(401).send({err:"Something went wrong "});
@@ -26,12 +27,15 @@ export const reportCommentAPI = async (rkv,rspo) => {
     let {id} = rkv.authData;
     let {commentID,post_id} = rkv.body;
     try {
-        let [rows] = await database.query("SELECT commentID FROM commentReport WHERE commentID = ? AND id = ? AND post_id = ?",
+        if (!commentID.trim() || !post_id.trim()) return rspo.status(401).send({err:"Something went wrong"}); 
+        let [rows] = await database.query("SELECT commentID FROM commentReports WHERE commentID = ? AND id = ? AND post_id = ?",
             [commentID,id,post_id]);
-        if (rows[0].length !== 0) return rspo.status(400).send({err:"You! already Report this comment"});
-        
+        if (rows.length !== 0) return rspo.status(400).send({err:"A report is Already submited!"});
+        await database.query("INSERT INTO commentReports (id,post_id,commentID) VALUES (?,?,?);",[id,post_id,commentID])
+        rspo.status(200).send({pass:"Report Submited!"});
     } catch (error) {
-        
+        console.log(error.message)
+        rspo.status(500).send({err:"Server side Error"});
     } finally {
         completeRequest(crntIP,crntAPI)
     }

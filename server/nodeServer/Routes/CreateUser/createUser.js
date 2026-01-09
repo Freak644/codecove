@@ -63,7 +63,7 @@ export const CreateUser = async (rkv, rspo) => {
     }
 
 
-    if (!email?.trim() || !username?.trim() || !password?.trim()) {
+    if (!email?.trim() || !username?.trim() || !password?.trim() || username.length<6) {
       return rspo.status(400).send({ err: "Please provide proper information" });
     }
 

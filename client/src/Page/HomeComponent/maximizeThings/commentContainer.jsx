@@ -58,6 +58,7 @@ export default function CommentEl() {
                 if (!result.isComment) setCanComnt(result.isComment)
                 throw new Error(result.err)
             }
+            console.log(result.commentrows)
             if (result.commentrows.length>0) {
                 setComment(result.commentrows);
             }
@@ -228,14 +229,14 @@ export default function CommentEl() {
         }
     }
 
-    const reportComment = async (comment_id) => {
+    const reportComment = async (comment_id,post_id) => {
         try {
             let rqst = await fetch("/myServer/writePost/reportComment",{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
                 },
-                body:JSON.stringify({commentID:comment_id})
+                body:JSON.stringify({commentID:comment_id,post_id})
             });
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
@@ -301,7 +302,7 @@ export default function CommentEl() {
                                     <div className="layerTwo flex items-center w-full pl-10  justify-start text-gray-500 text-[13px] gap-4">
                                         <i className="bx">{`${totalLike} like`}</i>
                                         <i className="bx">{timeAgoIntl(created_at)}</i>
-                                        <i onClick={()=>reportComment(commentID)} className="bx bxs-report cursor-pointer">Report</i>
+                                        <i onClick={()=>reportComment(commentID,post_id)} className="bx bxs-report cursor-pointer">Report</i>
                                     </div>
                                 </div>
                             )

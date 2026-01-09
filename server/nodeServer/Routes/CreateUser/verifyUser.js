@@ -68,28 +68,37 @@ export const verifyEmail = async (rkv,rspo) => {
         let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec)
         let decodedTime = Math.floor(Date.now()/1000)
         if (!token) {
-        return rspo.status(400).send({ err: "OTP Cookie is missing or expired" });
+            return rspo.status(400).send({ err: "OTP Cookie is missing or expired" });
         }
         if (tokenData.exp<decodedTime) {
             return rspo.status(504).send({err:"The OTP is expire"})
         }
         
-    if (tokenData.username !== username || tokenData.email !== email) {
-        return rspo.status(401).send({ err: "Unauthorized request" });
+        if (tokenData.username !== username || tokenData.email !== email) {
+            return rspo.status(401).send({ err: "Unauthorized request" });
         }
 
-        // 4️⃣ Validate OTP
+
         if (tokenData.otp.toString() !== inOTP) {
-        return rspo.status(400).send({ err: "Invalid OTP" });
+            return rspo.status(400).send({ err: "Invalid OTP" });
         }
 
-        // 5️⃣ OTP verified successfully
     
         if (tokenData.otp.toString() === inOTP) {
             rspo.clearCookie("otpToken");
+            const token = jwt.sign({verify:true},process.env.jwt_sec,{expiresIn:"5m"});
+            const encryptedToken = await Encrypt(token);
+            rspo.cookie("emailStatus",encryptedToken,{
+                httpOnly: true,
+                secure: true,
+                sameSite:"strict",
+                maxAge: 6 * 60 * 1000
+            });
             return rspo.status(200).send({ pass: "OTP verified successfully!" });
         }
-
+        
+        throw new Error("Something is missing");
+        
    } catch (error) {
     rspo.status(500).send({err:"server side error",details:error.message})
    }finally{

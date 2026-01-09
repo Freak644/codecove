@@ -246,6 +246,25 @@ export default function CommentEl() {
         }
     }
 
+    const deleteComment = async (comment_id,post_id) => {
+        try {
+            if (!comment_id.trim() || !post_id.trim()) throw new Error("Ivadile info");
+            
+            let rqst = await fetch("/myServer/writePost/deleteComment",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({comment_id,post_id})
+            });
+            let result = await rqst.json();
+            if (result.err) throw new Error(result.err);
+            toast.success(result.pass);
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+
     return(
          <div className="underTaker">
             {canComment ? <div onTouchStart={onStart}

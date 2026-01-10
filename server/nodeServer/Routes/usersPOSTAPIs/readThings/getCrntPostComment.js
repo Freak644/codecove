@@ -14,6 +14,7 @@ export const getComment = async (rkv,rspo) => {
         const {visibility,canComment} = rows[0];
         if (!visibility || !canComment) return rspo.status(401).send({err:"Heheheheheeeeee....",isComment:false});
         const [commentrows] = await database.query(`SELECT 
+                    u.id,
                     u.username,
                     u.avatar,
                     c.*,
@@ -23,7 +24,12 @@ export const getComment = async (rkv,rspo) => {
                         FROM commentLikes li
                         WHERE li.id = ?
                         AND li.commentID = c.commentID
-                    ) AS isLiked
+                    ) AS isLiked,
+                     EXISTS (
+                        SELECT 1
+                        FROM posts pst
+                        WHERE pst.post_id = c.post_id AND pst.id = ?
+                     ) AS isOwner
                 FROM comments c
                 INNER JOIN users u 
                     ON u.id = c.id
@@ -33,9 +39,9 @@ export const getComment = async (rkv,rspo) => {
                     GROUP BY commentID
                 ) cl 
                     ON cl.commentID = c.commentID
-                WHERE c.post_id = ? AND c.isBlocked=0 AND c.isReported < 10
+                WHERE c.post_id = ? AND c.isBlocked=0 AND c.isReported < 100
                 ORDER BY c.created_at DESC
-                LIMIT ? OFFSET ?`,[id,post_id,intLimit,intOffset]);
+                LIMIT ? OFFSET ?`,[id,id,post_id,intLimit,intOffset]);
         rspo.send({pass:"Done h boss",commentrows})
     } catch (error) {
         console.log(error.message);

@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useRef, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 const EmojiPicker = React.lazy(()=>import("emoji-picker-react"));
 import {toast} from 'react-toastify'
 import socket from "../../../utils/socket";
@@ -251,11 +251,11 @@ export default function CommentEl() {
             if (!comment_id.trim() || !post_id.trim()) throw new Error("Ivadile info");
             
             let rqst = await fetch("/myServer/writePost/deleteComment",{
-                method:"POST",
+                method:"DELETE",
                 headers:{
                     "Content-Type":"application/json"
                 },
-                body:JSON.stringify({comment_id,post_id})
+                body:JSON.stringify({commentID:comment_id,post_id})
             });
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
@@ -290,26 +290,28 @@ export default function CommentEl() {
              
              className={`h-full w-full mainInnerCC flex items-center flex-col p-1 touch-none`}>
                     <div className="h-1.5 w-16 bg-skin-login absolute top-0 rounded-md md:hidden" />
-                <div className="virtuoso relative h-9/10 w-full flex items-center justify-center flex-wrap gap-4 my-scroll">
+                <div className="virtuoso relative h-9/10 w-full flex items-start justify-items-start flex-wrap gap-4 my-scroll">
                     {
                        commentData?.length > 0 ?
                         commentData?.map((cmnt,index)=>{
-                            let {username,avatar,commentID,comment,post_id,isLiked,totalLike,created_at} = cmnt;
+                            let {username,avatar,isOwner,commentID,comment,post_id,isLiked,id,totalLike,created_at} = cmnt;
                             let isSecondLast = index === commentData.length-2;
                             return(
                                 <div key={commentID} ref={isSecondLast ? secondLastRef : null} className="h-auto w-full text-skin-text flex items-center flex-col">
                                     <div className="layerOne flex items-center justify-start w-full h-auto">
                                         <div className="userAndComment flex items-start gap-2 w-[93%] p-2">
-  
-                                            <img
-                                                src={`/myServer${avatar}`}
-                                                className="h-10 w-10 rounded-full shrink-0"
-                                                alt=""
-                                            />
-
+                                            <Link className="flex items-start" to={`/Lab/${username}`}>
+                                                <img
+                                                    src={`/myServer${avatar}`}
+                                                    className="h-10 w-10 rounded-full shrink-0"
+                                                    alt=""
+                                                />
+                                            </Link>
                                             <div className="flex flex-col gap-2">
-                                                <span className="font-semibold">{username}</span>
-                                                <p className="text-wrap wrap-break-words">{comment}</p>
+                                                <Link className="flex" to={`/Lab/${username}`}>
+                                                    <span className="font-semibold">{username}</span>
+                                                </Link>
+                                                <p className="text-wrap wrap-break-words pointer-events-none">{comment}</p>
                                             </div>
 
                                         </div>
@@ -322,6 +324,7 @@ export default function CommentEl() {
                                         <i className="bx">{`${totalLike} like`}</i>
                                         <i className="bx">{timeAgoIntl(created_at)}</i>
                                         <i onClick={()=>reportComment(commentID,post_id)} className="bx bxs-report cursor-pointer">Report</i>
+                                        {(uID === id || isOwner) &&<i onClick={()=>deleteComment(commentID,post_id)} className="bx bx-trash cursor-pointer"></i>}
                                     </div>
                                 </div>
                             )

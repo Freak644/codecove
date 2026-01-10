@@ -40,3 +40,23 @@ export const reportCommentAPI = async (rkv,rspo) => {
         completeRequest(crntIP,crntAPI)
     }
 }
+
+export const DeleteCommentAPI = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
+    let {id} = rkv.authData;
+    let {commentID} = rkv.body;
+    try {
+        if (!commentID.trim()) return rspo.status(401).send({err:"Something went wrong"});
+        let [rows] = await database.query("SELECT EXISTS (SELECT 1 FROM comments c JOIN posts p ON p.post_id = c.post_id WHERE c.commentID = ? AND ( p.id = ? OR c.id = ?)) AS isAuth;",[commentID,id,id]);
+        let {isAuth} = rows[0];
+        if (!isAuth) return rspo.status(401).send({err:"You! didn't have auth"})
+            //await database.query("DELETE FROM comments WHERE commentID = ?",[commentID])
+        rspo.status(200).send({pass:"Deleted!"})
+    } catch (error) {
+        console.log(error.message)
+        rspo.status(500).send({err:"Server side error"});
+    } finally {
+        completeRequest(crntIP,crntAPI);
+    }
+}

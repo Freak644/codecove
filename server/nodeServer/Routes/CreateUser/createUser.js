@@ -99,7 +99,7 @@ export const CreateUser = async (rkv, rspo) => {
     const dir = "./Images/Avtar";
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
-    let avatarFileName = "default.png";
+    let avatarFileName = "default.webp";
     if (file) {
       avatarFileName = username+Date.now()+"."+file.originalname;
       const avatarPath = path.join(dir, avatarFileName);

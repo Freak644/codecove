@@ -18,13 +18,6 @@ export const getComment = async (rkv,rspo) => {
                     u.username,
                     u.avatar,
                     c.*,
-                    COALESCE(cl.totalLike, 0) AS totalLike,
-                    EXISTS (
-                        SELECT 1
-                        FROM commentLikes li
-                        WHERE li.id = ?
-                        AND li.commentID = c.commentID
-                    ) AS isLiked,
                      EXISTS (
                         SELECT 1
                         FROM posts pst
@@ -33,15 +26,9 @@ export const getComment = async (rkv,rspo) => {
                 FROM comments c
                 INNER JOIN users u 
                     ON u.id = c.id
-                LEFT JOIN (
-                    SELECT commentID, COUNT(*) AS totalLike
-                    FROM commentLikes
-                    GROUP BY commentID
-                ) cl 
-                    ON cl.commentID = c.commentID
                 WHERE c.post_id = ? AND c.isBlocked=0 AND c.isReported < 100
                 ORDER BY c.created_at DESC
-                LIMIT ? OFFSET ?`,[id,id,post_id,intLimit,intOffset]);
+                LIMIT ? OFFSET ?`,[id,post_id,intLimit,intOffset]);
         rspo.send({pass:"Done h boss",commentrows})
     } catch (error) {
         console.log(error.message);

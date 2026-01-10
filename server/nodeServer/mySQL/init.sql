@@ -85,13 +85,16 @@ CREATE TABLE IF NOT EXISTS posts (
   caption TEXT,
   blockCat JSON NOT NULL,
   visibility BOOLEAN DEFAULT 1,
+  totalLike BIGINT DEFAULT 0,
+  totalComment BIGINT DEFAULT 0,
   post_moment VARCHAR(100) NOT NULL,
   canComment BOOLEAN DEFAULT 1,
   likeCount BOOLEAN DEFAULT 1,
   canSave VARCHAR(50) DEFAULT "Everyone",
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  INDEX idx_user_id (id)
+  INDEX idx_user_id (id),
+  INDEX idx_feed_visibility_created (visibility, created_at)
 );
 
 
@@ -227,6 +230,7 @@ CREATE TABLE IF NOT EXISTS comments (
   post_id CHAR(36) NOT NULL,
   id CHAR(36) NOT NULL,
   comment TEXT NOT NULL,
+  totalLike BIGINT DEFAULT 0,
   isReported INT DEFAULT 0,
   isBlocked BOOLEAN DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -245,9 +249,7 @@ CREATE TABLE IF NOT EXISTS commentLikes (
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (commentID) REFERENCES comments(commentID) ON DELETE CASCADE,
-  INDEX idx_post_id (post_id),
-  INDEX idx_user_id (id),
-  INDEX idx_comment_id (commentID)
+  INDEX idx_user_id (id)
 );
 
 CREATE TABLE IF NOT EXISTS commentReports (
@@ -258,28 +260,58 @@ CREATE TABLE IF NOT EXISTS commentReports (
   UNIQUE(id,post_id,commentID),
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  FOREIGN KEY (commentID) REFERENCES comments(commentID) ON DELETE CASCADE,
-  INDEX idx_post_id (post_id),
-  INDEX idx_user_id (id),
-  INDEX idx_comment_id (commentID)
+  FOREIGN KEY (commentID) REFERENCES comments(commentID) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS achievements (
-  achievement_id CHAR(36) PRIMARY KEY DEFAULT(UUID()),
-  achiveementURL VARCHAR(256) NOT NULL,
+  achievement_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  achievement_url VARCHAR(256) NOT NULL,
+  achievement_details TEXT NOT NULL,
+  steps_needed INT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
 
-CREATE TABLE IF NOT EXISTS achievementsRecords (
-  ar_id CHAR(36) PRIMARY KEY,
+
+CREATE TABLE IF NOT EXISTS user_achievements (
+  user_achievement_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
   id CHAR(36) NOT NULL,
   achievement_id CHAR(36) NOT NULL,
   progress INT DEFAULT 0,
-  get_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  achieved_at TIMESTAMP NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  INDEX idx_user_id (id),
-  INDEX idx_achievement_id (achievement_id)
+  FOREIGN KEY (achievement_id) REFERENCES achievements(achievement_id) ON DELETE CASCADE,
+
+  UNIQUE KEY uniq_user_achievement (id, achievement_id)
 );
+
+
+CREATE TABLE IF NOT EXISTS achievement_progress (
+  progress_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  user_achievement_id CHAR(36) NOT NULL,
+  current_step INT NOT NULL,
+  started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (user_achievement_id)
+    REFERENCES user_achievements(user_achievement_id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS achievement_shoutouts (
+  shoutout_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  progress_id CHAR(36) NOT NULL,
+  post_id CHAR (36) NOT NULL,
+  id CHAR(36) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (progress_id) REFERENCES achievement_progress(progress_id),
+  FOREIGN KEY (id) REFERENCES users(id),
+
+  UNIQUE KEY uniq_shoutout (progress_id, id)
+);
+
 
 CREATE TABLE IF NOT EXISTS follows (
   follower_id CHAR(36) NOT NULL,

@@ -9,15 +9,18 @@ export const starPost = async (rkv,rspo) => {
     let {post_id} = rkv.body;
 
     try {
+        if (!post_id || !post_id.trim()) return rspo.status(401).send({err:"Something went wrong"});
         let io = getIO();
         let [row] = await database.query("SELECT visibility FROM posts WHERE post_id = ?",[post_id]);
         if (!row[0].visibility) return rspo.status(422).send({err:"The post is private"});
         let [rows] = await database.query("SELECT post_id FROM likes WHERE post_id = ? AND id = ?",[post_id,id]);
         if (rows.length === 0) {
             await database.query("INSERT INTO likes (post_id, id) VALUES ( ?, ?) ",[post_id,id]);
+            await database.query("UPDATE posts SET totalLike = totalLike + 1 WHERE post_id = ?",[post_id]);
             io.emit("newLike",{post_id,user_id:id,like:true})
         } else {
             await database.query("DELETE FROM likes WHERE post_id = ? AND id = ?",[post_id,id]);
+            await database.query("UPDATE posts SET totalLike = totalLike - 1 WHERE post_id = ?",[post_id]);
             io.emit("newLike",{post_id,user_id:id,like:false})
         }
 
@@ -42,6 +45,7 @@ export const likeComment = async (rkv,rspo) => {
         let [row] = await database.query("SELECT commentID FROM commentLikes WHERE commentID = ? AND id = ?",[commentID,id]);
         if (row.length === 0) {
             await database.query("INSERT INTO commentLikes (commentID, post_id, id) VALUES (?,?,?)",[commentID,post_id,id]);
+            
             io.emit("newCommentLike",{post_id,commentID,user_id:id,like:true});
         } else {
             await database.query("DELETE FROM commentLikes WHERE commentID = ? AND post_id = ? AND id = ?",[commentID,post_id,id]);

@@ -120,15 +120,23 @@ export default function CommentEl() {
         const handleComments = (newData) => {
             let {post_id:pid,id} = newData;
             if (pID === pid && id === uID) {
-                console.log(newData)
                 setComment(prev=>[newData,...prev]);
             }
         }
 
+        const handleDelete = (newData) => {
+            let {post_id:pid,commentID,id} = newData;
+            if (pID === pid && id === uID) {
+                let newCommentData = commentData.filter(cmnt=> cmnt.commentID !== commentID);
+                setComment(newCommentData)
+            }
+        }
+        socket.on("deleteComment",handleDelete);
         socket.on("newCommentLike",handleLikes);
         socket.on("newComment",handleComments);
         return () => {
             socket.emit("leavePost",pID);
+            socket.emit("deleteComment",handleDelete);
             socket.off("newComment",handleComments);
             socket.off("newCommentLike",handleLikes);
         }

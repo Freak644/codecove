@@ -58,7 +58,7 @@ export default function CommentEl() {
                 if (!result.isComment) setCanComnt(result.isComment)
                 throw new Error(result.err)
             }
-            console.log(result.commentrows)
+            // console.log(result.commentrows)
             if (result.commentrows.length>0) {
                 setComment(result.commentrows);
             }
@@ -99,10 +99,10 @@ export default function CommentEl() {
 
     useEffect(()=>{
         // if (commentData.length<1) return;
-        console.log(commentData.length)
+        // console.log(commentData.length)
         socket.emit("joinPost",pID);
         const handleLikes = ({commentID: CId,post_id:pid, user_id,like}) =>{
-            console.log(user_id,like)
+            // console.log(user_id,like)
             if (pID === pid) {
                 setComment(prev =>
                     prev.map(obj => {

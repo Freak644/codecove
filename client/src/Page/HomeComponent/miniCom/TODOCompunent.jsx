@@ -47,13 +47,25 @@ export default function TODOList({crntPost_id}) {
             }
         };
 
+        const handleDeleteComment = ({post_id :pid}) => {
+            if (pid === post_id) {
+                setUnivPost({
+                    [post_id]:{
+                        totalComment:totalComment - 1
+                    }
+                })
+            }
+        }
+
         socket.on("newLike",handleLike);
         socket.on("newComment",handleComment);
+        socket.on("deleteComment",handleDeleteComment);
 
         return () =>{
              socket.emit("leavePost",post_id);
              socket.off("newLike",handleLike);
              socket.off("newComment",handleComment);
+             socket.off("deleteComment",handleDeleteComment);
         }
     },[crntPost]);
 
@@ -123,7 +135,7 @@ export default function TODOList({crntPost_id}) {
                 body:JSON.stringify({post_id})
             })
             let result = await rqst.json();
-            console.log(result)
+            
         } catch (error) {
             console.log(error)
         }

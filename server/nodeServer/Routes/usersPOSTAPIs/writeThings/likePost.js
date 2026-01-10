@@ -39,16 +39,18 @@ export const likeComment = async (rkv,rspo) => {
     let {id} = rkv.authData;
     let {commentID,post_id} = rkv.body;
     try {
+        if (!post_id || !commentID || !post_id.trim() || !commentID.trim()) return rspo.status(401).send({err:"Something went wrong"});
         let io = getIO();
         let [rows] = await database.query("SELECT visibility FROM posts WHERE post_id = ?",[post_id]);
         if (!rows[0].visibility) return rspo.status(422).send({err:"The post is private"});
         let [row] = await database.query("SELECT commentID FROM commentLikes WHERE commentID = ? AND id = ?",[commentID,id]);
         if (row.length === 0) {
             await database.query("INSERT INTO commentLikes (commentID, post_id, id) VALUES (?,?,?)",[commentID,post_id,id]);
-            
+            await database.query("UPDATE comments SET totalLike = totalLike + 1 WHERE commentID = ?",[commentID]);
             io.emit("newCommentLike",{post_id,commentID,user_id:id,like:true});
         } else {
             await database.query("DELETE FROM commentLikes WHERE commentID = ? AND post_id = ? AND id = ?",[commentID,post_id,id]);
+            await database.query("UPDATE comments SET totalLike = totalLike - 1 WHERE commentID = ?",[commentID]);
             io.emit("newCommentLike",{post_id,commentID,user_id:id,like:false});
         }
         rspo.status(200).send({test:"done"});

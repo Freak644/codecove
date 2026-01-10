@@ -26,7 +26,7 @@ export const getComment = async (rkv,rspo) => {
                 FROM comments c
                 INNER JOIN users u 
                     ON u.id = c.id
-                WHERE c.post_id = ? AND c.isBlocked=0 AND c.isReported < 100
+                WHERE c.post_id = ? AND c.isBlocked=0 AND c.report_count < 100
                 ORDER BY c.created_at DESC
                 LIMIT ? OFFSET ?`,[id,post_id,intLimit,intOffset]);
         rspo.send({pass:"Done h boss",commentrows})

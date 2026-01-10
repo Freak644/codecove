@@ -31,7 +31,13 @@ export const reportCommentAPI = async (rkv,rspo) => {
         let [rows] = await database.query("SELECT commentID FROM commentReports WHERE commentID = ? AND id = ? AND post_id = ?",
             [commentID,id,post_id]);
         if (rows.length !== 0) return rspo.status(400).send({err:"A report is Already submited!"});
-        await database.query("INSERT INTO commentReports (id,post_id,commentID) VALUES (?,?,?);",[id,post_id,commentID])
+        let [row] = await database.query("SELECT report_count FROM comments WHERE commentID = ? AND isBlocked <> 1",[commentID]);
+        if (row.length === 0) return rspo.status(401).send({err:"This comment is Blocked or removed!"});
+        if (row[0].report_count >= 99) {
+            await database.query("UPDATE comments SET isBlocked = 1 WHERE commentID = ?",[commentID]);
+        }
+        await database.query("INSERT INTO commentReports (id,post_id,commentID) VALUES (?,?,?);",[id,post_id,commentID]);
+        await database.query("UPDATE comments SET report_count = report_count + 1 WHERE commentID = ?",[commentID]);
         rspo.status(200).send({pass:"Report Submited!"});
     } catch (error) {
         console.log(error.message)
@@ -48,11 +54,12 @@ export const DeleteCommentAPI = async (rkv,rspo) => {
     let {commentID,post_id} = rkv.body;
     try {
         console.log(post_id)
-        if (!commentID.trim() || !post_id.trim()) return rspo.status(401).send({err:"Something went wrong"});
+        if (!post_id || !commentID || !commentID.trim() || !post_id.trim()) return rspo.status(401).send({err:"Something went wrong"});
         let [rows] = await database.query("SELECT EXISTS (SELECT 1 FROM comments c JOIN posts p ON p.post_id = c.post_id WHERE c.commentID = ? AND ( p.id = ? OR c.id = ?)) AS isAuth;",[commentID,id,id]);
         let {isAuth} = rows[0];
         if (!isAuth) return rspo.status(401).send({err:"You! didn't have auth"});
         await database.query("DELETE FROM comments WHERE commentID = ?",[commentID]);
+        await database.query("UPDATE posts SET totalComment = totalComment - 1 WHERE post_id = ?",[post_id])
         let io = getIO();
         io.emit("deleteComment",{post_id,commentID,id})
         rspo.status(200).send({pass:"Deleted!"})

@@ -7,7 +7,7 @@ export const getUserinfo = async (rkv,rspo) => {
     let {id} = rkv.authData;
     let {username} = rkv.query;
     try {
-        let [rows] = await database.query(`SELECT id, username, avatar, bio, quote, follower_count, following_count, private_ac, 
+        let [rows] = await database.query(`SELECT id, username, avatar, bio, follower_count, following_count, private_ac, 
             EXISTS (SELECT 1 FROM follows WHERE follower_id = ? AND following_id = u.id) AS isFollowing,
             EXISTS (SELECT 1 FROM follows WHERE follower_id = u.id AND following_id = ?) AS isFollowMe
             FROM users u WHERE u.username = ?`,[id,id,username]);

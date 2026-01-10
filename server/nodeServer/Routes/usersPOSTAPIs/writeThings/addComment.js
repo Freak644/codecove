@@ -20,7 +20,7 @@ export const CommentAPI = async (rkv,rspo) => {
     let {text,pID:post_id} = rkv.body;
     let commentID = nanoid();
     try {
-        if (!text.trim() || !post_id.trim()) return rspo.status(400).send({err:"Something went Wrong"});
+        if (!text || !post_id || !text.trim() || !post_id.trim()) return rspo.status(400).send({err:"Something went Wrong"});
         if (text.length<1 || text.length > 300) return rspo.status(400).send({err:"Invalid Comment Length"});
         let [rows] = await database.query("SELECT visibility, id, blockCat FROM posts WHERE post_id = ? AND canComment = 1 LIMIT 1",[post_id]);
         if (rows.length === 0 ) return rspo.status(401).send({err:"HeHeHeHeHeHeeeeeeeee......"});
@@ -33,12 +33,12 @@ export const CommentAPI = async (rkv,rspo) => {
         await database.query("INSERT INTO comments (commentID, post_id, id, comment) VALUES (?,?,?,?);",
             [commentID,post_id,id,text]
         )
+        await database.query("UPDATE posts SET totalComment = totalComment + 1 WHERE post_id = ?",[post_id])
         const io = getIO();
         const [commentRows] = await database.query(`SELECT 
                         u.username,
                         u.avatar,
                         c.*,
-                        COALESCE(cl.totalLike, 0) AS totalLike,
                         EXISTS (
                             SELECT 1
                             FROM commentLikes li
@@ -48,12 +48,6 @@ export const CommentAPI = async (rkv,rspo) => {
                     FROM comments c
                     INNER JOIN users u 
                         ON u.id = c.id
-                    LEFT JOIN (
-                        SELECT commentID, COUNT(*) AS totalLike
-                        FROM commentLikes
-                        GROUP BY commentID
-                    ) cl 
-                        ON cl.commentID = c.commentID
                     WHERE c.commentID = ?;`,[id,commentID]);
         io.emit("newComment",commentRows[0]);
         rspo.status(200).send({pass:""});

@@ -19,7 +19,7 @@ export const getUserinfo = async (rkv,rspo) => {
         }
         rspo.status(200).send({pass:"Got it", userInfo:rows[0]});
     } catch (error) {
-        console.log(error.message)
+        // console.log(error.message)
         rspo.status(500).send({err:"Server side error"});
     }finally{
         completeRequest(crntIP,crntAPI);

@@ -40,7 +40,7 @@ export const reportCommentAPI = async (rkv,rspo) => {
         await database.query("UPDATE comments SET report_count = report_count + 1 WHERE commentID = ?",[commentID]);
         rspo.status(200).send({pass:"Report Submited!"});
     } catch (error) {
-        console.log(error.message)
+        // console.log(error.message)
         rspo.status(500).send({err:"Server side Error"});
     } finally {
         completeRequest(crntIP,crntAPI)
@@ -64,7 +64,7 @@ export const DeleteCommentAPI = async (rkv,rspo) => {
         io.emit("deleteComment",{post_id,commentID,id})
         rspo.status(200).send({pass:"Deleted!"})
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         rspo.status(500).send({err:"Server side error"});
     } finally {
         completeRequest(crntIP,crntAPI);

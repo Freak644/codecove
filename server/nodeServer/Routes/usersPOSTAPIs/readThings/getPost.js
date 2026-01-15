@@ -36,7 +36,7 @@ export const GetPosts = async (rkv,rspo) => {
             `,
         [id,id,limit,offset]); // i like to write a query in a single row but this query  i have to write it like this because in a single row it too hard to find which thing came from where
         if (rows.length < 1) return rspo.status(404).send({err:"No posts",count:0});
-         console.log(rows[0])
+        //  console.log(rows[0])
         rows = rows.map((row)=>{
             delete row.blockCat;
             // row.id = id;

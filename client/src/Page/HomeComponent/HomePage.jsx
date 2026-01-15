@@ -15,6 +15,7 @@ export default function HonePage() {
   const [isEnd,setEnd] = useState(false)
   const userInfo = UnivuUserInfo(stat=>stat.userInfo);
   const crntTab = toggleSlider(stat=>stat.isMiniTab);
+  const [isCalled,setCalling] = useState(true);
   let {toggleMiniTab} = toggleSlider();
   let {toggleLoader} = Loader();
 
@@ -44,31 +45,51 @@ export default function HonePage() {
 
 
   const fetchPost = async () => {
+    console.log("in fetch")
     let rqst = await fetch(`/myServer/getPost?limit=15&offset=${offset}`);
     const data = await rqst.json();
     if (data.err) {
      return  toast.error(data.err);
     }
-    setPosts(data.post);
+    if (data.post.length < 15) {
+      setEnd(true);
+      setPosts(data.post);
+    }else{
+      setPosts(data.post);
+    }
     setOffset(prev=>prev+15)
   }
+
+  let isThere = true;
+
   useEffect(()=>{
-     if (Posts.length < 15) {
-      fetchPost()
-     }
-  },[])
+        if (Posts.length === 0 && isThere) {
+          fetchPost();
+        } 
+        isThere = false;
+  },[Posts])
+
+  useEffect(()=>{
+    console.log("post Are",Posts,"offset is:",offset);
+  },[Posts])
 
   
   const fetchMorePost = async (crntSet) => {
+    
     toggleLoader(true)
     if (isEnd) return;
+    console.log("in fetch more")
     try {
       let rqst = await fetch(`/myServer/getPost?limit=10&offset=${crntSet}`); 
       let data = await rqst.json();
-      if (data.err || data.post.length < 1) {
-        setEnd(true)
+      if (data.err) {
         throw new Error("");
         
+      }
+      if (data.post.length < 10) {
+        setEnd(true)
+        setOffset(crntSet+10);
+        setPosts(prev=>[...prev,...data.post]);
       }
       setOffset(crntSet+10);
       setPosts(prev=>[...prev,...data.post]);

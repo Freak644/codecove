@@ -279,7 +279,7 @@ CREATE TABLE IF NOT EXISTS user_achievements (
   condition JSON NOT NULL,
   achieved_at TIMESTAMP NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
+  
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (achievement_id) REFERENCES achievements(achievement_id) ON DELETE CASCADE,
 

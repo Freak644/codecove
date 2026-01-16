@@ -39,6 +39,7 @@ import { getUserinfo } from './Routes/getUsers/prifileAPIs.js';
 import { changeBio, changeDP } from './Routes/editProfileAPIs/userInfoApis.js';
 import { followAPI } from './Routes/editProfileAPIs/followUnfollow.js';
 import { changeBioSocket } from './socketIO/userProfileSocket.js';
+import { addNewAchievement } from './Routes/Achievement/createAchievement.js';
 let myApp = express();
 myApp.use(express.json({limit:"1gb"}));
 myApp.use(requestIp.mw())
@@ -93,6 +94,7 @@ myApp.post("/writeUser/follow",RateLimiter,checkRequest,Auth,followAPI);
 myApp.put("/writeUser/changeDP",RateLimiter,checkRequest,upload.single("avatar"),Auth,changeDP);
 myApp.post("/writePost/reportComment",RateLimiter,checkRequest,Auth,reportCommentAPI);
 myApp.delete("/writePost/deleteComment",RateLimiter,checkRequest,Auth,DeleteCommentAPI);
+myApp.post("/createAchievement",addNewAchievement);
 
 
 

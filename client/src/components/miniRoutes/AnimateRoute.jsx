@@ -5,6 +5,7 @@ import BaseCreate from '../../Page/Promulgation/baseCreateCom';
 import NotFound from '../../Page/BaseComponent/404NotFound';
 import MaximizeContainer from '../../Page/HomeComponent/maximizeThings/baseContainer';
 import MainLapCom from '../../Page/myLab/mainLap';
+import CreateAchievement from '../../Admin/createAcheivement';
 export default function AnimateRoute({location}) {
     const noAnimetArray = ['/']
     const background = location.state?.background;
@@ -17,7 +18,7 @@ export default function AnimateRoute({location}) {
                         <Route path='/' element={<HomePage/>} />
                         <Route path='/Commit' element={<BaseCreate/>} />
                         <Route path='/Lab/:username' element={<MainLapCom/>} />
-
+                        <Route path='/Ache' element={<CreateAchievement/>} />
                         <Route path='*' element={<NotFound/>} />
                     </Routes>
                 </PageTransition>

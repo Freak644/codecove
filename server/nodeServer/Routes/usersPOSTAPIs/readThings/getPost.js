@@ -45,7 +45,7 @@ export const GetPosts = async (rkv,rspo) => {
 
         rspo.status(201).send({pass:"Found",post:rows})
     } catch (error) {
-        console.log("jj",error.messge)
+        //console.log("jj",error.messge)
         rspo.status(500).send({err:"Server side error"})
     }finally{
         completeRequest(crntIP,crntAPI);

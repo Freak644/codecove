@@ -264,19 +264,23 @@ CREATE TABLE IF NOT EXISTS commentReports (
 );
 
 CREATE TABLE IF NOT EXISTS achievements (
-  achievement_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  achievement_url VARCHAR(256) NOT NULL,
-  achievement_details TEXT NOT NULL,
-  condition JSON NOT NULL,
+  achievement_id CHAR(36) PRIMARY KEY,
+  code VARCHAR(50) NOT NULL UNIQUE,
+  badge_url VARCHAR(256) NOT NULL,
+  ach_mean TEXT NOT NULL,
+  conditions JSON NOT NULL,
+  difficulty ENUM('easy','medium','hard','legendary') NOT NULL,
+  condition_version TINYINT DEFAULT 1,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 
 CREATE TABLE IF NOT EXISTS user_achievements (
   user_achievement_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
   id CHAR(36) NOT NULL,
   achievement_id CHAR(36) NOT NULL,
-  condition JSON NOT NULL,
+  conditions JSON NOT NULL,
   achieved_at TIMESTAMP NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   
@@ -305,7 +309,7 @@ CREATE TABLE IF NOT EXISTS achievement_shoutouts (
   post_id CHAR (36) NOT NULL,
   id CHAR(36) NOT NULL,
   commentID CHAR(36) NOT NULL,
-  condition JSON NOT NULL,
+  conditions JSON NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
   FOREIGN KEY (progress_id) REFERENCES achievement_progress(progress_id),

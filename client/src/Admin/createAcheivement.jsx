@@ -5,7 +5,9 @@
 export default function CreateAchievement() {
     async function Submit() {
         try {
-            let rkv = await fetch("/myServer/createAchievement");
+            let rkv = await fetch("/myServer/createAchievement",{
+                method:"POST"
+            });
             let result = await rkv.json();
             console.log(result)
         } catch (error) {

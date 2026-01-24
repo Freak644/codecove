@@ -227,7 +227,7 @@ export default function MyProfile({validation}) {
                                 </div>
                             </button>}
                     </div>
-                    <div className="mainAchiveHolder w-2/5 h-4/13 absolute top-1/5 right-0">
+                    <div className="mainAchiveHolder w-2/5 h-5/13  absolute top-1/5 right-0">
                         <MainAchievments/>
                     </div>
                 </div>

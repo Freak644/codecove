@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 export default function ExploreEL() {
-    
+        
     return(
         <div className="relative w-full p-1 left-3/10">
            <ul className="tree w-full p-4 flex items-start flex-col gap-1 border-l">

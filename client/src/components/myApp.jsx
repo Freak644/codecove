@@ -65,13 +65,13 @@ export default function MyApp() {
             try {
                 let rqst = await fetch("/myServer/auth",{credentials:"include"})
                 let result = await rqst.json();
-                console.log(result?.details)
+                // console.log(result?.details)
                 if (result.loggedIn) {
                     throw new Error(result.details)
                 }
                 setLogin(false)
             } catch (error) {
-                console.log(error.message)
+                // console.log(error.message)
                 setLogin(true)
             }
         }

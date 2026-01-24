@@ -327,3 +327,5 @@ CREATE TABLE IF NOT EXISTS follows (
   INDEX idx_following (following_id),
   INDEX idx_follower (follower_id)
 );
+
+

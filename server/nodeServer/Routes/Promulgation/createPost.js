@@ -9,6 +9,7 @@ import {getIO} from '../../myServer.js';
 import { completeRequest } from '../../Controllers/progressTracker.js';
 import createDOMPurify from 'isomorphic-dompurify';
 import {JSDOM} from 'jsdom';
+import { userInfo } from 'os';
 dotenv.config();
 cloudinary.config({
   cloud_name:process.env.cloudinary_name,
@@ -63,16 +64,18 @@ export const CreatePost = async (rkv,rspo) => {
       );
       if(row.length<1) {
         await clearTemp(imgArray);
-        return rspo.status(401).send({err:"No user found"});}
+        return rspo.status(401).send({err:"No user found"});
+      }
       for (const crntImg of rkv.files) {
         let rekvst = await FileChecker(crntImg.path,crntImg.size);
         if (rekvst.err) {
           await clearTemp(imgArray);
           return rspo.status(400).send(rekvst.err);
         }
+        console.log("API is here")
         const cloudRkv = await cloudinary.uploader.upload(crntImg.path, { folder: row[0].username, timeout: 60000 });
         cloudLiks.push(cloudRkv.secure_url);
-
+        console.log("API is here 2")
         await fs.promises.unlink(crntImg.path);
       }
       let post_id = nanoid();

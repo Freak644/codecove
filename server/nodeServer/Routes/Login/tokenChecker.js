@@ -11,28 +11,38 @@ const revokedToken = async (session_id) => {
         )
 }
 export const Auth = async (rkv,rspo,next) => {
-    let token = rkv.cookies.myAuthToken;
-    if(!token) return rspo.status(401).send({login: "Please Login"});
-    let decryptedToken = await Decrypt(token);
-    let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec);
-    let decodedTime = Math.floor(Date.now()/1000);
-    let {session_id,id} = tokenData;
-    if (tokenData.exp<decodedTime) {
-        await revokedToken(session_id)
-        return rspo.status(501).send({login: "Your Auth token is expire"});
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
+    try {
+        let token = rkv.cookies.myAuthToken;
+        if(!token) return rspo.status(401).send({err: "Please Login"});
+        let decryptedToken = await Decrypt(token);
+        let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec);
+        let decodedTime = Math.floor(Date.now()/1000);
+        let {session_id,id} = tokenData;
+        if (tokenData.exp<decodedTime) {
+            await revokedToken(session_id)
+            completeRequest(crntIP,crntAPI);
+            return rspo.status(501).send({err: "Your Auth token is expire please relode the page"});
+        }
+        let [rows] = await database.execute("SELECT revoked FROM user_sessions WHERE id=? AND session_id=?",
+                [id,session_id]
+        )
+        if (rows.length === 0) {
+            completeRequest(crntIP,crntAPI);
+            return rspo.status(404).send({err:"Token is removed or Invalid"})
+        }
+        let revoked = Number(rows[0].revoked)
+        if(revoked===1) {
+            completeRequest(crntIP,crntAPI);
+            return rspo.status(401).send({err:"Token rovoked"})
+        }
+        rkv.authData = tokenData;
+        next();
+    } catch (error) {
+        completeRequest(crntIP,crntAPI);
+        rspo.status(500).send({err:"server side error"})
     }
-    let [rows] = await database.execute("SELECT revoked FROM user_sessions WHERE id=? AND session_id=?",
-            [id,session_id]
-    )
-    if (rows.length === 0) {
-        return rspo.status(404).send({login:"Token is removed on Invalid"})
-    }
-    let revoked = Number(rows[0].revoked)
-    if(revoked===1) {
-        return rspo.status(401).send({login:"Token rovoked"})
-    }
-    rkv.authData = tokenData;
-    next();
 }
 
 export const checkAuth = async (rkv,rspo) => {

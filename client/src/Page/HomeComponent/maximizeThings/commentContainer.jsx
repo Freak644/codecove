@@ -5,6 +5,7 @@ import {toast} from 'react-toastify'
 import socket from "../../../utils/socket";
 import { UnivuUserInfo } from "../../../lib/basicUserinfo";
 import { Loader } from "../../../lib/loader";
+import sound from "../../../assets/Sounds/star.mp3"
 export default function CommentEl() {
     const [isEmoji,setEmoji] = useState(false);
     const [text,setText] = useState("");
@@ -16,6 +17,7 @@ export default function CommentEl() {
     const [isDragging,setDrag] = useState(false);
     const [canComment,setCanComnt] = useState(true);
     const MAX_DRAG = 300;
+    const soundMp3 = new Audio(sound)
 
     const progress = Math.min(Ty / MAX_DRAG, 1);
 
@@ -159,6 +161,7 @@ export default function CommentEl() {
             });
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
+            soundMp3.play()
             setText("");
         } catch (error) {
             toast.error(error.message);
@@ -177,7 +180,7 @@ export default function CommentEl() {
             })
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
-            
+            soundMp3.play()
         } catch (error) {
             toast.error(error.message);
         }
@@ -249,6 +252,7 @@ export default function CommentEl() {
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
             toast.success(result.pass);
+            soundMp3.play()
         } catch (error) {
             toast.error(error.message);
         }
@@ -268,6 +272,7 @@ export default function CommentEl() {
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
             toast.success(result.pass);
+            soundMp3.play()
         } catch (error) {
             toast.error(error.message)
         }

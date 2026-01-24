@@ -4,9 +4,11 @@ import { usePostStore } from "../../../lib/basicUserinfo";
 import { toast } from "react-toastify";
 import {useNavigate} from 'react-router-dom';
 import axios from "axios";
+import starSound from "../../../assets/Sounds/star.mp3"
 
 export default function UploadController() {
     const navi = useNavigate();
+    const starMp3 = new Audio(starSound)
     let {setEmpty} = usePostStore();
     const [controlls,setControlls] = useState({
         visibility:true,
@@ -21,6 +23,7 @@ export default function UploadController() {
     const suBtnRef = useRef();
     let {isTrun,toggleLoader} = Loader();
     const postData = usePostStore(state=>state.postOBJ);
+
 
     useEffect(()=>{
         setBtnAnimation();
@@ -68,6 +71,7 @@ export default function UploadController() {
             });
             
             toast.success("New Moment Shared🎉");
+            starMp3.play()
             setEmpty();
             setProgress(0)
             navi("/")

@@ -2,6 +2,7 @@ import {useEffect, useRef, useState } from "react"
 import { univPostStore, UnivuUserInfo } from "../../../lib/basicUserinfo";
 import {Link, useLocation} from 'react-router-dom';
 import socket from "../../../utils/socket";
+import star from "../../../assets/Sounds/star.mp3";
 export default function TODOList({crntPost_id}) {
     const toggleRef = useRef(null);
     const [crntPost,setCrntPost] = useState({})
@@ -12,6 +13,7 @@ export default function TODOList({crntPost_id}) {
     const index = UnivuUserInfo(stat=>stat.index);
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     const [isToggle,setToggle] = useState(false);
+    const starMp3 = new Audio(star);
 
 
 
@@ -19,6 +21,7 @@ export default function TODOList({crntPost_id}) {
         if (Object.keys(postData || {}).length === 0) return;
         setCrntPost(postData)
     },[postData])
+
 
     useEffect(()=>{
         let {post_id,totalComment,totalLike} = crntPost;
@@ -135,7 +138,10 @@ export default function TODOList({crntPost_id}) {
                 body:JSON.stringify({post_id})
             })
             let result = await rqst.json();
-            
+            console.log(result)
+            if (result.pass === true) {
+                starMp3.play();
+            }
         } catch (error) {
             console.log(error)
         }
@@ -143,7 +149,7 @@ export default function TODOList({crntPost_id}) {
     return(
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
-                <i onClick={handleStar} className={`${isLiked ? "bx bxs-star" : "bx bx-star"}`}></i>
+                <i onClick={handleStar} className={`${isLiked ? "bx bxs-star stared" : "bx bx-star"} starAnim text-white`}></i>
                 <span>{likeCount ? formatCount(totalLike) : ""}</span>
             </div>
             <div className={`TodoInner ${canComment ? "" : "cursor-none pointer-events-none"}`}> <Link className="flex items-center justify-center gap-1" to={`/post/${post_id}`}

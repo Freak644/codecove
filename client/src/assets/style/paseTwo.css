@@ -514,3 +514,31 @@ select{
   }
 }
 
+.starAnim{
+  padding: 5px;
+  border-radius: 50%;
+  transition: all .7s ease-in-out;
+}
+
+.stared{
+  animation: 0.7s popUpANim forwards;
+  animation: 1s bgColorFade forwards ease;
+}
+
+@keyframes popUpANim {
+  from{
+    scale: 0;
+  }
+  to{
+    scale: 1;
+  }
+}
+
+@keyframes bgColorFade {
+  from{
+    background-color: rgb(255, 230, 0);
+  }
+  to{
+    background-color: transparent;
+  }
+}

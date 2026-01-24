@@ -11,12 +11,14 @@ export const starPost = async (rkv,rspo) => {
     try {
         if (!post_id || !post_id.trim()) return rspo.status(401).send({err:"Something went wrong"});
         let io = getIO();
+        let pass = false;
         let [row] = await database.query("SELECT visibility FROM posts WHERE post_id = ?",[post_id]);
         if (!row[0].visibility) return rspo.status(422).send({err:"The post is private"});
         let [rows] = await database.query("SELECT post_id FROM likes WHERE post_id = ? AND id = ?",[post_id,id]);
         if (rows.length === 0) {
             await database.query("INSERT INTO likes (post_id, id) VALUES ( ?, ?) ",[post_id,id]);
             await database.query("UPDATE posts SET totalLike = totalLike + 1 WHERE post_id = ?",[post_id]);
+            pass = true
             io.emit("newLike",{post_id,user_id:id,like:true})
         } else {
             await database.query("DELETE FROM likes WHERE post_id = ? AND id = ?",[post_id,id]);
@@ -24,7 +26,7 @@ export const starPost = async (rkv,rspo) => {
             io.emit("newLike",{post_id,user_id:id,like:false})
         }
 
-        rspo.status(200).send({test:"done"});
+        rspo.status(200).send({pass});
     } catch (error) {
         rspo.status(500).send({err:"Server Side error "});
     } finally {

@@ -38,7 +38,7 @@ export default function PostsCon({posts}) {
             <>
                 {
 
-                            <div key={post_id} className="flex items-start flex-col h-[600px] gap-3 w-[450px] singlePost rounded-lg m-3">
+                            <div key={post_id} className="flex items-start flex-col h-150 gap-3 w-112.5 singlePost rounded-lg m-3">
                                 <div className="ownInfo h-2/12 flex items-start justify-between flex-wrap p-1 gap-1.5 text-skin-text w-full rounded-lg">
                                     <div className="innerINFODiv p-1 flex items-start flex-1 gap-2" >
                                         <img src={`/myServer/${avatar}`} className="h-9 w-9 rounded-full border border-amber-300" alt="Avatar" />

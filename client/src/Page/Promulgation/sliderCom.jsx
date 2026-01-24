@@ -137,9 +137,10 @@ export default function ImageSlider({ imgArray, setArray,toggle }) {
                 key={imgArray[index]}
                 src={imgArray[index].preview || imgArray[index]}
                 title={imgArray[index]?.file?.name}
-                className="max-h-full max-w-full object-contain rounded-2xl"
+                className="max-h-full max-w-full pointer-events-none object-contain rounded-2xl"
                 draggable={false} alt="Post"
               />
+              <div className="overlay absolute h-full w-full bg-transparent"></div>
             </motion.div>
           )}
         </AnimatePresence>

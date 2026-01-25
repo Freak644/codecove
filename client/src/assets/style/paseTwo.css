@@ -527,7 +527,7 @@ select{
 
 @keyframes popUpANim {
   from{
-    scale: 0;
+    scale: 0.4;
   }
   to{
     scale: 1;

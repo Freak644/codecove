@@ -149,7 +149,7 @@ export default function TODOList({crntPost_id}) {
     return(
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
-                <i onClick={handleStar} className={`${isLiked ? "bx bxs-star stared" : "bx bx-star"} starAnim text-white`}></i>
+                <i onClick={handleStar} className={`${isLiked ? "bx bxs-star stared" : "bx bx-star"} starAnim`}></i>
                 <span>{likeCount ? formatCount(totalLike) : ""}</span>
             </div>
             <div className={`TodoInner ${canComment ? "" : "cursor-none pointer-events-none"}`}> <Link className="flex items-center justify-center gap-1" to={`/post/${post_id}`}

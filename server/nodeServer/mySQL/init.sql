@@ -232,6 +232,7 @@ CREATE TABLE IF NOT EXISTS comments (
   comment TEXT NOT NULL,
   totalLike BIGINT DEFAULT 0,
   report_count INT DEFAULT 0,
+  isAccepted BOOLEAN DEFAULT 0,
   isBlocked BOOLEAN DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,

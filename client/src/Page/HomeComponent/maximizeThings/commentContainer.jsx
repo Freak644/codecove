@@ -60,7 +60,7 @@ export default function CommentEl() {
                 if (!result.isComment) setCanComnt(result.isComment)
                 throw new Error(result.err)
             }
-            // console.log(result.commentrows)
+            console.log({commentDataIS:result.commentrows})
             if (result.commentrows.length>0) {
                 setComment(result.commentrows);
             }
@@ -83,6 +83,7 @@ export default function CommentEl() {
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
             setComment(prev=>[...prev,...result.commentrows]);
+            
             setOffset(prev=>prev+20)
             if (result.commentrows.length < 20) {
                 setOver(true);
@@ -326,7 +327,7 @@ export default function CommentEl() {
                     {
                        commentData?.length > 0 ?
                         commentData?.map((cmnt,index)=>{
-                            let {username,avatar,isOwner,commentID,isAccepted,comment,post_id,isLiked,id,totalLike,created_at} = cmnt;
+                            let {username,avatar,isPostOwner,commentID,isAccepted,comment,post_id,isLiked,id,totalLike,created_at} = cmnt;
                             let isSecondLast = index === commentData.length-2;
                             return(
                                 <div key={commentID} ref={isSecondLast ? secondLastRef : null} className="h-auto w-full text-skin-text flex items-center flex-col">
@@ -349,7 +350,8 @@ export default function CommentEl() {
 
                                         </div>
 
-                                        <div className="likeCommentd flex items-center justify-center w-[7%]">
+                                        <div className="likeCommentd flex items-center flex-col w-[7%]">
+                                            
                                             <i onClick={()=>handleLike(commentID,post_id)} className={isLiked ? "bx bxs-heart text-rose-500 cursor-pointer" : "bx bx-heart cursor-pointer text-gray-500"}></i>
                                         </div>
                                     </div>
@@ -357,7 +359,7 @@ export default function CommentEl() {
                                         <i className="bx">{`${totalLike} like`}</i>
                                         <i className="bx">{timeAgoIntl(created_at)}</i>
                                         <i onClick={()=>reportComment(commentID,post_id)} className="bx bxs-report cursor-pointer">Report</i>
-                                        {(uID === id || isOwner) &&<i onClick={()=>deleteComment(commentID,post_id)} className="bx bx-trash cursor-pointer"></i>}
+                                        {(uID === id || isPostOwner) && <i onClick={()=>deleteComment(commentID,post_id)} className="bx bx-trash cursor-pointer"></i>}
                                     </div>
                                 </div>
                             )

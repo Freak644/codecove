@@ -15,7 +15,10 @@ export const Auth = async (rkv,rspo,next) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     try {
         let token = rkv.cookies.myAuthToken;
-        if(!token) return rspo.status(401).send({err: "Please Login"});
+        if(!token) {
+           completeRequest(crntIP,crntAPI)
+            return rspo.status(401).send({err: "Please Login"});
+        }
         let decryptedToken = await Decrypt(token);
         let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec);
         let decodedTime = Math.floor(Date.now()/1000);

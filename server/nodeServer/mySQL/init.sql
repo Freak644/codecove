@@ -246,11 +246,12 @@ CREATE TABLE IF NOT EXISTS commentLikes (
   post_id CHAR(36) NOT NULL,
   id CHAR(36) NOT NULL,
   commentID CHAR(36) NOT NULL,
-  UNIQUE(post_id,commentID),
+  UNIQUE(commentID,id),
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (commentID) REFERENCES comments(commentID) ON DELETE CASCADE,
-  INDEX idx_user_id (id)
+  INDEX idx_user_id (id),
+  INDEX idx_post_id (post_id)
 );
 
 CREATE TABLE IF NOT EXISTS commentReports (

@@ -42,7 +42,7 @@ export default function MiniDropDown({postInfo,toggle}) {
 
 
     return(
-        <div className="miniDropHome h-auto w-[300px] flex items-center justify-center flex-wrap absolute top-full right-0">
+        <div className="miniDropHome h-auto w-75 flex items-center justify-center flex-wrap absolute top-full right-0">
             <ul>
                 <li className="text-red-500 font-bold"><i className="bx bx-warning"></i> Report</li>
                 {postInfo.username !== userInfo.username && <li className={`${postInfo?.isFollowing ? "text-red-500" : "text-green-500"} font-bold cursor-none!`}><i className="bx bx-user"></i>{postInfo?.isFollowing ? "Following" : "Follow"}</li>}

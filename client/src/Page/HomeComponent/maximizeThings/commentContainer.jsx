@@ -16,6 +16,8 @@ export default function CommentEl() {
     const [Ty,setTy] = useState(0);
     const [isDragging,setDrag] = useState(false);
     const [canComment,setCanComnt] = useState(true);
+    const flotRef = useRef(null)
+    const [isFloating,setFloting] = useState(false);
     const MAX_DRAG = 300;
     const soundMp3 = new Audio(sound)
 
@@ -102,17 +104,17 @@ export default function CommentEl() {
 
     useEffect(()=>{
         // if (commentData.length<1) return;
-        // console.log(commentData.length)
+         //console.log(commentData)
         socket.emit("joinPost",pID);
         const handleLikes = ({commentID: CId,post_id:pid, user_id,like}) =>{
-            // console.log(user_id,like)
+             console.log(user_id,like)
             if (pID === pid) {
                 setComment(prev =>
                     prev.map(obj => {
                         if (CId !== obj.commentID) return obj;
                         return {
                         ...obj,
-                        totalLike: like ? obj.totalLike ++ : obj.totalLike --,
+                        totalLike: like ? obj.totalLike + 1 : obj.totalLike - 1,
                         isLiked: user_id === uID ? like : obj.isLiked
                         };
                     })
@@ -298,6 +300,18 @@ export default function CommentEl() {
         }
     }
 
+    useEffect(()=>{
+        const handleClick = evnt=>{
+            const el = flotRef.current;
+            if (el && !el.contains(evnt.target)) {
+                setFloting(false);
+            }
+        }
+        
+        document.addEventListener("click",handleClick);
+        return ()=> document.removeEventListener("click",handleClick);
+    },[])
+    
     return(
          <div className="underTaker">
             {canComment ? <div onTouchStart={onStart}
@@ -350,16 +364,23 @@ export default function CommentEl() {
 
                                         </div>
 
-                                        <div className="likeCommentd flex items-center flex-col w-[7%]">
-                                            
+                                        <div className="likeCommentd flex items-center flex-col gap-2 w-[7%]">
+                                            <div className="relative" ref={flotRef}>
+                                                <i className="bx bx-dots-vertical text-gray-500 cursor-pointer" onClick={()=>setFloting(true)}></i>
+                                                <div className={`flex absolute right-0 transition-all duration-300 ${isFloating ? "top-0! opacity-100" : "-top-5 opacity-0 pointer-events-none "} p-1 rounded-md bg-blue-500/20 backdrop-blur-md`}>
+                                                    <ul>
+                                                        <li className="border-b m-1 text-gray-500"><i onClick={()=>reportComment(commentID,post_id)} className="bx bxs-report cursor-pointer">Report</i></li>
+                                                        {(uID === id || isPostOwner) ? <li className="border-b m-1 text-red-500"><i onClick={()=>deleteComment(commentID,post_id)} className="bx bx-trash cursor-pointer">Delete</i></li> : ""}
+                                                        {isPostOwner ? <li className="border-b m-1 text-nowrap cursor-pointer text-green-400"><i className="bx bxs-badge-check"></i>Accepte</li> : ""}
+                                                    </ul>
+                                                </div>
+                                            </div>
                                             <i onClick={()=>handleLike(commentID,post_id)} className={isLiked ? "bx bxs-heart text-rose-500 cursor-pointer" : "bx bx-heart cursor-pointer text-gray-500"}></i>
                                         </div>
                                     </div>
                                     <div className="layerTwo flex items-center w-full pl-10  justify-start text-gray-500 text-[13px] gap-4">
                                         <i className="bx">{`${totalLike} like`}</i>
                                         <i className="bx">{timeAgoIntl(created_at)}</i>
-                                        <i onClick={()=>reportComment(commentID,post_id)} className="bx bxs-report cursor-pointer">Report</i>
-                                        {(uID === id || isPostOwner) && <i onClick={()=>deleteComment(commentID,post_id)} className="bx bx-trash cursor-pointer"></i>}
                                     </div>
                                 </div>
                             )

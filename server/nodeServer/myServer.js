@@ -94,7 +94,7 @@ myApp.post("/writeUser/follow",RateLimiter,checkRequest,Auth,followAPI);
 myApp.put("/writeUser/changeDP",RateLimiter,checkRequest,upload.single("avatar"),Auth,changeDP);
 myApp.post("/writePost/reportComment",RateLimiter,checkRequest,Auth,reportCommentAPI);
 myApp.delete("/writePost/deleteComment",RateLimiter,checkRequest,Auth,DeleteCommentAPI);
-myApp.post("/createAchievement",addNewAchievement);
+// myApp.post("/createAchievement",addNewAchievement);
 
 
 

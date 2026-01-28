@@ -285,7 +285,7 @@ export default function CommentEl() {
         try {
             if (post_id || comment_id || !comment_id.trim() || !post_id.trim()) throw new Error("Invalid Info");
             
-            let rqst = await fetch("/myServer/writePost",{
+            let rqst = await fetch("/myServer/writeAchievement/acceptComment",{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"

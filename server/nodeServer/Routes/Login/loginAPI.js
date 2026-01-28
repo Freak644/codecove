@@ -4,14 +4,11 @@ import { database } from '../../Controllers/myConnectionFile.js';
 import dotenv from 'dotenv';
 import { SaveThisSession } from './userSession.js';
 import { sendTheMail } from '../../Controllers/nodemailer.js';
-import { completeRequest } from '../../Controllers/progressTracker.js';
 import { nanoid } from 'nanoid';
 import { Encrypt } from '../../utils/Encryption.js';
 dotenv.config();
 export const LoginAPI = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || "0.0.0.0";
-    const IP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
-    const route = rkv.originalUrl.split("?")[0];
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || rkv.ip ||"0.0.0.0";
     let token_id = nanoid(32);
     let {Email,Password,clientInfo} = rkv.body;
     try {
@@ -82,8 +79,6 @@ export const LoginAPI = async (rkv,rspo) => {
         rspo.clearCookie("myAuthToken");
         await database.query("DELETE v,s FROM validationToken v JOIN user_sessions s ON v.session_id = s.session_id WHERE v.token_id = ?",[token_id]);
         rspo.status(500).send({ err: "Sever Side Error",details:error.message});
-    } finally{
-        completeRequest(IP,route)
     }
 }
 

@@ -1,5 +1,4 @@
 import {database} from '../../Controllers/myConnectionFile.js';
-import { completeRequest } from '../../Controllers/progressTracker.js';
 
 
 function getSuggestion(username,takenList) {
@@ -18,8 +17,6 @@ function getSuggestion(username,takenList) {
 }
 
 export const getUsers = async (rkv,rspo) => {
-   const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
-   const crntAPI = rkv.originalUrl.split("?")[0];
    let {username} = rkv.query;
     try {
         if (username.length<4) return rspo.status(403).send({err:"Username is too short"})
@@ -41,7 +38,5 @@ export const getUsers = async (rkv,rspo) => {
         rspo.status(202).send({avalable:false,suggestion,takenList})
    } catch (error) {
     rspo.status(500).send({err:"server side error "})
-   }finally{
-    completeRequest(crntIP,crntAPI);
    }
 }

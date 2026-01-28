@@ -1,10 +1,7 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
-import { completeRequest } from "../../../Controllers/progressTracker.js";
 
 export const GetPosts = async (rkv,rspo) => {
     let {id} = rkv.authData;
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
-    const crntAPI = rkv.originalUrl.split("?")[0];
     let limit = parseInt(rkv.query.limit) || 10;
     let offset = parseInt(rkv.query.offset) || 0
     if (limit>15) {
@@ -47,7 +44,5 @@ export const GetPosts = async (rkv,rspo) => {
     } catch (error) {
         //console.log("jj",error.messge)
         rspo.status(500).send({err:"Server side error"})
-    }finally{
-        completeRequest(crntIP,crntAPI);
     }
 }

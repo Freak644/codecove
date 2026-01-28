@@ -1,10 +1,8 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
-import { completeRequest } from "../../../Controllers/progressTracker.js";
 import {getIO} from '../../../myServer.js';
 export const miniToggleDy = async (rkv,rspo) => {
     let {id} = rkv.authData;
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
-    const crntAPI = rkv.originalUrl.split("?")[0];
+
     let {setting,post_id} = rkv.body;
     let validationArray = ["likeCount","canComment","visibility"];
     try {
@@ -16,14 +14,10 @@ export const miniToggleDy = async (rkv,rspo) => {
         rspo.status(200).send({pass:"Update! succesfully"})
     } catch (error) {
         rspo.status(500).send({err:"server side error"});
-    }finally{
-        completeRequest(crntIP,crntAPI);
     }
 }
 
 export const reportCommentAPI = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
-    const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {commentID,post_id} = rkv.body;
     try {
@@ -42,14 +36,10 @@ export const reportCommentAPI = async (rkv,rspo) => {
     } catch (error) {
         // console.log(error.message)
         rspo.status(500).send({err:"Server side Error"});
-    } finally {
-        completeRequest(crntIP,crntAPI)
-    }
+    } 
 }
 
 export const DeleteCommentAPI = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || rkv.ip || "0.0.0.0";
-    const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {commentID,post_id} = rkv.body;
     try {
@@ -66,7 +56,5 @@ export const DeleteCommentAPI = async (rkv,rspo) => {
     } catch (error) {
         // console.log(error.message);
         rspo.status(500).send({err:"Server side error"});
-    } finally {
-        completeRequest(crntIP,crntAPI);
     }
 }

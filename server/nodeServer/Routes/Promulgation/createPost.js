@@ -6,7 +6,6 @@ import { FileChecker } from './fileChecker.js';
 import  {nanoid} from 'nanoid';
 import { database } from '../../Controllers/myConnectionFile.js';
 import {getIO} from '../../myServer.js';
-import { completeRequest } from '../../Controllers/progressTracker.js';
 import createDOMPurify from 'isomorphic-dompurify';
 import {JSDOM} from 'jsdom';
 import { userInfo } from 'os';
@@ -31,8 +30,6 @@ export const CreatePost = async (rkv,rspo) => {
     let {id} = rkv.authData;
     let {Absuse, Link, Spam, Violence, canComment, canSave, caption, likeCount, visibility, postGroup} = rkv.body;
     let imgArray = [];
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
-    const crntAPI = rkv.originalUrl.split("?")[0];
     
     try {
       if (fileArray.length === 0 ) return rspo.status(400).send({err:"No file Found"});
@@ -96,7 +93,5 @@ export const CreatePost = async (rkv,rspo) => {
       console.log(error)
         await clearTemp(imgArray);
         return rspo.status(500).send({err:"server side error"});
-    }finally{
-      completeRequest(crntIP,crntAPI);
     }
 } 

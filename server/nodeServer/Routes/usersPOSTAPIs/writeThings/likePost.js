@@ -1,10 +1,7 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
-import { completeRequest } from "../../../Controllers/progressTracker.js";
 import { getIO } from "../../../myServer.js";
 
 export const starPost = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || rkv.ip || "0.0.0.0";
-    const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {post_id} = rkv.body;
 
@@ -29,15 +26,11 @@ export const starPost = async (rkv,rspo) => {
         rspo.status(200).send({pass});
     } catch (error) {
         rspo.status(500).send({err:"Server Side error "});
-    } finally {
-        completeRequest(crntIP,crntAPI);
     }
 
 }
 
 export const likeComment = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || rkv.ip || "0.0.0.0";
-    const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {commentID,post_id} = rkv.body;
     try {
@@ -59,7 +52,5 @@ export const likeComment = async (rkv,rspo) => {
     } catch (error) {
         console.log(error.message);
         rspo.status(500).send({err:"Server side error"});
-    } finally {
-        completeRequest(crntIP,crntAPI);
     }
 }

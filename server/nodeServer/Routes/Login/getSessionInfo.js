@@ -1,10 +1,9 @@
 import { database } from "../../Controllers/myConnectionFile.js";
-import { completeRequest } from "../../Controllers/progressTracker.js";
+
 
 export const ActivityInfo = async (rkv,rspo) => {
     let {token} = rkv.query;
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
-    const crntAPI = rkv.originalUrl.split("?")[0];
+
     try {
         let [rows] = await database.execute(`SELECT u.username, u.avatar,s.ip,s.country,s.city,s.region,s.os, s.isp, s.browser,v.created_at, v.session_id
                     FROM validationToken v
@@ -37,7 +36,5 @@ export const ActivityInfo = async (rkv,rspo) => {
         rspo.status(201).send({pass:"Data found",data:rows[0]})
     } catch (error) {
         rspo.status(500).send({err:"Sever Side Error",details:error.message})
-    }finally{
-        completeRequest(crntIP,crntAPI)
     }
 }

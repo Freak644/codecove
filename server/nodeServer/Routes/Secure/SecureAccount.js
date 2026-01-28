@@ -1,12 +1,9 @@
 import { database } from "../../Controllers/myConnectionFile.js";
 import bcrypt from 'bcrypt';
-import { completeRequest } from "../../Controllers/progressTracker.js";
 import { nanoid } from "nanoid";
 import { sendChangePassMail } from "../../utils/sendChangeMail.js";
 export const changePassSecure = async (rkv,rspo) => {
     let {basePass,token} = rkv.body;
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
-    const crntAPI = rkv.originalUrl.split("?")[0];
     let rows
     let newToken_id = nanoid(32);
     try {
@@ -35,8 +32,6 @@ export const changePassSecure = async (rkv,rspo) => {
     } catch (error) {
         console.log(error)
         rspo.status(500).send({err:"Sever side Error",details:error.message})
-    }finally{
-        completeRequest(crntIP,crntAPI);
     }
 }
 

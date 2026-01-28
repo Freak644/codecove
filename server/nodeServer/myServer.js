@@ -28,7 +28,7 @@ import { CreatePost } from './Routes/Promulgation/createPost.js';
 import { GetPosts } from './Routes/usersPOSTAPIs/readThings/getPost.js';
 import postSocket, { commentLikeSocket, likeSocket } from './socketIO/postSocket.js';
 import { EmailRateLimiter, RateLimiter, usernameCheckLimiter, verifyEmailLiter } from './Controllers/rateLimits.js';
-import { checkRequest, startCleaner } from './Controllers/progressTracker.js';
+import { checkRequest, completeRequest, startCleaner } from './Controllers/progressTracker.js';
 import { resetPassword, verification } from './Routes/Secure/userVerification/verificationAPI.js';
 import { likeComment, starPost } from './Routes/usersPOSTAPIs/writeThings/likePost.js';
 import { DeleteCommentAPI, miniToggleDy, reportCommentAPI } from './Routes/usersPOSTAPIs/writeThings/miniToggleAPIs.js';
@@ -39,13 +39,50 @@ import { getUserinfo } from './Routes/getUsers/prifileAPIs.js';
 import { changeBio, changeDP } from './Routes/editProfileAPIs/userInfoApis.js';
 import { followAPI } from './Routes/editProfileAPIs/followUnfollow.js';
 import { changeBioSocket } from './socketIO/userProfileSocket.js';
-import { addNewAchievement } from './Routes/Achievement/createAchievement.js';
+import { acceptSolution } from './Routes/Achievement/writeAchievemtns/acceptSolution.js';
+// import { addNewAchievement } from './Routes/Achievement/createAchievement.js';
 let myApp = express();
-myApp.use(express.json({limit:"1gb"}));
+myApp.use(express.json({limit:"20mb"}));
 myApp.use(requestIp.mw())
 myApp.set("trust proxy",1)
 myApp.use(cookieParser());
 myApp.use("/Images",express.static('Images'));
+myApp.use((rkv, rspo, next) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
+    const controller = new AbortController();
+    rkv.abortController = controller;
+
+    let complete = false;
+    const safeGuard = ()=>{
+        if (complete) return;
+        complete = true;
+        completeRequest(crntIP,crntAPI)
+    }
+
+    const timer = setTimeout(() => {
+        controller.abort();
+
+        if (!rspo.headersSent) {
+            rspo.status(408).send({err:"Request Timeout"})
+        }
+    }, 300_000); 
+
+    rkv.on("close", () => {
+        controller.abort();
+        safeGuard()
+        clearTimeout(timer);
+    });
+
+    rspo.on("finish", () => {
+        safeGuard()
+        clearTimeout(timer);
+    });
+
+    next();
+});
+
+
 
 
 // Multer storage config
@@ -94,6 +131,7 @@ myApp.post("/writeUser/follow",RateLimiter,checkRequest,Auth,followAPI);
 myApp.put("/writeUser/changeDP",RateLimiter,checkRequest,upload.single("avatar"),Auth,changeDP);
 myApp.post("/writePost/reportComment",RateLimiter,checkRequest,Auth,reportCommentAPI);
 myApp.delete("/writePost/deleteComment",RateLimiter,checkRequest,Auth,DeleteCommentAPI);
+myApp.post("/writeAchievement/acceptComment",RateLimiter,checkRequest,Auth,acceptSolution)
 // myApp.post("/createAchievement",addNewAchievement);
 
 
@@ -124,7 +162,7 @@ export function getIO() {
 
 myServer.listen(port,()=>{
     startCleaner();
-    console.log(chalk.greenBright.yellow.italic.bold("Server + Socket.IO running on " + port));
+    console.log(chalk.yellow.italic.bold("Server + Socket.IO running on " + port));
 })
 
 /* 

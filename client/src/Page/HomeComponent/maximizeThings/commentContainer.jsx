@@ -281,16 +281,16 @@ export default function CommentEl() {
         }
     }
 
-    const acceptSolution = async (comment_id,post_id) => {
+    const acceptSolution = async (comment_id) => {
         try {
-            if (post_id || comment_id || !comment_id.trim() || !post_id.trim()) throw new Error("Invalid Info");
+            if (!comment_id || !comment_id.trim()) throw new Error("Invalid Info");
             
             let rqst = await fetch("/myServer/writeAchievement/acceptComment",{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
                 },
-                body:JSON.stringify({commentID:comment_id,post_id})
+                body:JSON.stringify({commentID:comment_id})
             })
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
@@ -371,7 +371,7 @@ export default function CommentEl() {
                                                     <ul>
                                                         <li className="border-b m-1 text-gray-500"><i onClick={()=>reportComment(commentID,post_id)} className="bx bxs-report cursor-pointer">Report</i></li>
                                                         {(uID === id || isPostOwner) ? <li className="border-b m-1 text-red-500"><i onClick={()=>deleteComment(commentID,post_id)} className="bx bx-trash cursor-pointer">Delete</i></li> : ""}
-                                                        {isPostOwner ? <li className="border-b m-1 text-nowrap cursor-pointer text-green-400"><i className="bx bxs-badge-check"></i>Accepte</li> : ""}
+                                                        {isPostOwner ? <li onClick={()=>acceptSolution(commentID)} className="border-b m-1 text-nowrap cursor-pointer text-green-400"><i className="bx bxs-badge-check"></i>Accepte</li> : ""}
                                                     </ul>
                                                 </div>
                                             </div>

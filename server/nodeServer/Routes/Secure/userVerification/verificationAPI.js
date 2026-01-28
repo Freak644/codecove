@@ -1,11 +1,8 @@
 import bcrypt from "bcrypt";
 import { database } from "../../../Controllers/myConnectionFile.js";
-import { completeRequest } from "../../../Controllers/progressTracker.js";
 import { sendChangePassMail } from "../../../utils/sendChangeMail.js";
 import { nanoid } from "nanoid";
 const verification = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
-    const crntAPI = rkv.originalUrl.split("?")[0];
     let {Username,Email,token} = rkv.body;
     try {
         if (token.length !== 32) return rspo.status(401).send({err:"Invalid Token"});
@@ -24,14 +21,11 @@ const verification = async (rkv,rspo) => {
         rspo.send({pass:"User verified!"})
     } catch (error) {
         rspo.status(500).send({err:"Server side error"});
-    }finally{
-        completeRequest(crntIP,crntAPI);
     }
 }
 
 const resetPassword = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
-    const crntAPI = rkv.originalUrl.split("?")[0];
+
     let {pass,conPass,token} = rkv.body;
     let newToken_id = nanoid(32)
     try {
@@ -58,8 +52,6 @@ const resetPassword = async (rkv,rspo) => {
        } catch (error) {
         console.log(error.message)
         rspo.status(500).send({err:"Server side error"});
-    }finally{
-        completeRequest(crntIP,crntAPI);
     }
 }
 

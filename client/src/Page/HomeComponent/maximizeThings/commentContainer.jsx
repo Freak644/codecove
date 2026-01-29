@@ -378,7 +378,7 @@ export default function CommentEl() {
                                                     <ul>
                                                         <li className="border-b m-1 text-gray-500"><i onClick={()=>reportComment(commentID,post_id)} className="bx bxs-report cursor-pointer">Report</i></li>
                                                         {(uID === id || isPostOwner) ? <li className="border-b m-1 text-red-500"><i onClick={()=>deleteComment(commentID,post_id)} className="bx bx-trash cursor-pointer">Delete</i></li> : ""}
-                                                        {(isPostOwner && post_moment === "Bugs") ? <li onClick={()=>acceptSolution(commentID)} className="border-b m-1 text-nowrap cursor-pointer text-green-400"><i className="bx bxs-badge-check"></i>Accepte</li> : ""}
+                                                        {(isPostOwner && post_moment === "Bugs" && !isAccepted) ? <li onClick={()=>acceptSolution(commentID)} className="border-b m-1 text-nowrap cursor-pointer text-green-400"><i className="bx bxs-badge-check"></i>Accepte</li> : ""}
                                                     </ul>
                                                 </div>
                                             </div>

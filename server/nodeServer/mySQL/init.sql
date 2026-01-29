@@ -293,31 +293,16 @@ CREATE TABLE IF NOT EXISTS user_achievements (
 );
 
 
-CREATE TABLE IF NOT EXISTS achievement_progress (
-  progress_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  user_achievement_id CHAR(36) NOT NULL,
-  condition_yet JSON NOT NULL,
-  started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-  FOREIGN KEY (user_achievement_id)
-    REFERENCES user_achievements(user_achievement_id)
-    ON DELETE CASCADE
-);
-
 CREATE TABLE IF NOT EXISTS achievement_shoutouts (
   shoutout_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  progress_id CHAR(36) NOT NULL,
   post_id CHAR (36) NOT NULL,
   id CHAR(36) NOT NULL,
   commentID CHAR(36) NOT NULL,
-  conditions JSON NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-  FOREIGN KEY (progress_id) REFERENCES achievement_progress(progress_id),
   FOREIGN KEY (id) REFERENCES users(id),
 
-  UNIQUE KEY uniq_shoutout (progress_id, id,commentID)
+  UNIQUE KEY uniq_shoutout (id,commentID)
 );
 
 

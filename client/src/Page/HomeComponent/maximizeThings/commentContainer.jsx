@@ -16,8 +16,15 @@ export default function CommentEl() {
     const [Ty,setTy] = useState(0);
     const [isDragging,setDrag] = useState(false);
     const [canComment,setCanComnt] = useState(true);
-    const flotRef = useRef(null)
-    const [isFloating,setFloting] = useState(false);
+    const flotRef = useRef({});
+
+    const setCallback = (id)=> (el)=>{
+        flotRef.current[id]=el;
+    }
+    const [isFloating,setFloting] = useState({
+        float:false,
+        clickID:""
+    });
     const MAX_DRAG = 300;
     const soundMp3 = new Audio(sound)
 
@@ -294,7 +301,7 @@ export default function CommentEl() {
             })
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
-            
+            toast.success(result.pass)
         } catch (error) {
             toast.error(error.message)
         }
@@ -302,15 +309,15 @@ export default function CommentEl() {
 
     useEffect(()=>{
         const handleClick = evnt=>{
-            const el = flotRef.current;
+            const el = flotRef.current[isFloating.clickID];
             if (el && !el.contains(evnt.target)) {
-                setFloting(false);
+                setFloting({clickID:"",float:false});
             }
         }
         
         document.addEventListener("click",handleClick);
         return ()=> document.removeEventListener("click",handleClick);
-    },[])
+    },[isFloating])
     
     return(
          <div className="underTaker">
@@ -341,7 +348,7 @@ export default function CommentEl() {
                     {
                        commentData?.length > 0 ?
                         commentData?.map((cmnt,index)=>{
-                            let {username,avatar,isPostOwner,commentID,isAccepted,comment,post_id,isLiked,id,totalLike,created_at} = cmnt;
+                            let {username,avatar,isPostOwner,commentID,isAccepted,post_moment,comment,post_id,isLiked,id,totalLike,created_at} = cmnt;
                             let isSecondLast = index === commentData.length-2;
                             return(
                                 <div key={commentID} ref={isSecondLast ? secondLastRef : null} className="h-auto w-full text-skin-text flex items-center flex-col">
@@ -365,13 +372,13 @@ export default function CommentEl() {
                                         </div>
 
                                         <div className="likeCommentd flex items-center flex-col gap-2 w-[7%]">
-                                            <div className="relative" ref={flotRef}>
-                                                <i className="bx bx-dots-vertical text-gray-500 cursor-pointer" onClick={()=>setFloting(true)}></i>
-                                                <div className={`flex absolute right-0 transition-all duration-300 ${isFloating ? "top-0! opacity-100" : "-top-5 opacity-0 pointer-events-none "} p-1 rounded-md bg-blue-500/20 backdrop-blur-md`}>
+                                            <div className="relative" ref={setCallback(commentID)}>
+                                                <i className="bx bx-dots-vertical text-gray-500 cursor-pointer" onClick={()=>setFloting({float:true,clickID:commentID})}></i>
+                                                <div className={`flex absolute right-0 transition-all duration-300 ${(isFloating.float && isFloating.clickID === commentID) ? "top-0! opacity-100" : "-top-5 opacity-0 pointer-events-none "} p-1 rounded-md bg-blue-500/20 backdrop-blur-md`}>
                                                     <ul>
                                                         <li className="border-b m-1 text-gray-500"><i onClick={()=>reportComment(commentID,post_id)} className="bx bxs-report cursor-pointer">Report</i></li>
                                                         {(uID === id || isPostOwner) ? <li className="border-b m-1 text-red-500"><i onClick={()=>deleteComment(commentID,post_id)} className="bx bx-trash cursor-pointer">Delete</i></li> : ""}
-                                                        {isPostOwner ? <li onClick={()=>acceptSolution(commentID)} className="border-b m-1 text-nowrap cursor-pointer text-green-400"><i className="bx bxs-badge-check"></i>Accepte</li> : ""}
+                                                        {(isPostOwner && post_moment === "Bugs") ? <li onClick={()=>acceptSolution(commentID)} className="border-b m-1 text-nowrap cursor-pointer text-green-400"><i className="bx bxs-badge-check"></i>Accepte</li> : ""}
                                                     </ul>
                                                 </div>
                                             </div>

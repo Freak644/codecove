@@ -16,6 +16,7 @@ export const getComment = async (rkv,rspo) => {
                     u.username,
                     u.avatar,
                     c.*,
+                    p.post_moment,
                      EXISTS (
                         SELECT 1
                         FROM posts pst
@@ -29,6 +30,8 @@ export const getComment = async (rkv,rspo) => {
                 FROM comments c
                 INNER JOIN users u 
                     ON u.id = c.id
+                INNER JOIN posts p
+                    ON p.post_id = c.post_id
                 WHERE c.post_id = ? AND c.isBlocked=0 AND c.report_count < 100
                 ORDER BY c.created_at DESC
                 LIMIT ? OFFSET ?`,[id,id,post_id,intLimit,intOffset]);

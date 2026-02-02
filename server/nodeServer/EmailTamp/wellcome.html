@@ -23,13 +23,20 @@
       overflow: hidden;
     }
 
-    .header {
-      background: radial-gradient(circle at top left, #1a73e8, #16a34a);
-      padding: 35px 20px;
-      text-align: center;
-      color: white;
-      position: relative;
+  .header {
+    background: linear-gradient(130deg, #0027b3,#9600cc,#bda700);
+    padding: 35px 20px;
+    text-align: center;
+    color: white;
+    position: relative;
+    transition: all .4s;
+
+    &:hover{
+       background: linear-gradient(130deg, #0027b3,#9600cc,#007bbd);
     }
+  }
+
+
 
     .header h1 {
       margin: 0;
@@ -56,12 +63,16 @@
       font-size: 32px;
       font-weight: 700;
       letter-spacing: 5px;
-      background: linear-gradient(135deg, #1a73e8, #16a34a);
+      background: linear-gradient(135deg, #3300ff, #cb00fe);
       color: white;
       padding: 18px 40px;
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(26, 115, 232, 0.4);
       text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+
+      &:hover{
+        background: linear-gradient(135deg,#3300ff8a, #cb00fe81);
+      }
     }
 
     .note {
@@ -117,7 +128,7 @@
     </div>
 
     <div class="footer">
-      © 2025 <span>CodeCove</span>. All rights reserved.
+      © 2026 <span>CodeCove</span>. All rights reserved.
     </div>
   </div>
 </body>

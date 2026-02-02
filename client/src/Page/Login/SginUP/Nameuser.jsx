@@ -121,7 +121,7 @@ export default function UserNameEl({stoggle}) {
             if (username.length<6) {
              throw new Error("username.len>6")
             }
-            if (cache.includes(username)) {
+            if (cache?.includes(username)) {
                 throw new Error(username+" is Already Taken");
             }
             if (!email.endsWith("@gmail.com")) {

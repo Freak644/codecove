@@ -69,10 +69,8 @@ export const CreatePost = async (rkv,rspo) => {
           await clearTemp(imgArray);
           return rspo.status(400).send(rekvst.err);
         }
-        console.log("API is here")
         const cloudRkv = await cloudinary.uploader.upload(crntImg.path, { folder: row[0].username, timeout: 60000 });
         cloudLiks.push(cloudRkv.secure_url);
-        console.log("API is here 2")
         await fs.promises.unlink(crntImg.path);
       }
       let post_id = nanoid();
@@ -90,7 +88,7 @@ export const CreatePost = async (rkv,rspo) => {
       rspo.status(200).send({pass:"Your Post is POst"})
 
     } catch (error) {
-      console.log(error)
+        //console.log(error)
         await clearTemp(imgArray);
         return rspo.status(500).send({err:"server side error"});
     }

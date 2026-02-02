@@ -97,7 +97,7 @@ export const CreateUser = async (rkv, rspo) => {
 
     let avatarFileName = "default.webp";
     if (file) {
-      avatarFileName = username+Date.now()+"."+file.originalname;
+      avatarFileName = username+Date.now();
       const avatarPath = path.join(dir, avatarFileName);
       fs.writeFileSync(avatarPath, file.buffer);
     }
@@ -114,12 +114,17 @@ export const CreateUser = async (rkv, rspo) => {
 
     rspo.status(201).send({ pass: "Account created successfully" });
 
+    let [crntUser] = await database.query("SELECT id FROM users WHERE username = ?",[username]);
+    let uid = crntUser[0].id;
+    await database.query("INSERT INTO userActivety_for_achievements (user_id) VALUE (?)",[uid]);
+
   } catch (error) {
     // anything fails after saving, delete the file
+    console.log(error.message)
     if (rkv.file) {
       const avatarFileName = `Images/Avtar/${rkv.file.originalname}`;
       try { fs.unlinkSync(avatarFileName); } catch (err) { console.error(err) };
     }
-    rspo.status(500).send({ err: "Something went wrong", details: error.message });
+    rspo.status(500).send({ err: "Something went wrong"});
   }
 };

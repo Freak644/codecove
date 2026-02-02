@@ -285,24 +285,20 @@ CREATE TABLE IF NOT EXISTS user_achievements (
   conditions JSON NOT NULL,
   achieved_at TIMESTAMP NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (achievement_id) REFERENCES achievements(achievement_id) ON DELETE CASCADE,
-
   UNIQUE KEY uniq_user_achievement (id, achievement_id)
 );
 
-
-CREATE TABLE IF NOT EXISTS achievement_shoutouts (
-  shoutout_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  post_id CHAR (36) NOT NULL,
-  id CHAR(36) NOT NULL,
-  commentID CHAR(36) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-  FOREIGN KEY (id) REFERENCES users(id),
-
-  UNIQUE KEY uniq_shoutout (id,commentID)
+CREATE TABLE IF NOT EXISTS userActivety_for_achievements (
+  user_id CHAR(36) PRIMARY KEY,
+  tlg BIGINT DEFAULT 0,
+  tcg BIGINT DEFAULT 0,
+  tld BIGINT DEFAULT 0,
+  tcd BIGINT DEFAULT 0,
+  tca BIGINT DEFAULT 0,
+  tp_count BIGINT DEFAULT 0,
+  INDEX idx_user_id (user_id)
 );
 
 

@@ -76,9 +76,10 @@ export const LoginAPI = async (rkv,rspo) => {
             rspo.status(504).send({err:"Something went wrong while Login"})
         }
     } catch (error) {
+        //console.log(error.message)
         rspo.clearCookie("myAuthToken");
         await database.query("DELETE v,s FROM validationToken v JOIN user_sessions s ON v.session_id = s.session_id WHERE v.token_id = ?",[token_id]);
-        rspo.status(500).send({ err: "Sever Side Error",details:error.message});
+        rspo.status(500).send({ err: "Sever Side Error"});
     }
 }
 

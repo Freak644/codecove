@@ -72,13 +72,29 @@ export default function TODOList({crntPost_id}) {
         }
     },[crntPost]);
 
-    function formatCount(num) {
-        if(num === null || num === undefined) return;
-        if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "b";
-        if (num >= 1_000_000) return (num / 1_000_000).toFixed(1).replace(/\.0$/, "") + "m";
-        if (num >= 1_000) return (num / 1_000).toFixed(1).replace(/\.0$/, "") + "k";
-        return num.toString();
+    function formatCount(value) {
+        if (value == null || isNaN(value)) return "0";
+
+        const abs = Math.abs(value);
+
+        const units = [
+            { limit: 1e9, suffix: "B" },
+            { limit: 1e6, suffix: "M" },
+            { limit: 1e3, suffix: "K" }
+        ];
+
+        for (const { limit, suffix } of units) {
+            if (abs >= limit) {
+            const formatted = (value / limit)
+                .toFixed(1)
+                .replace(/\.0$/, "");
+            return formatted + suffix;
+            }
+        }
+
+        return value.toString();
     }
+
     const downloadAll = async (choice) => {
         setToggle(false)
         if (choice) {

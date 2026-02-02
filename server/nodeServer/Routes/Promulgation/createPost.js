@@ -77,13 +77,13 @@ export const CreatePost = async (rkv,rspo) => {
       await database.query("INSERT INTO posts (post_id, id, images_url, caption, blockCat, visibility, canComment, likeCount, canSave, post_moment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [post_id, id, JSON.stringify(cloudLiks), caption, JSON.stringify({Absuse,Spam,Link,Violence}), visibility == "true" ? 1 : 0, canComment == "true" ? 1 : 0,likeCount == "true" ? 1 : 0, canSave, postGroup]
       )
-      let [rows] = await database.query(`SELECT u.username, u.avatar, p.*
-                    FROM posts p INNER JOIN users u ON u.id = p.id WHERE
-                    p.post_id = ? AND p.visibility <> 0 GROUP BY p.post_id`,[post_id]);
-      if (visibility !== "false") {
-        const io = getIO();
-        io.emit("new-post",rows[0]);
-      }
+      // let [rows] = await database.query(`SELECT u.username, u.avatar, p.*
+      //               FROM posts p INNER JOIN users u ON u.id = p.id WHERE
+      //               p.post_id = ? AND p.visibility <> 0 GROUP BY p.post_id`,[post_id]);
+      // if (visibility !== "false") {
+      //   const io = getIO();
+      //   io.emit("new-post",rows[0]);
+      // }
       
       rspo.status(200).send({pass:"Your Post is POst"})
 

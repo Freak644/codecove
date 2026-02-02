@@ -97,7 +97,7 @@ export const CreateUser = async (rkv, rspo) => {
 
     let avatarFileName = "default.webp";
     if (file) {
-      avatarFileName = username+Date.now();
+      avatarFileName = username+Date.now()+file.originalname;
       const avatarPath = path.join(dir, avatarFileName);
       fs.writeFileSync(avatarPath, file.buffer);
     }

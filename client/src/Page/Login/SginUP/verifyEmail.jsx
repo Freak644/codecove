@@ -20,10 +20,11 @@ export default function VerifyEl() {
       firstInp.focus()
     },[])
     const handleAPICall = async () => {
+      console.log(username,email)
       if (btnRef.current.disabled != true) {
         toggleLoader(true);
         try {
-            let request = await fetch(`/myServer/sendVerifyEmail}`,{
+            let request = await fetch(`/myServer/sendVerifyEmail`,{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
@@ -157,7 +158,7 @@ export default function VerifyEl() {
                 <div className="formDiv">
                     <form action="" onSubmit={handleSubmit}>
                         <div className="txtDiv flex items-center flex-col p-2 gap-2">
-                            <img className='h-[100px]' src="./Logo/CodeCove_Logo.png" alt="" />
+                            <img className='h-25' src="./Logo/CodeCove_Logo.png" alt="" />
                             <p className='font-light text-skin-text'>We sent a verification Code on.</p>
                             <span className='text-[12px] text-skin-ptext'>{email}</span>
                             <button className='text-btn' onClick={()=>{setMail(""),setVTab(false)}} type='button'>Change</button>

@@ -542,3 +542,8 @@ select{
     background-color: transparent;
   }
 }
+
+.comment-sheet {
+  will-change: transform;
+  touch-action: none;
+}

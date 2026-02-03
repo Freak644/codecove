@@ -14,9 +14,20 @@ export default function CommentEl() {
     const [commentData,setComment] = useState([]);
     const [isOver,setOver] = useState(false);
     const [Ty,setTy] = useState(0);
-    const [isDragging,setDrag] = useState(false);
     const [canComment,setCanComnt] = useState(true);
     const flotRef = useRef({});
+//Drag Style
+    const sheetRef = useRef(null);
+    const startY = useRef(0);
+    const currentY = useRef(0);
+    const rafId = useRef(null);
+    const isDragging = useRef(false);
+    const MAX_DRAG = 300;
+
+//end DragJS
+    const soundMp3 = new Audio(sound)
+
+    const progress = Math.min(Ty / MAX_DRAG, 1);
 
     const setCallback = (id)=> (el)=>{
         flotRef.current[id]=el;
@@ -25,15 +36,7 @@ export default function CommentEl() {
         float:false,
         clickID:""
     });
-    const MAX_DRAG = 300;
-    const soundMp3 = new Audio(sound)
 
-    const progress = Math.min(Ty / MAX_DRAG, 1);
-
-
-    const startY = useRef(0);
-    const currentY = useRef(0);
-    const sheetRef = useRef(null);
 
     const navi = useNavigate();
 
@@ -214,41 +217,69 @@ export default function CommentEl() {
         if (node) observerRef.current.observe(node);
     };
 
-    const onStart = (evnt)=> {
-        const isAtTop = sheetRef.current?.scrollTop === 0;
-        if (!isAtTop) return;
+    const onPointerDown = (e) => {
+        const sheet = sheetRef.current;
+        if (!sheet || sheet.scrollTop !== 0) return;
 
-        const y = evnt.touches ? evnt.touches[0].clientY : evnt.clientY;
-        startY.current = y;
-        if (y>0) {
-            setDrag(true);
-        }
-        
-    }
+        isDragging.current = true;
+        startY.current = e.clientY;
+        sheet.style.transition = "none";
 
-    const onDraggin = (evnt) => {
-            if (!isDragging) return;
-
-            const y = evnt.touches ? evnt.touches[0].clientY : evnt.clientY;
-            let diff = y - startY.current;
-
-            if (diff <= 0) return;
-
-            // 👇 resistance after 120px
-            if (diff > 120) {
-                diff = 120 + (diff - 120) * 0.35;
-            }
-
-            setTy(Math.min(diff, MAX_DRAG));
+        sheet.setPointerCapture(e.pointerId);
     };
 
 
-    const onExit = (evnt) => {
-        setDrag(false);
-        if (Ty > 100) {
-            navi(-1);
+    const onPointerMove = (e) => {
+        if (!isDragging.current) return;
+
+        let diff = e.clientY - startY.current;
+        if (diff <= 0) return;
+
+        if (diff > 120) {
+            diff = 120 + (diff - 120) * 0.35;
         }
-    }
+
+        diff = Math.min(diff, MAX_DRAG);
+        currentY.current = diff;
+
+        if (!rafId.current) {
+            rafId.current = requestAnimationFrame(() => {
+            const progress = currentY.current / MAX_DRAG;
+
+            sheetRef.current.style.transform = `
+                translateY(${currentY.current}px)
+                scale(${1 - progress * 0.03})
+            `;
+
+            sheetRef.current.style.boxShadow = `
+                0 ${10 + progress * 20}px ${40 + progress * 40}px
+                rgba(0,0,0,${0.25 + progress * 0.25})
+            `;
+
+            rafId.current = null;
+            });
+        }
+    };
+
+
+
+    const onPointerUp = () => {
+        const sheet = sheetRef.current;
+        isDragging.current = false;
+
+        sheet.style.transition = "transform 0.3s ease, box-shadow 0.3s ease";
+
+        if (currentY.current > 100) {
+            navi(-1); // close
+        } else {
+            // snap back
+            sheet.style.transform = "translateY(0) scale(1)";
+            sheet.style.boxShadow = "0 10px 40px rgba(0,0,0,0.25)";
+        }
+
+        currentY.current = 0;
+    };
+
 
     const reportComment = async (comment_id,post_id) => {
         try {
@@ -321,29 +352,17 @@ export default function CommentEl() {
     
     return(
          <div className="underTaker">
-            {canComment ? <div onTouchStart={onStart}
-            onMouseDown={onStart}
-            onTouchMove={onDraggin}
-            onMouseMove={onDraggin}
-            onMouseUp={onExit}
-            onTouchEnd={onExit}
+            {canComment ? <div 
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerUp}
              ref={sheetRef}
-             
-             style={{
-                        transform: `
-                            translateY(${Ty}px)
-                            scale(${1 - progress * 0.03})
-                        `,
-                        boxShadow: `0 ${10 + progress * 20}px ${
-                            40 + progress * 40
-                        }px rgba(0,0,0,${0.25 + progress * 0.25})`,
-                        transition: isDragging ? "none" : "transform 0s ease, box-shadow 0.3s ease"
-                    }}
 
              
              
-             className={`h-full w-full mainInnerCC flex items-center flex-col p-1 touch-none`}>
-                    <div className="h-1.5 w-16 bg-skin-login absolute top-0 rounded-md md:hidden" />
+             className={`h-full w-full mainInnerCC comment-sheet flex items-center flex-col p-1 touch-none`}>
+                    <div className="h-1.5 w-16 bg-skin-login absolute -top-2 rounded-md md:hidden" />
                 <div className="virtuoso mt-2 relative h-9/10 w-full flex items-start justify-items-start flex-wrap gap-4 my-scroll">
                     {
                        commentData?.length > 0 ?
@@ -371,7 +390,7 @@ export default function CommentEl() {
 
                                         </div>
 
-                                        <div className="likeCommentd flex items-center flex-col gap-2 w-[7%]">
+                                        <div className="likeCommentd flex items-center flex-col gap-2 w-[7%] text-lg">
                                             <div className="relative" ref={setCallback(commentID)}>
                                                 <i className="bx bx-dots-vertical text-gray-500 cursor-pointer" onClick={()=>setFloting({float:true,clickID:commentID})}></i>
                                                 <div className={`flex absolute right-0 transition-all duration-300 ${(isFloating.float && isFloating.clickID === commentID) ? "top-0! opacity-100" : "-top-5 opacity-0 pointer-events-none "} p-1 rounded-md bg-blue-500/20 backdrop-blur-md`}>

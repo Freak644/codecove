@@ -88,7 +88,7 @@ export const CreatePost = async (rkv,rspo) => {
       rspo.status(200).send({pass:"Your Post is POst"})
 
     } catch (error) {
-        //console.log(error)
+        console.log(error)
         await clearTemp(imgArray);
         return rspo.status(500).send({err:"server side error"});
     }

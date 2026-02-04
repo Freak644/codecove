@@ -28,8 +28,6 @@ export default function CommentEl() {
     });
 
 
-    const navi = useNavigate();
-
     const observerRef = useRef(null);
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     let  {isTrue,toggleLoader}  = Loader();
@@ -62,7 +60,6 @@ export default function CommentEl() {
                 if (!result.isComment) setCanComnt(result.isComment)
                 throw new Error(result.err)
             }
-            console.log({commentDataIS:result.commentrows})
             if (result.commentrows.length>0) {
                 setComment(result.commentrows);
             }

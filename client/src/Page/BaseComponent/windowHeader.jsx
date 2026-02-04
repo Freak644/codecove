@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom"
 import { UnivuUserInfo } from "../../lib/basicUserinfo";
 import { toggleABMenu } from "../../lib/toggleTheme";
 import {getColor} from '../../utils/getGradnt';
+import { toggleSlider } from "../../lib/tabToggle";
 export default function WindowHerder() {
     let location = useLocation();
     let [pathName,setPath] = useState("");
@@ -11,6 +12,7 @@ export default function WindowHerder() {
     const toggleMenu = toggleABMenu(state => state.toggleMenu);
     let {userInfo} = UnivuUserInfo();
     let gradColor = getColor();
+    const {toggleMiniTab} = toggleSlider();
     useEffect(()=>{
         setData(userInfo)
     },[userInfo])
@@ -32,7 +34,7 @@ export default function WindowHerder() {
         <div className="spaceLoaderDiv w-screen absolute top-0 -z-1">
         <div className=" h-1 absolute w-full bg-linear-to-l from-purple-600 via-pink-600 to-yellow-500 ]"></div>
         </div>
-        <div className="mainheaderCom relative w-screen h-[50px] flex items-center justify-between p-1 
+        <div className="mainheaderCom relative w-screen h-12.5 flex items-center justify-between p-1 
             border-amber-200 border-b border-b-gray-500 bg-blue-800/10 backdrop-blur-lg z-10
         "> 
             <div className="leftHeader text-4xl flex flex-1 gap-4 pl-5">
@@ -69,7 +71,7 @@ export default function WindowHerder() {
                     <div className="userThings flex gap-[1vw]">
                         <i title="Report an issue" className="bx bx-info-circle border border-skin-ptext/30 p-1 rounded-lg cursor-pointer"></i>
                         <i title="Source Code"  onClick={()=>window.open("https://github.com/Freak644","_blank")} className="bx bxl-github border border-skin-ptext/30 p-1 rounded-lg cursor-pointer"></i>
-                        <i title="Notification" className="bx bx-bell border border-skin-ptext/30 p-1 rounded-lg cursor-pointer"></i>
+                        <i onClick={()=>toggleMiniTab("noti")} title="Notification" className="bx bx-bell border border-skin-ptext/30 p-1 rounded-lg cursor-pointer"></i>
                         <div title={userData.username || "Loading"} className="h-9 w-9 overflow-hidden cursor-pointer border rounded-full flex items-center justify-center relative">
                             <img className="h-full" src={userData.avatar ? `/myServer/${userData.avatar}` : "https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" />
                         </div>

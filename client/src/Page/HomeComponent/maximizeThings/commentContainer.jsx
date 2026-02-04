@@ -13,7 +13,7 @@ export default function CommentEl() {
     const [offset,setOffset] = useState(0);
     const [commentData,setComment] = useState([]);
     const [isOver,setOver] = useState(false);
-    const [Ty,setTy] = useState(0);
+
     const [canComment,setCanComnt] = useState(true);
     const flotRef = useRef({});
 

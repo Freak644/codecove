@@ -24,13 +24,15 @@ export const toggleSlider = create((set)=>({
     news:false,
     charts:true,
     message:false,
+    noti:false
   },
   toggleMiniTab: (value)=> 
     set({
       isMiniTab:{
         news: value === "news",
         charts: value === "charts",
-        message: value === "msg"
+        message: value === "msg",
+        noti:value === "noti"
       },
     })
 }))

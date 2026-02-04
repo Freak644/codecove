@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import {VitePWA} from 'vite-plugin-pwa'
 export default defineConfig({
-  root: "client",   // 👈 this tells Vite where your app lives
+  root: "client",   
   plugins: [react()],
 //   VitePWA:({
 //     registerType: 'autoUpdate',

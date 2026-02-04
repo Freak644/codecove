@@ -2,9 +2,12 @@ import { useEffect } from "react";
 import { UnivuUserInfo } from "../../../lib/basicUserinfo"
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Loader } from "../../../lib/loader";
 
 export default function MiniDropDown({postInfo,toggle}) {
     const userInfo = UnivuUserInfo(stat=>stat.userInfo);
+    const {toggleLoader} = Loader();
+    const isLoading = Loader(stat => stat.isTrue);
 
     const downloadAll = async () => {
         let imgLikeArray = postInfo?.images_url;
@@ -28,7 +31,9 @@ export default function MiniDropDown({postInfo,toggle}) {
     }
 
     const handleClick = async (setting,post_id) => {
+        if (isLoading) return;
         try {
+            toggleLoader(true)
              await axios.put("myServer/PostControll/toggle",{setting,post_id},{
                 headers:{
                     "Content-Type": "application/json"
@@ -37,6 +42,8 @@ export default function MiniDropDown({postInfo,toggle}) {
              location.reload();
         } catch (error) {
             toast.error(error)
+        }finally{
+            toggleLoader(false)
         }
     }
 

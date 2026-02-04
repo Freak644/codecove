@@ -9,13 +9,13 @@ import CompAnim from '../../assets/animations/compAnimation';
 import PostFeedMGMT from './postFeed';
 import { toast } from 'react-toastify';
 import { Loader } from '../../lib/loader';
+import NotificaitonMini from '../Notification/miniNotiCon/notificationCon';
 export default function HonePage() {
   const [Posts,setPosts] = useState([])
   const [offset,setOffset] = useState(0)
   const [isEnd,setEnd] = useState(false)
   const userInfo = UnivuUserInfo(stat=>stat.userInfo);
   const crntTab = toggleSlider(stat=>stat.isMiniTab);
-  const [isCalled,setCalling] = useState(true);
   let {toggleMiniTab} = toggleSlider();
   let {toggleLoader} = Loader();
 
@@ -131,11 +131,14 @@ export default function HonePage() {
             key={
               crntTab.news ? "news" :
               crntTab.charts ? "charts" :
-              crntTab.message ? "msg" : "none"
+              crntTab.message ? "msg" : 
+              crntTab.noti ? "noti" : "none"
             } >
               {crntTab.news && <NewsComp/>}
               {crntTab.charts && <ChartsEL/>}
               {crntTab.message && ""}
+              {crntTab.noti && <NotificaitonMini/>}
+
             </CompAnim>
         </div>
       </div>

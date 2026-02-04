@@ -16,18 +16,8 @@ export default function CommentEl() {
     const [Ty,setTy] = useState(0);
     const [canComment,setCanComnt] = useState(true);
     const flotRef = useRef({});
-//Drag Style
-    const sheetRef = useRef(null);
-    const startY = useRef(0);
-    const currentY = useRef(0);
-    const rafId = useRef(null);
-    const isDragging = useRef(false);
-    const MAX_DRAG = 300;
 
-//end DragJS
     const soundMp3 = new Audio(sound)
-
-    const progress = Math.min(Ty / MAX_DRAG, 1);
 
     const setCallback = (id)=> (el)=>{
         flotRef.current[id]=el;
@@ -217,69 +207,6 @@ export default function CommentEl() {
         if (node) observerRef.current.observe(node);
     };
 
-    const onPointerDown = (e) => {
-        const sheet = sheetRef.current;
-        if (!sheet || sheet.scrollTop !== 0) return;
-
-        isDragging.current = true;
-        startY.current = e.clientY;
-        sheet.style.transition = "none";
-
-        sheet.setPointerCapture(e.pointerId);
-    };
-
-
-    const onPointerMove = (e) => {
-        if (!isDragging.current) return;
-
-        let diff = e.clientY - startY.current;
-        if (diff <= 0) return;
-
-        if (diff > 120) {
-            diff = 120 + (diff - 120) * 0.35;
-        }
-
-        diff = Math.min(diff, MAX_DRAG);
-        currentY.current = diff;
-
-        if (!rafId.current) {
-            rafId.current = requestAnimationFrame(() => {
-            const progress = currentY.current / MAX_DRAG;
-
-            sheetRef.current.style.transform = `
-                translateY(${currentY.current}px)
-                scale(${1 - progress * 0.03})
-            `;
-
-            sheetRef.current.style.boxShadow = `
-                0 ${10 + progress * 20}px ${40 + progress * 40}px
-                rgba(0,0,0,${0.25 + progress * 0.25})
-            `;
-
-            rafId.current = null;
-            });
-        }
-    };
-
-
-
-    const onPointerUp = () => {
-        const sheet = sheetRef.current;
-        isDragging.current = false;
-
-        sheet.style.transition = "transform 0.3s ease, box-shadow 0.3s ease";
-
-        if (currentY.current > 100) {
-            navi(-1); // close
-        } else {
-            // snap back
-            sheet.style.transform = "translateY(0) scale(1)";
-            sheet.style.boxShadow = "0 10px 40px rgba(0,0,0,0.25)";
-        }
-
-        currentY.current = 0;
-    };
-
 
     const reportComment = async (comment_id,post_id) => {
         try {
@@ -353,16 +280,8 @@ export default function CommentEl() {
     return(
          <div className="underTaker">
             {canComment ? <div 
-            onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={onPointerUp}
-            onPointerCancel={onPointerUp}
-             ref={sheetRef}
-
-             
-             
              className={`h-full w-full mainInnerCC comment-sheet flex items-center flex-col p-1 touch-none`}>
-                    <div className="h-1.5 w-16 bg-skin-login absolute -top-2 rounded-md md:hidden" />
+                
                 <div className="virtuoso mt-2 relative h-9/10 w-full flex items-start justify-items-start flex-wrap gap-4 my-scroll">
                     {
                        commentData?.length > 0 ?

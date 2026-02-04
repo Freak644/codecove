@@ -3,6 +3,7 @@ import ImageSlider from "../../Promulgation/sliderCom";
 import { useEffect, useRef, useState } from "react";
 import { univPostStore } from "../../../lib/basicUserinfo";
 import CommentEl from "./commentContainer";
+import SheetMiddleWhare from "./slideMiddleWr";
 
 export default function MaximizeContainer() {
     let {pID} = useParams();
@@ -44,7 +45,7 @@ export default function MaximizeContainer() {
                         <ImageSlider imgArray={crntPost?.images_url || []} toggle={setToggel} />
                     </div>
                    <div className={`${isFull ? "w-0!" : "flex-1"} transition-all duration-200 flex items-center justify-center h-full`}>
-                        <CommentEl/>
+                        <SheetMiddleWhare/>
                     </div>
                 </div>
             </div>

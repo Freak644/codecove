@@ -1,14 +1,20 @@
+import { useEffect } from "react";
 import { toggleSlider } from "../../../lib/tabToggle"
+import { notification } from "../../../utils/notificationSender";
 
 export default function NotificaitonMini() {
     const {toggleMiniTab} = toggleSlider();
+
+    useEffect(()=>{
+        notification("Test 2/.3","Testing",true,"http://localhost:3221/Lab/loser_3221")
+    },[])
     return(
         <div className="underTaker flex-wrap bg-skin-text/5 rounded-lg backdrop-blur-lg">
             <div className="NotificationHeader h-2/10 w-full flex
-            items-start flex-wrap gap-3 text-skin-text">
+            items-start flex-wrap gap-3 text-skin-text justify-center">
                 <div className="flex justify-end items-center gap-2.5 w-full">
-                    <p className="text-md text-skin-text/80 self-start">Notification</p>
-                    <p className="text-sm text-blue-400 cursor-pointer hover:text-blue-500">Mark as read</p>
+                    <p className="text-lg flex gap-2 text-skin-text/80 items-center"><i className="bx bxs-bell-ring"></i> Notification</p>
+                    <p className="text-sm text-blue-400 cursor-pointer hover:text-blue-500 ml-auto">Mark as read</p>
                     <i onClick={()=>toggleMiniTab("charts")} className="bx bx-exit p-1 rounded-lg text-lg border-2 border-gray-400/30 cursor-pointer"></i>
                 </div>
                 <p>All</p>

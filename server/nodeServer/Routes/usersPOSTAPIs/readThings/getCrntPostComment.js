@@ -6,6 +6,9 @@ export const getComment = async (rkv,rspo) => {
     let {post_id,offset,limit} = rkv.query;
     const intLimit = parseInt(limit) || 10;
     const intOffset = parseInt(offset) || 0;
+    if (limit>20) {
+        limit = 10;
+    }
     try {
         let [rows] = await database.query("SELECT canComment,visibility FROM posts WHERE post_id = ?",[post_id]);
         if (rows.length !== 1) return rspo.status(401).send({err:"Heheheheheeeeeeee...."});

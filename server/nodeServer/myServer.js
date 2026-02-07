@@ -40,6 +40,7 @@ import { changeBio, changeDP } from './Routes/editProfileAPIs/userInfoApis.js';
 import { followAPI } from './Routes/editProfileAPIs/followUnfollow.js';
 import { changeBioSocket } from './socketIO/userProfileSocket.js';
 import { acceptSolution } from './Routes/Achievement/writeAchievemtns/acceptSolution.js';
+import { getPost } from './Routes/usersPOSTAPIs/readThings/getSiglePost.js';
 // import { addNewAchievement } from './Routes/Achievement/createAchievement.js';
 let myApp = express();
 myApp.use(express.json({limit:"20mb"}));
@@ -132,6 +133,7 @@ myApp.put("/writeUser/changeDP",RateLimiter,checkRequest,upload.single("avatar")
 myApp.post("/writePost/reportComment",RateLimiter,checkRequest,Auth,reportCommentAPI);
 myApp.delete("/writePost/deleteComment",RateLimiter,checkRequest,Auth,DeleteCommentAPI);
 myApp.post("/writeAchievement/acceptComment",RateLimiter,checkRequest,Auth,acceptSolution)
+myApp.get("/readPost/getImage",RateLimiter,checkRequest,Auth,getPost)
 // myApp.post("/createAchievement",addNewAchievement);
 
 

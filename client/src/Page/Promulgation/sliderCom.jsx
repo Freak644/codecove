@@ -92,7 +92,7 @@ export default function ImageSlider({ imgArray, setArray,toggle }) {
         X
       </button>
       }
-      {imgArray.length > 1 && <div className="flex items-center justify-center p-2 absolute z-10 right-4 bottom-2 bg-black/5 backdrop-blur-md text-white rounded-full overflow-hidden">
+      {imgArray?.length > 1 && <div className="flex items-center justify-center p-2 absolute z-10 right-4 bottom-2 bg-black/5 backdrop-blur-md text-white rounded-full overflow-hidden">
         {`${index+1}/${imgArray.length}`}
       </div>}
       {/* slider container (your original setup) */}
@@ -102,7 +102,7 @@ export default function ImageSlider({ imgArray, setArray,toggle }) {
       // }}
       >
         <AnimatePresence initial={false} custom={direction}>
-          {imgArray.length > 0 && (
+          {imgArray?.length > 0 && (
             <motion.div
               key={index}
               className="absolute w-full h-full flex items-center justify-center"
@@ -147,7 +147,7 @@ export default function ImageSlider({ imgArray, setArray,toggle }) {
       </div>
 
       {/* right arrow */}
-      { (imgArray.length > 1 && imgArray.length-1 !== index) && <button
+      { (imgArray?.length > 1 && imgArray?.length-1 !== index) && <button
         onClick={nextImg}
         className="absolute z-10 right-0 bg-transparent text-white w-9 h-9 rounded-full hidden sm:flex items-center justify-center hover:bg-gray-600 text-lg transition duration-100"
       >

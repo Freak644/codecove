@@ -5,7 +5,6 @@ import fs from 'fs';
 import { FileChecker } from './fileChecker.js';
 import  {nanoid} from 'nanoid';
 import { database } from '../../Controllers/myConnectionFile.js';
-import {getIO} from '../../myServer.js';
 import createDOMPurify from 'isomorphic-dompurify';
 import {JSDOM} from 'jsdom';
 import { userInfo } from 'os';

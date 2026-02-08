@@ -10,10 +10,10 @@ export const getComment = async (rkv,rspo) => {
         limit = 10;
     }
     try {
-        let [rows] = await database.query("SELECT canComment,visibility FROM posts WHERE post_id = ?",[post_id]);
+        let [rows] = await database.query("SELECT canComment, visibility, id AS user_id FROM posts WHERE post_id = ?",[post_id]);
         if (rows.length !== 1) return rspo.status(401).send({err:"Heheheheheeeeeeee...."});
-        const {visibility,canComment} = rows[0];
-        if (!visibility || !canComment) return rspo.status(401).send({err:"Heheheheheeeeee....",isComment:false});
+        const {visibility,canComment,user_id} = rows[0];
+        if ((!visibility || !canComment) && user_id !== id) return rspo.status(401).send({err:"Heheheheheeeeee....",isComment:false});
         const [commentrows] = await database.query(`SELECT 
                     u.id,
                     u.username,

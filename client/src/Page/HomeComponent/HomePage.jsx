@@ -69,9 +69,7 @@ export default function HonePage() {
         isThere = false;
   },[Posts])
 
-  useEffect(()=>{
-    console.log("post Are",Posts,"offset is:",offset);
-  },[Posts])
+
 
   
   const fetchMorePost = async (crntSet) => {

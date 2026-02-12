@@ -14,6 +14,16 @@ export default function TODOList({crntPost_id}) {
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     const [isToggle,setToggle] = useState(false);
     const starMp3 = new Audio(star);
+    
+        useEffect(() => {
+            const handleResize = () => {
+                setIsMobile(window.innerWidth <= 768);
+            };
+
+            window.addEventListener("resize", handleResize);
+            return () => window.removeEventListener("resize", handleResize);
+        }, []);
+
 
 
 
@@ -162,6 +172,43 @@ export default function TODOList({crntPost_id}) {
             console.log(error)
         }
     }
+
+    const handleShare = async (post_id) => {
+        let url = location.href+"post/"+post_id
+        const shareData = {
+            title: "CodeCove",
+            text: "Check this post on CodeCove!",
+            url
+        };
+
+        
+        if (navigator.share) {
+            try {
+           
+            if (navigator.canShare && !navigator.canShare(shareData)) {
+                throw new Error("Cannot share this data");
+            }
+
+            await navigator.share(shareData);
+            console.log("Shared successfully");
+            } catch (error) {
+            console.log("Share cancelled or failed:", error.message);
+            }
+        } else {
+            showCustomShareModal(shareData.url);
+        }
+    }
+
+    function showCustomShareModal(url) {
+        const encodedURL = encodeURIComponent(url);
+        const text = encodeURIComponent("Check this post on CodeCove!");
+
+        window.open(
+            `https://wa.me/?text=${text}%20${encodedURL}`,
+            "_blank"
+        );
+    }
+
     return(
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
@@ -189,7 +236,7 @@ export default function TODOList({crntPost_id}) {
             <div className={`TodoInner ${canSave ? "" : "pointer-events-none"}`}>
                 <i className="bx bx-bookmark"></i>
             </div>
-            <div className="TodoInner perspective-distant">
+            <div className="TodoInner perspective-distant" onClick={()=>handleShare(post_id)}>
                 <i className="bx bxs-share transform-3d rotate-y-180"></i>
             </div>
         </div>

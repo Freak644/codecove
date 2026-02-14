@@ -279,7 +279,7 @@ export default function CommentEl() {
             {canComment ? <div 
              className={`h-full w-full mainInnerCC comment-sheet flex items-center flex-col p-1 touch-none`}>
                 
-                <div className="virtuoso mt-2 relative h-9/10 w-full flex items-start justify-items-start flex-wrap gap-4 my-scroll">
+                <div className="virtuoso mt-2 relative h-9/10 w-full flex items-start justify-start flex-wrap gap-4 my-scroll">
                     {
                        commentData?.length > 0 ?
                         commentData?.map((cmnt,index)=>{

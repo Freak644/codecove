@@ -4,7 +4,7 @@ import HomePage from '../../Page/DashboardLayout/HomePage'
 import BaseCreate from '../../Page/Promulgation/baseCreateCom';
 import NotFound from '../../Page/BaseComponent/404NotFound';
 import MaximizeContainer from '../../Page/DashboardLayout/maximizeThings/baseContainer';
-import MainLapCom from '../../Page/myLab/mainLap';
+import MainLapCom from '../../Page/userProfile/mainLap';
 import PostANDComment from '../../Page/DashboardLayout/maximizeThings/noBGComment';
 //import CreateAchievement from '../../Admin/createAcheivement';
 export default function AnimateRoute({location}) {

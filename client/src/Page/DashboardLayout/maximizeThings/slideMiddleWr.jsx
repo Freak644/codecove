@@ -32,7 +32,7 @@ export default function SheetMiddleWhare() {
         onDragStart={()=>setDrag(true)}
         onDragEnd={handleDrag}
         >
-            <div className="h-1.5 w-30 md:hidden rounded-md top-1 absolute left-2/6 bg-skin-login" />
+            <div className="h-1.5 w-27 md:hidden rounded-md top-1 absolute left-3/8 bg-skin-login" />
 
             <div className={`underTaker ${isDraging && "overflow-hidden!"}`}>
                 <CommentEl/>

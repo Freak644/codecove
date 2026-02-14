@@ -1,5 +1,5 @@
-import {Routes,Route, useLocation, useNavigate, BrowserRouter} from 'react-router-dom';
-import LoginEL from '../Page/Login/baseFIle';
+import { useLocation} from 'react-router-dom';
+import LoginEL from '../Page/Auth/baseFIle';
 import Header from '../Page/BaseComponent/header';
 import MenuEL from '../Page/BaseComponent/menu';
 import { useEffect, useState } from 'react';
@@ -10,8 +10,8 @@ import CropperEL from './cropperEL';
 import WindowHerder from '../Page/BaseComponent/windowHeader';
 import '../assets/style/paseTwo.css'
 import AbsoluteMenu from './absoluteMenu';
-import AnimateRoute from './miniRoutes/AnimateRoute';
-import NoAnimRoutes from './miniRoutes/noAnimationRoute';
+import AnimateRoute from './Routes/AnimateRoute';
+import NoAnimRoutes from './Routes/noAnimationRoute';
 export default function MyApp() {
     let {fileURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);

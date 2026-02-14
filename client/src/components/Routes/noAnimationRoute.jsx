@@ -1,6 +1,6 @@
 import { Route,Routes } from "react-router-dom";
-import CheckInfo from '../../Page/Login/checkinfo';
-import ResetBase from '../../Page/Login/resetPasswordEL/resetBase'
+import CheckInfo from '../../Page/Auth/checkinfo';
+import ResetBase from '../../Page/Auth/resetPasswordEL/resetBase'
 export default function NoAnimRoutes() {
     
     return(

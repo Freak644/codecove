@@ -274,9 +274,10 @@ select{
 }
 
 .singlePost{
-  background-color: var(--bg-color);
-  box-shadow: inset 0 0 20px 6px rgba(105, 105, 105, 0.419);
-
+  background: var(--post-container) ;
+  border: 1px solid rgba(255, 255, 0, 0.08);
+  box-shadow: inset 0 0 5px 2px rgba(105, 105, 105, 0.419);
+  clip-path: polygon(0 9%, 62% 9%, 65% 7%, 65% 0, 100% 0, 100% 100%, 0 100%);
   .crntTodo{
 
     .TodoInner{
@@ -558,3 +559,7 @@ select{
   }
 }
 
+.myStar {
+  background: gold;
+  clip-path: polygon(50% 0%, 63% 31%, 98% 35%, 71% 59%, 79% 91%, 50% 73%, 21% 91%, 28% 59%, 2% 35%, 36% 31%);
+}

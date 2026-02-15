@@ -4,7 +4,7 @@ export default  function Caption({ text }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="text-white w-full h-2/3 my-scroll">
+    <div className="text-skin-text w-full h-2/3 my-scroll">
       <div
         className={
           expanded

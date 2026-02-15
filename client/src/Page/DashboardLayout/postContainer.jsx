@@ -10,6 +10,7 @@ export default function PostsCon({posts}) {
     let {caption,canComment,images_url,canSave, post_id,username,avatar,post_moment,likeCount, isLiked,visibility,totalLike,id,isFollowing} = posts;
     const [isDropDown,setDropDown] = useState({});
     let {postsById,setUnivPost} = univPostStore();
+    const [star,setStar] = useState([])
     const Refs = useRef({});
     const setCallback = (id)=> (el) =>{
         Refs.current[id] = el;
@@ -32,37 +33,67 @@ export default function PostsCon({posts}) {
         return ()=> document.removeEventListener("click",handleClick)
     },[isDropDown])
 
+    const handleDoubleClick = evnt=>{
+        let elPosition = evnt.currentTarget.getBoundingClientRect();
+        let x = evnt.clientX - elPosition.left;
+        let y = evnt.clientY - elPosition.top;
+        
+        const newStar = {
+            id:Date.now(),
+            x,
+            y
+        }
+
+        setStar(prev=>[...prev, newStar]);
+
+        setTimeout(() => {
+            setStar((prev)=> prev.filter(star=> star.id !== newStar.id))
+        }, 1000);
+    }
+
 
     return(
         
             <>
-                {
 
-                            <div key={post_id} className="flex items-start flex-col h-150 gap-3 w-112.5 singlePost rounded-lg m-3">
-                                <div className="ownInfo h-2/12 flex items-start justify-between flex-wrap p-1 gap-1.5 text-skin-text w-full rounded-lg">
-                                    <div className="innerINFODiv p-1 flex items-start flex-1 gap-2" >
-                                        <img src={`/myServer/${avatar}`} className="h-9 w-9 rounded-full border border-amber-300" alt="Avatar" />
-                                        <p className="text-lg flex items-center gap-2">
-                                            <Link to={`/Lab/${username}`}>
-                                                <span className="hover:underline underline-offset-1">{username}</span>
-                                            </Link> 
-                                            <Link to={`/Explore/${post_moment}`}>
-                                                <span className="hover:underline underline-offset-1 font-bold text-sm text-nowrap flex items-center flex-row">/{post_moment}</span>
-                                            </Link>
-                                         </p>   
-                                    </div>
-                                    <div ref={setCallback(post_id)} className="innerINFODiv flex-1 flex items-center justify-end relative!">
-                                        <i onClick={()=>setDropDown({...isDropDown,p_id:post_id,isTrue:true})} className='bx bx-dots-vertical-rounded text-2xl cursor-pointer'></i>
-                                        {(isDropDown?.p_id===post_id && isDropDown.isTrue) && <MiniDropDown postInfo={{username,isFollowing,images_url,post_id,canComment,likeCount, visibility}} toggle={setDropDown}/>}
-                                    </div>
-                                    <Caption text={caption} />
-                                </div>
-                                <div className="imgContainer w-full h-7/10 flex items-center">
-                                     <ImageSlider imgArray={images_url} />
-                                </div>
-                                <TODOList crntPost_id={post_id} />
+                <div key={post_id} className="flex items-start flex-col h-150 gap-3 w-112.5 rounded-lg m-3 relative">
+                    <div className="p-2 flex items-start flex-1 gap-2 absolute -top-1 left-2.5 text-skin-text 
+                     bg-linear-to-tl from-yellow-500/20 to-purple-500/20 via-pink-500/20 border border-skin-text/20 rounded-lg backdrop-blur-lg hover:scale-90 scale-3d hover:bg-amber-600/20 hover:left-3 transition-all duration-150 ease-in-out" >
+                        <img src={`/myServer/${avatar}`} className="h-9 w-9 rounded-full border border-amber-300" alt="Avatar" />
+                        <p className="text-lg flex items-center gap-2">
+                            <Link to={`/Lab/${username}`}>
+                                <span className="hover:underline underline-offset-1">{username}</span>
+                            </Link> 
+                            <Link to={`/Explore/${post_moment}`}>
+                                <span className="hover:underline underline-offset-1 font-bold text-sm text-nowrap flex items-center flex-row">/{post_moment}</span>
+                            </Link>
+                        </p>   
+                    </div>
+                    <div className="flex items-start flex-col gap-3 h-full w-full rounded-lg singlePost">
+                        <div className="ownInfo h-2/12 flex items-start justify-between flex-wrap p-1 gap-1.5 text-skin-text w-full rounded-lg relative">
+                            <div className="innerINFODiv p-1 flex items-start flex-1 gap-2 " >
+                                <img src={`/myServer/${avatar}`} className="h-9 w-9 rounded-full border border-amber-300" alt="Avatar" />
+                                <p className="text-lg flex items-center gap-2">
+                                    <Link to={`/Lab/${username}`}>
+                                        <span className="hover:underline underline-offset-1">{username}</span>
+                                    </Link> 
+                                    <Link to={`/Explore/${post_moment}`}>
+                                        <span className="hover:underline underline-offset-1 font-bold text-sm text-nowrap flex items-center flex-row">/{post_moment}</span>
+                                    </Link>
+                                </p>   
                             </div>
-                }
+                            <div ref={setCallback(post_id)} className="innerINFODiv flex-1 flex items-center justify-end relative! top-2.5!">
+                                <i onClick={()=>setDropDown({...isDropDown,p_id:post_id,isTrue:true})} className='bx bx-dots-vertical-rounded text-2xl cursor-pointer'></i>
+                                {(isDropDown?.p_id===post_id && isDropDown.isTrue) && <MiniDropDown postInfo={{username,isFollowing,images_url,post_id,canComment,likeCount, visibility}} toggle={setDropDown}/>}
+                            </div>
+                            <Caption text={caption} />
+                        </div>
+                        <div className="imgContainer w-full h-7/10 flex items-center relative" onDoubleClick={(evnt)=>handleDoubleClick(evnt)}>
+                            <ImageSlider imgArray={images_url} />
+                        </div>
+                        <TODOList crntPost_id={post_id} />
+                    </div>
+                </div>
             </>
         
     )

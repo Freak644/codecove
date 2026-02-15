@@ -9,7 +9,7 @@ import CompAnim from '../../assets/animations/compAnimation';
 import PostFeedMGMT from './postFeed';
 import { toast } from 'react-toastify';
 import { Loader } from '../../lib/loader';
-import NotificaitonMini from '../Notification/Components/notificationCon';
+import NotificaitonMini from '../Notification/Components/notificationFeed';
 export default function HonePage() {
   const [Posts,setPosts] = useState([])
   const [offset,setOffset] = useState(0)

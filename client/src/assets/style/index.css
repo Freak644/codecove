@@ -8,13 +8,13 @@
 }
 
 html[data-theme="dark-yellow"] {
-    --color-skin-bg: rgb(0, 0, 0);
+    --color-skin-bg: #070007;
     --color-skin-text: #fff700;
     --color-skin-ptext: #fbff7d;
     --color-skin-login:rgb(255,255,255);
 }
 html[data-theme="dark-white"]{
-    --color-skin-bg: rgb(0, 0, 0);
+    --color-skin-bg: #0f1115;
     --color-skin-text: white;
     --color-skin-ptext: rgb(245,245,245);
     --color-skin-login:rgb(255,255,255);

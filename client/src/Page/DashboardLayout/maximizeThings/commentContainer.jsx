@@ -11,6 +11,7 @@ import { Virtuoso } from "react-virtuoso";
 
 let logicObj = {
     isFeching:true,
+    isAllow:false
 }
 export default function CommentEl() {
     const [isEmoji,setEmoji] = useState(false);
@@ -85,8 +86,6 @@ export default function CommentEl() {
     },[pID]);
 
     useEffect(()=>{
-        // if (commentData.length<1) return;
-         //console.log(commentData)
         socket.emit("joinPost",pID);
         const handleLikes = ({commentID: CId,post_id:pid, user_id,like}) =>{
              console.log(user_id,like)
@@ -127,7 +126,9 @@ export default function CommentEl() {
             socket.off("newComment",handleComments);
             socket.off("newCommentLike",handleLikes);
         }
-    },[commentData])
+    },[commentData]);
+
+
 
     
     const handleSubmit = async () => {
@@ -179,10 +180,8 @@ export default function CommentEl() {
                         )}
 
                         endReached={()=> {
-                            if (!isOver && !logicObj.isFeching) {
-                                getMoreComments()
-                            } else if (!isOver) {
-                                logicObj.isFeching = false;
+                            if (!isOver) {
+                                getMoreComments(pID)
                             }
                         }}
                         components={{

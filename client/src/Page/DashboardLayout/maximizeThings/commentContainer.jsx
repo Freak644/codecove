@@ -14,12 +14,12 @@ let logicObj = {
 }
 export default function CommentEl() {
     const [isEmoji,setEmoji] = useState(false);
-    const [text,setText] = useState("");
     const {pID} = useParams();
     const isLoader = Loader(stat => stat.isTrue);
     const [offset,setOffset] = useState(0);
     const [commentData,setComment] = useState([]);
     const [isOver,setOver] = useState(false);
+    const commentRef = useRef(null);
 
     const [canComment,setCanComnt] = useState(true);
 
@@ -132,6 +132,7 @@ export default function CommentEl() {
     
     const handleSubmit = async () => {
         setEmoji(false)
+        let text = commentRef.current.value
         try {
             if (text.length > 300) throw new Error("Comment is too big");
             
@@ -147,7 +148,7 @@ export default function CommentEl() {
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
             soundMp3.play()
-            setText("");
+            commentRef.current.value = ""
         } catch (error) {
             toast.error(error.message);
         }
@@ -209,7 +210,8 @@ export default function CommentEl() {
                             <Suspense fallback={null} >
                                 <div id="emojiDiv" className="p-1 absolute left-0 bottom-10 w-full">
                                     <EmojiPicker theme="dark" onEmojiClick={(emoji)=>{
-                                        setText(prev=>prev + emoji.emoji)
+                                        let prevText = commentRef.current.value
+                                        commentRef.current.value = prevText + emoji.emoji
                                     }
                                     } lazyLoadEmojis
                                     skinTonePickerLocation="PREVIEW"
@@ -221,9 +223,7 @@ export default function CommentEl() {
                         }
                         <i className={`bx bxs-${isEmoji ? "keyboard" : "smile"} absolute top-4 text-2xl cursor-pointer text-white`} onClick={()=>setEmoji(prev=>!prev)}></i>
                         <form action="" className="h-full w-9/10">
-                            <textarea value={text} onChange={(evnt)=>{
-                                    setText(evnt.target.value)
-                                }} onClick={()=>setEmoji(false)}  className="my-scroll border-none outline-none p-1 resize-none text-skin-ptext h-full pl-10 text-[16px]  placeholder:pl-2 placeholder:pt-2 w-full" 
+                            <textarea ref={commentRef} onClick={()=>setEmoji(false)}  className="my-scroll border-none outline-none p-1 resize-none text-skin-ptext h-full pl-10 text-[16px]  placeholder:pl-2 placeholder:pt-2 w-full" 
                                 placeholder="Share your thought...">
                             </textarea>
                         </form>

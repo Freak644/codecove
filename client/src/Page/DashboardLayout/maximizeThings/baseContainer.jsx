@@ -2,7 +2,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import ImageSlider from "../../Promulgation/sliderCom";
 import { useEffect, useRef, useState } from "react";
 import { univPostStore } from "../../../lib/basicUserinfo";
-import CommentEl from "./commentContainer";
 import SheetMiddleWhare from "./slideMiddleWr";
 
 export default function MaximizeContainer() {

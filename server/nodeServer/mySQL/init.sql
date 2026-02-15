@@ -290,16 +290,7 @@ CREATE TABLE IF NOT EXISTS user_achievements (
   UNIQUE KEY uniq_user_achievement (id, achievement_id)
 );
 
-CREATE TABLE IF NOT EXISTS userActivety_for_achievements (
-  user_id CHAR(36) PRIMARY KEY,
-  tlg BIGINT DEFAULT 0,
-  tcg BIGINT DEFAULT 0,
-  tld BIGINT DEFAULT 0,
-  tcd BIGINT DEFAULT 0,
-  tca BIGINT DEFAULT 0,
-  tp_count BIGINT DEFAULT 0,
-  INDEX idx_user_id (user_id)
-);
+
 
 
 CREATE TABLE IF NOT EXISTS follows (
@@ -312,3 +303,15 @@ CREATE TABLE IF NOT EXISTS follows (
 );
 
 
+CREATE TABLE IF NOT EXISTS notification (
+  notification_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  recipient_id CHAR(36) NOT NULL,
+  actor_id CHAR(36),
+  type VARCHAR(50) NOT NULL,
+  entity_id CHAR(36) NOT NULL,
+  entity_type VARCHAR(30) NOT NULL,
+  message TEXT,
+  is_read BOOLEAN DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_recipient_id (recipient_id, created_at DESC)
+);

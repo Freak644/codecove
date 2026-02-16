@@ -8,11 +8,15 @@ import { database } from '../../Controllers/myConnectionFile.js';
 import createDOMPurify from 'isomorphic-dompurify';
 import {JSDOM} from 'jsdom';
 import { userInfo } from 'os';
+import https from 'https';
+import plimit from "p-limit";
+import pLimit from 'p-limit';
 dotenv.config();
 cloudinary.config({
   cloud_name:process.env.cloudinary_name,
   api_key: process.env.cloudinary_key,
-  api_secret: process.env.cloudinary_sec
+  api_secret: process.env.cloudinary_sec,
+  http_agent: new https.Agent({ keepAlive: true, maxSockets: 5 })
 })
 const dir = path.join(process.cwd(),"./Images/temp")
 if(!fs.existsSync(dir)) fs.mkdirSync(dir);
@@ -25,6 +29,7 @@ const clearTemp = async (currentFiles) => {
 }
 
 export const CreatePost = async (rkv,rspo) => {
+    const upLoadLimit = pLimit(2);
     const fileArray = rkv.files;
     let {id} = rkv.authData;
     let {Absuse, Link, Spam, Violence, canComment, canSave, caption, likeCount, visibility, postGroup} = rkv.body;
@@ -54,7 +59,6 @@ export const CreatePost = async (rkv,rspo) => {
       const DOMpurify = createDOMPurify(window);
       const sanitiz = (str)=> DOMpurify.sanitize(str);
       caption = sanitiz(caption)
-      const cloudLiks = [];
       let [row] = await database.query("SELECT username FROM users WHERE id=?",
         [id]
       );
@@ -62,29 +66,36 @@ export const CreatePost = async (rkv,rspo) => {
         await clearTemp(imgArray);
         return rspo.status(401).send({err:"No user found"});
       }
-      for (const crntImg of rkv.files) {
+
+      for (const crntImg of fileArray) {
         let rekvst = await FileChecker(crntImg.path,crntImg.size);
         if (rekvst.err) {
           await clearTemp(imgArray);
           return rspo.status(400).send(rekvst.err);
         }
-        const cloudRkv = await cloudinary.uploader.upload(crntImg.path, { folder: row[0].username, timeout: 60000 });
-        cloudLiks.push(cloudRkv.secure_url);
-        await fs.promises.unlink(crntImg.path);
       }
+
+      const uploadImage = fileArray.map(crntImg=>
+          upLoadLimit(async ()=>{
+            const result = await cloudinary.uploader.upload(
+              crntImg.path,
+              {
+                folder: row[0].username
+              }
+            )
+            await fs.promises.unlink(crntImg.path)
+            return result.secure_url;})
+      )
+
+      const cloudLiks = await Promise.all(uploadImage)
+   
       let post_id = nanoid();
       await database.query("INSERT INTO posts (post_id, id, images_url, caption, blockCat, visibility, canComment, likeCount, canSave, post_moment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [post_id, id, JSON.stringify(cloudLiks), caption, JSON.stringify({Absuse,Spam,Link,Violence}), visibility == "true" ? 1 : 0, canComment == "true" ? 1 : 0,likeCount == "true" ? 1 : 0, canSave, postGroup]
       )
-      // let [rows] = await database.query(`SELECT u.username, u.avatar, p.*
-      //               FROM posts p INNER JOIN users u ON u.id = p.id WHERE
-      //               p.post_id = ? AND p.visibility <> 0 GROUP BY p.post_id`,[post_id]);
-      // if (visibility !== "false") {
-      //   const io = getIO();
-      //   io.emit("new-post",rows[0]);
-      // }
+
       
-      rspo.status(200).send({pass:"Your Post is POst"})
+      rspo.status(200).send({err:"Your Post is POst"})
 
     } catch (error) {
         console.log(error)

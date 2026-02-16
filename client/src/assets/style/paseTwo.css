@@ -559,7 +559,31 @@ select{
   }
 }
 
+.floatingPart{
+  animation: fadeInAnim 0.7s forwards ease-in;
+}
+
+@keyframes fadeInAnim {
+  from {
+    left: 50%;
+  }
+  to{
+    left: 3%;
+  }
+}
+
 .myStar {
   background: gold;
   clip-path: polygon(50% 0%, 63% 31%, 98% 35%, 71% 59%, 79% 91%, 50% 73%, 21% 91%, 28% 59%, 2% 35%, 36% 31%);
+}
+
+@keyframes floatStar {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(-60deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -150%) scale(1.5) rotate(0deg);
+  }
 }

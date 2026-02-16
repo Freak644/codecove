@@ -5,12 +5,13 @@ import TODOList from "./miniCom/TODOCompunent";
 import MiniDropDown from "./miniCom/threedotDropDown";
 import { univPostStore } from "../../lib/basicUserinfo";
 import { Link } from "react-router-dom";
+import FloationStart from "./miniCom/floatingStar";
 
 export default function PostsCon({posts}) {
     let {caption,canComment,images_url,canSave, post_id,username,avatar,post_moment,likeCount, isLiked,visibility,totalLike,id,isFollowing} = posts;
     const [isDropDown,setDropDown] = useState({});
     let {postsById,setUnivPost} = univPostStore();
-    const [star,setStar] = useState([])
+
     const Refs = useRef({});
     const setCallback = (id)=> (el) =>{
         Refs.current[id] = el;
@@ -33,32 +34,14 @@ export default function PostsCon({posts}) {
         return ()=> document.removeEventListener("click",handleClick)
     },[isDropDown])
 
-    const handleDoubleClick = evnt=>{
-        let elPosition = evnt.currentTarget.getBoundingClientRect();
-        let x = evnt.clientX - elPosition.left;
-        let y = evnt.clientY - elPosition.top;
-        
-        const newStar = {
-            id:Date.now(),
-            x,
-            y
-        }
-
-        setStar(prev=>[...prev, newStar]);
-
-        setTimeout(() => {
-            setStar((prev)=> prev.filter(star=> star.id !== newStar.id))
-        }, 1000);
-    }
-
 
     return(
         
             <>
 
                 <div key={post_id} className="flex items-start flex-col h-150 gap-3 w-112.5 rounded-lg m-3 relative">
-                    <div className="p-2 flex items-start flex-1 gap-2 absolute -top-1 left-2.5 text-skin-text 
-                     bg-linear-to-tl from-yellow-500/20 to-purple-500/20 via-pink-500/20 border border-skin-text/20 rounded-lg backdrop-blur-lg hover:scale-90 scale-3d hover:bg-amber-600/20 hover:left-3 transition-all duration-150 ease-in-out" >
+                    <div className="p-2 flex items-start flex-1 gap-2 absolute -top-1 text-skin-text floatingPart
+                     bg-linear-to-tl from-yellow-500/20 to-purple-500/20 via-pink-500/20 border border-skin-text/20 rounded-lg backdrop-blur-lg hover:scale-97 scale-3d hover:bg-amber-600/20 hover:left-3 transition-all duration-100 ease-in-out" >
                         <img src={`/myServer/${avatar}`} className="h-9 w-9 rounded-full border border-amber-300" alt="Avatar" />
                         <p className="text-lg flex items-center gap-2">
                             <Link to={`/Lab/${username}`}>
@@ -88,7 +71,8 @@ export default function PostsCon({posts}) {
                             </div>
                             <Caption text={caption} />
                         </div>
-                        <div className="imgContainer w-full h-7/10 flex items-center relative" onDoubleClick={(evnt)=>handleDoubleClick(evnt)}>
+                        <div className="imgContainer w-full h-7/10 flex items-center relative">
+                            <FloationStart post_id={post_id} like={isLiked}/>
                             <ImageSlider imgArray={images_url} />
                         </div>
                         <TODOList crntPost_id={post_id} />

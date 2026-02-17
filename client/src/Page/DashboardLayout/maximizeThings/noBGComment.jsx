@@ -27,7 +27,7 @@ export default function PostANDComment() {
         try {
             if (!pID || pID.length !== 21) throw new Error("The Link is Broken");
             let result = await axios.get(`/myServer/readPost/getImage?post_id=${pID}`);
-            console.log(result)
+          
             if (result.data) {
                 setCrntPost(result?.data?.pass)
             }

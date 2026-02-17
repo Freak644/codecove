@@ -40,7 +40,7 @@ export const GetPosts = async (rkv,rspo) => {
             return row
         });
 
-        rspo.status(201).send({pass:"Found",post:rows})
+        rspo.status(200).send({pass:"Found",post:rows})
     } catch (error) {
         //console.log("jj",error.messge)
         rspo.status(500).send({err:"Server side error"})

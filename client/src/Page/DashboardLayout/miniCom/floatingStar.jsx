@@ -44,7 +44,7 @@ export default function FloationStart({post_id,like}) {
     }
 
     return(
-        <div className="absolute left-1/10 h-full w-8/10 bg-amber-700/30 z-2">
+        <div className="absolute left-1/10 h-full w-8/10 bg-transparent z-2">
             <div onDoubleClick={(evnt)=>handleDoubleClick(evnt)} className="h-full w-full relative">
                 {
                     star.map(data=>(
@@ -54,7 +54,7 @@ export default function FloationStart({post_id,like}) {
                             left:data.x,
                             top:data.y,
                             transform:"translate(-50% , -50%)",
-                            animation:"floatStar 1s ease-out forwards"
+                            animation:"floatStar 0.7s ease-out forwards"
                         }}
                         />
                     ))

@@ -7,6 +7,7 @@ import path from 'path';
 import { Decrypt } from '../../utils/Encryption.js';
 import jwt from 'jsonwebtoken';
 
+
 async function checkDuplicate(sqlData, username, email) {
   if (sqlData.some(prv => prv.username === username)) return username;
   if (sqlData.some(prv => prv.email === email)) return email;
@@ -21,14 +22,14 @@ export const CreateUser = async (rkv, rspo) => {
 
   try {
 
-    let token = rkv.cookies.emailStatus;
+    let token = rkv.cookies.emailStatus; // this is the Encrypted token
     if (!token) return rspo.status(403).send({err:"Email Cookie is missing"});
     let decryptedToken = await Decrypt(token);
     let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec);
     let decodedTime = Math.floor(Date.now()/1000);
     if (tokenData.exp < decodedTime) return rspo.status(504).send({err:"Your email verification is expire"});
     if (!tokenData.verify) return rspo.status(401).send({err:"We found that your email verifycation is Unauthorise!!!"});
-    if (file) {
+    if (file) { // if file then check it is it a valid image file 
         if (!Buffer.isBuffer(file.buffer)) {
             return rspo.status(400).send({ err: "Invalid file buffer" });
         }

@@ -1,6 +1,9 @@
 import {Chart as ChartJS,defaults} from 'chart.js/auto';
-import { rgba } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import {Doughnut,Line} from 'react-chartjs-2';
+import axios from 'axios';
+import {toast} from 'react-toastify'
+import ProgressBar from './chartHelper/waitingOrProgress';
 
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
@@ -8,6 +11,31 @@ defaults.plugins.title.display = true;
 defaults.plugins.title.align = "start";
 defaults.plugins.title.font.size = 20;
 export default function ChartsEL() {
+    const [postData,setPostData] = useState([]);
+    const [helper,sethelper] = useState({ // this state is for holding the char till API is getting data
+        waiting:true, 
+        progress:0 // or user posts.count < 10
+    });
+
+    const getChartData = async () => {
+        try {
+            let data = await axios.get("/myServer/readPost/getChartData");
+            console.log(data)
+            if (data.data.progress) {
+                console.log("here")
+                return setProgress(data.data.progress);
+            }
+            setPostData(prev=>[...prev, data.data])
+        } catch (error) {
+            toast.info(error.message)
+        }
+    }
+
+    useEffect(()=>{
+
+        getChartData();
+    },[])
+
     const tempArray = [
         {
             label:"Like",
@@ -17,7 +45,7 @@ export default function ChartsEL() {
             label:"comment",
             value:33
         },{
-            label:"share",
+            label:"Save",
             value:66
         }
     ]
@@ -38,7 +66,7 @@ export default function ChartsEL() {
 
     return(
         <div className="underTaker gap-4 my-scroll bg-black/5 backdrop-blur-md flex-wrap">
-            <div className="lineChart flex-1 h-1/2">
+            {postData.length < 10 ? (<ProgressBar date={helper}/>) : (<> <div className="lineChart flex-1 h-1/2">
                 <Line 
                     data={{
                         labels:posts.map((data,index)=>index+1),
@@ -127,7 +155,7 @@ export default function ChartsEL() {
                         },
                     }}
                 />
-            </div>
+            </div> </>) }
         </div>
     )
 }

@@ -80,7 +80,8 @@ export const CreatePost = async (rkv,rspo) => {
             const result = await cloudinary.uploader.upload(
               crntImg.path,
               {
-                folder: row[0].username
+                folder: row[0].username,
+                transformation:[{quality:"auto"}]
               }
             )
             await fs.promises.unlink(crntImg.path)

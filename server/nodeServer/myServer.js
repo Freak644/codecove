@@ -42,6 +42,7 @@ import { changeBioSocket } from './socketIO/userProfileSocket.js';
 import { acceptSolution } from './Routes/Achievement/writeAchievemtns/acceptSolution.js';
 import { getPost } from './Routes/usersPOSTAPIs/readThings/getSiglePost.js';
 import router from './utils/tempFile.js';
+import { Chartdata } from './Routes/usersPOSTAPIs/readThings/getChartData.js';
 // import { addNewAchievement } from './Routes/Achievement/createAchievement.js';
 let myApp = express();
 myApp.use(express.json({limit:"20mb"}));
@@ -134,7 +135,8 @@ myApp.put("/writeUser/changeDP",RateLimiter,checkRequest,upload.single("avatar")
 myApp.post("/writePost/reportComment",RateLimiter,checkRequest,Auth,reportCommentAPI);
 myApp.delete("/writePost/deleteComment",RateLimiter,checkRequest,Auth,DeleteCommentAPI);
 myApp.post("/writeAchievement/acceptComment",RateLimiter,checkRequest,Auth,acceptSolution)
-myApp.get("/readPost/getImage",RateLimiter,checkRequest,Auth,getPost)
+myApp.get("/readPost/getImage",RateLimiter,checkRequest,Auth,getPost);
+myApp.get("/readPost/getChartData",RateLimiter,checkRequest,Auth,Chartdata);
 // myApp.post("/createAchievement",addNewAchievement);
 
 
@@ -170,10 +172,10 @@ myServer.listen(port,()=>{
 })
 
 /* 
-    We are not now that strength which in old days
-    Moved earth and heaven;
-    that which we are, we are;
-    One equal temper of heroic hearts,
-    Made weak by time and fate, but strong in will;
-    To strive, to seek, to find, and not to yield
+    * We are not now that strength which in old days
+    * Moved earth and heaven;
+    * that which we are, we are;
+    * One equal temper of heroic hearts,
+    * Made weak by time and fate, but strong in will;
+    * To strive, to seek, to find, and not to yield
 */

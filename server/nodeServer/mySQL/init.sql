@@ -87,6 +87,7 @@ CREATE TABLE IF NOT EXISTS posts (
   visibility BOOLEAN DEFAULT 1,
   totalLike BIGINT DEFAULT 0,
   totalComment BIGINT DEFAULT 0,
+  totalSave BIGINT DEFAULT 0,
   post_moment VARCHAR(100) NOT NULL,
   canComment BOOLEAN DEFAULT 1,
   likeCount BOOLEAN DEFAULT 1,
@@ -252,6 +253,25 @@ CREATE TABLE IF NOT EXISTS commentLikes (
   FOREIGN KEY (commentID) REFERENCES comments(commentID) ON DELETE CASCADE,
   INDEX idx_user_id (id),
   INDEX idx_post_id (post_id)
+);
+
+CREATE TABLE IF NOT EXISTS postReports (
+  report_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  id CHAR(36) NOT NULL,
+  post_id CHAR(36) NOT NULL,
+  UNIQUE(id,post_id),
+  FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS savePost (
+  savePost_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  id CHAR(36) NOT NULL,
+  post_id CHAR(36) NOT NULL,
+  UNIQUE(id,post_id),
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS commentReports (

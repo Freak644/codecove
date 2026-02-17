@@ -16,23 +16,28 @@ export default function ChartsEL() {
         waiting:true, 
         progress:0 // or user posts.count < 10
     });
+    const [avrgPost,setAvg] = useState(0);
 
     const getChartData = async () => {
         try {
             let data = await axios.get("/myServer/readPost/getChartData");
-            console.log(data)
             if (data.data.progress) {
-                console.log("here")
-                return setProgress(data.data.progress);
+                return sethelper(prev=>({
+                    ...prev,
+                    waiting:false,
+                    progress:data.data.progress
+                }));
             }
-            setPostData(prev=>[...prev, data.data])
+
+            setAvg(data.data.reduce((sum,p)=> sum + p.likes,0) / 10);
+            setPostData(data.data)
+           
         } catch (error) {
             toast.info(error.message)
         }
     }
 
     useEffect(()=>{
-
         getChartData();
     },[])
 
@@ -49,80 +54,82 @@ export default function ChartsEL() {
             value:66
         }
     ]
-    const posts = [
-        { title: "Exploring the Night Sky", likes: 57 },
-        { title: "My First JavaScript App", likes: 38 },
-        { title: "Morning Coffee Vibes", likes: 92 },
-        { title: "A Walk in the Forest", likes: 44 },
-        { title: "Learning React Hooks", likes: 71 },
-        { title: "Sunset at the Beach", likes: 63 },
-        { title: "Building a Node API", likes: 28 },
-        { title: "Weekend Chill Moments", likes: 86 },
-        { title: "Dark Mode UI Design", likes: 49 },
-        { title: "Simple Pasta Recipe", likes: 77 }
-        ];
     
-        const avrgPost = posts.reduce((sum,p)=> sum + p.likes,0) / posts.length;
+
 
     return(
         <div className="underTaker gap-4 my-scroll bg-black/5 backdrop-blur-md flex-wrap">
-            {postData.length < 10 ? (<ProgressBar date={helper}/>) : (<> <div className="lineChart flex-1 h-1/2">
-                <Line 
+            {postData.length < 10 ? (<ProgressBar date={helper} posts={postData}/>) : (<> <div className="lineChart flex-1 h-1/2">
+                <Line
                     data={{
-                        labels:posts.map((data,index)=>index+1),
-
-                        datasets:[
-                            {
-                                label:"Recent 10 Posts Stars chart",
-                                data:posts.map(data=>data.likes),
-                               backgroundColor: "rgba(0, 255, 120, 0.9)",
-                                borderColor: "rgba(0, 200, 90, 1)",
-
-                            },
-                            {
-                                label:"Ideal Consistent Flow",
-                                data:Array(posts.length).fill(avrgPost),
-                                borderColor:"rgba(150,150,150,0.8)",
-                                backgroundColor:"rgba(150,150,150,0.7)",
-                                borderDash:[5,5],
-                                borderWidth:2,
-                                pointRadius:0,
-                                tension:0.4
-                            }
+                        labels: postData.map((data, index) => index + 1),
+                        datasets: [
+                        {
+                            label: "Recent 10 postData Stars chart",
+                            data: postData.map(data => data.likes),
+                            backgroundColor: "rgba(0, 255, 120, 0.9)",
+                            borderColor: "rgba(0, 200, 90, 1)",
+                        },
+                        {
+                            label: "Ideal Consistent Flow",
+                            data: Array(postData.length).fill(avrgPost),
+                            borderColor: "rgba(150,150,150,0.8)",
+                            backgroundColor: "rgba(150,150,150,0.7)",
+                            borderDash: [5, 5],
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            tension: 0.4
+                        }
                         ]
                     }}
                     options={{
-                        scales:{
-                            x:{
-                                grid:{
-                                    display:true,
-                                    color:"rgba(255,255,255,0.1)"
-                                }
-                            },
-                            y:{
-                                grid:{
-                                    display:true,
-                                    color:"rgba(255,255,255,0.1)"
-                                }
+                        onClick: (event, elements) => {
+                        if (!elements.length) return;
+
+                        const index = elements[0].index;
+                        const post = postData[index];
+
+                        // 🔥 Open post (React Router example)
+                        window.location.href = `/post/${post.post_id}`;
+                        },
+
+                        onHover: (event, elements) => {
+                        event.native.target.style.cursor =
+                            elements.length ? "pointer" : "default";
+                        },
+
+                        scales: {
+                        x: {
+                            grid: {
+                            display: true,
+                            color: "rgba(255,255,255,0.1)"
                             }
                         },
-                        elements:{
-                            line:{
-                                tension:0.4
-                            }
-                        },
-                        plugins:{
-                            tooltip:{
-                                callbacks:{
-                                    label:function (ctx) {
-                                        const post = posts[ctx.dataIndex];
-                                        return `${post.title}: ${post.likes} Stars`
-                                    }
-                                }
+                        y: {
+                            grid: {
+                            display: true,
+                            color: "rgba(255,255,255,0.1)"
                             }
                         }
+                        },
+                        elements: {
+                        line: {
+                            tension: 0.4
+                        }
+                        },
+                        plugins: {
+                        tooltip: {
+                            callbacks: {
+                            label: function (ctx) {
+                                const post = postData[ctx.dataIndex];
+                                return `${post.title}: ${post.likes} Stars`;
+                            }
+                            }
+                        }
+                        }
                     }}
-                />
+                    />
+
             </div>
             <div className="doughnutChart flex-1 h-1/2 flex items-center">
                 <Doughnut

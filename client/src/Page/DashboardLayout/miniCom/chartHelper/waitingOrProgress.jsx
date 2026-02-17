@@ -1,5 +1,6 @@
-export default function ProgressBar({date}) {
+export default function ProgressBar({date,postData}) {
     let {waiting,progress} = date;
+    console.log(postData)
     return(
         <>
             { waiting ? 

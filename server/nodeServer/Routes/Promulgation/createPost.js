@@ -96,7 +96,7 @@ export const CreatePost = async (rkv,rspo) => {
       )
 
       
-      rspo.status(200).send({err:"Your Post is POst"})
+      rspo.status(201).send({err:"Your Post is POst"})
 
     } catch (error) {
         console.log(error)

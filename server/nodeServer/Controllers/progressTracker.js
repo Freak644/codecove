@@ -8,7 +8,7 @@ const checkRequest = (rkv, rspo, next) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     const key = `${crntIP}:${crntAPI}`;
     const now = Date.now();
-    console.log({check:crntIP})
+    console.log({check:crntIP,apiis:crntAPI})
     if (blockedIPs.has(crntIP) && blockedIPs.get(crntIP) > now) {
         return rspo.status(401).json({ err: "Your IP is blocked for 1 hour" });
     }

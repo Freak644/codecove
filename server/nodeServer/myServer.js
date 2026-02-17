@@ -50,40 +50,34 @@ myApp.use(requestIp.mw())
 myApp.set("trust proxy",1)
 myApp.use(cookieParser());
 myApp.use("/Images",express.static('Images'));
-myApp.use((rkv, rspo, next) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || rkv.ip || "0.0.0.0";
-    const crntAPI = rkv.originalUrl.split("?")[0];
-    const controller = new AbortController();
-    rkv.abortController = controller;
+myApp.use((req, res, next) => {
+  const controller = new AbortController();
+  req.abortController = controller;
 
-    let complete = false;
-    const safeGuard = ()=>{
-        if (complete) return;
-        complete = true;
-        completeRequest(crntIP,crntAPI)
+  const TIMEOUT = 60_000; // 60 seconds (better than 5 min)
+
+  const timer = setTimeout(() => {
+    controller.abort();
+
+    if (!res.headersSent) {
+      res.status(408).json({ error: "Request Timeout" });
     }
+  }, TIMEOUT);
 
-    const timer = setTimeout(() => {
-        controller.abort();
+  // Clear timer when response finishes normally
+  res.on("finish", () => {
+    clearTimeout(timer);
+  });
 
-        if (!rspo.headersSent) {
-            rspo.status(408).send({err:"Request Timeout"})
-        }
-    }, 300_000); 
+  // Clear timer if client aborts early
+  req.on("aborted", () => {
+    controller.abort();
+    clearTimeout(timer);
+  });
 
-    rkv.on("close", () => {
-        controller.abort();
-        safeGuard()
-        clearTimeout(timer);
-    });
-
-    rspo.on("finish", () => {
-        safeGuard()
-        clearTimeout(timer);
-    });
-
-    next();
+  next();
 });
+
 
 
 

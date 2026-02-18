@@ -2,6 +2,7 @@ import geoip from 'geoip-lite';
 import {UAParser} from "ua-parser-js";
 import { database } from '../../Controllers/myConnectionFile.js';
 import {nanoid} from 'nanoid'
+import { completeRequest } from '../../Controllers/progressTracker.js';
 export const SaveThisSession = async (rkv,userID) => {
     let session_id = nanoid();
     const ip = rkv.clientIp?.replace(/^::ffff:/,"") || "0.0.0.0";
@@ -9,7 +10,7 @@ export const SaveThisSession = async (rkv,userID) => {
     const geo = geoip.lookup(ip)
     const parser = new UAParser(userAgent);
     const uAresult = parser.getResult()
-    
+    console.log(uAresult);
     try {
         const [rows] = await database.execute(
         `INSERT INTO user_sessions (id, session_id,ip, country, region, city, latitude, longitude, isp, user_agent, browser, browser_version, os, device_type)
@@ -27,6 +28,8 @@ export const SaveThisSession = async (rkv,userID) => {
 }
 
 export const loggedMeOut = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     let {id,session_id} = rkv.authData;
     try {
         await database.execute("UPDATE user_sessions SET revoked=? WHERE session_id=? AND id=?",
@@ -40,6 +43,8 @@ export const loggedMeOut = async (rkv,rspo) => {
         rspo.status(200).send({pass:"Logged-Out"})
     } catch (error) {
         return rspo.status(500).send({err:error.message})
+    } finally {
+        completeRequest(crntIP,crntAPI)
     }
 
 }

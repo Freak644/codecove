@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { database } from '../../Controllers/myConnectionFile.js';
 import { Decrypt } from '../../utils/Encryption.js';
+import { completeRequest } from '../../Controllers/progressTracker.js';
 dotenv.config();
 const revokedToken = async (session_id) => {
      await database.execute(
@@ -43,6 +44,8 @@ export const Auth = async (rkv,rspo,next) => {
 
 export const checkAuth = async (rkv,rspo) => {
     const ip = rkv.clientIp?.replace(/^::ffff:/,"") || "0.0.0.0";
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     let token = rkv.cookies.myAuthToken;
     try {
         if(!token) throw new Error();
@@ -71,5 +74,7 @@ export const checkAuth = async (rkv,rspo) => {
     } catch (error) {
         console.log(error.message)
         rspo.status(401).send({loggedIn:true,details:error.message})
+    } finally {
+        completeRequest(crntIP,crntAPI)
     }
 }

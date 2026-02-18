@@ -13,6 +13,8 @@ const validateComment = async (blockCat,comment) => {
 }
 
 export const CommentAPI = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {text,pID:post_id} = rkv.body;
     let commentID = nanoid();
@@ -51,5 +53,7 @@ export const CommentAPI = async (rkv,rspo) => {
     } catch (error) {
         console.log(error.message)
         rspo.status(500).send({err:"Server Side Error"});
+    } finally {
+        completeRequest(crntIP,crntAPI)
     }
 }

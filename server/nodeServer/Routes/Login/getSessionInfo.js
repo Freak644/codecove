@@ -1,7 +1,10 @@
 import { database } from "../../Controllers/myConnectionFile.js";
+import { completeRequest } from "../../Controllers/progressTracker.js";
 
 
 export const ActivityInfo = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     let {token} = rkv.query;
 
     try {
@@ -36,5 +39,7 @@ export const ActivityInfo = async (rkv,rspo) => {
         rspo.status(201).send({pass:"Data found",data:rows[0]})
     } catch (error) {
         rspo.status(500).send({err:"Sever Side Error",details:error.message})
+    } finally {
+        completeRequest(crntIP,crntAPI)
     }
 }

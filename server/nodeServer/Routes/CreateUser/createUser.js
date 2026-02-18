@@ -6,15 +6,18 @@ import fs from 'fs';
 import path from 'path';
 import { Decrypt } from '../../utils/Encryption.js';
 import jwt from 'jsonwebtoken';
+import { completeRequest } from '../../Controllers/progressTracker.js';
 
 
 async function checkDuplicate(sqlData, username, email) {
+
   if (sqlData.some(prv => prv.username === username)) return username;
   if (sqlData.some(prv => prv.email === email)) return email;
 }
 
 export const CreateUser = async (rkv, rspo) => {
-
+  const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+  const crntAPI = rkv.originalUrl.split("?")[0];
   const { email, password, username } = rkv.body;
   const file = rkv.file;
 
@@ -127,5 +130,7 @@ export const CreateUser = async (rkv, rspo) => {
       try { fs.unlinkSync(avatarFileName); } catch (err) { console.error(err) };
     }
     rspo.status(500).send({ err: "Something went wrong"});
+  } finally {
+    completeRequest(crntIP,crntAPI);
   }
 };

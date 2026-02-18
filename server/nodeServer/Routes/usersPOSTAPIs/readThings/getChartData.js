@@ -1,6 +1,9 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
+import { completeRequest } from "../../../Controllers/progressTracker.js";
 
 export const Chartdata = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     try {
         let [rows] = await database.query("SELECT caption as title, totalLike as likes, post_id FROM posts WHERE id = ? AND visibility = 1 ORDER BY created_at DESC LIMIT 10",[id]);
@@ -24,5 +27,7 @@ export const Chartdata = async (rkv,rspo) => {
     } catch (error) {
         console.log(error.message)
         rspo.status(500).send({err:"Server side error"})
+    } finally {
+        completeRequest(crntIP,crntAPI);
     }
 }

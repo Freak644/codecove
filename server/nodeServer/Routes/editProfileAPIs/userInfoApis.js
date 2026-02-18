@@ -4,8 +4,11 @@ import { database } from "../../Controllers/myConnectionFile.js";
 import { getIO } from "../../myServer.js";
 import fs from 'fs';
 import path from 'path';
+import { completeRequest } from "../../Controllers/progressTracker.js";
 
 export const changeBio = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {user_id,bio} = rkv.body;
     try {
@@ -18,10 +21,14 @@ export const changeBio = async (rkv,rspo) => {
     } catch (error) {
 
         rspo.status(500).send({err:"Server side error"});
+    } finally {
+        completeRequest(crntIP,crntAPI)
     }
 }
 
 export const changeDP = async (rkv, rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     const { id } = rkv.authData;
 
     let avatarPath;
@@ -101,5 +108,7 @@ export const changeDP = async (rkv, rspo) => {
             try { await fs.promises.unlink(avatarPath); } catch (_) {}
         }
         rspo.status(500).send({ err: "Server side error" });
+    } finally {
+        completeRequest(crntIP,crntAPI)
     }
 };

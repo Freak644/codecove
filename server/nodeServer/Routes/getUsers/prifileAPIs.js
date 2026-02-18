@@ -1,6 +1,9 @@
 import { database } from "../../Controllers/myConnectionFile.js";
+import { completeRequest } from "../../Controllers/progressTracker.js";
 
 export const getUserinfo = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {username} = rkv.query;
     try {
@@ -18,5 +21,7 @@ export const getUserinfo = async (rkv,rspo) => {
     } catch (error) {
         // console.log(error.message)
         rspo.status(500).send({err:"Server side error"});
+    } finally {
+        completeRequest(crntIP,crntAPI)
     }
 }

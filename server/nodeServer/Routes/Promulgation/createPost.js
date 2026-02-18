@@ -11,6 +11,7 @@ import { userInfo } from 'os';
 import https from 'https';
 import plimit from "p-limit";
 import pLimit from 'p-limit';
+import { completeRequest } from '../../Controllers/progressTracker.js';
 dotenv.config();
 cloudinary.config({
   cloud_name:process.env.cloudinary_name,
@@ -29,6 +30,8 @@ const clearTemp = async (currentFiles) => {
 }
 
 export const CreatePost = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     const upLoadLimit = pLimit(2);
     const fileArray = rkv.files;
     let {id} = rkv.authData;
@@ -99,8 +102,10 @@ export const CreatePost = async (rkv,rspo) => {
       rspo.status(201).send({err:"Your Post is POst"})
 
     } catch (error) {
-        console.log(error)
+        //console.log(error)
         await clearTemp(imgArray);
         return rspo.status(500).send({err:"server side error"});
+    } finally {
+        completeRequest(crntIP,crntAPI)
     }
 } 

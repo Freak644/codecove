@@ -3,8 +3,11 @@ import jwt from 'jsonwebtoken';
 import {sendTheMail} from '../../Controllers/nodemailer.js'
 import dotenv from 'dotenv';
 import { Decrypt, Encrypt } from '../../utils/Encryption.js';
+import { completeRequest } from '../../Controllers/progressTracker.js';
 dotenv.config();
 export const SendEmailVerify = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     let {username,email} = rkv.body;
     try {
         let [row] = await database.query("SELECT username, email FROM users WHERE username=? OR email=?",[username,email])
@@ -41,13 +44,18 @@ export const SendEmailVerify = async (rkv,rspo) => {
         }
     
     } catch (error) {
-        console.log(error.message)
+        //console.log(error.message)
         rspo.status(500).send({err:"server side error"});
+    } finally {
+        completeRequest(crntIP,crntAPI)
     }
     
 }
 
 export const verifyEmail = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
+
     let {username,email,inOTP} = rkv.body;
     
    try {
@@ -94,5 +102,7 @@ export const verifyEmail = async (rkv,rspo) => {
         
    } catch (error) {
     rspo.status(500).send({err:"server side error",details:error.message})
+   } finally {
+        completeRequest(crntIP,crntAPI)
    }
 }

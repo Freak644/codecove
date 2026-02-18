@@ -6,9 +6,11 @@ import { SaveThisSession } from './userSession.js';
 import { sendTheMail } from '../../Controllers/nodemailer.js';
 import { nanoid } from 'nanoid';
 import { Encrypt } from '../../utils/Encryption.js';
+import { completeRequest } from '../../Controllers/progressTracker.js';
 dotenv.config();
 export const LoginAPI = async (rkv,rspo) => {
     const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || rkv.ip ||"0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     let token_id = nanoid(32);
     let {Email,Password,clientInfo} = rkv.body;
     try {
@@ -64,7 +66,7 @@ export const LoginAPI = async (rkv,rspo) => {
         if (sendMail?.rejected?.length === 0 || rows[0].ip === crntIP) {
             let authToken = jwt.sign({id,session_id},process.env.jwt_sec,{expiresIn:"1d"});
             let encryptedToken = await Encrypt(authToken);
-            console.log(encryptedToken)
+            
             rspo.cookie("myAuthToken",encryptedToken,{
                 httpOnly:true,
                 secure:true,
@@ -80,6 +82,8 @@ export const LoginAPI = async (rkv,rspo) => {
         rspo.clearCookie("myAuthToken");
         await database.query("DELETE v,s FROM validationToken v JOIN user_sessions s ON v.session_id = s.session_id WHERE v.token_id = ?",[token_id]);
         rspo.status(500).send({ err: "Sever Side Error"});
+    } finally {
+        completeRequest(crntIP,crntAPI)
     }
 }
 

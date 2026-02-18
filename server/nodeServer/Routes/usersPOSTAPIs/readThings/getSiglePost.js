@@ -1,6 +1,8 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
 
 export const getPost = async (rkv, rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {post_id} = rkv.query;
     try {
@@ -23,5 +25,7 @@ export const getPost = async (rkv, rspo) => {
         rspo.status(200).send({pass:row[0]})
     } catch (error) {
         rspo.status(500).send({err:"Server side error"})
+    } finally {
+        completeRequest(crntIP,crntAPI)
     }
 }

@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS user_sessions (
   id CHAR(36) NOT NULL,
   ip VARCHAR(45),
   country VARCHAR(64),
-  device_id CHAR(36),
   region VARCHAR(128),
   city VARCHAR(128),
   latitude DECIMAL(10,7),

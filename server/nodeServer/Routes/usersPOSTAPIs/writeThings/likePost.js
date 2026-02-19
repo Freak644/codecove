@@ -1,3 +1,4 @@
+import { data } from "react-router-dom";
 import { database } from "../../../Controllers/myConnectionFile.js";
 import { completeRequest } from "../../../Controllers/progressTracker.js";
 import { getIO } from "../../../myServer.js";
@@ -61,5 +62,24 @@ export const likeComment = async (rkv,rspo) => {
         rspo.status(500).send({err:"Server side error"});
     } finally {
         completeRequest(crntIP,crntAPI)
+    }
+}
+
+export const savePost = async (rkv,rspo) => {
+    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntAPI = rkv.originalUrl.split("?")[0];
+    let {id} = rkv.authData;
+    let {pst_id: post_id} = rkv.body;
+    try {
+        if (!post_id || post_id.length !== 21) return rspo.status(401).send("Validation Error");
+        let [rows] = await database.query("SELECT P.*, EXISTS (SELECT 1 FROM follows WHERE follower_id = ? AND following_id = p.id) AS isFollowing FROM posts P WHERE post_id = ?",[id, post_id])
+        if (rows.length !== 1) return rspo.status(401).send({err:"Wrong Post id"});
+        let {isFollowing,visibility,} = rows[0]
+        console.log(isFollowing)
+        rspo.json({pass:"Ok"})
+    } catch (error) {
+        rspo.status(500).send({err:"Server side error"});
+    } finally {
+        completeRequest(crntIP,crntAPI);
     }
 }

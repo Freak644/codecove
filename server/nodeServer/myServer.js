@@ -28,9 +28,9 @@ import { CreatePost } from './Routes/Promulgation/createPost.js';
 import { GetPosts } from './Routes/usersPOSTAPIs/readThings/getPost.js';
 import { commentLikeSocket, likeSocket } from './socketIO/postSocket.js';
 import { EmailRateLimiter, RateLimiter, usernameCheckLimiter, verifyEmailLiter } from './Controllers/rateLimits.js';
-import { checkRequest, completeRequest, startCleaner } from './Controllers/progressTracker.js';
+import { checkRequest, startCleaner } from './Controllers/progressTracker.js';
 import { resetPassword, verification } from './Routes/Secure/userVerification/verificationAPI.js';
-import { likeComment, starPost } from './Routes/usersPOSTAPIs/writeThings/likePost.js';
+import { likeComment, savePost, starPost } from './Routes/usersPOSTAPIs/writeThings/likePost.js';
 import { DeleteCommentAPI, miniToggleDy, reportCommentAPI } from './Routes/usersPOSTAPIs/writeThings/miniToggleAPIs.js';
 import { getNews } from './utils/getNews.js';
 import { getComment } from './Routes/usersPOSTAPIs/readThings/getCrntPostComment.js';
@@ -131,6 +131,7 @@ myApp.delete("/writePost/deleteComment",RateLimiter,checkRequest,Auth,DeleteComm
 myApp.post("/writeAchievement/acceptComment",RateLimiter,checkRequest,Auth,acceptSolution)
 myApp.get("/readPost/getImage",RateLimiter,checkRequest,Auth,getPost);
 myApp.get("/readPost/getChartData",RateLimiter,checkRequest,Auth,Chartdata);
+myApp.post("/writePost/savePost",RateLimiter,checkRequest,Auth,savePost);
 // myApp.post("/createAchievement",addNewAchievement);
 
 

@@ -7,9 +7,7 @@ import  {nanoid} from 'nanoid';
 import { database } from '../../Controllers/myConnectionFile.js';
 import createDOMPurify from 'isomorphic-dompurify';
 import {JSDOM} from 'jsdom';
-import { userInfo } from 'os';
 import https from 'https';
-import plimit from "p-limit";
 import pLimit from 'p-limit';
 import { completeRequest } from '../../Controllers/progressTracker.js';
 dotenv.config();
@@ -37,7 +35,7 @@ export const CreatePost = async (rkv,rspo) => {
     let {id} = rkv.authData;
     let {Absuse, Link, Spam, Violence, canComment, canSave, caption, likeCount, visibility, postGroup} = rkv.body;
     let imgArray = [];
-    
+    console.log(canSave)
     try {
       if (fileArray.length === 0 ) return rspo.status(400).send({err:"No file Found"});
       fileArray.forEach(file => {

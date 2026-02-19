@@ -72,12 +72,29 @@ export const savePost = async (rkv,rspo) => {
     let {pst_id: post_id} = rkv.body;
     try {
         if (!post_id || post_id.length !== 21) return rspo.status(401).send("Validation Error");
-        let [rows] = await database.query("SELECT P.*, EXISTS (SELECT 1 FROM follows WHERE follower_id = ? AND following_id = p.id) AS isFollowing FROM posts P WHERE post_id = ?",[id, post_id])
+        let [rows] = await database.query("SELECT P.*, EXISTS (SELECT 1 FROM follows WHERE follower_id = ? AND following_id = p.id) AS isFollowing, EXISTS (SELECT 1 FROM savePost WHERE id = ? AND post_id = P.post_id) AS isSaved FROM posts P WHERE post_id = ?",[id, id, post_id])
         if (rows.length !== 1) return rspo.status(401).send({err:"Wrong Post id"});
-        let {isFollowing,visibility,} = rows[0]
-        console.log(isFollowing)
+        let {isFollowing,visibility,canSave, id: user_id, isSaved} = rows[0];
+        if (!visibility) return rspo.status(403).send({err:"This post is now private"});
+        if (!canSave) return rspo.status(401).send({err:"This can't be saved"});
+        if (canSave === "Follower") {
+            if (!isFollowing && user_id !== id) {
+                return rspo.status(401).send({err:"Saving is available only for followers "})
+            }
+        }
+
+        if (!isSaved) {
+            await database.query("INSERT INTO savePost (id, post_id) VALUE(?,?);",[id,post_id]);
+            await database.query("UPDATE posts SET totalSave = totalSave + 1 WHERE post_id = ?",[post_id]);
+
+        } else {
+            await database.query("DELETE FROM savePost WHERE id = ? AND post_id = ?",[id,post_id]);
+            await database.query("UPDATE posts SET totalSave = totalSave - 1 WHERE post_id = ?",[post_id]);
+        }
+        
         rspo.json({pass:"Ok"})
     } catch (error) {
+        console.log(error.message)
         rspo.status(500).send({err:"Server side error"});
     } finally {
         completeRequest(crntIP,crntAPI);

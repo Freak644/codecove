@@ -11,7 +11,7 @@ export default function TODOList({crntPost_id}) {
     let {setUnivPost} = univPostStore();
     const postData = univPostStore(stat=>stat.postsById[crntPost_id]);
     const crntLocation = useLocation();
-    let {canSave, isFollowing,totalComment,totalLike,isLiked,post_id,totalSave,likeCount,images_url, username,canComment} = crntPost;
+    let {canSave, isFollowing,totalComment, isSaved,totalLike,isLiked,post_id,totalSave,likeCount,images_url, username,canComment} = crntPost;
     const index = UnivuUserInfo(stat=>stat.index);
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     const [isToggle,setToggle] = useState(false);
@@ -214,7 +214,11 @@ export default function TODOList({crntPost_id}) {
           )
           console.log(requestData)
         } catch (error) {
-            toast.error(error.message)
+            if (error.response) {
+                toast.warning(error.response.data.err)
+            }else{
+                toast.error(error.message)
+            }
         }
     }
 
@@ -243,7 +247,7 @@ export default function TODOList({crntPost_id}) {
                 }
             </div>
             <div className={`TodoInner ${!canSave && "pointer-events-none"}`} onClick={()=>handleSave(post_id,canSave,isFollowing)} >
-                <i className="bx bx-bookmark"></i>
+                <i className={`bx ${isSaved ? "bxs":"bx"}-bookmark`}></i>
                 <span>{likeCount ? formatCount(totalSave) : ""}</span>
             </div>
             <div className="TodoInner perspective-distant" onClick={()=>handleShare(post_id)}>

@@ -271,7 +271,8 @@ CREATE TABLE IF NOT EXISTS savePost (
   post_id CHAR(36) NOT NULL,
   UNIQUE(id,post_id),
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
+  FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+  INDEX idx_user_id (id)
 );
 
 CREATE TABLE IF NOT EXISTS commentReports (

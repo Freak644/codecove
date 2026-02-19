@@ -27,14 +27,20 @@ export const GetPosts = async (rkv,rspo) => {
                     FROM likes li
                     WHERE li.id = ?
                     AND li.post_id = p.post_id
-                ) AS isLiked
+                ) AS isLiked,
+                EXISTS (
+                    SELECT 1 
+                    FROM savePost
+                    WHERE id = ? 
+                    AND p.post_id = post_id
+                ) AS isSaved
                 FROM posts p
                 INNER JOIN users u ON u.id = p.id
                 WHERE p.visibility <> 0
                 ORDER BY p.created_at DESC
                 LIMIT ? OFFSET ?;
             `,
-        [id,id,limit,offset]); // i like to write a query in a single row but this query  i have to write it like this because in a single row it too hard to find which thing came from where
+        [id,id,id,limit,offset]); // what the hake from today(19-02-26) i will wirte my all query in column format
         if (rows.length < 1) return rspo.status(404).send({err:"No posts",count:0});
         //  console.log(rows[0])
         rows = rows.map((row)=>{
@@ -45,7 +51,7 @@ export const GetPosts = async (rkv,rspo) => {
 
         rspo.status(200).send({pass:"Found",post:rows})
     } catch (error) {
-        //console.log("jj",error.messge)
+       // console.log("jj",error.messge)
         rspo.status(500).send({err:"Server side error"})
     } finally {
         completeRequest(crntIP,crntAPI)

@@ -9,7 +9,7 @@ export default function TODOList({crntPost_id}) {
     let {setUnivPost} = univPostStore();
     const postData = univPostStore(stat=>stat.postsById[crntPost_id]);
     const crntLocation = useLocation();
-    let {canSave,totalComment,totalLike,isLiked,post_id,likeCount,images_url, username,canComment} = crntPost;
+    let {canSave,totalComment,totalLike,isLiked,post_id,totalSave,likeCount,images_url, username,canComment} = crntPost;
     const index = UnivuUserInfo(stat=>stat.index);
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     const [isToggle,setToggle] = useState(false);
@@ -225,8 +225,9 @@ export default function TODOList({crntPost_id}) {
                     </div>
                 }
             </div>
-            <div className={`TodoInner ${canSave ? "" : "pointer-events-none"}`}>
+            <div className={`TodoInner ${canSave ? "" : "pointer-events-none"}`} >
                 <i className="bx bx-bookmark"></i>
+                <span>{likeCount ? formatCount(totalSave) : ""}</span>
             </div>
             <div className="TodoInner perspective-distant" onClick={()=>handleShare(post_id)}>
                 <i className="bx bxs-share transform-3d rotate-y-180"></i>

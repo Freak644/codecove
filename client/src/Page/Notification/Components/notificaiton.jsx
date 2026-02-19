@@ -10,11 +10,15 @@ export default function NotificationMgmt({data,cetogry}) {
     //let {logo_img,recipient_id,actor_id,type,entity_id,entity_type, message, is_read} = data;
     return(
         <div className="underTaker my-scroll">
-            {
-                [1,2,3,4,5].map(crntNoti=>(
-
-                ))
-            }
+            <div className="notificationContainer h-auto w-full ">
+                {
+                    [1,2,3,4,5].map(crntNoti=>(
+                        <div className="notification">
+                            
+                        </div>
+                    ))
+                }
+            </div>
         </div>
     )
 }

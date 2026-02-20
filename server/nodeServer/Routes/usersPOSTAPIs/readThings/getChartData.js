@@ -6,9 +6,9 @@ export const Chartdata = async (rkv,rspo) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     try {
-        let [rows] = await database.query("SELECT caption as title, totalLike as likes, post_id FROM posts WHERE id = ? AND visibility = 1 ORDER BY created_at DESC LIMIT 10",[id]);
-        if (rows.length === 0 ) return rspo.status(401).send({err:"Something went wrong"})
-        if (rows.length < 10) return rspo.status(200).send({pass:"Not Innof post", progress:rows.length * 10});
+        let [rows] = await database.query("SELECT caption as title, totalLike as likes, totalSave, totalComment, post_id FROM posts WHERE id = ? AND visibility = 1 ORDER BY created_at DESC LIMIT 10",[id]);
+        if (rows.length === 0 ) return rspo.status(401).send({err:"No Post yet"})
+        //if (rows.length < 10) return rspo.status(200).send({pass:"Not Innof post", progress:rows.length * 10});
 
         let postData = [];
 

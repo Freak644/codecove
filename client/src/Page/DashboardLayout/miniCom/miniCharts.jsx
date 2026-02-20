@@ -1,4 +1,4 @@
-import {Chart as ChartJS,defaults} from 'chart.js/auto';
+import {Chart as ChartJS,defaults, layouts} from 'chart.js/auto';
 import { useEffect, useState } from 'react';
 import {Doughnut,Line} from 'react-chartjs-2';
 import axios from 'axios';
@@ -12,28 +12,58 @@ defaults.plugins.title.align = "start";
 defaults.plugins.title.font.size = 20;
 export default function ChartsEL() {
     const [postData,setPostData] = useState([]);
-    const [helper,sethelper] = useState({ // this state is for holding the char till API is getting data
-        waiting:true, 
-        progress:0 // or user posts.count < 10
-    });
+    const [donatData,setDonatData] = useState([
+        {
+            label:"Like",
+            value:99
+        },
+        {
+            label:"comment",
+            value:99
+        },{
+            label:"Save",
+            value:99
+        }
+        
+    ]);
+    const [helper,sethelper] = useState(true)
     const [avrgPost,setAvg] = useState(0);
 
     const getChartData = async () => {
         try {
             let data = await axios.get("/myServer/readPost/getChartData");
-            if (data.data.progress) {
-                return sethelper(prev=>({
-                    ...prev,
-                    waiting:false,
-                    progress:data.data.progress
-                }));
-            }
-
-            setAvg(data.data.reduce((sum,p)=> sum + p.likes,0) / 10);
-            setPostData(data.data)
            
+            setAvg(data.data.reduce((sum,p)=> sum + p.likes,0) / 10);
+            let tempObje_count = 10 - data.data.length;
+         
+            let tempArray = []
+            while (tempObje_count >= 1) {
+                tempArray.push({title:"null",likes:0})
+                tempObje_count--;
+                console.log(tempArray)
+            }
+            let donatArray = [
+                {
+                    label:"Likes",
+                    value:data.data[0].likes
+                },
+                {
+                    label:"Comments",
+                    value:data.data[0].totalComment
+                },
+                {
+                    label:"Save",
+                    value:data.data[0].totalSave
+                }
+            ]
+            setDonatData(donatArray)
+            setPostData([...data.data, ...tempArray])
+           sethelper(false);
         } catch (error) {
-            toast.info(error.message)
+            if (error.response) {
+                
+                toast.info(error.response.data.err);
+            }
         }
     }
 
@@ -41,19 +71,6 @@ export default function ChartsEL() {
         getChartData();
     },[])
 
-    const tempArray = [
-        {
-            label:"Like",
-            value:99
-        },
-        {
-            label:"comment",
-            value:33
-        },{
-            label:"Save",
-            value:66
-        }
-    ]
     
 
 
@@ -122,7 +139,7 @@ export default function ChartsEL() {
                             callbacks: {
                             label: function (ctx) {
                                 const post = postData[ctx.dataIndex];
-                                return `${post.title}: ${post.likes} Stars`;
+                                return `${post.title || "null"}: ${post.likes || "0"} Stars`;
                             }
                             }
                         }
@@ -134,11 +151,11 @@ export default function ChartsEL() {
             <div className="doughnutChart flex-1 h-1/2 flex items-center">
                 <Doughnut
                     data={{
-                        labels:tempArray.map(data=>data.label),
+                        labels:donatData.map(data=>data.label),
                         datasets:[
                             {
                                 label:"Count",
-                                data:tempArray.map(data=>data.value),
+                                data:donatData.map(data=>data.value),
                                   backgroundColor: [
                                     "rgba(0, 255, 163, 0.85)",   // Neon Mint
                                     "rgba(0, 136, 255, 0.85)",   // Electric Blue

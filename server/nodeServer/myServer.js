@@ -142,17 +142,15 @@ const io = new Server(myServer, {
 });
 
 io.on("connection", (socket) => {
-    console.log("User came online", socket.id);
+  console.log("User came online", socket.id);
 
+  likeSocket(io, socket);
+  commentLikeSocket(io, socket);
+  changeBioSocket(io, socket);
 
-    likeSocket(io,socket);
-    commentLikeSocket(io,socket);
-
-    changeBioSocket(io,socket);
-
-    socket.on("disconnect", () => {
-        console.log("User leave", socket.id);
-    });
+  socket.on("disconnect", () => {
+    console.log("User leave", socket.id);
+  });
 });
 
 export function getIO() {

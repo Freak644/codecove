@@ -12,6 +12,7 @@ import '../assets/style/paseTwo.css'
 import AbsoluteMenu from './absoluteMenu';
 import AnimateRoute from './Routes/AnimateRoute';
 import NoAnimRoutes from './Routes/noAnimationRoute';
+import socket from '../utils/socket';
 export default function MyApp() {
     let {fileURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);
@@ -37,6 +38,23 @@ export default function MyApp() {
             window.removeEventListener('resize', setVH);
         };
         }, []);
+
+        useEffect(() => {
+            socket.connect();
+
+            socket.on("connect", () => {
+                console.log("Connected →", socket.id);
+            });
+
+            socket.on("disconnect", () => {
+                console.log("Disconnected");
+            });
+
+            return () => {
+                socket.disconnect();
+            };
+        }, []);
+
     useEffect(()=>{
         if (window.innerWidth > 1023) {
             setHeader(true)

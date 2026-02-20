@@ -12,7 +12,7 @@ export const UnivuUserInfo = create((set)=>({
 }));
 
 
-export const usePostStore = create((set) => ({
+export const usePostStore = create((set) => ({ // this stor is use when user is cretin a post 
   postOBJ: {},
 
   setEmpty:()=> set({postOBJ:{}}),

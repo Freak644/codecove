@@ -40,7 +40,6 @@ export default function ChartsEL() {
             while (tempObje_count >= 1) {
                 tempArray.push({title:"null",likes:0})
                 tempObje_count--;
-                console.log(tempArray)
             }
             let donatArray = [
                 {

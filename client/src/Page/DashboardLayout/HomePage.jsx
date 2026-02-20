@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import HomeSkeleton from './skeletonForHome';
-import socket from '../../utils/socket';
 import NewsComp from './miniCom/newsTech';
 import { UnivuUserInfo } from '../../lib/basicUserinfo';
 import ChartsEL from './miniCom/miniCharts';
@@ -18,31 +17,6 @@ export default function HonePage() {
   const crntTab = toggleSlider(stat=>stat.isMiniTab);
   let {toggleMiniTab} = toggleSlider();
   let {toggleLoader} = Loader();
-
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Connected →", socket.id);
-    });
-
-    socket.on("new-post", (newPost) => {
-      setPosts(prev => [newPost, ...prev]);
-    });
-
-    socket.on("disconnect", () => {
-      console.log("Disconnected");
-    });
-
-    // cleanup listeners
-    return () => {
-      socket.off("connect");
-      socket.off("new-post");
-      socket.off("disconnect");
-    };
-
-  }, []);
-
-
-
 
   const fetchPost = async () => {
     console.log("in fetch")
@@ -103,7 +77,9 @@ export default function HonePage() {
           {
           Posts.length === 0 ? (<HomeSkeleton/>) :
            (
-              <PostFeedMGMT posts={Posts} fetcher={fetchMorePost} isEnd={isEnd} />
+       
+                <PostFeedMGMT posts={Posts} fetcher={fetchMorePost} isEnd={isEnd} />
+            
            )
         }
         </div>

@@ -44,6 +44,19 @@ export default function TODOList({crntPost_id}) {
             }
         };
 
+        const handlePostSave = ({pid,user_id,save})=>{
+            if (pid === post_id) {
+                setUnivPost({
+                    [post_id]:{
+                        totalSave:save ? totalSave + 1 : totalSave - 1,
+                        ...(user_id === uID && {
+                            isSaved:save
+                        })
+                    }
+                })
+            }
+        }
+
         const handleComment = ({post_id : pid})=>{
             if (pid === post_id) {
                 setUnivPost({
@@ -67,12 +80,14 @@ export default function TODOList({crntPost_id}) {
         socket.on("newLike",handleLike);
         socket.on("newComment",handleComment);
         socket.on("deleteComment",handleDeleteComment);
+        socket.on("newPostSave",handlePostSave);
 
         return () =>{
              socket.emit("leavePost",post_id);
              socket.off("newLike",handleLike);
              socket.off("newComment",handleComment);
              socket.off("deleteComment",handleDeleteComment);
+             socket.off("newPostSave",handlePostSave);
         }
     },[crntPost]);
 

@@ -14,6 +14,11 @@ export const likeSocket = (io,socket) => {
         let {post_id} = data;
         io.to(`post-${post_id}`).emit("newLike",data);
     })
+
+    socket.on("userSavePost",(data)=>{
+        let {post_id} = data;
+        io.to(`post-${post_id}`).emit("newPostSave",data);
+    })
 }
 
 export const commentSocket = (io,socket) =>{

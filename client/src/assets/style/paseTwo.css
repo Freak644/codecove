@@ -545,18 +545,21 @@ select{
 }
 
 .NotificationHeader>p {
-  background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   padding: 5px;
   cursor: pointer;
   border-radius: 10px;
-  border: 2px solid rgba(107, 107, 107, 0.529);
 
+  margin-left: 20px;
+  color:  rgb(0, 0, 255);
   &:hover{
     background: linear-gradient(rgba(11, 39, 105, 0.4), rgba(18, 13, 95, 0.4));
     box-shadow: 0 2px 25px rgb(200,200,200,0.2);
   }
+}
+
+.activeNoti{
+   color: var(--text-color) !important;
+   box-shadow: 0 2px 25px rgb(200,200,200,0.2);
 }
 
 .floatingPart{

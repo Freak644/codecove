@@ -1,6 +1,7 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
 import {nanoid} from 'nanoid';
 import { getIO } from "../../../myServer.js";
+import { completeRequest } from "../../../Controllers/progressTracker.js";
 const validateComment = async (blockCat,comment) => {
     const enableCat = Object.keys(blockCat).filter(k=>blockCat[k]);
     if (enableCat.length === 0) return false;
@@ -48,10 +49,10 @@ export const CommentAPI = async (rkv,rspo) => {
                     INNER JOIN users u 
                         ON u.id = c.id
                     WHERE c.commentID = ?;`,[id,commentID]);
-        io.emit("newComment",commentRows[0]);
+        io.emit("newComment",{...commentRows[0], ...{activity:true}});
         rspo.status(200).send({pass:""});
     } catch (error) {
-        console.log(error.message)
+        //console.log(error.message)
         rspo.status(500).send({err:"Server Side Error"});
     } finally {
         completeRequest(crntIP,crntAPI)

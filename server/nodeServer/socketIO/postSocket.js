@@ -29,7 +29,7 @@ export const commentSocket = (io,socket) =>{
 }
 
 export const commentLikeSocket = (io,socket) => {
-    socket.on("addLikeToComment",(data)=>{
+    socket.on("ModifyComment",(data)=>{
         let {post_id} = data;
         io.to(`post-${post_id}`).emit("newCommentLike",data);
         io.to(`post-${post_id}`).emit("deleteComment",data);

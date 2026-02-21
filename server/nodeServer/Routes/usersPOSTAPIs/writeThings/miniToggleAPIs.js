@@ -57,12 +57,12 @@ export const DeleteCommentAPI = async (rkv,rspo) => {
         console.log(post_id)
         if (!post_id || !commentID || !commentID.trim() || !post_id.trim()) return rspo.status(401).send({err:"Something went wrong"});
         let [rows] = await database.query("SELECT EXISTS (SELECT 1 FROM comments c JOIN posts p ON p.post_id = c.post_id WHERE c.commentID = ? AND ( p.id = ? OR c.id = ?)) AS isAuth;",[commentID,id,id]);
-        let {isAuth} = rows[0];
+        let {isAuth} = rows[0]; // the query is check is crntUser is comment owner or the post owner
         if (!isAuth) return rspo.status(401).send({err:"You! didn't have auth"});
         await database.query("DELETE FROM comments WHERE commentID = ?",[commentID]);
         await database.query("UPDATE posts SET totalComment = totalComment - 1 WHERE post_id = ?",[post_id])
         let io = getIO();
-        io.emit("deleteComment",{post_id,commentID,id})
+        io.emit("deleteComment",{post_id,commentID,id,activity:false});
         rspo.status(200).send({pass:"Deleted!"})
     } catch (error) {
         // console.log(error.message);

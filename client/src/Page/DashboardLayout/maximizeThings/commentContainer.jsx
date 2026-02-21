@@ -88,7 +88,7 @@ export default function CommentEl() {
     useEffect(()=>{
         socket.emit("joinPost",pID);
         const handleLikes = ({commentID: CId,post_id:pid, user_id,like}) =>{
-             console.log(user_id,like)
+             
             if (pID === pid) {
                 setComment(prev =>
                     prev.map(obj => {

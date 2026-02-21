@@ -8,12 +8,10 @@ import axios from 'axios';
 export default function TODOList({crntPost_id}) {
     const toggleRef = useRef(null);
     const [crntPost,setCrntPost] = useState({})
-    let {setUnivPost} = univPostStore();
     const postData = univPostStore(stat=>stat.postsById[crntPost_id]);
     const crntLocation = useLocation();
     let {canSave, isFollowing,totalComment, isSaved,totalLike,isLiked,post_id,totalSave,likeCount,images_url, username,canComment} = crntPost;
     const index = UnivuUserInfo(stat=>stat.index);
-    const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     const [isToggle,setToggle] = useState(false);
     const starMp3 = new Audio(star);
     
@@ -28,67 +26,11 @@ export default function TODOList({crntPost_id}) {
 
 
     useEffect(()=>{
-        let {post_id,totalComment,totalLike} = crntPost;
+        let {post_id} = crntPost;
+
         socket.emit("joinPost",post_id);
-        const handleLike = ({post_id : pid,user_id,like})=>{
-            if (pid === post_id) {
-                setUnivPost({
-                    [post_id]:{
-                        totalLike:like ? totalLike + 1 : totalLike - 1,
-                        
-                        ...(user_id === uID && {
-                            isLiked:like
-                        })
-                    }
-                })
-            }
-        };
-
-        const handlePostSave = ({pid,user_id,save})=>{
-            if (pid === post_id) {
-                setUnivPost({
-                    [post_id]:{
-                        totalSave:save ? totalSave + 1 : totalSave - 1,
-                        ...(user_id === uID && {
-                            isSaved:save
-                        })
-                    }
-                })
-            }
-        }
-
-        const handleComment = ({post_id : pid})=>{
-            if (pid === post_id) {
-                setUnivPost({
-                    [post_id]:{
-                        totalComment:totalComment + 1
-                    }
-                })
-            }
-        };
-
-        const handleDeleteComment = ({post_id :pid}) => {
-            if (pid === post_id) {
-                setUnivPost({
-                    [post_id]:{
-                        totalComment:totalComment - 1
-                    }
-                })
-            }
-        }
-
-        socket.on("newLike",handleLike);
-        socket.on("newComment",handleComment);
-        socket.on("deleteComment",handleDeleteComment);
-        socket.on("newPostSave",handlePostSave);
-
-        return () =>{
-             socket.emit("leavePost",post_id);
-             socket.off("newLike",handleLike);
-             socket.off("newComment",handleComment);
-             socket.off("deleteComment",handleDeleteComment);
-             socket.off("newPostSave",handlePostSave);
-        }
+        
+        return () => socket.emit("leavePost",post_id);
     },[crntPost]);
 
     function formatCount(value) {

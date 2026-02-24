@@ -85,11 +85,8 @@ export default function CommentEl() {
         getComments(pID)
     },[pID]);
 
-    useEffect(()=>{
-        socket.emit("joinPost",pID);
-        const handleLikes = ({commentID: CId,post_id:pid, user_id,like}) =>{
-             
-            if (pID === pid) {
+    const handleLikes = ({commentID: CId, user_id,like}) =>{
+    
                 setComment(prev =>
                     prev.map(obj => {
                         if (CId !== obj.commentID) return obj;
@@ -100,7 +97,8 @@ export default function CommentEl() {
                         };
                     })
                 );
-            }
+
+                soundMp3.play();
         };
 
         const handleComments = (newData) => {
@@ -108,25 +106,15 @@ export default function CommentEl() {
             if (pID === pid && id === uID) {
                 setComment(prev=>[newData,...prev]);
             }
+            soundMp3.play();
         }
 
         const handleDelete = (newData) => {
-            let {post_id:pid,commentID,id} = newData;
-            if (pID === pid && id === uID) {
+            let {commentID} = newData;
                 let newCommentData = commentData.filter(cmnt=> cmnt.commentID !== commentID);
-                setComment(newCommentData)
-            }
+                setComment(newCommentData);
+            soundMp3.play();
         }
-        socket.on("deleteComment",handleDelete);
-        socket.on("newCommentLike",handleLikes);
-        socket.on("newComment",handleComments);
-        return () => {
-            socket.emit("leavePost",pID);
-            socket.emit("deleteComment",handleDelete);
-            socket.off("newComment",handleComments);
-            socket.off("newCommentLike",handleLikes);
-        }
-    },[commentData]);
 
 
 
@@ -175,7 +163,7 @@ export default function CommentEl() {
 
                         itemContent={(index, cmnt) => (
                             <div className="h-full w-full flex justify-center">
-                                <CommentsContainer commentData={cmnt} />
+                                <CommentsContainer commentData={cmnt} likeFun={handleLikes} delComment={handleDelete} newComment={handleComments} />
                             </div>
                         )}
 

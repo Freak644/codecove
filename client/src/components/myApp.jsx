@@ -13,6 +13,7 @@ import AbsoluteMenu from './absoluteMenu';
 import AnimateRoute from './Routes/AnimateRoute';
 import NoAnimRoutes from './Routes/noAnimationRoute';
 import socket from '../utils/socket';
+import { UnivuUserInfo } from '../lib/basicUserinfo';
 export default function MyApp() {
     let {fileURL} = mngCrop();
     let [isCropping,setCropping] = useState(false);
@@ -22,7 +23,8 @@ export default function MyApp() {
     let [isLogin,setLogin] = useState(true);
     const [winddowHerder,setHeader] = useState(true);
     const {isTrue,toggleLoader} = Loader();
-    const [isChecking,setCheck] = useState(false)
+    const [isChecking,setCheck] = useState(false);
+    const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     useEffect(() => {
         const setVH = () => {
             const vh = window.visualViewport?.height
@@ -40,6 +42,8 @@ export default function MyApp() {
         }, []);
 
         useEffect(() => {
+            if (!uID) return;
+            socket.auth = {user_id:uID}
             socket.connect();
 
             socket.on("connect", () => {
@@ -53,7 +57,7 @@ export default function MyApp() {
             return () => {
                 socket.disconnect();
             };
-        }, []);
+        }, [uID]);
 
     useEffect(()=>{
         if (window.innerWidth > 1023) {

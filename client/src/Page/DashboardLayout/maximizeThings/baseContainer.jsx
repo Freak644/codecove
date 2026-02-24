@@ -3,7 +3,8 @@ import ImageSlider from "../../Promulgation/sliderCom";
 import { useEffect, useRef, useState } from "react";
 import { univPostStore } from "../../../lib/basicUserinfo";
 import SheetMiddleWhare from "./slideMiddleWr";
-
+import {createContext} from 'react';
+export const btnContext = createContext();
 export default function MaximizeContainer() {
     let {pID} = useParams();
     let navi = useNavigate();
@@ -44,7 +45,9 @@ export default function MaximizeContainer() {
                         <ImageSlider imgArray={crntPost?.images_url || []} toggle={setToggel} />
                     </div>
                    <div className={`${isFull ? "w-0!" : "flex-1"} transition-all duration-200 flex items-center justify-center h-full`}>
-                        <SheetMiddleWhare/>
+                        <btnContext.Provider value={setToggel}>
+                            <SheetMiddleWhare/>
+                        </btnContext.Provider>
                     </div>
                 </div>
             </div>

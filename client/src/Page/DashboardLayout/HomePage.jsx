@@ -9,7 +9,6 @@ import PostFeedMGMT from './postFeed';
 import { toast } from 'react-toastify';
 import { Loader } from '../../lib/loader';
 import NotificaitonMini from '../Notification/Components/notificationFeed';
-import GlobalSocket from './GlobalPostSocket';
 export default function HonePage() {
   const [Posts,setPosts] = useState([])
   const [offset,setOffset] = useState(0)
@@ -78,9 +77,7 @@ export default function HonePage() {
           {
           Posts.length === 0 ? (<HomeSkeleton/>) :
            (
-            <GlobalSocket>
-                <PostFeedMGMT posts={Posts} fetcher={fetchMorePost} isEnd={isEnd} />
-            </GlobalSocket>
+              <PostFeedMGMT posts={Posts} fetcher={fetchMorePost} isEnd={isEnd} />
            )
         }
         </div>

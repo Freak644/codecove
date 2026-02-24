@@ -13,9 +13,28 @@ export default function TODOList({crntPost_id}) {
     let {canSave, isFollowing,totalComment, isSaved,totalLike,isLiked,post_id,totalSave,likeCount,images_url, username,canComment} = crntPost;
     const index = UnivuUserInfo(stat=>stat.index);
     const [isToggle,setToggle] = useState(false);
+    let {setUnivPost} = univPostStore();
     const starMp3 = new Audio(star);
     
+    const handelCount = ({likeStat}) => {
+        setUnivPost({
+            [post_id]:{
+                totalLike: likeStat ? totalLike + 1 : totalLike -1,
+                isLiked:likeStat
+            }
+        })
+        starMp3.play()
+    }
 
+    const handleSaveStatus = ({newInfo}) => {
+        setUnivPost({
+            [post_id]:{
+                totalSave: newInfo ? totalSave + 1 : totalSave - 1,
+                isSaved:newInfo
+            }
+        });
+        starMp3.play()
+    }
 
 
 
@@ -106,7 +125,9 @@ export default function TODOList({crntPost_id}) {
     },[])
 
     const handleStar = async () => {
+        let likeStat = !isLiked;
         try {
+            handelCount({likeStat})
             let rqst = await fetch("/myServer/writePost/addStar",{
                 method:"POST",
                 headers:{
@@ -115,9 +136,9 @@ export default function TODOList({crntPost_id}) {
                 body:JSON.stringify({post_id})
             })
             let result = await rqst.json();
-            console.log(result)
-            if (result.pass === true) {
-                starMp3.play();
+            if (result.err) {
+                throw new Error("Server side error");
+                
             }
         } catch (error) {
             console.log(error)
@@ -161,15 +182,17 @@ export default function TODOList({crntPost_id}) {
     }
 
     const handleSave = async (pst_id,save,follow) =>{
+        let newInfo = !isSaved
         try {
+            handleSaveStatus({newInfo})
           if (!save) throw new Error("Saving turned off by user");
           if (save !== "Everyone" && !follow) throw new Error("Saving is available only for follower");
           if (pst_id.length !== 21) throw new Error("Post id is not valid");
           
-          let requestData = await axios.post("/myServer/writePost/savePost",
+            await axios.post("/myServer/writePost/savePost",
             {pst_id}
           )
-          console.log(requestData)
+
         } catch (error) {
             if (error.response) {
                 toast.warning(error.response.data.err)

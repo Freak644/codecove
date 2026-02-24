@@ -142,8 +142,9 @@ const io = new Server(myServer, {
 });
 
 io.on("connection", (socket) => {
-  console.log("User came online", socket.id);
-
+  let {user_id} = socket.handshake.auth
+  console.log("User came online", user_id);
+  socket.join(`user_${user_id}`)
   likeSocket(io, socket);
   commentLikeSocket(io, socket);
   changeBioSocket(io, socket);

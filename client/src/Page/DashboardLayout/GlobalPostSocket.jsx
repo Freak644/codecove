@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import {univPostStore, UnivuUserInfo} from '../../lib/basicUserinfo';
 import socket from "../../utils/socket";
-export default function GlobalSocket({children}) {
+export default function GlobSocket({children}) {
 
     const postByID = univPostStore(stat=>stat.postsById);
     let {setUnivPost} = univPostStore();

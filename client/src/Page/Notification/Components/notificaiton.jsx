@@ -7,16 +7,16 @@ export default function NotificationMgmt({data,cetogry}) {
                 {[...Array(12)].map((_, index) => (
                 <div
                     key={index}
-                    className="w-full h-20 flex items-center gap-3 p-3
+                    className="w-full h-20 flex items-center gap-4 p-3
                            rounded-lg
                             text-skin-text cursor-pointer
                             hover:bg-amber-500/10 transition"
                 >
                     {/* Avatar */}
-                    <div className="h-full aspect-square overflow-hidden rounded-full">
+                    <div className="h-full w-25 overflow-hidden rounded-full">
                         <img
-                            className="h-10 w-10 object-cover"
-                            src="https://res.cloudinary.com/dcq0dge7f/image/upload/v1771254694/mjyanart-20250729-0023_uwr6eg.jpg"
+                            className="h-full w-full object-cover"
+                            src="https://res.cloudinary.com/dcq0dge7f/image/upload/v1771732188/loser_3221/o4gyl6yy7gwszvit1gch.jpg"
                             alt="user"
                         />
                     </div>

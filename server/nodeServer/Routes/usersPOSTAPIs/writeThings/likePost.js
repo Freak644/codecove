@@ -1,6 +1,6 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
 import { completeRequest } from "../../../Controllers/progressTracker.js";
-import { getIO } from "../../../myServer.js";
+
 
 export const starPost = async (rkv,rspo) => {
     const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
@@ -10,7 +10,6 @@ export const starPost = async (rkv,rspo) => {
 
     try {
         if (!post_id || !post_id.trim()) return rspo.status(401).send({err:"Something went wrong"});
-        let io = getIO();
         let pass = false;
         let [row] = await database.query("SELECT visibility FROM posts WHERE post_id = ?",[post_id]);
         if (!row[0].visibility) return rspo.status(422).send({err:"The post is private"});
@@ -18,12 +17,10 @@ export const starPost = async (rkv,rspo) => {
         if (rows.length === 0) {
             await database.query("INSERT INTO likes (post_id, id) VALUES ( ?, ?) ",[post_id,id]);
             await database.query("UPDATE posts SET totalLike = totalLike + 1 WHERE post_id = ?",[post_id]);
-            pass = true
-            io.emit("newLike",{post_id,user_id:id,like:true})
+
         } else {
             await database.query("DELETE FROM likes WHERE post_id = ? AND id = ?",[post_id,id]);
             await database.query("UPDATE posts SET totalLike = totalLike - 1 WHERE post_id = ?",[post_id]);
-            io.emit("newLike",{post_id,user_id:id,like:false})
         }
 
         rspo.status(200).send({pass});
@@ -42,18 +39,17 @@ export const likeComment = async (rkv,rspo) => {
     let {commentID,post_id} = rkv.body;
     try {
         if (!post_id || !commentID || !post_id.trim() || !commentID.trim() || post_id.length !== 21) return rspo.status(401).send({err:"Something went wrong"});
-        let io = getIO();
         let [rows] = await database.query("SELECT visibility FROM posts WHERE post_id = ?",[post_id]);
         if (!rows[0].visibility) return rspo.status(422).send({err:"The post is private"});
         let [row] = await database.query("SELECT commentID FROM commentLikes WHERE commentID = ? AND id = ?",[commentID,id]);
         if (row.length === 0) {
             await database.query("INSERT INTO commentLikes (commentID, post_id, id) VALUES (?,?,?)",[commentID,post_id,id]);
             await database.query("UPDATE comments SET totalLike = totalLike + 1 WHERE commentID = ?",[commentID]);
-            io.emit("newCommentLike",{post_id,commentID,user_id:id,like:true});
+
         } else {
             await database.query("DELETE FROM commentLikes WHERE commentID = ? AND post_id = ? AND id = ?",[commentID,post_id,id]);
             await database.query("UPDATE comments SET totalLike = totalLike - 1 WHERE commentID = ?",[commentID]);
-            io.emit("newCommentLike",{post_id,commentID,user_id:id,like:false});
+          
         }
         rspo.status(200).send({test:"done"});
     } catch (error) {
@@ -81,15 +77,12 @@ export const savePost = async (rkv,rspo) => {
                 return rspo.status(401).send({err:"Saving is available only for followers "})
             }
         }
-        const io = getIO();
         if (!isSaved) {
             await database.query("INSERT INTO savePost (id, post_id) VALUE(?,?);",[id,post_id]);
             await database.query("UPDATE posts SET totalSave = totalSave + 1 WHERE post_id = ?",[post_id]);
-            io.emit("newPostSave",{pid:post_id, user_id:id, save:true});
         } else {
             await database.query("DELETE FROM savePost WHERE id = ? AND post_id = ?",[id,post_id]);
             await database.query("UPDATE posts SET totalSave = totalSave - 1 WHERE post_id = ?",[post_id]);
-            io.emit("newPostSave",{pid:post_id,user_id:id, save:false});
         }
         
         rspo.json({pass:"Ok"})

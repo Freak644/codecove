@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import sound from "../../../assets/Sounds/star.mp3";
 import { UnivuUserInfo } from "../../../lib/basicUserinfo";
 import { toast } from "react-toastify";
 import {Link} from "react-router-dom"
+import {useContext} from 'react';
+import {btnContext} from './baseContainer';
 
-export default function CommentsContainer({commentData}) {
-    let {username,avatar,isPostOwner,commentID,isAccepted,post_moment,comment,post_id,isLiked,id,totalLike,created_at} = commentData;
-    
+export default function CommentsContainer({commentData,likeFun,delComment}) {
+    let {username,avatar,isPostOwner, isReported,commentID,isAccepted,post_moment,comment,post_id,isLiked,id,totalLike,created_at} = commentData;
+    const toggelBtn = useContext(btnContext);
 
     const flotRef = useRef({});
-    const soundMp3 = new Audio(sound)
     const setCallback = (id)=> (el)=>{
         flotRef.current[id]=el;
     }
@@ -37,9 +37,12 @@ export default function CommentsContainer({commentData}) {
         return rtf.format(Math.round(diff / 86400), "day");
     }
 
-    const handleLike = async (commentID,post_id) => {
+    const handleLike = async (commentID,post_id,like) => {
         if (!commentID || !post_id) return;
+        let newLike = !like
         try {
+            if (!commentID.trim() || !post_id.trim()) throw new Error("Invalid info");
+            likeFun({commentID,post_id,user_id:uID,like:newLike})
             let rqst = await fetch("/myServer/writePost/addLikeComment",{
                 method:"POST",
                 headers:{
@@ -49,7 +52,7 @@ export default function CommentsContainer({commentData}) {
             })
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
-            soundMp3.play()
+
         } catch (error) {
             toast.error(error.message);
         }
@@ -75,6 +78,7 @@ export default function CommentsContainer({commentData}) {
 
 
     const reportComment = async (comment_id,post_id) => {
+        toggelBtn(true)
         try {
             let rqst = await fetch("/myServer/writePost/reportComment",{
                 method:"POST",
@@ -86,16 +90,17 @@ export default function CommentsContainer({commentData}) {
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
             toast.success(result.pass);
-            soundMp3.play()
+      
         } catch (error) {
             toast.error(error.message);
         }
     }
 
     const deleteComment = async (comment_id,post_id) => {
+        toggelBtn(true)
         try {
             if (!comment_id.trim() || !post_id.trim()) throw new Error("Invalid info");
-            
+            delComment({commentID:comment_id})
             let rqst = await fetch("/myServer/writePost/deleteComment",{
                 method:"DELETE",
                 headers:{
@@ -106,13 +111,13 @@ export default function CommentsContainer({commentData}) {
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
             toast.success(result.pass);
-            soundMp3.play()
         } catch (error) {
             toast.error(error.message)
         }
     }
 
     const acceptSolution = async (comment_id) => {
+        toggelBtn(true)
         try {
             if (!comment_id || !comment_id.trim()) throw new Error("Invalid Info");
             
@@ -168,13 +173,16 @@ export default function CommentsContainer({commentData}) {
                         <i className="bx bx-dots-vertical text-gray-500 cursor-pointer" onClick={()=>setFloting({float:true,clickID:commentID})}></i>
                         <div className={`flex absolute right-0 transition-all duration-300 ${(isFloating.float && isFloating.clickID === commentID) ? "top-0! opacity-100" : "-top-5 opacity-0 pointer-events-none "} p-1 rounded-md bg-blue-500/20 backdrop-blur-md`}>
                             <ul>
-                                <li className="border-b m-1 text-gray-500"><i onClick={()=>reportComment(commentID,post_id)} className="bx bxs-report cursor-pointer">Report</i></li>
+                                <li className="border-b m-1 text-gray-500"><i onClick={()=>{
+                                    if (isReported) return;
+                                    reportComment(commentID,post_id);
+                                }} className="bx bxs-report cursor-pointer">{isReported ? "Reported" : "Report"}</i></li>
                                 {(uID === id || isPostOwner) ? <li className="border-b m-1 text-red-500"><i onClick={()=>deleteComment(commentID,post_id)} className="bx bx-trash cursor-pointer">Delete</i></li> : ""}
                                 {(isPostOwner && post_moment === "Bugs" && !isAccepted) ? <li onClick={()=>acceptSolution(commentID)} className="border-b m-1 text-nowrap cursor-pointer text-green-400"><i className="bx bxs-badge-check"></i>Accepte</li> : ""}
                             </ul>
                         </div>
                     </div>
-                    <i onClick={()=>handleLike(commentID,post_id)} className={isLiked ? "bx bxs-heart text-rose-500 cursor-pointer" : "bx bx-heart cursor-pointer text-gray-500"}></i>
+                    <i onClick={()=>handleLike(commentID,post_id,isLiked)} className={isLiked ? "bx bxs-heart text-rose-500 cursor-pointer" : "bx bx-heart cursor-pointer text-gray-500"}></i>
                 </div>
             </div>
             <div className="layerTwo flex items-center w-full pl-10  justify-start text-gray-500 text-[13px] gap-4">

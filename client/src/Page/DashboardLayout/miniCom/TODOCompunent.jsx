@@ -44,13 +44,13 @@ export default function TODOList({crntPost_id}) {
     },[postData])
 
 
-    useEffect(()=>{
-        let {post_id} = crntPost;
+    // useEffect(()=>{
+    //     let {post_id} = crntPost;
 
-        socket.emit("joinPost",post_id);
+    //     socket.emit("joinPost",post_id);
         
-        return () => socket.emit("leavePost",post_id);
-    },[crntPost]);
+    //     return () => socket.emit("leavePost",post_id);
+    // },[crntPost]);
 
     function formatCount(value) {
         if (value == null || isNaN(value)) return "0";

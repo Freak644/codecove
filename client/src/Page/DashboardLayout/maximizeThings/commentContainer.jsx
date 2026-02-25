@@ -1,13 +1,13 @@
 import React, { Suspense, useEffect, useRef, useState } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 const EmojiPicker = React.lazy(()=>import("emoji-picker-react"));
 import {toast} from 'react-toastify'
-import socket from "../../../utils/socket";
-import { UnivuUserInfo } from "../../../lib/basicUserinfo";
+import { univPostStore, UnivuUserInfo } from "../../../lib/basicUserinfo";
 import { Loader } from "../../../lib/loader";
 import sound from "../../../assets/Sounds/star.mp3"
 import CommentsContainer from "./comment";
 import { Virtuoso } from "react-virtuoso";
+import socket from "../../../utils/socket";
 
 let logicObj = {
     isFeching:true,
@@ -21,6 +21,8 @@ export default function CommentEl() {
     const [commentData,setComment] = useState([]);
     const [isOver,setOver] = useState(false);
     const commentRef = useRef(null);
+    let {setUnivPost} = univPostStore();
+    const crntPostData = univPostStore(stat=>stat.postsById[pID]);
 
     const [canComment,setCanComnt] = useState(true);
 
@@ -101,21 +103,40 @@ export default function CommentEl() {
                 soundMp3.play();
         };
 
-        const handleComments = (newData) => {
-            let {post_id:pid,id} = newData;
-            if (pID === pid && id === uID) {
-                setComment(prev=>[newData,...prev]);
-            }
-            soundMp3.play();
-        }
+
 
         const handleDelete = (newData) => {
-            let {commentID} = newData;
+            let {commentID,post_id} = newData;
                 let newCommentData = commentData.filter(cmnt=> cmnt.commentID !== commentID);
                 setComment(newCommentData);
             soundMp3.play();
+            let {totalComment} = postsById[post_id]
+            setUnivPost({
+                [post_id]:{
+                    totalComment: totalComment - 1
+                }
+            })
         }
 
+        useEffect(()=>{
+            const handleComments = (newData) => {
+                let {post_id:pid,id} = newData;
+                let {totalComment} = crntPostData;
+                if (pID === pid && id === uID) {
+                    setComment(prev=>[newData,...prev]);
+            }
+            setUnivPost({
+                [pID]:{
+                    totalComment: totalComment + 1
+                }
+            })
+            
+            soundMp3.play();
+        }
+
+        socket.on("newComment",handleComments);
+        return ()=> socket.off("newComment",handleComments);
+        },[crntPostData])
 
 
     
@@ -127,15 +148,15 @@ export default function CommentEl() {
             
             if(text.length<1) throw new Error("Text.length will be > 0");
             
-            let rqst = await fetch("/myServer/writePost/addComment",{
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify({text,pID})
-            });
-            let result = await rqst.json();
-            if (result.err) throw new Error(result.err);
+            // let rqst = await fetch("/myServer/writePost/addComment",{
+            //     method:"POST",
+            //     headers:{
+            //         "Content-Type":"application/json"
+            //     },
+            //     body:JSON.stringify({text,pID})
+            // });
+            // let result = await rqst.json();
+            // if (result.err) throw new Error(result.err);
             soundMp3.play()
             commentRef.current.value = ""
         } catch (error) {
@@ -163,7 +184,7 @@ export default function CommentEl() {
 
                         itemContent={(index, cmnt) => (
                             <div className="h-full w-full flex justify-center">
-                                <CommentsContainer commentData={cmnt} likeFun={handleLikes} delComment={handleDelete} newComment={handleComments} />
+                                <CommentsContainer commentData={cmnt} likeFun={handleLikes} delComment={handleDelete} />
                             </div>
                         )}
 

@@ -72,7 +72,7 @@ export default function PostsCon({posts}) {
                             <Caption text={caption} />
                         </div>
                         <div className="imgContainer w-full h-7/10 flex items-center relative">
-                            <FloationStart post_id={post_id} like={isLiked}/>
+                            <FloationStart post_id={post_id} like={isLiked} totalLike={totalLike}/>
                             <ImageSlider imgArray={images_url} />
                         </div>
                         <TODOList crntPost_id={post_id} />

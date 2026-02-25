@@ -1,8 +1,10 @@
 import { useState } from "react"
-
-export default function FloationStart({post_id,like}) {
-    const [star,setStar] = useState([])
-    
+import { univPostStore } from "../../../lib/basicUserinfo";
+import star from '../../../assets/Sounds/star.mp3'
+export default function FloationStart({post_id,like,totalLike}) {
+    const [handleStar,setStar] = useState([]);
+    let {setUnivPost} = univPostStore();
+    const starMp3 = new Audio(star);
     const handleDoubleClick = evnt=>{
         const elPositions = evnt.currentTarget.getBoundingClientRect();
         let x = evnt.clientX - elPositions.left;
@@ -17,15 +19,22 @@ export default function FloationStart({post_id,like}) {
         setStar(prev=>[...prev, newStar]);
 
         setTimeout(() => {
-            setStar((prev)=> prev.filter(star=> star.id !== newStar.id))
+            setStar((prev)=> prev.filter(handleStar=> handleStar.id !== newStar.id))
         }, 1000);
 
-        handleStar();
+        handleSubmit();
     }
 
-    const handleStar = async () => {
+    const handleSubmit = async () => {
         if (like) return;
         try {
+            setUnivPost({
+                [post_id]:{
+                    totalLike: totalLike + 1,
+                    isLiked:true
+                }
+            })
+            starMp3.play();
             let rqst = await fetch("/myServer/writePost/addStar",{
                 method:"POST",
                 headers:{
@@ -34,12 +43,12 @@ export default function FloationStart({post_id,like}) {
                 body:JSON.stringify({post_id})
             })
             let result = await rqst.json();
-            console.log(result)
-            if (result.pass === true) {
-                starMp3.play();
+            if (result.err) {
+                throw new Error(result.err);
+                
             }
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
     }
 
@@ -47,7 +56,7 @@ export default function FloationStart({post_id,like}) {
         <div className="absolute left-1/10 h-full w-8/10 bg-transparent z-2">
             <div onDoubleClick={(evnt)=>handleDoubleClick(evnt)} className="h-full w-full relative">
                 {
-                    star.map(data=>(
+                    handleStar.map(data=>(
                         <span key={data.id} className="myStar h-15 w-15"
                         style={{
                             position: "absolute",

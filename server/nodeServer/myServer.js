@@ -26,7 +26,7 @@ import { changePassSecure } from './Routes/Secure/SecureAccount.js';
 import { forgotPass } from './Routes/Secure/forgotPassMail.js';
 import { CreatePost } from './Routes/Promulgation/createPost.js';
 import { GetPosts } from './Routes/usersPOSTAPIs/readThings/getPost.js';
-import { commentLikeSocket, likeSocket } from './socketIO/postSocket.js';
+import { commentLikeSocket } from './socketIO/postSocket.js';
 import { EmailRateLimiter, RateLimiter, usernameCheckLimiter, verifyEmailLiter } from './Controllers/rateLimits.js';
 import { checkRequest, startCleaner } from './Controllers/progressTracker.js';
 import { resetPassword, verification } from './Routes/Secure/userVerification/verificationAPI.js';
@@ -145,7 +145,6 @@ io.on("connection", (socket) => {
   let {user_id} = socket.handshake.auth
   console.log("User came online", user_id);
   socket.join(`user_${user_id}`)
-  likeSocket(io, socket);
   commentLikeSocket(io, socket);
   changeBioSocket(io, socket);
 

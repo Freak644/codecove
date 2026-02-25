@@ -49,7 +49,7 @@ export const CommentAPI = async (rkv,rspo) => {
                     INNER JOIN users u 
                         ON u.id = c.id
                     WHERE c.commentID = ?;`,[id,commentID]);
-        io.emit("newComment",{...commentRows[0], ...{activity:true}});
+        io.emit("newComment",commentRows[0]);
         rspo.status(200).send({pass:""});
     } catch (error) {
         //console.log(error.message)

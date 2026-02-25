@@ -43,7 +43,7 @@ export default function CommentsContainer({commentData,likeFun,delComment}) {
         let newLike = !like
         try {
             if (!commentID.trim() || !post_id.trim()) throw new Error("Invalid info");
-            likeFun({commentID,post_id,user_id:uID,like:newLike})
+            likeFun({commentID,like:newLike})
             let rqst = await fetch("/myServer/writePost/addLikeComment",{
                 method:"POST",
                 headers:{

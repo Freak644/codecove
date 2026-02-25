@@ -8,6 +8,7 @@ import sound from "../../../assets/Sounds/star.mp3"
 import CommentsContainer from "./comment";
 import { Virtuoso } from "react-virtuoso";
 import socket from "../../../utils/socket";
+import { m } from "framer-motion";
 
 let logicObj = {
     isFeching:true,
@@ -18,7 +19,10 @@ export default function CommentEl() {
     const {pID} = useParams();
     const isLoader = Loader(stat => stat.isTrue);
     const [offset,setOffset] = useState(0);
-    const [commentData,setComment] = useState([]);
+    const [commentData,setComment] = useState({
+            commentIds: [],
+            commentsById: {}
+        });
     const [isOver,setOver] = useState(false);
     const commentRef = useRef(null);
     let {setUnivPost} = univPostStore();
@@ -30,6 +34,27 @@ export default function CommentEl() {
 
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     let  {isTrue,toggleLoader}  = Loader();
+
+    function optimizeComment(prevState, newArray) {
+        const newIds = [...prevState.commentIds];
+        const newById = { ...prevState.commentsById };
+
+        for (const cmnt of newArray) {
+            if (!newById[cmnt.commentID]) {
+            newIds.push(cmnt.commentID);
+            }
+
+            newById[cmnt.commentID] = {
+            ...newById[cmnt.commentID],
+            ...cmnt
+            };
+        }
+
+        return {
+            commentIds: newIds,
+            commentsById: newById
+        };
+    }
     
 
     const getComments = async (postID) => {
@@ -44,9 +69,7 @@ export default function CommentEl() {
                 throw new Error(result.err)
             }
             if (result.commentrows.length>0) {
-                setComment(result.commentrows);
-            } else {
-
+                setComment(prev=>optimizeComment(prev,result.commentrows));
             }
             setOffset(20)
             if (result.commentrows?.length < 20) {
@@ -69,8 +92,8 @@ export default function CommentEl() {
             let rqst = await fetch(`/myServer/readPost/getComment?limit=20&offset=${offset}&post_id=${postID}`);
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
-            setComment(prev=>[...prev,...result.commentrows]);
-            
+            // setComment(prev=>[...prev,...result.commentrows]);
+            setComment(prev=>optimizeComment(prev,result.commentrows));
             setOffset(prev=>prev+20)
             if (result.commentrows.length < 20) {
                 setOver(true);
@@ -83,22 +106,30 @@ export default function CommentEl() {
     }
     
     useEffect(()=>{
-        if (commentData?.length > 1) return;
+        if (commentData?.commentIds?.length > 1) return;
         getComments(pID)
     },[pID]);
 
-    const handleLikes = ({commentID: CId, user_id,like}) =>{
+    const handleLikes = ({commentID: CId, like}) =>{
     
-                setComment(prev =>
-                    prev.map(obj => {
-                        if (CId !== obj.commentID) return obj;
-                        return {
-                        ...obj,
-                        totalLike: like ? obj.totalLike + 1 : obj.totalLike - 1,
-                        isLiked: user_id === uID ? like : obj.isLiked
-                        };
-                    })
-                );
+            setComment(prev => {
+                const current = prev.commentsById[CId];
+                if (!current) return prev;
+
+                return {
+                    ...prev,
+                    commentsById: {
+                        ...prev.commentsById,
+                        [CId]: {
+                            ...current,
+                            isLiked: like,
+                            totalLike: like
+                                ? current.totalLike + 1
+                                : current.totalLike - 1
+                        }
+                    }
+                };
+            });
 
                 soundMp3.play();
         };
@@ -123,7 +154,7 @@ export default function CommentEl() {
                 let {post_id:pid,id} = newData;
                 let {totalComment} = crntPostData;
                 if (pID === pid && id === uID) {
-                    setComment(prev=>[newData,...prev]);
+                    
             }
             setUnivPost({
                 [pID]:{
@@ -147,16 +178,17 @@ export default function CommentEl() {
             if (text.length > 300) throw new Error("Comment is too big");
             
             if(text.length<1) throw new Error("Text.length will be > 0");
+            setComment(prev=>[{inProcess:true},...prev])
             
-            // let rqst = await fetch("/myServer/writePost/addComment",{
-            //     method:"POST",
-            //     headers:{
-            //         "Content-Type":"application/json"
-            //     },
-            //     body:JSON.stringify({text,pID})
-            // });
-            // let result = await rqst.json();
-            // if (result.err) throw new Error(result.err);
+            let rqst = await fetch("/myServer/writePost/addComment",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({text,pID})
+            });
+            let result = await rqst.json();
+            if (result.err) throw new Error(result.err);
             soundMp3.play()
             commentRef.current.value = ""
         } catch (error) {
@@ -164,6 +196,17 @@ export default function CommentEl() {
         }
     }
 
+    const handleApprove = (comment_id) => {
+        setComment(prev => {
+            prev.map(obj=>{
+                if (comment_id !== obj.commentID) return obj;
+                return {
+                    ...obj,
+                    isAccepted:true
+                }
+            })
+        })
+    }
 
     
     return(
@@ -173,20 +216,25 @@ export default function CommentEl() {
                 
                 <div className="virtuoso mt-2 relative h-9/10 w-full flex items-start justify-start flex-wrap gap-4">
                     {
-                       commentData?.length > 0 ?
+                       commentData?.commentIds?.length > 0 ?
                        <Virtuoso 
                         style={{
                             height:"100%",
                             width:"100%"
                         }}
                         className="my-scroll"
-                        data={commentData}
+                        totalCount={commentData.commentIds.length}
+                       
 
-                        itemContent={(index, cmnt) => (
-                            <div className="h-full w-full flex justify-center">
-                                <CommentsContainer commentData={cmnt} likeFun={handleLikes} delComment={handleDelete} />
-                            </div>
-                        )}
+                        itemContent={(index) => {
+                            const comment_id = commentData.commentIds[index];
+                            const cmnt = commentData.commentsById[comment_id];
+                            return (
+                                <div className="h-full w-full flex justify-center">
+                                    <CommentsContainer commentData={cmnt} likeFun={handleLikes} delComment={handleDelete} />
+                                </div>
+                            )
+                        }}
 
                         endReached={()=> {
                             if (!isOver) {

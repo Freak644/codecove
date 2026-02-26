@@ -66,8 +66,6 @@ export default function HonePage() {
 
       if (!data.hasMore) {
         setEnd(true)
-        setOffset(crntSet+10);
-        setPosts(prev=>[...prev,...data.post]);
       }
       setOffset(crntSet+10);
       setPosts(prev=>[...prev,...data.post]);

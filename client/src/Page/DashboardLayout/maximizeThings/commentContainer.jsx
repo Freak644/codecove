@@ -56,7 +56,9 @@ export default function CommentEl() {
         };
     }
     
-
+    useEffect(()=>{
+        console.log(commentData.commentIds.length)
+    },[commentData])
     const getComments = async (postID) => {
         if (isOver) return;
         if(isTrue) return;
@@ -72,7 +74,7 @@ export default function CommentEl() {
                 setComment(prev=>optimizeComment(prev,result.commentrows));
             }
             setOffset(20)
-            if (result.commentrows?.length < 20) {
+            if (!result.hasMore) {
                 setOver(true);
             }
         } catch (error) {

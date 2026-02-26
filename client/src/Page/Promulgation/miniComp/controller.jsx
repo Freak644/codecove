@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Loader } from "../../../lib/loader";
-import { usePostStore } from "../../../lib/basicUserinfo";
+import { univPostStore, usePostStore } from "../../../lib/basicUserinfo";
 import { toast } from "react-toastify";
 import {useNavigate} from 'react-router-dom';
 import axios from "axios";
@@ -10,6 +10,7 @@ export default function UploadController() {
     const navi = useNavigate();
     const starMp3 = new Audio(starSound)
     let {setEmpty} = usePostStore();
+    let {setUnivPost} = univPostStore();
     const [controlls,setControlls] = useState({
         visibility:true,
         likeCount:true,
@@ -57,7 +58,7 @@ export default function UploadController() {
                 formData.append("postFiles",img.file)
             })
             
-            await axios.post("/myServer/CreatePost",formData,{
+            let responce = await axios.post("/myServer/CreatePost",formData,{
                 headers:{
                     "Content-Type":"multipart/form-data"
                 },
@@ -69,7 +70,9 @@ export default function UploadController() {
                     }
                 }
             });
-            
+            let postInfo = responce.data.postData;
+            console.log(postInfo.post_id)
+            setUnivPost({[postInfo.post_id]:postInfo});
             toast.success("New Moment Shared🎉");
             starMp3.play()
             setEmpty();

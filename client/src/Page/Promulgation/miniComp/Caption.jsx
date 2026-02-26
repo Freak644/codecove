@@ -126,9 +126,9 @@ function Editor() {
     <div className="relative h-full my-scroll p-2">
       <RichTextPlugin
         contentEditable={
-          <ContentEditable className="outline-none caret-skin-text text-skin-text" />
+          <ContentEditable className="outline-none h-full w-full caret-skin-text text-skin-text" />
         }
-        placeholder={<p className="absolute top-0 left-2 text-gray-400">Write a caption…</p>}
+        placeholder={<p className="absolute pointer-events-none top-0 left-2 text-gray-400">Write a caption here <br/> use can also add hashtag here</p>}
       />
 
       <div className="absolute bottom-0 right-3 text-xs text-gray-400">

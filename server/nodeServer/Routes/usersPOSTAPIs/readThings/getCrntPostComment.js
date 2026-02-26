@@ -6,7 +6,7 @@ export const getComment = async (rkv,rspo) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {post_id,offset,limit} = rkv.query;
-    const intLimit = parseInt(limit) || 10;
+    const intLimit = 20;
     const intOffset = parseInt(offset) || 0;
     if (limit>20) {
         limit = 10;
@@ -44,8 +44,10 @@ export const getComment = async (rkv,rspo) => {
                     ON p.post_id = c.post_id
                 WHERE c.post_id = ? AND c.isBlocked=0 AND c.report_count < 100
                 ORDER BY c.created_at DESC
-                LIMIT ? OFFSET ?`,[id,id,id,post_id,intLimit,intOffset]);
-        rspo.send({pass:"Done h boss",commentrows})
+                LIMIT 21 OFFSET ?`,[id,id,id,post_id,intOffset]);
+            let hasMore = commentrows.length > intLimit;
+            commentrows = commentrows.slice(0,intLimit);
+        rspo.send({pass:"Done h boss",commentrows,hasMore})
     } catch (error) {
         console.log(error.message);
         rspo.status(500).send({err:"Server Side Error"});

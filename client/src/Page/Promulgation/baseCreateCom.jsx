@@ -96,7 +96,7 @@ export default function BaseCreate() {
                             crntTab.caption ? "caption" : 
                             crntTab.image ? "image" : 
                             crntTab.uc ? "UC" : "none"
-                        }  >
+                        } className="h-full w-full"  >
                             {crntTab.caption && <CaptionEl/>}
                             {crntTab.image && <DragDropBox/>}
                             {crntTab.uc && <UploadController/>}

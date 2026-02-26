@@ -3,23 +3,14 @@ import PostsCon from "./postContainer";
 import { Loader } from "../../lib/loader";
 import { useRef, useState } from "react";
 
-let logicObj = {
-  isAllow: true,
-  isFeching: false,
-};
+
 
 export default function PostFeedMGMT({ posts, fetcher, isEnd }) {
   const isLoader = Loader(stat => stat.isTrue);
   const [offset, setOffset] = useState(10);
 
   const fechingHelper = async () => {
-    if (logicObj.isFeching) return;
-
-    logicObj = {
-      isAllow: false,
-      isFeching: true,
-    };
-
+    if (isEnd) return;
     try {
       setOffset(prev => prev + 10);
       await fetcher(offset);
@@ -45,13 +36,8 @@ export default function PostFeedMGMT({ posts, fetcher, isEnd }) {
       )}
 
       endReached={() => {
-        if (!isEnd && logicObj.isAllow) {
+        if (!isEnd) {
           fechingHelper();
-        } else if (!isEnd) {
-          logicObj = {
-            isAllow: true,
-            isFeching: false,
-          };
         }
       }}
 

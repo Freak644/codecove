@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import HomeSkeleton from './skeletonForHome';
 import NewsComp from './miniCom/newsTech';
 import { univPostStore, UnivuUserInfo } from '../../lib/basicUserinfo';
@@ -13,11 +13,12 @@ export default function HonePage() {
   const [Posts,setPosts] = useState([])
   const [offset,setOffset] = useState(0)
   const [isEnd,setEnd] = useState(false)
+  const [count,setCount] = useState(0)
   const userInfo = UnivuUserInfo(stat=>stat.userInfo);
   const crntTab = toggleSlider(stat=>stat.isMiniTab);
-  const postsById = univPostStore( stat=> stat.postsById)
   let {toggleMiniTab} = toggleSlider();
   let {toggleLoader} = Loader();
+
 
   const fetchPost = async () => {
     let rqst = await fetch(`/myServer/getPost?limit=15&offset=${offset}`);
@@ -25,30 +26,36 @@ export default function HonePage() {
     if (data.err) {
      return  toast.error(data.err);
     }
-    if (data.post.length < 15) {
-      setEnd(true);
+    if (!data.hasMore) {
+      setEnd(true)
       setPosts(data.post);
     }else{
       setPosts(data.post);
     }
-    setOffset(prev=>prev+15)
+    setOffset(prev=>prev+10)
   }
 
+  let isTrue = true
 
   useEffect(()=>{
-        if (Object.keys(postsById).length === 0) {
+        if (Posts.length === 0 && isTrue) {
           fetchPost();
-        } 
-  },[postsById])
+        }
+        console.log(Posts)
+        isTrue = false;
+  },[Posts])
 
+  useEffect(()=>{
+    console.log(count)
+  },[count])
 
 
   
   const fetchMorePost = async (crntSet) => {
-    
-    toggleLoader(true)
     if (isEnd) return;
-    
+    console.log("i am here")
+    toggleLoader(true)
+    console.log("in main Fetcher")
     try {
       let rqst = await fetch(`/myServer/getPost?limit=10&offset=${crntSet}`); 
       let data = await rqst.json();
@@ -56,7 +63,8 @@ export default function HonePage() {
         throw new Error("");
         
       }
-      if (data.post.length < 10) {
+
+      if (!data.hasMore) {
         setEnd(true)
         setOffset(crntSet+10);
         setPosts(prev=>[...prev,...data.post]);

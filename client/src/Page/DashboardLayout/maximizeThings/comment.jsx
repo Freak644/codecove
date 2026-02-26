@@ -6,7 +6,7 @@ import {useContext} from 'react';
 import {btnContext} from './baseContainer';
 import CommentSkeleton from "./commentSkeL";
 
-export default function CommentsContainer({commentData,likeFun,delComment}) {
+export default function CommentsContainer({commentData,likeFun,delComment,acceptFun}) {
     let {username,inProcess,avatar,isPostOwner, isReported,commentID,isAccepted,post_moment,comment,post_id,isLiked,id,totalLike,created_at} = commentData;
     const toggelBtn = useContext(btnContext);
 
@@ -121,7 +121,7 @@ export default function CommentsContainer({commentData,likeFun,delComment}) {
         toggelBtn(true)
         try {
             if (!comment_id || !comment_id.trim()) throw new Error("Invalid Info");
-            
+            acceptFun(comment_id)
             let rqst = await fetch("/myServer/writeAchievement/acceptComment",{
                 method:"POST",
                 headers:{

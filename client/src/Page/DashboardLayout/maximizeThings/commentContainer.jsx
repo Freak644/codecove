@@ -138,9 +138,14 @@ export default function CommentEl() {
 
         const handleDelete = (newData) => {
             let {commentID,post_id} = newData;
-                let newCommentData = commentData.filter(cmnt=> cmnt.commentID !== commentID);
-                setComment(newCommentData);
-            soundMp3.play();
+            setComment(prev=>{
+                let {[commentID]:_,...rest} = prev.commentsById;
+                
+                return {
+                    commentIds: prev.commentIds.filter(id=> id !== commentID),
+                    commentsById:rest
+                }
+            })
             let {totalComment} = postsById[post_id]
             setUnivPost({
                 [post_id]:{
@@ -151,11 +156,9 @@ export default function CommentEl() {
 
         useEffect(()=>{
             const handleComments = (newData) => {
-                let {post_id:pid,id} = newData;
                 let {totalComment} = crntPostData;
-                if (pID === pid && id === uID) {
-                    
-            }
+            
+                setComment(prev=>optimizeComment(prev,[newData]));
             setUnivPost({
                 [pID]:{
                     totalComment: totalComment + 1
@@ -178,7 +181,6 @@ export default function CommentEl() {
             if (text.length > 300) throw new Error("Comment is too big");
             
             if(text.length<1) throw new Error("Text.length will be > 0");
-            setComment(prev=>[{inProcess:true},...prev])
             
             let rqst = await fetch("/myServer/writePost/addComment",{
                 method:"POST",
@@ -197,15 +199,13 @@ export default function CommentEl() {
     }
 
     const handleApprove = (comment_id) => {
-        setComment(prev => {
-            prev.map(obj=>{
-                if (comment_id !== obj.commentID) return obj;
-                return {
-                    ...obj,
-                    isAccepted:true
-                }
-            })
-        })
+        setComment(prev => ({
+            ...prev,
+            ...prev.commentsById,
+            [comment_id]:{
+                isAccepted:true
+            }
+        }))
     }
 
     
@@ -231,7 +231,7 @@ export default function CommentEl() {
                             const cmnt = commentData.commentsById[comment_id];
                             return (
                                 <div className="h-full w-full flex justify-center">
-                                    <CommentsContainer commentData={cmnt} likeFun={handleLikes} delComment={handleDelete} />
+                                    <CommentsContainer commentData={cmnt} likeFun={handleLikes} delComment={handleDelete} acceptFun={handleApprove} />
                                 </div>
                             )
                         }}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import HomeSkeleton from './skeletonForHome';
 import NewsComp from './miniCom/newsTech';
-import { UnivuUserInfo } from '../../lib/basicUserinfo';
+import { univPostStore, UnivuUserInfo } from '../../lib/basicUserinfo';
 import ChartsEL from './miniCom/miniCharts';
 import { toggleSlider } from '../../lib/tabToggle';
 import CompAnim from '../../assets/animations/compAnimation';
@@ -15,11 +15,11 @@ export default function HonePage() {
   const [isEnd,setEnd] = useState(false)
   const userInfo = UnivuUserInfo(stat=>stat.userInfo);
   const crntTab = toggleSlider(stat=>stat.isMiniTab);
+  const postsById = univPostStore( stat=> stat.postsById)
   let {toggleMiniTab} = toggleSlider();
   let {toggleLoader} = Loader();
 
   const fetchPost = async () => {
-    console.log("in fetch")
     let rqst = await fetch(`/myServer/getPost?limit=15&offset=${offset}`);
     const data = await rqst.json();
     if (data.err) {
@@ -34,14 +34,12 @@ export default function HonePage() {
     setOffset(prev=>prev+15)
   }
 
-  let isThere = true;
 
   useEffect(()=>{
-        if (Posts.length === 0 && isThere) {
+        if (Object.keys(postsById).length === 0) {
           fetchPost();
         } 
-        isThere = false;
-  },[Posts])
+  },[postsById])
 
 
 
@@ -50,7 +48,7 @@ export default function HonePage() {
     
     toggleLoader(true)
     if (isEnd) return;
-    console.log("in fetch more")
+    
     try {
       let rqst = await fetch(`/myServer/getPost?limit=10&offset=${crntSet}`); 
       let data = await rqst.json();

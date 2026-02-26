@@ -30,6 +30,7 @@ export default function ChartsEL() {
     const [avrgPost,setAvg] = useState(0);
 
     const getChartData = async () => {
+        if (postData.length > 0) return;
         try {
             let data = await axios.get("/myServer/readPost/getChartData");
            
@@ -67,8 +68,9 @@ export default function ChartsEL() {
     }
 
     useEffect(()=>{
+        if (postData.length > 0) return; 
         getChartData();
-    },[])
+    },[postData])
 
     
 

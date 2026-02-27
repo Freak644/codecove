@@ -1,15 +1,15 @@
 import { useLocation} from 'react-router-dom';
 import LoginEL from '../Page/Auth/baseFIle';
-import Header from '../Page/BaseComponent/header';
-import MenuEL from '../Page/BaseComponent/menu';
+import Header from '../GlobalComponent/header';
+import MenuEL from '../GlobalComponent/menu';
 import { useEffect, useState } from 'react';
 import { Loader } from '../lib/loader';
 import LoaderEL from '../assets/animations/loadingBar';
 import { mngCrop, useThemeStore } from '../lib/toggleTheme';
 import CropperEL from './cropperEL';
-import WindowHerder from '../Page/BaseComponent/windowHeader';
+import WindowHerder from '../GlobalComponent/windowHeader';
 import '../assets/style/paseTwo.css'
-import AbsoluteMenu from './absoluteMenu';
+import AbsoluteMenu from '../GlobalComponent/absoluteMenu';
 import AnimateRoute from './Routes/AnimateRoute';
 import NoAnimRoutes from './Routes/noAnimationRoute';
 import socket from '../utils/socket';

@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { UnivuUserInfo } from "../../lib/basicUserinfo";
+import FloationStart from "../DashboardLayout/miniCom/floatingStar";
 
-export default function ImageSlider({ imgArray, setArray,toggle }) {
+export default function ImageSlider({ imgArray, setArray,toggle, postInfo }) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [containerWidth,setWidth] = useState(0);
@@ -132,6 +133,8 @@ export default function ImageSlider({ imgArray, setArray,toggle }) {
                 else if (swipe > swipeConstHold) prevImg();
               }}
             >
+              {/* Floating start animation  */}
+              {Object.keys(postInfo).length === 3 && <FloationStart post_id={postInfo?.post_id} like={postInfo?.isLiked} totalLike={postInfo?.totalLike}/>}
               {/* ⬇️ preserve aspect ratio & bg visibility */}
               <img
                 key={imgArray[index]}

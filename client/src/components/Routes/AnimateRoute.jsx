@@ -2,7 +2,7 @@ import {Routes,Route} from 'react-router-dom';
 import PageTransition from "../../assets/animations/framerMotion";
 import HomePage from '../../Page/DashboardLayout/HomePage'
 import BaseCreate from '../../Page/Promulgation/baseCreateCom';
-import NotFound from '../../Page/BaseComponent/404NotFound';
+import NotFound from '../../GlobalComponent/404NotFound';
 import MaximizeContainer from '../../Page/DashboardLayout/maximizeThings/baseContainer';
 import MainLapCom from '../../Page/userProfile/mainLap';
 import PostANDComment from '../../Page/DashboardLayout/maximizeThings/noBGComment';

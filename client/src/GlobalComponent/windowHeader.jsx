@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom"
-import { UnivuUserInfo } from "../../lib/basicUserinfo";
-import { toggleABMenu } from "../../lib/toggleTheme";
-import {getColor} from '../../utils/getGradnt';
-import { toggleSlider } from "../../lib/tabToggle";
+import { UnivuUserInfo } from "../lib/basicUserinfo";
+import { toggleABMenu } from "../lib/toggleTheme";
+import {getColor} from '../utils/getGradnt';
+import { toggleSlider } from "../lib/tabToggle";
 export default function WindowHerder() {
     let location = useLocation();
     let [pathName,setPath] = useState("");

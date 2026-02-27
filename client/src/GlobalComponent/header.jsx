@@ -1,9 +1,9 @@
-import ThemeButton from "../../components/toggleButton";
+import ThemeButton from "../components/toggleButton";
 import React, { useEffect, useState } from 'react'
-import { UnivuUserInfo } from "../../lib/basicUserinfo";
+import { UnivuUserInfo } from "../lib/basicUserinfo";
 import { useLocation } from "react-router-dom";
-import {toggleABMenu} from '../../lib/toggleTheme';
-import {getColor} from '../../utils/getGradnt'
+import {toggleABMenu} from '../lib/toggleTheme';
+import {getColor} from '../utils/getGradnt'
 export default function Header() {
     const [isToggle,setToggle] = useState(false)
     const [isHome,setHome] = useState(true)

@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify';
-import ThemeButton from '../../components/toggleButton';
-import { UnivuUserInfo } from '../../lib/basicUserinfo';
+import ThemeButton from '../components/toggleButton.jsx';
+import { UnivuUserInfo } from '../lib/basicUserinfo.js';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import MenuSkeleton from './menuSkel';
-import { toggleABMenu } from '../../lib/toggleTheme';
-import {getColor} from '../../utils/getGradnt.js';
+import { toggleABMenu } from '../lib/toggleTheme';
+import {getColor} from '../utils/getGradnt.js';
 export default function MenuEL(params) {
     let gradColor = getColor();
     const [currentTab,setTab] = useState('Home');

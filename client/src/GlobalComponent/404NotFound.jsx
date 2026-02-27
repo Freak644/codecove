@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "../../assets/style/Error404.css";
+import "../assets/style/Error404.css";
 
 export default function NotFound() {
   const navi = useNavigate();
@@ -12,7 +12,7 @@ export default function NotFound() {
       <div className="errorContainer my-scroll flex items-center justify-center flex-wrap gap-24 md:gap-10 z-10">
         {/* Left Side: Face with Eyes */}
         <div
-          className="faceWeye relative h-80 w-[500px] rounded-2xl
+          className="faceWeye relative h-80 w-125 rounded-2xl
           flex items-center justify-center gap-10 p-6
           bg-linear-to-br from-white/10 via-white/5 to-transparent
           border border-cyan-500/20 shadow-[0_0_30px_rgba(0,255,255,0.15)]
@@ -36,7 +36,7 @@ export default function NotFound() {
 
         {/* Right Side: Text */}
         <div
-          className="textMSG h-[380px] w-[400px] rounded-2xl flex flex-col
+          className="textMSG h-95 w-100 rounded-2xl flex flex-col
           items-center justify-center text-white gap-4 text-center
           bg-linear-to-br from-white/10 via-white/5 to-transparent
           border border-cyan-500/20 shadow-[0_0_40px_rgba(0,255,255,0.1)]

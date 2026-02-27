@@ -13,7 +13,6 @@ export default function HonePage() {
   const [Posts,setPosts] = useState([])
   const [offset,setOffset] = useState(0)
   const [isEnd,setEnd] = useState(false)
-  const [count,setCount] = useState(0)
   const userInfo = UnivuUserInfo(stat=>stat.userInfo);
   const crntTab = toggleSlider(stat=>stat.isMiniTab);
   let {toggleMiniTab} = toggleSlider();
@@ -45,9 +44,7 @@ export default function HonePage() {
         isTrue = false;
   },[Posts])
 
-  useEffect(()=>{
-    console.log(count)
-  },[count])
+
 
 
   

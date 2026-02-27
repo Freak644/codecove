@@ -152,7 +152,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
     
     return(
             <>{ inProcess ? <CommentSkeleton/> :
-                <div key={commentID} className="h-auto mt-2.5 w-full text-skin-text flex items-center flex-col">
+                <div key={commentID} className="h-auto mt-2.5 w-full text-skin-text flex items-center flex-col pointer-events-auto">
                     <div className="layerOne flex items-center justify-start w-full h-auto">
                         <div className="userAndComment flex items-start gap-2 w-[93%] p-2">
                             <Link className="flex items-start" to={`/Lab/${username}`}>

@@ -637,7 +637,7 @@ form>h1>span{
     .routeContainer{
         width: 100vw !important;
         left: 0px !important;
-        padding-bottom: 100px !important;
+        padding-bottom: 40px !important;
     }
     form{
         padding: 0px !important;
@@ -649,25 +649,31 @@ form>h1>span{
         }
     }
      .menuDiv{
-        height: 60px;
+        height: 55px;
         width: 100%;
         flex-direction: row !important;
         position: absolute;
         bottom: 0px;
         margin: 0px !important;
+        border-top: 1.5px solid rgb(102, 102, 102,0.3);
+        ul{
+            padding: 0px;
+        }
 
         .menuContainer{
             height: 100%;
-            width: 100vw;
+            width: 100dvw;
             flex-direction: row;
-            /* background-color: var(--bg-color); */
+            background: rgba(10, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 5px 5px;
             ul{
                 width: 100%;
                 flex-direction: row;
                 border: 1px;
                 align-items: center;
-                justify-content: space-between;
+                justify-content: space-around;
                 gap: 1px;
                 font-size: 30px;
                 position: absolute;
@@ -804,7 +810,7 @@ form>h1>span{
 }
 @media (max-width:1024px) {
     .routeContainer{
-        top: 9vh;
+        top: 7vh;
     }
     #secBtn{
         display: none;

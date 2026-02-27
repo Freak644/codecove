@@ -94,7 +94,7 @@ export default function MenuEL(params) {
         flex items-center flex-col gap-5
          z-20
         "> <p id='secBtn' onClick={()=>setHidden(prev=>!prev)} className="h-8 w-8 flex logotxt items-center justify-center text-2xl cursor-pointer border-skin-ptext/30 border rounded-full absolute top-3 -right-2"><i className="bx bx-menu text-skin-ptext"></i></p>
-            <div className="Logotxt flex items-center lg:mt-3.5! flex-col w-[120px]">
+            <div className="Logotxt flex items-center lg:mt-3.5! flex-col w-30">
                 <i className={`bx bx-code-block text-5xl
                 transition-all duration-500 ease-in-out bg-size-[200%_200%]
                 bg-linear-to-tr ${gradColor}
@@ -104,7 +104,7 @@ export default function MenuEL(params) {
                 bg-linear-to-tr ${gradColor}
                 bg-clip-text text-transparent`}>CodeCove</h2>
             </div>
-            <div className='menuContainer flex items-center flex-col gap-10 lg:text-[18px] sm:text-2xl text-skin-text'>
+            <div className='menuContainer relative flex items-center flex-col gap-10 lg:text-[18px] sm:text-2xl text-skin-text'>
                 <ul className='topU flex items-start flex-col gap-3 border-b-2 border-gray-400 my-scroll'>
                     <li>
                         <Link to="/">

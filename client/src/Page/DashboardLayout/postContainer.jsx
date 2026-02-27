@@ -40,7 +40,7 @@ export default function PostsCon({posts}) {
             <>
 
                 <div key={post_id} className="flex items-start flex-col h-150 gap-3 w-112.5 rounded-lg m-3 relative">
-                    <div className="p-2 flex items-start flex-1 gap-2 absolute -top-1 text-skin-text floatingPart
+                    <div className="p-2 z-10 flex items-start flex-1 gap-2 absolute -top-1 text-skin-text floatingPart
                      bg-linear-to-tl from-yellow-500/20 to-purple-500/20 via-pink-500/20 border border-skin-text/20 rounded-lg backdrop-blur-lg hover:scale-97 scale-3d hover:bg-amber-600/20 hover:left-3 transition-all duration-100 ease-in-out" >
                         <img src={`/myServer/${avatar}`} className="h-9 w-9 rounded-full border border-amber-300" alt="Avatar" />
                         <p className="text-lg flex items-center gap-2">
@@ -52,7 +52,7 @@ export default function PostsCon({posts}) {
                             </Link>
                         </p>   
                     </div>
-                    <div className="flex items-start flex-col gap-3 h-full w-full rounded-lg singlePost">
+                    <div className="flex items-start flex-col gap-3 h-full w-full rounded-lg singlePost z-1">
                         <div className="ownInfo h-2/12 flex items-start justify-between flex-wrap p-1 gap-1.5 text-skin-text w-full rounded-lg relative">
                             <div className="innerINFODiv p-1 flex items-start flex-1 gap-2 " >
                                 <img src={`/myServer/${avatar}`} className="h-9 w-9 rounded-full border border-amber-300" alt="Avatar" />
@@ -61,7 +61,7 @@ export default function PostsCon({posts}) {
                                         <span className="hover:underline underline-offset-1">{username}</span>
                                     </Link> 
                                     <Link to={`/Explore/${post_moment}`}>
-                                        <span className="hover:underline underline-offset-1 font-bold text-sm text-nowrap flex items-center flex-row">/{post_moment}</span>
+                                        <span className="hover:underline underline-offset-1 font-bold text-sm text-nowrap flex items-center flex-row"></span>
                                     </Link>
                                 </p>   
                             </div>

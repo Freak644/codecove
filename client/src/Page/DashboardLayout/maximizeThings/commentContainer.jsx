@@ -224,7 +224,7 @@ export default function CommentEl() {
                             height:"100%",
                             width:"100%"
                         }}
-                        className="my-scroll"
+                        className="my-scroll pointer-events-none"
                         totalCount={commentData.commentIds.length}
                        
 

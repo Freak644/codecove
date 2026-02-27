@@ -36,7 +36,7 @@ body{
     background-color: var(--bg-color);
     /* background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://res.cloudinary.com/dcq0dge7f/image/upload/v1771254696/RedQueen_serulr.jpg'); */
     /* background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://i.postimg.cc/bNSNbS5G/kiara_Anime.jpg'); */
-    background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://res.cloudinary.com/dcq0dge7f/image/upload/v1771176970/dangerGirl_p1cvzq.jpg');
+    /* background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://res.cloudinary.com/dcq0dge7f/image/upload/v1771176970/dangerGirl_p1cvzq.jpg'); */
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -660,7 +660,7 @@ form>h1>span{
             height: 100%;
             width: 100vw;
             flex-direction: row;
-            background-color: var(--bg-color);
+            /* background-color: var(--bg-color); */
             border-radius: 5px 5px;
             ul{
                 width: 100%;

@@ -16,7 +16,7 @@ export const getComment = async (rkv,rspo) => {
         if (rows.length !== 1) return rspo.status(401).send({err:"Heheheheheeeeeeee...."});
         const {visibility,canComment,user_id} = rows[0];
         if ((!visibility || !canComment) && user_id !== id) return rspo.status(401).send({err:"Heheheheheeeeee....",isComment:false});
-        const [commentrows] = await database.query(`SELECT 
+        let [commentrows] = await database.query(`SELECT 
                     u.id,
                     u.username,
                     u.avatar,

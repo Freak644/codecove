@@ -24,8 +24,16 @@ CREATE TABLE IF NOT EXISTS users (
     acStatus BOOLEAN DEFAULT 1,
     follower_count BIGINT DEFAULT 0,
     following_count BIGINT DEFAULT 0,
-    private_ac BOOLEAN DEFAULT 0
+    private_ac BOOLEAN DEFAULT 0,
+    role_id CHAR(36) NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS roles (
+  role_id CHAR(36) PRIMARY KEY,
+  role_code INT NOT NULL DEFAULT 0,
+  permoter_id CHAR(36),
+  role_name ENUM('user', 'moderator', 'admin', 'verified') NOT NULL DEFAULT 'user'
+)
 
 /*
 ===================================
@@ -107,8 +115,7 @@ CREATE TABLE IF NOT EXISTS likes (
   UNIQUE(post_id,id),
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  INDEX idx_user_id (id),
-  INDEX idx_post_id (post_id)
+  INDEX idx_user_id (id)
 );
 
 /*
@@ -261,7 +268,8 @@ CREATE TABLE IF NOT EXISTS postReports (
   post_id CHAR(36) NOT NULL,
   UNIQUE(id,post_id),
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
-  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_post_id (post_id)
 );
 
 
@@ -272,7 +280,7 @@ CREATE TABLE IF NOT EXISTS savePost (
   UNIQUE(id,post_id),
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
-  INDEX idx_user_id (id)
+  INDEX idx_user_id (post_id)
 );
 
 CREATE TABLE IF NOT EXISTS commentReports (
@@ -280,7 +288,7 @@ CREATE TABLE IF NOT EXISTS commentReports (
   id CHAR(36) NOT NULL,
   post_id CHAR(36) NOT NULL,
   commentID CHAR(36) NOT NULL,
-  UNIQUE(id,post_id,commentID),
+  UNIQUE(post_id,id,commentID),
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (commentID) REFERENCES comments(commentID) ON DELETE CASCADE
@@ -319,8 +327,7 @@ CREATE TABLE IF NOT EXISTS follows (
   following_id CHAR(36) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (follower_id,following_id),
-  INDEX idx_following (following_id),
-  INDEX idx_follower (follower_id)
+  INDEX idx_following (following_id)
 );
 
 

@@ -5,7 +5,7 @@ import TODOList from "./miniCom/TODOCompunent";
 import MiniDropDown from "./miniCom/threedotDropDown";
 import { univPostStore } from "../../lib/basicUserinfo";
 import { Link } from "react-router-dom";
-import FloationStart from "./miniCom/floatingStar";
+
 
 export default function PostsCon({posts}) {
     let {caption,canComment,images_url,canSave, post_id,username,avatar,post_moment,likeCount, isLiked,visibility,totalLike,id,isFollowing} = posts;

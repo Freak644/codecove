@@ -43,6 +43,7 @@ import { acceptSolution } from './Routes/Achievement/writeAchievemtns/acceptSolu
 import { getPost } from './Routes/usersPOSTAPIs/readThings/getSiglePost.js';
 import router from './utils/tempFile.js';
 import { Chartdata } from './Routes/usersPOSTAPIs/readThings/getChartData.js';
+import { DeletePost, ReportPost } from './Routes/usersPOSTAPIs/writeThings/reportAndDelete.js';
 // import { addNewAchievement } from './Routes/Achievement/createAchievement.js';
 let myApp = express();
 myApp.use(express.json({limit:"20mb"}));
@@ -132,6 +133,8 @@ myApp.post("/writeAchievement/acceptComment",RateLimiter,checkRequest,Auth,accep
 myApp.get("/readPost/getImage",RateLimiter,checkRequest,Auth,getPost);
 myApp.get("/readPost/getChartData",RateLimiter,checkRequest,Auth,Chartdata);
 myApp.post("/writePost/savePost",RateLimiter,checkRequest,Auth,savePost);
+myApp.post("/writePost/reportPost",RateLimiter,checkRequest,Auth,ReportPost);
+myApp.delete("/writePost/deletePost",RateLimiter,checkRequest,Auth,DeletePost);
 // myApp.post("/createAchievement",addNewAchievement);
 
 

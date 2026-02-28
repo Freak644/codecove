@@ -54,14 +54,15 @@ export default function MiniDropDown({postInfo,toggle}) {
                 throw new Error("Invalid Post_id");
                 
             }
-            await axios.put("myServer/reportPost",{post_id},{
+            await axios.post("myServer/writePost/reportPost",{post_id},{
                 headers:{
                     "Content-Type":"application/json"
                 }
             })
             toast.success("Reported")
         } catch (error) {
-            toast.error(error.responce.data.err || error.message)
+            
+            toast.error(error.responce?.data.err || error.message)
         }
     }
 
@@ -73,7 +74,7 @@ export default function MiniDropDown({postInfo,toggle}) {
                 throw new Error("Invalid Post_id");
                 
             }
-            await axios.put("myServer/reportPost",{post_id},{
+            await axios.delete("myServer/writePost/deletePost",{post_id},{
                 headers:{
                     "Content-Type":"application/json"
                 }

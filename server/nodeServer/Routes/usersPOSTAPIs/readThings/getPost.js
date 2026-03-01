@@ -13,34 +13,54 @@ export const GetPosts = async (rkv,rspo) => {
 
     try {
         let [rows] = await database.query(`SELECT 
-                p.*,
-                u.username,
-                u.avatar,
-                 EXISTS (
-                    SELECT 1
-                    FROM follows
-                    WHERE follower_id = ?
-                    AND following_id = u.id
-                 ) AS isFollowing,
-                EXISTS (
-                    SELECT 1
-                    FROM likes li
-                    WHERE li.id = ?
-                    AND li.post_id = p.post_id
-                ) AS isLiked,
-                EXISTS (
-                    SELECT 1 
-                    FROM savePost
-                    WHERE id = ? 
-                    AND p.post_id = post_id
-                ) AS isSaved
-                FROM posts p
-                INNER JOIN users u ON u.id = p.id
-                WHERE p.visibility <> 0
-                ORDER BY p.created_at DESC
-                LIMIT 11 OFFSET ?;
+                            p.*,
+                            u.username,
+                            u.avatar,
+
+                            EXISTS (
+                                SELECT 1
+                                FROM follows
+                                WHERE follower_id = ?
+                                AND following_id = u.id
+                            ) AS isFollowing,
+
+                            EXISTS (
+                                SELECT 1
+                                FROM likes li
+                                WHERE li.id = ?
+                                AND li.post_id = p.post_id
+                            ) AS isLiked,
+
+                            EXISTS (
+                                SELECT 1 
+                                FROM savePost
+                                WHERE id = ? 
+                                AND post_id = p.post_id
+                            ) AS isSaved,
+
+                            EXISTS (
+                                SELECT 1
+                                FROM postReports
+                                WHERE post_id = p.post_id 
+                                AND id = ?
+                            ) AS isReported
+
+                        FROM posts p
+                        INNER JOIN users u ON u.id = p.id
+
+                        WHERE p.visibility = 1
+                        AND (
+                            p.created_at < ?
+                            OR (
+                                p.created_at = ?
+                                AND p.post_id < ?
+                            )
+                        )
+
+                        ORDER BY p.created_at DESC, p.post_id DESC
+                        LIMIT 13;
             `,
-        [id,id,id,offset]); // what the hake from today(19-02-26) i will wirte my all query in column format
+        [id,id,id,id,offset]); // what the hake from today(19-02-26) i will wirte my all query in column format
         if (rows.length < 1) return rspo.status(404).send({err:"No posts",count:0});
         //  console.log(rows[0])
         let hasMore = rows.length > limit;
@@ -53,7 +73,7 @@ export const GetPosts = async (rkv,rspo) => {
 
         rspo.status(200).send({pass:"Found",post:rows,hasMore})
     } catch (error) {
-       // console.log("jj",error.messge)
+        //console.log("jj",error.message)
         rspo.status(500).send({err:"Server side error"})
     } finally {
         completeRequest(crntIP,crntAPI)

@@ -16,6 +16,8 @@ export const ReportPost = async (rkv,rspo) => {
         if (isReported) return rspo.status(403).send({err:"Already repoted"});
 
         if (!visibility && user_id !== id) return rspo.status(401).send({err:"Auth Error"});
+        await database.query("INSERT INTO postReports (id, post_id) VALUES (?,?)",
+            [id, post_id])
         rspo.json({pass:"Done"})
     } catch (error) {
         console.log(error.message)

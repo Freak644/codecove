@@ -24,16 +24,16 @@ CREATE TABLE IF NOT EXISTS users (
     acStatus BOOLEAN DEFAULT 1,
     follower_count BIGINT DEFAULT 0,
     following_count BIGINT DEFAULT 0,
-    private_ac BOOLEAN DEFAULT 0,
-    role_id CHAR(36) NOT NULL
+    private_ac BOOLEAN DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS roles (
-  role_id CHAR(36) PRIMARY KEY,
+  user_id CHAR(36) PRIMARY KEY,
   role_code INT NOT NULL DEFAULT 0,
   permoter_id CHAR(36),
-  role_name ENUM('user', 'moderator', 'admin', 'verified') NOT NULL DEFAULT 'user'
-)
+  role_name ENUM('user', 'moderator', 'admin', 'verified') NOT NULL DEFAULT 'user',
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
 
 /*
 ===================================
@@ -75,8 +75,7 @@ CREATE TABLE IF NOT EXISTS validationToken (
   email VARCHAR(100) NOT NULL,
   isUsed TINYINT DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  INDEX idx_user_id (id)
+  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 
@@ -103,7 +102,7 @@ CREATE TABLE IF NOT EXISTS posts (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_user_id (id),
-  INDEX idx_feed_visibility_created (visibility, created_at)
+  INDEX idx_feed_cursor (visibility, created_at DESC, post_id DESC)
 );
 
 
@@ -112,7 +111,7 @@ CREATE TABLE IF NOT EXISTS likes (
   id CHAR(36) NOT NULL,
   post_id CHAR(36) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE(post_id,id),
+  UNIQUE(id, post_id),
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_user_id (id)
@@ -127,7 +126,8 @@ CREATE TABLE IF NOT EXISTS likes (
 CREATE TABLE IF NOT EXISTS blocked_words (
   id INT AUTO_INCREMENT PRIMARY KEY,
   word VARCHAR(255) NOT NULL,
-  category VARCHAR(50) NOT NULL
+  category VARCHAR(50) NOT NULL,
+  INDEX idx_category (category)
 );
 
 /*
@@ -245,8 +245,7 @@ CREATE TABLE IF NOT EXISTS comments (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  INDEX idx_post_id (post_id),
-  INDEX idx_user_id (id)
+  INDEX idx_comment_cursor (post_id, created_at DESC, commentID DESC)
 );
 
 CREATE TABLE IF NOT EXISTS commentLikes (
@@ -279,8 +278,7 @@ CREATE TABLE IF NOT EXISTS savePost (
   post_id CHAR(36) NOT NULL,
   UNIQUE(id,post_id),
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
-  INDEX idx_user_id (post_id)
+  FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS commentReports (
@@ -341,5 +339,7 @@ CREATE TABLE IF NOT EXISTS notification (
   message TEXT,
   is_read BOOLEAN DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  INDEX idx_recipient_id (recipient_id, created_at DESC)
+  INDEX idx_notification_feed (recipient_id, is_read, created_at DESC),
+  FOREIGN KEY (recipient_id) REFERENCES users(id),
+  FOREIGN KEY (actor_id) REFERENCES users(id)
 );

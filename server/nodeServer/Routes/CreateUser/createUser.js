@@ -121,6 +121,7 @@ export const CreateUser = async (rkv, rspo) => {
     let [crntUser] = await database.query("SELECT id FROM users WHERE username = ?",[username]);
     let uid = crntUser[0].id;
     await database.query("INSERT INTO userActivety_for_achievements (user_id) VALUE (?)",[uid]);
+    await database.query("INSERT INTO roles (user_id, permoter_id) VALUES (?,?);",[uid,"System"]);
 
   } catch (error) {
     // anything fails after saving, delete the file

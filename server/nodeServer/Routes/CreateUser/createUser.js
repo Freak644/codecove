@@ -22,7 +22,7 @@ export const CreateUser = async (rkv, rspo) => {
   const file = rkv.file;
 
   //if (!file) return rspo.status(400).send({ err: "Please upload an Avtar" });
-
+  let avatarFileName = "default.webp";
   try {
 
     let token = rkv.cookies.emailStatus; // this is the Encrypted token
@@ -99,7 +99,7 @@ export const CreateUser = async (rkv, rspo) => {
     const dir = "./Images/Avtar";
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
-    let avatarFileName = "default.webp";
+    
     if (file) {
       avatarFileName = username+Date.now()+file.originalname;
       const avatarPath = path.join(dir, avatarFileName);
@@ -120,14 +120,14 @@ export const CreateUser = async (rkv, rspo) => {
 
     let [crntUser] = await database.query("SELECT id FROM users WHERE username = ?",[username]);
     let uid = crntUser[0].id;
-    await database.query("INSERT INTO userActivety_for_achievements (user_id) VALUE (?)",[uid]);
+    //await database.query("INSERT INTO userActivety_for_achievements (user_id) VALUE (?)",[uid]);
     await database.query("INSERT INTO roles (user_id, permoter_id) VALUES (?,?);",[uid,"System"]);
 
   } catch (error) {
     // anything fails after saving, delete the file
     console.log(error.message)
     if (rkv.file) {
-      const avatarFileName = `Images/Avtar/${rkv.file.originalname}`;
+      
       try { fs.unlinkSync(avatarFileName); } catch (err) { console.error(err) };
     }
     rspo.status(500).send({ err: "Something went wrong"});

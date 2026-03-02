@@ -22,7 +22,6 @@ export const SendEmailVerify = async (rkv,rspo) => {
         }
 
         const otp = Math.floor(100000 + Math.random() * 900000);
-        console.log(otp)
         let send = await sendTheMail(
             email,
             "Welcome To CodeCove🎉",
@@ -30,11 +29,10 @@ export const SendEmailVerify = async (rkv,rspo) => {
             {username,otp}
         )
         let payload = {email,otp,username}
-        console.log(payload)
         if (send.rejected.length===0) {
             const token = jwt.sign(payload,process.env.jwt_sec,{expiresIn:"5m"});
             let encryptedToken = await Encrypt(token);
-            console.log(encryptedToken)
+
             rspo.cookie("otpToken", encryptedToken, {
               httpOnly: true,
               secure: true, 
@@ -47,7 +45,7 @@ export const SendEmailVerify = async (rkv,rspo) => {
         }
     
     } catch (error) {
-        console.log(error.message)
+        //console.log(error.message)
         rspo.status(500).send({err:"server side error"});
     } finally {
         completeRequest(crntIP,crntAPI)

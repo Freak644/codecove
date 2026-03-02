@@ -9,6 +9,7 @@ import PostFeedMGMT from './postFeed';
 import { toast } from 'react-toastify';
 import { Loader } from '../../lib/loader';
 import NotificaitonMini from '../Notification/Components/notificationFeed';
+import axios from 'axios';
 export default function HonePage() {
   const [Posts,setPosts] = useState([])
   const [offset,setOffset] = useState(0)
@@ -20,18 +21,19 @@ export default function HonePage() {
 
 
   const fetchPost = async () => {
-    let rqst = await fetch(`/myServer/getPost?limit=15&offset=${offset}`);
-    const data = await rqst.json();
-    if (data.err) {
-     return  toast.error(data.err);
+    try {
+      let rqst = await axios.get("/myServer/getPost");
+      console.log(rqst)
+      if (!rqst.data.hasMore) {
+        setEnd(true)
+        setPosts(rqst.data.post);
+      }else{
+        setPosts(rqst.data.post);
+      }
+    } catch (error) {
+      
+       toast.error(error.response.data.err);;
     }
-    if (!data.hasMore) {
-      setEnd(true)
-      setPosts(data.post);
-    }else{
-      setPosts(data.post);
-    }
-    setOffset(prev=>prev+10)
   }
 
   let isTrue = true

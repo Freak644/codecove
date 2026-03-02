@@ -134,7 +134,7 @@ export default function ImageSlider({ imgArray, setArray,toggle, postInfo }) {
               }}
             >
               {/* Floating start animation  */}
-              {Object.keys(postInfo).length === 3 && <FloationStart post_id={postInfo?.post_id} like={postInfo?.isLiked} totalLike={postInfo?.totalLike}/>}
+              {Object.keys(postInfo || {}).length === 3 && <FloationStart post_id={postInfo?.post_id} like={postInfo?.isLiked} totalLike={postInfo?.totalLike}/>}
               {/* ⬇️ preserve aspect ratio & bg visibility */}
               <img
                 key={imgArray[index]}

@@ -5,11 +5,9 @@ export const GetPosts = async (rkv,rspo) => {
     const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
-    let limit = 10;
-    let offset = parseInt(rkv.query.offset) || 0
-    if (limit>15) {
-        limit=10;
-    }
+    const limit = 10
+    const cursorAt = rkv.query.created_at || null;
+    const cursorPost_id = rkv.query.post_id || null;
 
     try {
         let [rows] = await database.query(`SELECT 
@@ -50,17 +48,16 @@ export const GetPosts = async (rkv,rspo) => {
 
                         WHERE p.visibility = 1
                         AND (
-                            p.created_at < ?
+                            ? IS NULL
                             OR (
-                                p.created_at = ?
-                                AND p.post_id < ?
+                                p.created_at < ?
+                                OR (p.created_at = ? AND p.post_id < ?)
                             )
                         )
-
                         ORDER BY p.created_at DESC, p.post_id DESC
-                        LIMIT 13;
+                        LIMIT 11;
             `,
-        [id,id,id,id,offset]); // what the hake from today(19-02-26) i will wirte my all query in column format
+        [id,id,id,id,cursorAt,cursorAt,cursorAt,cursorPost_id]); // what the hake from today(19-02-26) i will wirte my all query in column format
         if (rows.length < 1) return rspo.status(404).send({err:"No posts",count:0});
         //  console.log(rows[0])
         let hasMore = rows.length > limit;
@@ -70,10 +67,13 @@ export const GetPosts = async (rkv,rspo) => {
             // row.id = id;
             return row
         });
+        let cursorObj = {};
+        cursorObj.cursorAt = rows[rows.length - 1].created_at;
+        cursorObj.cursorPost_id = rows[rows.length - 1].post_id;
 
-        rspo.status(200).send({pass:"Found",post:rows,hasMore})
+        rspo.status(200).send({pass:"Found",post:rows,hasMore,cursorObj})
     } catch (error) {
-        //console.log("jj",error.message)
+        console.log("jj",error.message)
         rspo.status(500).send({err:"Server side error"})
     } finally {
         completeRequest(crntIP,crntAPI)

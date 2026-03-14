@@ -49,7 +49,7 @@ export default function LoginEL() {
                             <p> Sharp, Learn Everyday</p>
                             <p> True, No Filters</p>
                             <p> Free, Express Without Fear</p>
-                            <p> Hidden, Yet Heard</p>
+                            <p> Hidden, Yet Heard</p>   
                                 
                         </div>
                     </div>

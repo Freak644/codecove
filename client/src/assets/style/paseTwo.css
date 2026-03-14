@@ -594,3 +594,61 @@ select{
     transform: translate(-50%, -150%) scale(1.5) rotate(0deg);
   }
 }
+.btnBorder {
+  position: relative;
+  border-radius: 10px;
+}
+
+@property --angle{
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.btnBorder::after {
+  content: "";
+  position: absolute;
+
+  inset: -1px; /* expands outside button */
+
+  background: conic-gradient(
+    from var(--angle),
+    transparent 90%,
+    var(--text-color)
+  );
+
+  border-radius: inherit;
+  z-index: -1;
+
+  animation: borderSpin 2s linear infinite;
+}
+
+.btnBorder::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+
+  background: conic-gradient(
+    from var(--angle),
+    transparent 90%,
+    var(--text-color)
+  );
+
+  border-radius: inherit;
+  
+  opacity: .6;
+  z-index: -2;
+
+  animation: borderSpin 2s linear infinite;
+  animation-direction:alternate-reverse;
+}
+
+@keyframes borderSpin {
+  to {
+    --angle: 360deg;
+  }
+}
+
+.globBorder{
+  animation: glowBorder 1.5s;
+}

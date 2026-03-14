@@ -74,7 +74,7 @@ export default function DragDropBox() {
 
 
 return (
-  <div className="flex h-[450px] w-full relative items-start justify-center p-2">
+  <div className="flex h-112.5 w-full relative items-start justify-center p-2">
 
     {imgFiles.length === 0 &&<motion.div
       {...getRootProps()}

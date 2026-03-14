@@ -33,11 +33,11 @@ export default function LoginEL() {
                 <VerifyEl/>
             </div>}
             <div className="login my-scroll h-full w-full flex flex-col items-center text-skin-text">
-                <div className="loginbase p-4 h-screen w-full flex items-center flex-row">
-                    <div className="leftside h-full flex-1 flex items-center flex-col
+                <div className="loginbase p-4 h-full w-full flex items-center flex-row">
+                    <div className="leftside h-full lg:flex-1 flex items-center flex-col w-full
                     ">
-                        <img src="./Banner/Banner.webp" alt="bannerImage" className="z-0 absolute top-3 h-2/3" />
-                        <div className="text-div flex items-start flex-col relative top-2/3 
+                        <img src="./Banner/NewImage.webp" alt="bannerImage" className="z-0 absolute top-6 h-2/3 w-3/5!" />
+                        <div className="text-div flex items-start flex-col relative top-3/4 
                         text-2xl font-bold
                         "><span className="text-red-500">Stay</span>
                             <p> Safe, Stay Anonymous</p>
@@ -53,8 +53,8 @@ export default function LoginEL() {
                                 
                         </div>
                     </div>
-                    <div className="rightside h-full flex-1 p-5 flex justify-center items-center z-20">
-                        <div className="container p-4 h-125 w-125  flex items-center justify-center">
+                    <div className="rightside h-full flex-1 p-1 flex justify-center items-center z-20">
+                        <div className="container p-4 h-130 w-125  flex items-center justify-center">
                             <div className="senceDiv h-full w-full perspective-distant flex items-center justify-center">
                                 <div className={`cube relative transform-3d transition-all duration-1000 flex items-center justify-center ${getRotation()}`}>
                                     <div className="face front"><LoginCon/></div>

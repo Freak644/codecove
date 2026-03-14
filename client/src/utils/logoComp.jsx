@@ -8,9 +8,13 @@ export default function LogoCom() {
             bg-linear-to-tr ${gradColor}
             bg-clip-text text-transparent
             `}></i>
-            <h2 className={`font-bold text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
-            bg-linear-to-tr ${gradColor}
-            bg-clip-text text-transparent`}>CodeCove</h2>
+            <div className="nameHoler flex items-center flex-row">
+                <h2 className='font-bold text-3xl transition-all duration-300 ease-in-out
+                bg-linear-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent'>Null</h2>
+                <h2 className={`font-bold text-3xl transition-all duration-500 ease-in-out 
+                bg-linear-to-b from-yellow-300 from-40% via-pink-500 to-purple-500
+                bg-clip-text text-transparent`}>Vain</h2>
+            </div>
         </div>
     )
 }

@@ -135,10 +135,15 @@ export default function LoginCon({toggle}) {
                             </div>
                             <div className="inputDiv twobtnInput ">
                                 <button disabled={isTrue} type="submit" className="btn bigBtn btnBorder">{isTrue ? <div className="miniLoader"></div> : "Log in"}</button>
+                                <button type="button" className="text-btn ">Create an Accound</button>
                             </div>
                             
-                            <div className="decorDiv flex items-center flex-col p-2.5">
-                                <div className="lineDiv"></div>
+                            <div className="decorDiv flex items-center flex-col p-2.5 m-auto gap-2.5 font-normal">
+                                <p className="opacity-50 text-sm">___________ OR ___________</p>
+                                <div className="iconHelper flex items-center justify-between w-full">
+                                    <i className="bx bxl-github"></i>
+                                    <i className="bx bxl-google"></i>
+                                </div>
                             </div>
                     </form>
                 </div>

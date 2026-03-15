@@ -626,6 +626,7 @@ select{
 .btnBorder::before {
   content: "";
   position: absolute;
+  filter: blur(1.4rem);
   inset: -1px;
 
   background: conic-gradient(
@@ -640,12 +641,28 @@ select{
   z-index: -2;
 
   animation: borderSpin 2s linear infinite;
-  animation-direction:alternate-reverse;
 }
 
 @keyframes borderSpin {
   to {
     --angle: 360deg;
+  }
+}
+
+.iconHelper{
+  
+  i{
+    font-size: large;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1.4px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+
+    &:hover{
+      color: blue;
+      opacity: .8;
+      border-color: rgb(80, 80, 255);
+    }
   }
 }
 

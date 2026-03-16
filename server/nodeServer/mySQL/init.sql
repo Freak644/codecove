@@ -27,6 +27,10 @@ CREATE TABLE IF NOT EXISTS users (
     private_ac BOOLEAN DEFAULT 0
 );
 
+CREATE TABLE IF NOT EXISTS oauthAccount (
+  
+)
+
 CREATE TABLE IF NOT EXISTS roles (
   user_id CHAR(36) PRIMARY KEY,
   role_code INT NOT NULL DEFAULT 0,

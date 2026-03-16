@@ -665,7 +665,3 @@ select{
     }
   }
 }
-
-.globBorder{
-  animation: glowBorder 1.5s;
-}

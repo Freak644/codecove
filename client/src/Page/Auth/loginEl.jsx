@@ -112,6 +112,18 @@ export default function LoginCon({toggle}) {
             toggleLoader(false);
         }
     }
+    const loginWithGoogle = () => {
+        const param = new URLSearchParams({
+            client_id: "530890749894-u93k8sie5vc6n597nkcpbgjes15as63n.apps.googleusercontent.com",
+            redirect_uri: "http://localhost:3222/auth/google",
+            response_type: "code",
+            scope: "email profile",
+            access_type: "offline",
+            prompt: "consent"
+        });
+
+        window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${param}`;
+    };
     return(
         <div className="underTaker">
             <div className="mainLogDiv flex items-center justify-center h-full w-full">
@@ -135,14 +147,14 @@ export default function LoginCon({toggle}) {
                             </div>
                             <div className="inputDiv twobtnInput ">
                                 <button disabled={isTrue} type="submit" className="btn bigBtn btnBorder">{isTrue ? <div className="miniLoader"></div> : "Log in"}</button>
-                                <button type="button" className="text-btn ">Create an Accound</button>
+                                <button onClick={()=>setTab("right")} type="button" className="text-btn ">Create an Accound</button>
                             </div>
                             
                             <div className="decorDiv flex items-center flex-col p-2.5 m-auto gap-2.5 font-normal">
                                 <p className="opacity-50 text-sm"><span>___________</span> OR <span>___________</span></p>
                                 <div className="iconHelper flex items-center justify-between w-full">
                                     <i className="bx bxl-github"></i>
-                                    <i className="bx bxl-google"></i>
+                                    <i onClick={loginWithGoogle} disabled={isTrue} className="bx bxl-google"></i>
                                 </div>
                             </div>
                     </form>

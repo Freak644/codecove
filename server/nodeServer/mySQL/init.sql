@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS users (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     username VARCHAR(50) NOT NULL UNIQUE CHECK (LENGTH(username) > 0),
     email VARCHAR(100) NOT NULL UNIQUE CHECK (LENGTH(email) > 0),
-    password VARCHAR(255) NOT NULL CHECK (LENGTH(password) > 0),
+    password VARCHAR(255) NULL,
     avatar VARCHAR(255) DEFAULT '/Images/Avtar/default.png',
     bio VARCHAR(100) DEFAULT 'Stay! Ahead, Follow the Revolution',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -27,16 +27,26 @@ CREATE TABLE IF NOT EXISTS users (
     private_ac BOOLEAN DEFAULT 0
 );
 
-CREATE TABLE IF NOT EXISTS oauthAccount (
-  
-)
+CREATE TABLE IF NOT EXISTS oauth_accounts (
+  id CHAR(36) PRIMARY KEY,
+  user_id CHAR(36) NOT NULL,
+  provider_name ENUM('google', 'github') NOT NULL,
+  provider_account_id VARCHAR(255) NOT NULL,
+  access_token TEXT,
+  refresh_token TEXT,
+  expires_at TIMESTAMP NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY unique_provider_account (provider_name, provider_account_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS roles (
   user_id CHAR(36) PRIMARY KEY,
   role_code INT NOT NULL DEFAULT 0,
   permoter_id CHAR(36),
   role_name ENUM('user', 'moderator', 'admin', 'verified') NOT NULL DEFAULT 'user',
-  FOREIGN KEY (user_id) REFERENCES users(id)
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 /*

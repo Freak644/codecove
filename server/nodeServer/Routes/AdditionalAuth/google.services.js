@@ -1,52 +1,26 @@
-import axios from "axios";
-import dotenv from "dotenv";
-dotenv.config();
+import { completeRequest } from '../../Controllers/progressTracker.js';
+import {envGoogle} from '../../lib/arctic.js';
+export const googleCallBackHandler = async (rkv, rspo) => {
+  const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+  const crntAPI = rkv.originalUrl.split("?")[0];
 
-export const getGoogleUser = async (code) => {
-
-  // 🔥 1. Exchange code for token (FIXED)
-  let tokenRes;
   try {
-       tokenRes = await axios.post(
-        "https://oauth2.googleapis.com/token",
-        new URLSearchParams({
-          code,
-          client_id: process.env.google_clientid,
-          client_secret: process.env.google_clientSec,
-          redirect_uri: process.env.google_red_url, 
-          grant_type: "authorization_code",
-        }),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
+    const {code, state} = rkv.query;
+
+    // validate state
+    if (!state || state !== rkv.session.state || !code) return rspo.status(400).json({err:"Invalid state"});
+
+    //Arctic magic
+    const tokens = await envGoogle.validateAuthorizationCode(code,rkv.session.codeVerifier);
+    const idToken = tokens.data.id_token;
+    const payload = JSON.parse(Buffer.from(idToken.split(".")[1], "base64").toString());
+    console.log(payload)
     
+    rspo.json({pass:"Done"})
   } catch (error) {
-    console.log("FULL ERROR ↓↓↓");
-    console.log("message:", error.message);
-    console.log("status:", error.response?.status);
-    console.log("data:", error.response?.data);
+    console.log(error.message)
+    rspo.json({err:"Server side error"})
+  } finally {
+    completeRequest(crntIP,crntAPI)
   }
-
-
-  const { access_token } = await tokenRes.data;
-  // 🔥 2. Get user info
-  const userRes = await axios.get(
-    "https://www.googleapis.com/oauth2/v2/userinfo",
-    {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-    }
-  );
-
-  return {
-    email: userRes.data.email,
-    name: userRes.data.name,
-    avatar: userRes.data.picture,
-    provider_account_id: userRes.data.id,
-    access_token,
-  };
-};
+}

@@ -1,13 +1,11 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { database } from '../../Controllers/myConnectionFile.js';
-import dotenv from 'dotenv';
 import { SaveThisSession } from './userSession.js';
 import { sendTheMail } from '../../Controllers/nodemailer.js';
 import { nanoid } from 'nanoid';
 import { Encrypt } from '../../utils/Encryption.js';
 import { completeRequest } from '../../Controllers/progressTracker.js';
-dotenv.config();
 export const LoginAPI = async (rkv,rspo) => {
     const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || rkv.ip ||"0.0.0.0";
     const crntAPI = rkv.originalUrl.split("?")[0];

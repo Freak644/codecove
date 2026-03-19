@@ -5,11 +5,10 @@ import chalk from 'chalk';
 import cookieParser from 'cookie-parser';
 import requestIp from 'request-ip';
 import {diskUpload} from './Controllers/diskMulter.js'
-// app.use(cors({
-//   origin: "your-frontend-domain",
-//   credentials: true
-// }));
-
+import dotenv from 'dotenv';
+import cors from 'cors'
+dotenv.config();
+import session from 'express-session';
 let port = 3222;
 import fs from 'fs';
 //import path from 'path';
@@ -44,14 +43,26 @@ import { getPost } from './Routes/usersPOSTAPIs/readThings/getSiglePost.js';
 import router from './utils/tempFile.js';
 import { Chartdata } from './Routes/usersPOSTAPIs/readThings/getChartData.js';
 import { DeletePost, ReportPost } from './Routes/usersPOSTAPIs/writeThings/reportAndDelete.js';
-import { googleCallBack } from './Controllers/auth.controller.js';
+import { startGoogleLogin } from './Controllers/auth.controller.js';
+import {googleCallBackHandler} from './Routes/AdditionalAuth/google.services.js'
 // import { addNewAchievement } from './Routes/Achievement/createAchievement.js';
 let myApp = express();
+myApp.use(cors({
+  origin: "http://localhost:3221",
+  credentials: true
+}));
 myApp.use(express.json({limit:"20mb"}));
 myApp.use(requestIp.mw())
 myApp.set("trust proxy",1)
 myApp.use(cookieParser());
 myApp.use("/Images",express.static('Images'));
+
+myApp.use(session({
+  secret:process.env.jwt_sec,
+  resave:false,
+  saveUninitialized:true
+}))
+
 myApp.use((req, res, next) => {
   const controller = new AbortController();
   req.abortController = controller;
@@ -88,12 +99,12 @@ myApp.use((req, res, next) => {
 const storage = multer.memoryStorage();
 // File filter (only jpg, jpeg, png)
 const fileFilter = (req, file, cb) => {
-    const allowed = /avif|webp/;
+    const allowed = /avif|webp|gif/;
     const ext = file.mimetype.split("/")[1];
     if (allowed.test(ext)) {
         cb(null, true);
     } else {
-        cb(new Error("Only avif, .webp are allowed"), false);
+        cb(new Error("Only avif, .webp, .gif are allowed"), false);
     }
 };
 // Multer middleware
@@ -108,7 +119,8 @@ myApp.post("/sendVerifyEmail",EmailRateLimiter,checkRequest,SendEmailVerify);
 myApp.post("/verifyEmail",verifyEmailLiter,checkRequest,verifyEmail);
 myApp.post("/CreateUser",RateLimiter,checkRequest,upload.single("avatar"),CreateUser);
 myApp.post("/login",RateLimiter,checkRequest,LoginAPI);
-myApp.get("/auth/google",RateLimiter,checkRequest,googleCallBack);
+myApp.get("/auth/google",RateLimiter,checkRequest,startGoogleLogin);
+myApp.get("/auth/google/callback",RateLimiter,checkRequest,googleCallBackHandler)
 myApp.get("/GetUserInfo",RateLimiter,checkRequest,Auth,CrntUser);
 myApp.get("/auth",RateLimiter,checkRequest,checkAuth);
 myApp.post("/Logout",RateLimiter,checkRequest,Auth,loggedMeOut);

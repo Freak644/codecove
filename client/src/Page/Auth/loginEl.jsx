@@ -113,16 +113,8 @@ export default function LoginCon({toggle}) {
         }
     }
     const loginWithGoogle = () => {
-        const param = new URLSearchParams({
-            client_id: "530890749894-u93k8sie5vc6n597nkcpbgjes15as63n.apps.googleusercontent.com",
-            redirect_uri: "http://localhost:3222/auth/google",
-            response_type: "code",
-            scope: "email profile",
-            access_type: "offline",
-            prompt: "consent"
-        });
-
-        window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${param}`;
+   
+        window.location.href = `http://localhost:3222/auth/google`;
     };
     return(
         <div className="underTaker">

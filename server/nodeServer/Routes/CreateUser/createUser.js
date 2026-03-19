@@ -43,7 +43,7 @@ export const CreateUser = async (rkv, rspo) => {
         }
 
         const type = await fileTypeFromBuffer(file.buffer);
-        const allowed = ['image/webp','image/avif']; 
+        const allowed = ['image/webp','image/avif','image/gif']; 
         if (!type || !allowed.includes(type.mime)) {
             return rspo.status(400).send({ err: "Invalid file type" });
         }

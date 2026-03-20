@@ -1,9 +1,7 @@
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';;
 import { database } from '../../Controllers/myConnectionFile.js';
 import { Decrypt } from '../../utils/Encryption.js';
 import { completeRequest } from '../../Controllers/progressTracker.js';
-dotenv.config();
 const revokedToken = async (session_id) => {
      await database.execute(
             "UPDATE user_sessions SET revoked=? WHERE session_id=?",

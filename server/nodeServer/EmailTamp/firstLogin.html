@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to CodeCove</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #0c0c0d;
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #eaeaea;
+      -webkit-font-smoothing: antialiased;
+      padding: 30px 10px;
+    }
+
+.wrapper {
+  max-width: 580px;
+  margin: 0 auto;
+  background: linear-gradient(145deg, #111113, #18191d);
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6), 0 0 40px rgba(24, 119, 242, 0.2);
+  overflow: hidden;
+}
+
+.header {
+  background: linear-gradient(130deg, #0027b3, #9600cc, #bda700);
+  padding: 35px 20px;
+  text-align: center;
+  color: white;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}
+
+.content {
+  padding: 40px 25px 30px;
+  text-align: center;
+}
+
+.content h2 {
+  margin: 0 0 10px;
+  font-size: 22px;
+  color: #ffffff;
+}
+
+.content p {
+  margin: 10px 0;
+  color: #bcbcbc;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.highlight-box {
+  margin: 25px auto;
+  padding: 18px 22px;
+  background: linear-gradient(135deg, #3300ff, #cb00fe);
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  box-shadow: 0 0 15px rgba(26, 115, 232, 0.4);
+}
+
+.cta-button {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #1a73e8, #9333ea);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 0 12px rgba(147, 51, 234, 0.4);
+}
+
+.cta-button:hover {
+  opacity: 0.9;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #333, transparent);
+  margin: 30px 0;
+}
+
+.footer {
+  background: #111113;
+  text-align: center;
+  padding: 18px;
+  font-size: 12px;
+  color: #666;
+}
+
+.footer span {
+  color: #888;
+}
+
+@media (max-width: 480px) {
+  .content {
+    padding: 30px 18px 25px;
+  }
+  .highlight-box {
+    font-size: 14px;
+    padding: 14px 16px;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <h1>Welcome to NullVain 🚀</h1>
+    </div>
+
+
+<div class="content">
+  <h2>Hey {{username}} 👋</h2>
+  <p>Your account has been successfully created.</p>
+
+  <div class="highlight-box">
+    You’re now part of the CodeCove developer community 👾
+  </div>
+
+  <p>
+    Start building, exploring, and leveling up your skills.  
+    We’ve got some powerful tools and features waiting for you.
+  </p>
+
+  <a href="{{appUrl}}" class="cta-button">Get Started</a>
+
+  <div class="divider"></div>
+
+  <p>
+    If you didn’t create this account, you can safely ignore this email.
+  </p>
+</div>
+
+<div class="footer">
+  © 2026 <span>CodeCove</span>. All rights reserved.
+</div>
+
+  </div>
+</body>
+</html>

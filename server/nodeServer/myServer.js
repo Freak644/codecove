@@ -43,8 +43,9 @@ import { getPost } from './Routes/usersPOSTAPIs/readThings/getSiglePost.js';
 import router from './utils/tempFile.js';
 import { Chartdata } from './Routes/usersPOSTAPIs/readThings/getChartData.js';
 import { DeletePost, ReportPost } from './Routes/usersPOSTAPIs/writeThings/reportAndDelete.js';
-import { startGoogleLogin } from './Controllers/auth.controller.js';
+import { startGithubLogin, startGoogleLogin } from './Controllers/auth.controller.js';
 import {googleCallBackHandler} from './Routes/AdditionalAuth/google.services.js'
+import { githubCallBackHandler } from './Routes/AdditionalAuth/github.services.js';
 // import { addNewAchievement } from './Routes/Achievement/createAchievement.js';
 let myApp = express();
 myApp.use(cors({
@@ -120,7 +121,9 @@ myApp.post("/verifyEmail",verifyEmailLiter,checkRequest,verifyEmail);
 myApp.post("/CreateUser",RateLimiter,checkRequest,upload.single("avatar"),CreateUser);
 myApp.post("/login",RateLimiter,checkRequest,LoginAPI);
 myApp.get("/auth/google",RateLimiter,checkRequest,startGoogleLogin);
-myApp.get("/auth/google/callback",RateLimiter,checkRequest,googleCallBackHandler)
+myApp.get("/auth/google/callback",RateLimiter,googleCallBackHandler);
+myApp.get("/auth/github",RateLimiter,checkRequest,startGithubLogin);
+myApp.get("/auth/github/callback",RateLimiter,githubCallBackHandler)
 myApp.get("/GetUserInfo",RateLimiter,checkRequest,Auth,CrntUser);
 myApp.get("/auth",RateLimiter,checkRequest,checkAuth);
 myApp.post("/Logout",RateLimiter,checkRequest,Auth,loggedMeOut);

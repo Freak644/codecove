@@ -116,6 +116,9 @@ export default function LoginCon({toggle}) {
    
         window.location.href = `http://localhost:3222/auth/google`;
     };
+    const loginWithGithub = () => {
+        window.location.href = `http://localhost:3222/auth/github`;
+    }
     return(
         <div className="underTaker">
             <div className="mainLogDiv flex items-center justify-center h-full w-full">
@@ -145,7 +148,7 @@ export default function LoginCon({toggle}) {
                             <div className="decorDiv flex items-center flex-col p-2.5 m-auto gap-2.5 font-normal">
                                 <p className="opacity-50 text-sm"><span>___________</span> OR <span>___________</span></p>
                                 <div className="iconHelper flex items-center justify-between w-full">
-                                    <i className="bx bxl-github"></i>
+                                    <i onClick={loginWithGithub} className="bx bxl-github"></i>
                                     <i onClick={loginWithGoogle} disabled={isTrue} className="bx bxl-google"></i>
                                 </div>
                             </div>

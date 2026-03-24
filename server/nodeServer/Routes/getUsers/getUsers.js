@@ -18,7 +18,7 @@ function getSuggestion(username,takenList) {
 }
 
 export const getUsers = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
    let {username} = rkv.query;
     try {

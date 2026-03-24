@@ -5,7 +5,7 @@ import {nanoid} from 'nanoid'
 import { completeRequest } from '../../Controllers/progressTracker.js';
 export const SaveThisSession = async (rkv,userID) => {
     let session_id = nanoid();
-    const ip = rkv.clientIp?.replace(/^::ffff:/,"") || "0.0.0.0";
+    const ip = rkv.userIp.replace(/^::ffff:/,"") || "0.0.0.0";
     const userAgent = rkv.headers["user-agent"] || "";
     const geo = geoip.lookup(ip)
     const parser = new UAParser(userAgent);
@@ -28,7 +28,7 @@ export const SaveThisSession = async (rkv,userID) => {
 }
 
 export const loggedMeOut = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id,session_id} = rkv.authData;
     try {

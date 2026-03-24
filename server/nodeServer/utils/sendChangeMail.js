@@ -5,7 +5,7 @@ import { sendTheMail } from "../Controllers/nodemailer.js";
 export const sendChangePassMail = async (rkv,email,newToken_id,username) => {
     
     const userAgent = rkv.headers["user-agent"] || "";
-     const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+     const crntIP = rkv.userIp;
     const geo = geoip.lookup(crntIP);
     const parser = new UAParser(userAgent);
     const uAresult = parser.getResult();

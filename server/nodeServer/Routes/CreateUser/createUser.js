@@ -16,7 +16,7 @@ async function checkDuplicate(sqlData, username, email) {
 }
 
 export const CreateUser = async (rkv, rspo) => {
-  const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+  const crntIP = rkv.userIp;
   const crntAPI = rkv.originalUrl.split("?")[0];
   const { email, password, username } = rkv.body;
   const file = rkv.file;

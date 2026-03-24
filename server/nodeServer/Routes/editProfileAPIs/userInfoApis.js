@@ -7,7 +7,7 @@ import path from 'path';
 import { completeRequest } from "../../Controllers/progressTracker.js";
 
 export const changeBio = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {user_id,bio} = rkv.body;
@@ -27,7 +27,7 @@ export const changeBio = async (rkv,rspo) => {
 }
 
 export const changeDP = async (rkv, rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     const { id } = rkv.authData;
 

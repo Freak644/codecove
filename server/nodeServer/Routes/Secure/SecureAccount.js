@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import { sendChangePassMail } from "../../utils/sendChangeMail.js";
 import { completeRequest } from "../../Controllers/progressTracker.js";
 export const changePassSecure = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {basePass,token} = rkv.body;
     let rows

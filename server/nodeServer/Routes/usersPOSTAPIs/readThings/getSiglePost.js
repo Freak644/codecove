@@ -1,7 +1,7 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
 
 export const getPost = async (rkv, rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {post_id} = rkv.query;

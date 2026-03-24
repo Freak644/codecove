@@ -6,7 +6,7 @@ import { Decrypt, Encrypt } from '../../utils/Encryption.js';
 import { completeRequest } from '../../Controllers/progressTracker.js';
 dotenv.config();
 export const SendEmailVerify = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {username,email} = rkv.body;
     try {
@@ -54,7 +54,7 @@ export const SendEmailVerify = async (rkv,rspo) => {
 }
 
 export const verifyEmail = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
 
     let {username,email,inOTP} = rkv.body;

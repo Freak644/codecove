@@ -4,11 +4,11 @@ let blockedIPs = new Map();         // ip → unblock timestamp
 let activeRequestBurst = new Map(); // ip → active pending count
 
 const checkRequest = (rkv, rspo, next) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     const key = `${crntIP}:${crntAPI}`;
     const now = Date.now();
-    console.log({check:crntIP,apiis:crntAPI})
+    console.log({check:crntIP,api:crntAPI})
     if (blockedIPs.has(crntIP) && blockedIPs.get(crntIP) > now) {
         return rspo.status(401).json({ err: "Your IP is blocked for 1 hour" });
     }

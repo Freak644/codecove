@@ -28,7 +28,7 @@ const clearTemp = async (currentFiles) => {
 }
 
 export const CreatePost = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     const upLoadLimit = pLimit(2);
     const fileArray = rkv.files;

@@ -7,7 +7,7 @@ import { nanoid } from "nanoid";
 import { completeRequest } from "../../Controllers/progressTracker.js";
 dotenv.config();
 export const forgotPass = async (rkv,rspo) => {
-    const miniIP = rkv.clientIp?.replace(/^::ffff:/,"") || rkv.ip ||"0.0.0.0";
+    const miniIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     const userAgent = rkv.headers["user-agent"] || "";
     const geo = geoip.lookup(miniIP);

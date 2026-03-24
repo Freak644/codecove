@@ -14,7 +14,7 @@ const validateComment = async (blockCat,comment) => {
 }
 
 export const CommentAPI = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {text,pID:post_id} = rkv.body;

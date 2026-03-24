@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid';
 import { Encrypt } from '../../utils/Encryption.js';
 import { completeRequest } from '../../Controllers/progressTracker.js';
 export const LoginAPI = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/,"") || rkv.ip ||"0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let token_id = nanoid(32);
     let {Email,Password,clientInfo} = rkv.body;

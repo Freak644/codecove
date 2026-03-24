@@ -41,8 +41,8 @@ export const Auth = async (rkv,rspo,next) => {
 }
 
 export const checkAuth = async (rkv,rspo) => {
-    const ip = rkv.clientIp?.replace(/^::ffff:/,"") || "0.0.0.0";
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const ip = rkv.userIp.replace(/^::ffff:/,"") || "0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let token = rkv.cookies.myAuthToken;
     try {

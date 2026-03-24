@@ -46,6 +46,8 @@ import { DeletePost, ReportPost } from './Routes/usersPOSTAPIs/writeThings/repor
 import { startGithubLogin, startGoogleLogin } from './Controllers/auth.controller.js';
 import {googleCallBackHandler} from './Routes/AdditionalAuth/google.services.js'
 import { githubCallBackHandler } from './Routes/AdditionalAuth/github.services.js';
+import { attachIP } from './lib/ipReader.js';
+import { table } from 'console';
 // import { addNewAchievement } from './Routes/Achievement/createAchievement.js';
 let myApp = express();
 myApp.use(cors({
@@ -63,6 +65,7 @@ myApp.use(session({
   resave:false,
   saveUninitialized:true
 }))
+
 
 myApp.use((req, res, next) => {
   const controller = new AbortController();
@@ -115,43 +118,43 @@ const upload = multer({
     limits: { fileSize: 3 * 1024 * 1024 } 
 });
 
-myApp.get("/getUsername",usernameCheckLimiter,checkRequest,getUsers);
-myApp.post("/sendVerifyEmail",EmailRateLimiter,checkRequest,SendEmailVerify);
-myApp.post("/verifyEmail",verifyEmailLiter,checkRequest,verifyEmail);
-myApp.post("/CreateUser",RateLimiter,checkRequest,upload.single("avatar"),CreateUser);
-myApp.post("/login",RateLimiter,checkRequest,LoginAPI);
-myApp.get("/auth/google",RateLimiter,checkRequest,startGoogleLogin);
+myApp.get("/getUsername",usernameCheckLimiter,attachIP,checkRequest,getUsers);
+myApp.post("/sendVerifyEmail",EmailRateLimiter,attachIP,checkRequest,SendEmailVerify);
+myApp.post("/verifyEmail",verifyEmailLiter,attachIP,checkRequest,verifyEmail);
+myApp.post("/CreateUser",RateLimiter,attachIP,checkRequest,upload.single("avatar"),CreateUser);
+myApp.post("/login",RateLimiter,attachIP,checkRequest,LoginAPI);
+myApp.get("/auth/google",RateLimiter,attachIP,checkRequest,startGoogleLogin);
 myApp.get("/auth/google/callback",RateLimiter,googleCallBackHandler);
-myApp.get("/auth/github",RateLimiter,checkRequest,startGithubLogin);
+myApp.get("/auth/github",RateLimiter,attachIP,checkRequest,startGithubLogin);
 myApp.get("/auth/github/callback",RateLimiter,githubCallBackHandler)
-myApp.get("/GetUserInfo",RateLimiter,checkRequest,Auth,CrntUser);
-myApp.get("/auth",RateLimiter,checkRequest,checkAuth);
-myApp.post("/Logout",RateLimiter,checkRequest,Auth,loggedMeOut);
-myApp.get("/checkActive",RateLimiter,checkRequest,ActivityInfo);
-myApp.put("/upDatePass",RateLimiter,checkRequest,changePassSecure);
-myApp.post("/ForgotPassword",RateLimiter,checkRequest,forgotPass);
-myApp.post("/ForgotPassword/verify",RateLimiter,checkRequest,verification);
-myApp.put("/ForgotPassword/reset",RateLimiter,checkRequest,resetPassword);
-myApp.post("/CreatePost",RateLimiter,checkRequest,diskUpload.array("postFiles",5),Auth,CreatePost);
-myApp.put("/PostControll/toggle",RateLimiter,checkRequest,Auth,miniToggleDy)
-myApp.get("/getPost",RateLimiter,checkRequest,Auth,GetPosts);
-myApp.get("/getNews",RateLimiter,checkRequest,Auth,getNews);
-myApp.post("/writePost/addStar",RateLimiter,checkRequest,Auth,starPost);
-myApp.post("/writePost/addComment",RateLimiter,checkRequest,Auth,CommentAPI)
-myApp.get("/readPost/getComment",RateLimiter,checkRequest,Auth,getComment);
-myApp.post("/writePost/addLikeComment",RateLimiter,checkRequest,Auth,likeComment);
-myApp.get("/readUser/getUserInfo",RateLimiter,checkRequest,Auth,getUserinfo);
-myApp.put("/writeUser/changeBio",RateLimiter,checkRequest,Auth,changeBio);
-myApp.post("/writeUser/follow",RateLimiter,checkRequest,Auth,followAPI);
-myApp.put("/writeUser/changeDP",RateLimiter,checkRequest,upload.single("avatar"),Auth,changeDP);
-myApp.post("/writePost/reportComment",RateLimiter,checkRequest,Auth,reportCommentAPI);
-myApp.delete("/writePost/deleteComment",RateLimiter,checkRequest,Auth,DeleteCommentAPI);
-myApp.post("/writeAchievement/acceptComment",RateLimiter,checkRequest,Auth,acceptSolution)
-myApp.get("/readPost/getImage",RateLimiter,checkRequest,Auth,getPost);
-myApp.get("/readPost/getChartData",RateLimiter,checkRequest,Auth,Chartdata);
-myApp.post("/writePost/savePost",RateLimiter,checkRequest,Auth,savePost);
-myApp.post("/writePost/reportPost",RateLimiter,checkRequest,Auth,ReportPost);
-myApp.delete("/writePost/deletePost",RateLimiter,checkRequest,Auth,DeletePost);
+myApp.get("/GetUserInfo",RateLimiter,attachIP,checkRequest,Auth,CrntUser);
+myApp.get("/auth",RateLimiter,attachIP,checkRequest,checkAuth);
+myApp.post("/Logout",RateLimiter,attachIP,checkRequest,Auth,loggedMeOut);
+myApp.get("/checkActive",RateLimiter,attachIP,checkRequest,ActivityInfo);
+myApp.put("/upDatePass",RateLimiter,attachIP,checkRequest,changePassSecure);
+myApp.post("/ForgotPassword",RateLimiter,attachIP,checkRequest,forgotPass);
+myApp.post("/ForgotPassword/verify",RateLimiter,attachIP,checkRequest,verification);
+myApp.put("/ForgotPassword/reset",RateLimiter,attachIP,checkRequest,resetPassword);
+myApp.post("/CreatePost",RateLimiter,attachIP,checkRequest,diskUpload.array("postFiles",5),Auth,CreatePost);
+myApp.put("/PostControll/toggle",RateLimiter,attachIP,checkRequest,Auth,miniToggleDy)
+myApp.get("/getPost",RateLimiter,attachIP,checkRequest,Auth,GetPosts);
+myApp.get("/getNews",RateLimiter,attachIP,checkRequest,Auth,getNews);
+myApp.post("/writePost/addStar",RateLimiter,attachIP,checkRequest,Auth,starPost);
+myApp.post("/writePost/addComment",RateLimiter,attachIP,checkRequest,Auth,CommentAPI)
+myApp.get("/readPost/getComment",RateLimiter,attachIP,checkRequest,Auth,getComment);
+myApp.post("/writePost/addLikeComment",RateLimiter,attachIP,checkRequest,Auth,likeComment);
+myApp.get("/readUser/getUserInfo",RateLimiter,attachIP,checkRequest,Auth,getUserinfo);
+myApp.put("/writeUser/changeBio",RateLimiter,attachIP,checkRequest,Auth,changeBio);
+myApp.post("/writeUser/follow",RateLimiter,attachIP,checkRequest,Auth,followAPI);
+myApp.put("/writeUser/changeDP",RateLimiter,attachIP,checkRequest,upload.single("avatar"),Auth,changeDP);
+myApp.post("/writePost/reportComment",RateLimiter,attachIP,checkRequest,Auth,reportCommentAPI);
+myApp.delete("/writePost/deleteComment",RateLimiter,attachIP,checkRequest,Auth,DeleteCommentAPI);
+myApp.post("/writeAchievement/acceptComment",RateLimiter,attachIP,checkRequest,Auth,acceptSolution)
+myApp.get("/readPost/getImage",RateLimiter,attachIP,checkRequest,Auth,getPost);
+myApp.get("/readPost/getChartData",RateLimiter,attachIP,checkRequest,Auth,Chartdata);
+myApp.post("/writePost/savePost",RateLimiter,attachIP,checkRequest,Auth,savePost);
+myApp.post("/writePost/reportPost",RateLimiter,attachIP,checkRequest,Auth,ReportPost);
+myApp.delete("/writePost/deletePost",RateLimiter,attachIP,checkRequest,Auth,DeletePost);
 // myApp.post("/createAchievement",addNewAchievement);
 
 

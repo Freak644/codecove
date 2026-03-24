@@ -4,7 +4,7 @@ import { sendChangePassMail } from "../../../utils/sendChangeMail.js";
 import { nanoid } from "nanoid";
 import { completeRequest } from "../../../Controllers/progressTracker.js";
 const verification = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {Username,Email,token} = rkv.body;
     try {
@@ -30,7 +30,7 @@ const verification = async (rkv,rspo) => {
 }
 
 const resetPassword = async (rkv,rspo) => {
-    const crntIP = rkv.clientIp?.replace(/^::ffff:/, "") || rkv.ip || "0.0.0.0";
+    const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {pass,conPass,token} = rkv.body;
     let newToken_id = nanoid(32)

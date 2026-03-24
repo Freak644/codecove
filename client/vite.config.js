@@ -6,9 +6,9 @@ export default defineConfig({
 //   VitePWA:({
 //     registerType: 'autoUpdate',
 //     manifest:{
-//   "name": "CodeCove",
-//   "short_name": "Cove",
-//   "description": "PWA React + Vite",
+//   "name": "NullVain",
+//   "short_name": "NV",
+//   "description": "Fire in Vains",
 //   "start_url": "/",
 //   "display": "standalone",
 //   "background_color": "#00f",

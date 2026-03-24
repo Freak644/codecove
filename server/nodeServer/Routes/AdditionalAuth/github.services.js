@@ -1,4 +1,4 @@
-import e from "express";
+
 import { envGithub } from "../../lib/arctic.js";
 import { handleOAuthLogin } from "./authService.js";
 
@@ -38,7 +38,7 @@ export const githubCallBackHandler = async (rkv, rspo) => {
             )
         }
 
-        await handleOAuthLogin({
+        await handleOAuthLogin(rkv, {
             provider:"Github",
             providerAccound_id: userInfo.id.toString(),
             email:primaryEmail,

@@ -5,12 +5,12 @@ import {nanoid} from 'nanoid'
 import { completeRequest } from '../../Controllers/progressTracker.js';
 export const SaveThisSession = async (rkv,userID) => {
     let session_id = nanoid();
-    const ip = rkv.userIp.replace(/^::ffff:/,"") || "0.0.0.0";
+    const ip = rkv.userIp;
     const userAgent = rkv.headers["user-agent"] || "";
     const geo = geoip.lookup(ip)
     const parser = new UAParser(userAgent);
-    const uAresult = parser.getResult()
-    console.log(uAresult);
+    const uAresult = parser.getResult();
+
     try {
         const [rows] = await database.execute(
         `INSERT INTO user_sessions (id, session_id,ip, country, region, city, latitude, longitude, isp, user_agent, browser, browser_version, os, device_type)

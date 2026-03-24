@@ -25,3 +25,5 @@ Images
 *.njsproj
 *.sln
 *.sw?
+
+./server/nodeServer/lib/data.txt

@@ -30,14 +30,16 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS oauth_accounts (
   id CHAR(36) PRIMARY KEY,
   user_id CHAR(36) NOT NULL,
-  provider_name ENUM('google', 'github') NOT NULL,
+  provider_name VARCHAR(50) NOT NULL,
   provider_account_id VARCHAR(255) NOT NULL,
+  provider_email VARCHAR(255),
   access_token TEXT,
   refresh_token TEXT,
   expires_at TIMESTAMP NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY unique_provider_account (provider_name, provider_account_id),
+  INDEX idx_user_id (user_id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 

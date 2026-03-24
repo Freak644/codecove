@@ -1,5 +1,6 @@
 import e from "express";
 import { envGithub } from "../../lib/arctic.js";
+import { handleOAuthLogin } from "./authService.js";
 
 export const githubCallBackHandler = async (rkv, rspo) => {
     
@@ -13,7 +14,6 @@ export const githubCallBackHandler = async (rkv, rspo) => {
         };
 
         const token = await envGithub.validateAuthorizationCode(code);
-        console.log(token)
         let accessToken = token.data.access_token;
 
         const userRspo = await fetch("https://api.github.com/user",{
@@ -38,7 +38,15 @@ export const githubCallBackHandler = async (rkv, rspo) => {
             )
         }
 
-        rspo.json({err:"Correct till now"})
+        await handleOAuthLogin({
+            provider:"Github",
+            providerAccound_id: userInfo.id.toString(),
+            email:primaryEmail,
+            avatar: userInfo.avatar_url,
+            accessToken
+        })
+
+        rspo.json({pass:"Till now"})
 
     } catch (error) {
         console.log(error.message);

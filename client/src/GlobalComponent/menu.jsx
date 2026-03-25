@@ -102,7 +102,7 @@ export default function MenuEL(params) {
                 `}></i>
                 <h2 className={`font-extrabold! text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
                 bg-linear-to-tr ${gradColor}
-                bg-clip-text text-transparent`}>CodeCove</h2>
+                bg-clip-text text-transparent`}>NullVain</h2>
             </div>
             <div className='menuContainer relative flex items-center flex-col gap-10 lg:text-[18px] sm:text-2xl text-skin-text'>
                 <ul className='topU flex items-start flex-col gap-3 border-b-2 border-gray-400 my-scroll'>

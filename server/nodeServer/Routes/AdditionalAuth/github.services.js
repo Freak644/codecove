@@ -38,7 +38,8 @@ export const githubCallBackHandler = async (rkv, rspo) => {
             )
         }
 
-        await handleOAuthLogin(rkv, {
+
+        const OAuthInfo = await handleOAuthLogin(rkv, {
             provider:"Github",
             providerAccount_id: userInfo.id.toString(),
             email:primaryEmail,
@@ -47,7 +48,17 @@ export const githubCallBackHandler = async (rkv, rspo) => {
             username:userInfo.login
         })
 
-        rspo.redirect(process.env.FRONTEND_URL)
+
+        if (OAuthInfo.code === 302) {
+        
+            let {username, avatart, provider_name } = OAuthInfo;
+
+            rspo.redirect(
+                `${process.env.FRONTEND_URL}/userfound?data=${encodeURIComponent(JSON.stringify({username,avatart,provider_name}))}`
+            )
+        }
+
+        //rspo.redirect(process.env.FRONTEND_URL)
 
     } catch (error) {
         console.log(error.message);

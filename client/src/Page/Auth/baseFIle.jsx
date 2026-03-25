@@ -5,6 +5,7 @@ import VerifyEl from "./SginUP/verifyEmail";
 import LoginCon from "./loginEl";
 import verifyZu from "../../lib/verifyZu";
 import ForgotEl from "./forgotPass";
+import banner from '../../assets/Banner/NewImage.webp'
 export default function LoginEL() {
     const {currentTab,setTab} = FaceToggle();
     let [face,setFace] = useState(currentTab);
@@ -36,7 +37,7 @@ export default function LoginEL() {
                 <div className="loginbase p-4 h-full w-full flex items-center flex-row">
                     <div className="leftside h-full lg:flex-1 flex items-center flex-col w-full
                     ">
-                        <img src="./Banner/NewImage.webp" alt="bannerImage" className="z-0 absolute top-20 h-2/3 w-3/5!" />
+                        <img src={banner} alt="bannerImage" className="z-0 absolute top-20 h-2/3 w-3/5!" />
                         <div className="text-div flex items-start flex-col relative top-4/5 
                         text-2xl font-bold
                         "><span className="text-red-500">Stay</span>

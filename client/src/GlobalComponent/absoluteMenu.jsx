@@ -71,7 +71,7 @@ export default function AbsoluteMenu() {
                 `}></i>
                 <h2 className={`font-bold! text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
                 bg-linear-to-tr ${getColor()}
-                bg-clip-text text-transparent`}>CodeCove</h2>
+                bg-clip-text text-transparent`}>NullVain</h2>
             </div>
             <div className="AbMenuDiv my-scroll w-full h-4/5 my-scroll 
             flex items-center flex-col text-md text-skin-text">

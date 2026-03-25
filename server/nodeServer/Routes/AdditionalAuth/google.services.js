@@ -21,7 +21,7 @@ export const googleCallBackHandler = async (rkv, rspo) => {
     const payload = JSON.parse(Buffer.from(idToken.split(".")[1], "base64").toString());
 
 
-    await handleOAuthLogin(rkv, {
+    const OAuthInfo = await handleOAuthLogin(rkv, {
       provider: "Google",
       providerAccount_id: payload.sub,
       email: payload.email,
@@ -29,8 +29,16 @@ export const googleCallBackHandler = async (rkv, rspo) => {
       expires_at: payload.exp,
       accessToken: tokens.data.access_token
     });
+
+    if (OAuthInfo.code === 302) {
+          let {username, avatart, provider_name } = OAuthInfo;
+          rspo.redirect(
+              `${process.env.FRONTEND_URL}/userfound?data=${encodeURIComponent(JSON.stringify({username,avatart,provider_name}))}`
+          )
+      }
+
     
-    rspo.redirect(process.env.FRONTEND_URL)
+    //rspo.redirect(process.env.FRONTEND_URL)
   } catch (error) {
     console.log(error.message)
     rspo.json({err:"Server side error"})

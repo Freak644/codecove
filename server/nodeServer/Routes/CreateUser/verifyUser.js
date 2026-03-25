@@ -22,6 +22,7 @@ export const SendEmailVerify = async (rkv,rspo) => {
         }
 
         const otp = Math.floor(100000 + Math.random() * 900000);
+        console.log(otp,username,email)
         let send = await sendTheMail(
             email,
             "Welcome To CodeCove🎉",
@@ -45,7 +46,7 @@ export const SendEmailVerify = async (rkv,rspo) => {
         }
     
     } catch (error) {
-        //console.log(error.message)
+        console.log(error.message)
         rspo.status(500).send({err:"server side error"});
     } finally {
         completeRequest(crntIP,crntAPI)

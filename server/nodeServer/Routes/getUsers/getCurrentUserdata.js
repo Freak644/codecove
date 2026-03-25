@@ -7,7 +7,7 @@ export const CrntUser = async (rkv,rspo) => {
     let {id} = rkv.authData;
     try {
         let [userinfo] = await database.execute(
-           "SELECT avatar,username,email,id,bio FROM users WHERE id=?",
+           "SELECT avatar,username,email,id,bio FROM users WHERE id=? LIMIT 1",
         [id]
     )
         if (userinfo.length === 0) return rspo.status(401).send({err:"Invalid userID"});

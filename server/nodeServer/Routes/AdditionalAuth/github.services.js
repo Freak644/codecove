@@ -40,14 +40,14 @@ export const githubCallBackHandler = async (rkv, rspo) => {
 
         await handleOAuthLogin(rkv, {
             provider:"Github",
-            providerAccound_id: userInfo.id.toString(),
+            providerAccount_id: userInfo.id.toString(),
             email:primaryEmail,
             avatar: userInfo.avatar_url,
             accessToken,
             username:userInfo.login
         })
 
-        rspo.json({pass:"Till now"})
+        rspo.redirect(process.env.FRONTEND_URL)
 
     } catch (error) {
         console.log(error.message);

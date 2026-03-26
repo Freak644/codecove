@@ -29,7 +29,7 @@ export default function HomePage({pramsData, setTab}) {
                             Account Already Exists
                         </h2>
                         <p className="mt-2 text-sm text-gray-500">
-                            An account with this email already exists. You can merge your Google
+                            An account with this email already exists. You can merge your {pramsData.crntProvider}
                             account with your existing account.
                         </p>
                         </div>

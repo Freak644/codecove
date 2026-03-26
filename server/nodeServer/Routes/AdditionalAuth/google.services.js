@@ -44,7 +44,7 @@ export const googleCallBackHandler = async (rkv, rspo) => {
             maxAge: 10 * 60 * 1000 // 10 minute
           });
           rspo.redirect(
-              `${process.env.FRONTEND_URL}userfound?data=${encodeURIComponent(JSON.stringify({username,avatar,provider_name, crntProvider:"Google"}))}`
+              `${process.env.FRONTEND_URL}userfound?data=${encodeURIComponent(JSON.stringify({username,avatar,provider_name, crntProvider:"Google", email:authData.email}))}`
           )
       }
 

@@ -20,7 +20,7 @@ export default function VerifyEl() {
       firstInp.focus()
     },[])
     const handleAPICall = async () => {
-      console.log(username,email)
+      
       if (btnRef.current.disabled != true) {
         toggleLoader(true);
         try {

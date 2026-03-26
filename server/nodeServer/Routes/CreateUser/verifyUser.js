@@ -1,10 +1,8 @@
 import {database} from '../../Controllers/myConnectionFile.js';
 import jwt from 'jsonwebtoken';
 import {sendTheMail} from '../../Controllers/nodemailer.js'
-import dotenv from 'dotenv';
 import { Decrypt, Encrypt } from '../../utils/Encryption.js';
 import { completeRequest } from '../../Controllers/progressTracker.js';
-dotenv.config();
 export const SendEmailVerify = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
@@ -14,7 +12,7 @@ export const SendEmailVerify = async (rkv,rspo) => {
 
         if(row.some(crntRow=>crntRow.username === username)) return rspo.status(406).send({err:`${username} is Already taken`});
         if (row.some(crntRow=>crntRow.email === email)) return rspo.status(406).send({err:`Account Exists on ${email}`});
-        if (
+        if (!email ||
         !email.endsWith("@gmail.com") ||
        !/^[A-Za-z0-9][A-Za-z0-9._%+-]*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)
          ) {
@@ -22,7 +20,7 @@ export const SendEmailVerify = async (rkv,rspo) => {
         }
 
         const otp = Math.floor(100000 + Math.random() * 900000);
-        console.log(otp,username,email)
+        
         let send = await sendTheMail(
             email,
             "Welcome To CodeCove🎉",
@@ -67,12 +65,12 @@ export const verifyEmail = async (rkv,rspo) => {
             return rspo.status(401).send({err:"Unauthorized Request"})
         }
         let token = rkv.cookies.otpToken;
-        let decryptedToken = await Decrypt(token);
-        let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec)
-        let decodedTime = Math.floor(Date.now()/1000)
         if (!token) {
             return rspo.status(400).send({ err: "OTP Cookie is missing or expired" });
         }
+        let decryptedToken = await Decrypt(token);
+        let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec)
+        let decodedTime = Math.floor(Date.now()/1000)
         if (tokenData.exp<decodedTime) {
             return rspo.status(504).send({err:"The OTP is expire"})
         }

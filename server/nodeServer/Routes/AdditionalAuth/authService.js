@@ -18,14 +18,14 @@ export const handleOAuthLogin = async (rkv, userInfo) => {
             return {user_id,session_id,id,code:202}
         }
         // if Eamil is link with another account
-        let [uAccount] = await database.query(`SELECT u.id as user_id, u.username, u.avatar, oa.provider_name FROM users as u 
+        let [uAccount] = await database.query(`SELECT u.id as user_id, u.username, u.avatar FROM users as u 
             LEFT JOIN oauth_accounts oa ON u.id = oa.user_id
              WHERE u.email = ? LIMIT 1`, [email]);
         
         if (uAccount.length !== 0) {
             console.log(uAccount)
-            let { username,avatar,provider_name} = uAccount[0];
-            return {username, avatar ,provider_name,code:302}
+            let { user_id, username,avatar,provider_name} = uAccount[0];
+            return {user_id,username, avatar ,provider_name,code:302}
         }
         
     } catch (error) {

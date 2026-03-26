@@ -27,7 +27,7 @@ export default function AnimateRoute({location}) {
             </div>
             {background && 
                 <Routes >
-                    <Route path='/post/:pID' element={<div className="thonePrincess">{<MaximizeContainer/>}</div>} />
+                    <Route path='/post/:pID' element={<div className="thornPrincess">{<MaximizeContainer/>}</div>} />
                 </Routes>
             }
         </>

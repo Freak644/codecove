@@ -67,8 +67,10 @@ export default function MyApp() {
         }
     },[])
     useEffect(()=>{
+        let checkingRoute = ["checkInfo", "resetPassword", "userfound"]
         let currentPath = currentLocation.pathname.split("/")
-        if (currentPath[1] === "checkInfo" || currentPath[1] === "resetPassword") {
+     
+        if (checkingRoute.includes(currentPath[1])) {
             setCheck(true)
         }else{
             setCheck(false)

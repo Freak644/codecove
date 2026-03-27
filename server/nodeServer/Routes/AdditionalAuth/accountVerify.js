@@ -1,20 +1,29 @@
 import jwt from "jsonwebtoken";
 // import { sendTheMail } from "../../Controllers/nodemailer";
-import { Decrypt } from "../../utils/Encryption.js";
+import { Decrypt, Encrypt } from "../../utils/Encryption.js";
 import {nanoid} from 'nanoid';
 import { completeRequest } from "../../Controllers/progressTracker.js";
-
-export const VerifyUser = async (rkv, rspo) => {
+import { database } from "../../Controllers/myConnectionFile.js";
+import geoip from 'geoip-lite';
+import { UAParser } from "ua-parser-js";
+import { sendTheMail } from "../../Controllers/nodemailer.js";
+export const VerifyUserMail = async (rkv, rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
-    let {username, email} = rkv.body;
+    const geo = geoip.lookup(crntIP);
+    const uAresult = new UAParser(rkv.headers["user-agent"] || "").getResult();
+    let {email, username} = rkv.body;
 
     try {
         let request_id = nanoid();
+        
         let token = rkv.cookies.mergeRequest;
+
         if (!token) {
             return rspo.status(400).send({ err: "OTP Cookie is missing or expired" });
         }
+
+        // decoding the token
         let decryptedToken = await Decrypt(token);
         let tokenData = jwt.decode(decryptedToken, process.env.jwt_sec);
         let decodedTime = Math.floor(Date.now()/1000);
@@ -23,15 +32,54 @@ export const VerifyUser = async (rkv, rspo) => {
         }
         console.log(tokenData)
 
+        if (tokenData?.request_id?.length === 21) {
+            return rspo.status(504).send({err:"A link is already sent"})
+        }
+
+        if (email !== tokenData.email || username !== tokenData.username) {
+           return rspo.status(401).send({err:"Something went wrong"});
+        }
+        // console.log(uAresult)
+        //save the token is Database;
+
+        await database.query(`INSERT INTO merge_request (request_id, user_id, ip) VALUE (?, ?, ?);`,
+            [request_id, tokenData.user_id, crntIP]
+        )
 
         
-        const otp = Math.floor(100000 + Math.random() * 900000);
+        let send = await sendTheMail(
+            tokenData.email,
+            `Verify Merge request with ${tokenData.provider}`,
+            "merge",
+            {
+                provider:tokenData.provider,
+                username,
+                browser:`${uAresult.browser.name} ${uAresult.os.name}`,
+                city:geo?.city,
+                regione:geo?.region,
+                country:geo?.country,
+                verify_url:`${process.env.FRONTEND_URI}userfound/verifyEmail/${request_id}`
+            }
+        );
 
-        rspo.json({pass:"till now"})
-        //let send = await sendTheMail()
+        if (send.rejected.length === 0) {
+            let authToken = jwt.sign({...tokenData, request_id},process.env.jwt_sec, {expiresIn:"60m"});
+            let encryptedToken = await Encrypt(authToken);
+
+            rspo.cookie("mergeRequest", encryptedToken, {
+                httpOnly:true,
+                secure:true,
+                sameSite:"strict",
+                maxAge: 60 * 60 * 1000 // 10 minute
+            });
+            return rspo.json({pass:"till now",geo});
+        }
+
+        rspo.json({pass:"out"})
+        
     } catch (error) {
         console.log(error.message)
-        rspo.json({err:"Server side error"})
+        return rspo.json({err:"Server side error"})
     } finally {
         completeRequest(crntIP, crntAPI);
     }

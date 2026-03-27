@@ -118,6 +118,18 @@
     padding: 30px 18px 25px;
   }
 }
+ .info-box {
+    background: #1b1b1d;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 24px 0;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #bdbdbd;
+    box-shadow: 0 0 14px rgba(0, 0, 0, 0.35);
+  }
 
   </style>
 </head>
@@ -133,7 +145,11 @@
     We detected a request to merge your existing <strong>CodeCove</strong> account 
     with a {{provider}} login.
   </p>
-
+  <div class="info-box">
+        All info based on request Header & IP
+        <p><strong>Device:</strong> {{browser}}</p>
+        <p><strong>Location:</strong> {{city}}, {{region}}, {{country}}</p>
+      </div>
   <p>
     To securely approve this action, please <strong>Verify</strong>:
   </p>

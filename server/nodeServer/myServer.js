@@ -47,8 +47,8 @@ import { startGithubLogin, startGoogleLogin } from './Controllers/auth.controlle
 import {googleCallBackHandler} from './Routes/AdditionalAuth/google.services.js'
 import { githubCallBackHandler } from './Routes/AdditionalAuth/github.services.js';
 import { attachIP } from './lib/ipReader.js';
-import { table } from 'console';
-import { VerifyUser } from './Routes/AdditionalAuth/accountVerify.js';
+
+import { VerifyUserMail } from './Routes/AdditionalAuth/accountVerify.js';
 // import { addNewAchievement } from './Routes/Achievement/createAchievement.js';
 let myApp = express();
 myApp.use(cors({
@@ -128,7 +128,7 @@ myApp.get("/auth/google",RateLimiter,attachIP,checkRequest,startGoogleLogin);
 myApp.get("/auth/google/callback",RateLimiter,googleCallBackHandler);
 myApp.get("/auth/github",RateLimiter,attachIP,checkRequest,startGithubLogin);
 myApp.get("/auth/github/callback",RateLimiter,githubCallBackHandler);
-myApp.post("/sendMergeMail",RateLimiter,attachIP,checkRequest,VerifyUser)
+myApp.post("/sendMergeMail",RateLimiter,attachIP,checkRequest,VerifyUserMail)
 myApp.get("/GetUserInfo",RateLimiter,attachIP,checkRequest,Auth,CrntUser);
 myApp.get("/auth",RateLimiter,attachIP,checkRequest,checkAuth);
 myApp.post("/Logout",RateLimiter,attachIP,checkRequest,Auth,loggedMeOut);

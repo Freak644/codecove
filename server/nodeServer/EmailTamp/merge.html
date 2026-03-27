@@ -88,6 +88,26 @@
 .footer span {
   color: #888;
 }
+.btn {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 12px 28px;
+    background: #2d5cff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff !important;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 14px rgba(45,92,255,0.4);
+    transition: 0.25s ease;
+  }
+
+  .btn:hover {
+    background: #4472ff;
+    box-shadow: 0 6px 18px rgba(45,92,255,0.55);
+    transform: translateY(-2px);
+  }
 
 @media (max-width: 480px) {
   .otp-box {
@@ -115,13 +135,13 @@
   </p>
 
   <p>
-    To securely approve this action, please use the OTP below:
+    To securely approve this action, please <strong>Verify</strong>:
   </p>
 
-  <div class="otp-box">{{otp}}</div>
+    <a href="{{verify_url}}" class="btn">Merge with {{provider}}</a>
 
   <p class="note">
-    ⚠️ This OTP will expire in <strong>5 minutes</strong>.
+    ⚠️ This Link will expire in <strong>5 minutes</strong>.
   </p>
 
   <div class="divider"></div>

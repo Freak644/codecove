@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 // import { sendTheMail } from "../../Controllers/nodemailer";
 import { Decrypt } from "../../utils/Encryption.js";
+import {nanoid} from 'nanoid';
 import { completeRequest } from "../../Controllers/progressTracker.js";
 
 export const VerifyUser = async (rkv, rspo) => {
@@ -9,6 +10,7 @@ export const VerifyUser = async (rkv, rspo) => {
     let {username, email} = rkv.body;
 
     try {
+        let request_id = nanoid();
         let token = rkv.cookies.mergeRequest;
         if (!token) {
             return rspo.status(400).send({ err: "OTP Cookie is missing or expired" });
@@ -20,6 +22,8 @@ export const VerifyUser = async (rkv, rspo) => {
             return rspo.status(504).send({err:"Google Data is now Expire"});
         }
         console.log(tokenData)
+
+
         
         const otp = Math.floor(100000 + Math.random() * 900000);
 

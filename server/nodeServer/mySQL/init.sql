@@ -57,6 +57,15 @@ CREATE TABLE IF NOT EXISTS roles (
 ===================================
 */
 
+CREATE TABLE IF NOT EXISTS merge_request (
+  request_id CHAR(36) PRIMARY KEY,
+  user_id, CHAR(36) NOT NULL,
+  ip VARCHAR(45),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_user_id (user_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+)
+
 CREATE TABLE IF NOT EXISTS user_sessions (
   session_id CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
   id CHAR(36) NOT NULL,

@@ -17,10 +17,24 @@ export default function MergeType({pramsData}) {
                             </div>
                         </div>
 
-                        <div className="flex">
-                            <h2 className="text-2xl font-semibold text-gray-600">
-                                Verify! It's You.
-                            </h2>
+                        <h2 className="text-2xl font-semibold text-gray-600">
+                            Verify! it's you
+                        </h2>
+
+                        <div className="mt-6 bg-gray-800 flex items-center flex-col rounded-lg p-4 text-sm text-gray-600">
+                    
+                        <p className="mt-1">
+                            We can send a Verification like to your email
+                        </p>
+                        <p className="mt-1">
+                            Just in one click you will ready to go 
+                        </p>
+                        </div>
+
+                        <div className="mt-6 space-y-3">
+                        <button  className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-500 cursor-pointer text-white font-medium rounded-lg transition">
+                            Using Email Link🔗
+                        </button>
 
                         </div>
                     </div>

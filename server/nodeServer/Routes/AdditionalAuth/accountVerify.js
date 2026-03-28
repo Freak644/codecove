@@ -47,23 +47,23 @@ export const VerifyUserMail = async (rkv, rspo) => {
         )
 
         
-        let send = await sendTheMail(
-            tokenData.email,
-            `Verify Merge request with ${tokenData.provider}`,
-            "merge",
-            {
-                provider:tokenData.provider,
-                username,
-                browser:`${uAresult.browser.name} ${uAresult.os.name}`,
-                city:geo?.city,
-                regione:geo?.region,
-                country:geo?.country,
-                verify_url:`${process.env.FRONTEND_URI}userfound/verifyEmail/${request_id}`
-            }
-        );
+        // let send = await sendTheMail(
+        //     tokenData.email,
+        //     `Verify Merge request with ${tokenData.provider}`,
+        //     "merge",
+        //     {
+        //         provider:tokenData.provider,
+        //         username,
+        //         browser:`${uAresult.browser.name} ${uAresult.os.name}`,
+        //         city:geo?.city,
+        //         regione:geo?.region,
+        //         country:geo?.country,
+        //         verify_url:`${process.env.FRONTEND_URL}userfound/verifyEmail/${request_id}`
+        //     }
+        // );
 
         if (send.rejected.length === 0) {
-            let authToken = jwt.sign({...tokenData, request_id},process.env.jwt_sec, {expiresIn:"60m"});
+            let authToken = jwt.sign({...tokenData, request_id},process.env.jwt_sec);
             let encryptedToken = await Encrypt(authToken);
 
             rspo.cookie("mergeRequest", encryptedToken, {

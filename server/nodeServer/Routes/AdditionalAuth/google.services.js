@@ -2,9 +2,10 @@ import jwt from 'jsonwebtoken'
 import {envGoogle} from '../../lib/arctic.js';
 import { handleOAuthLogin } from './authService.js';
 import { Encrypt } from '../../utils/Encryption.js';
+import { completeRequest } from '../../Controllers/progressTracker.js';
 export const googleCallBackHandler = async (rkv, rspo) => {
-
-
+  const crntIP = rkv.userIp;
+  const crntAPI = rkv.originalUrl.split("?")[0];
   try {
     const {code, state} = rkv.query;
 
@@ -53,5 +54,7 @@ export const googleCallBackHandler = async (rkv, rspo) => {
   } catch (error) {
     console.log(error.message)
     rspo.json({err:"Server side error"})
+  } finally {
+    completeRequest(crntIP, crntAPI);
   } 
 }

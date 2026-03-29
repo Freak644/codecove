@@ -1,9 +1,11 @@
 
+import { completeRequest } from "../../Controllers/progressTracker.js";
 import { envGithub } from "../../lib/arctic.js";
 import { handleOAuthLogin } from "./authService.js";
 
 export const githubCallBackHandler = async (rkv, rspo) => {
-    
+    const crntIP = rkv.userIp;
+    const crntAPI = rkv.originalUrl.split("?")[0];
     try {
         const {code, state} = rkv.query;
 
@@ -63,5 +65,7 @@ export const githubCallBackHandler = async (rkv, rspo) => {
     } catch (error) {
         console.log(error.message);
         rspo.json({err:"Server Side error"})
+    } finally {
+        completeRequest(crntIP, crntAPI);
     }
 }

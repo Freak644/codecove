@@ -12,7 +12,7 @@ export const VerifyUserMail = async (rkv, rspo) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     const geo = geoip.lookup(crntIP);
     const uAresult = new UAParser(rkv.headers["user-agent"] || "").getResult();
-    let {email, username} = rkv.body;
+
 
     try {
         let request_id = nanoid();
@@ -30,15 +30,6 @@ export const VerifyUserMail = async (rkv, rspo) => {
         if (tokenData.exp<decodedTime) {
             return rspo.status(504).send({err:"Google Data is now Expire"});
         }
-        console.log(tokenData)
-
-        if (tokenData?.request_id?.length === 21) {
-            return rspo.status(504).send({err:"A link is already sent"})
-        }
-
-        if (email !== tokenData.email || username !== tokenData.username) {
-           return rspo.status(401).send({err:"Something went wrong"});
-        }
         // console.log(uAresult)
         //save the token is Database;
 
@@ -47,20 +38,20 @@ export const VerifyUserMail = async (rkv, rspo) => {
         )
 
         
-        // let send = await sendTheMail(
-        //     tokenData.email,
-        //     `Verify Merge request with ${tokenData.provider}`,
-        //     "merge",
-        //     {
-        //         provider:tokenData.provider,
-        //         username,
-        //         browser:`${uAresult.browser.name} ${uAresult.os.name}`,
-        //         city:geo?.city,
-        //         regione:geo?.region,
-        //         country:geo?.country,
-        //         verify_url:`${process.env.FRONTEND_URL}userfound/verifyEmail/${request_id}`
-        //     }
-        // );
+        let send = await sendTheMail(
+            tokenData.email,
+            `Verify Merge request with ${tokenData.provider}`,
+            "merge",
+            {
+                provider:tokenData.provider,
+                username:tokenData.username,
+                browser:`${uAresult.browser.name} ${uAresult.os.name}`,
+                city:geo?.city,
+                regione:geo?.region,
+                country:geo?.country,
+                verify_url:`${process.env.BACKEND_URL}verify/mergeToken?token=${encodeURIComponent(request_id)}`
+            }
+        );
 
         if (send.rejected.length === 0) {
             let authToken = jwt.sign({...tokenData, request_id},process.env.jwt_sec);
@@ -72,10 +63,11 @@ export const VerifyUserMail = async (rkv, rspo) => {
                 sameSite:"strict",
                 maxAge: 60 * 60 * 1000 // 10 minute
             });
-            return rspo.json({pass:"till now",geo});
+            return rspo.json({pass:"Email Sent"});
+        } else {
+            return rspo.json({err:"Error with email server"})
         }
 
-        rspo.json({pass:"out"})
         
     } catch (error) {
         console.log(error.message)

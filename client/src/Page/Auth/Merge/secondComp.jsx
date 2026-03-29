@@ -6,10 +6,7 @@ export default function MergeType({pramsData}) {
     const sendMail = async () => {
         setCalling(true);
         try {
-            let rkv = await axios.post("/myServer/sendMergeMail", {
-                username: pramsData.username,
-                email: pramsData.email
-            });
+            let rkv = await axios("/myServer/sendMergeMail");
             console.log(rkv)
             toast.success("Check Your Inbox")
         } catch (error) {

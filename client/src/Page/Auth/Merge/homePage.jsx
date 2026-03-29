@@ -4,17 +4,6 @@ import { toast } from "react-toastify";
 export default function HomePage({pramsData, setTab}) {
     
     const toggleEmail = async () => {
-        
-        // try {
-        //     await axios.post("/myServer/sendMergeMail", {
-        //         username: pramsData.username,
-        //         email: pramsData.email
-        //     });
-        //     toast.success("Check Your Inbox")
-        // } catch (error) {
-        //     console.log(error.response.data)
-        //     toast.info(error.response?.data?.err);
-        // }
         setTab("second")
     }
     return (

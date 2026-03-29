@@ -15,21 +15,29 @@ export const VerifyMergeToken = async (rkv, rspo) => {
             throw new Error("Token not valid");   
         }
         console.log(requestInfo[0])
-        let [created_at] = requestInfo[0];
+        let {created_at, user_id, isUsed} = requestInfo[0];
         // CONVERT THE TIME INTO TIME STR
-        let timeFromDb = new Date(created_at);
-        let now = new Date.now();
-        let diffms = now - timeFromDb;
-        let diffInM = diffms / (1000 * 60)
-        if (diffInM > 5) {
-            throw new Error("This token is exp");
+        // let timeFromDb = new Date(created_at);
+        // let now = Date.now();
+        // let diffms = now - timeFromDb;
+        // let diffInM = diffms / (1000 * 60)
+        // if (diffInM > 5) {
+        //     throw new Error("This token is exp");
             
+        // }
+
+        //check if the user have CodeCove account
+        const [userInfo] = await database.query("SELECT password FROM users WHERE id = ? LIMIT 1",[user_id]);
+        let {password} = userInfo[0];
+        if (password !== null) {
+            return rspo.redirect(`${process.env.FRONTEND_URL}userfound?code=${encodeURIComponent("password")}`)
         }
+
 
         rspo.json({pas:"till now"});
     } catch (error) {
         console.log(error.message)
-        return rkv.redirect(
+        rspo.redirect(
             `${process.env.FRONTEND_URL}?err=${encodeURIComponent(error.message)}`
         );
     } finally {

@@ -133,7 +133,7 @@ myApp.get("/sendMergeMail",RateLimiter,attachIP,checkRequest,VerifyUserMail);
 myApp.get("/verify/mergeToken",RateLimiter,attachIP,checkRequest,VerifyMergeToken) 
 myApp.get("/GetUserInfo",RateLimiter,attachIP,checkRequest,Auth,CrntUser);
 myApp.get("/auth",RateLimiter,attachIP,checkRequest,checkAuth);
-myApp.post("/Logout",RateLimiter,attachIP,checkRequest,Auth,loggedMeOut);
+myApp.get("/Logout",RateLimiter,attachIP,checkRequest,Auth,loggedMeOut);
 myApp.get("/checkActive",RateLimiter,attachIP,checkRequest,ActivityInfo);
 myApp.put("/upDatePass",RateLimiter,attachIP,checkRequest,changePassSecure);
 myApp.post("/ForgotPassword",RateLimiter,attachIP,checkRequest,forgotPass);

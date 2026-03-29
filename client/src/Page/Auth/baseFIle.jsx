@@ -6,11 +6,20 @@ import LoginCon from "./loginEl";
 import verifyZu from "../../lib/verifyZu";
 import ForgotEl from "./forgotPass";
 import banner from '../../assets/Banner/NewImage.webp'
+import { useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
 export default function LoginEL() {
+    let [searchParams] = useSearchParams();
+    const [err] = useState(decodeURIComponent(searchParams.get("err")))
     const {currentTab,setTab} = FaceToggle();
     let [face,setFace] = useState(currentTab);
     const {verifyTab} = verifyZu();
     const [isVerifying,setVStatus] = useState(verifyTab);
+    useEffect(()=>{
+        if (err.length > 5) {
+            toast.warning(err)
+        }
+    },[err])
 
     useEffect(()=>{
         setVStatus(verifyTab);

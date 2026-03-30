@@ -27,7 +27,7 @@ import { CreatePost } from './Routes/Promulgation/createPost.js';
 import { GetPosts } from './Routes/usersPOSTAPIs/readThings/getPost.js';
 import { commentSocket } from './socketIO/postSocket.js';
 import { EmailRateLimiter, RateLimiter, usernameCheckLimiter, verifyEmailLiter } from './Controllers/rateLimits.js';
-import { checkRequest, startCleaner } from './Controllers/progressTracker.js';
+import { checkRequest } from './Controllers/progressTracker.js';
 import { resetPassword, verification } from './Routes/Secure/userVerification/verificationAPI.js';
 import { likeComment, savePost, starPost } from './Routes/usersPOSTAPIs/writeThings/likePost.js';
 import { DeleteCommentAPI, miniToggleDy, reportCommentAPI } from './Routes/usersPOSTAPIs/writeThings/miniToggleAPIs.js';
@@ -189,7 +189,7 @@ export function getIO() {
 
 
 myServer.listen(port,()=>{
-    startCleaner();
+    //startCleaner();
     console.log(chalk.yellow.italic.bold("Server + Socket.IO running on " + port));
 })
 

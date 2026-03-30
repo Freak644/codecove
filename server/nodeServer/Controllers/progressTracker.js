@@ -1,100 +1,83 @@
-let activeRequests = new Map();     // "ip:route" → timestamp
-let ipRequestCount = new Map();     // ip → completed count
-let blockedIPs = new Map();         // ip → unblock timestamp
-let activeRequestBurst = new Map(); // ip → active pending count
+import redis from "../lib/redis.js";
 
-const checkRequest = (rkv, rspo, next) => {
-    const crntIP = rkv.userIp;
-    const crntAPI = rkv.originalUrl.split("?")[0];
-    const key = `${crntIP}:${crntAPI}`;
-    const now = Date.now();
-    console.log({check:crntIP,api:crntAPI})
-    if (blockedIPs.has(crntIP) && blockedIPs.get(crntIP) > now) {
-        return rspo.status(401).json({ err: "Your IP is blocked for 1 hour" });
+const ROUTE_LIMITS = {
+  "/login": { burst: 5, rate: 20 },
+};
+
+const DEFAULT_LIMIT = { burst: 30, rate: 100 };
+
+export const checkRequest = async (req, res, next) => {
+
+    const ip = req.userIp || req.ip;
+    const route = req.originalUrl.split("?")[0];
+    console.log("start"+route)
+    const { burst, rate } = ROUTE_LIMITS[route] || DEFAULT_LIMIT;
+
+    // 🧱 1. Block check
+    if (await redis.exists(`block:${ip}`)) {
+      return res.status(403).json({ err: "IP blocked" });
     }
 
-    // Burst protector: check active pending requests for this IP
-    let pendingCount = activeRequestBurst.get(crntIP) || 0;
-    activeRequestBurst.set(crntIP, pendingCount + 1);
+    // 🔁 2. Duplicate prevention (still TTL based)
+    const dupKey = `req:${ip}:${route}`;
+    const isNew = await redis.set(dupKey, "1", {
+      NX: true,
+      EX: 15 // safety fallback
+    });
 
-    if (pendingCount >= 30) {
-        blockedIPs.set(crntIP, now + 60 * 60 * 1000); 
-        activeRequestBurst.delete(crntIP);
-        return rspo.status(429).json({ err: "IP auto-blocked due to spam flood" });
+    if (!isNew) {
+      return res.status(429).json({ err: "Duplicate request" });
     }
 
-    if (activeRequests.has(key)) {
-        return rspo.status(429).json({ err: "Duplicate! request pending" });
+    // ⚡ 3. TRUE concurrent request tracking
+    const burstKey = `burst:${ip}`;
+    const burstCount = await redis.incr(burstKey);
+
+    if (burstCount === 1) {
+      await redis.expire(burstKey, 60); // fallback cleanup
     }
 
-    activeRequests.set(key, now);
+    if (burstCount > burst) {
+      await redis.set(`block:${ip}`, "1", { EX: 3600 });
+      return res.status(429).json({ err: "Too many concurrent requests" });
+    }
 
-    activeRequestBurst.set(crntIP, pendingCount + 1);
+    // 📊 4. Rate limit (still TTL window-based)
+    const rateKey = `rate:${ip}`;
+    const rateCount = await redis.incr(rateKey);
 
+    if (rateCount === 1) {
+      await redis.expire(rateKey, 60);
+    }
+
+    if (rateCount > rate) {
+      await redis.set(`block:${ip}`, "1", { EX: 3600 });
+      return res.status(429).json({ err: "Rate limit exceeded" });
+    }
+
+    // ✅ Attach cleanup hook (THIS IS YOUR completeRequest)
+  
 
     next();
 };
 
-const completeRequest = (ip, route) => {
-    const key = `${ip}:${route}`;
-    const now = Date.now();
-    console.log(ip,route)
-    activeRequests.delete(key);
+export const completeRequest = async (ip, route) => {
+  try {
+    const dupKey = `req:${ip}:${route}`;
+    const burstKey = `burst:${ip}`;
+    console.log("close"+dupKey)
+    // Remove duplicate lock immediately
+    await redis.del(dupKey);
 
+    // Decrease active request count
+    const current = await redis.decr(burstKey);
 
-    let pending = activeRequestBurst.get(ip) || 0;
-    if (pending > 0) activeRequestBurst.set(ip, pending - 1);
-
-
-    let count = ipRequestCount.get(ip) || 0;
-    count++;
-    ipRequestCount.set(ip, count);
-
-    if (count >= 100) {
-        blockedIPs.set(ip, now + 60 * 60 * 1000); // 1 hour
-        ipRequestCount.delete(ip);
-        activeRequestBurst.delete(ip);
+    // Safety: prevent negative values
+    if (current <= 0) {
+      await redis.del(burstKey);
     }
+
+  } catch (err) {
+    console.error("CompleteRequest error:", err);
+  }
 };
-
-const startCleaner = () => {
-    setInterval(() => {
-        const now = Date.now(); 
-        const localTime = new Date(now).toLocaleString();
-
-        console.log(`${localTime} Server clean Buffs`)
-
-        for (let [key, timestamp] of activeRequests) {
-            if (now - timestamp > 10000) {
-                activeRequests.delete(key);
-
-                const ip = key.split(":")[0];
-                let pending = activeRequestBurst.get(ip) || 0;
-                if (pending > 0) activeRequestBurst.set(ip, pending - 1);
-            }
-        }
-
-        for (let [ip, expiry] of blockedIPs) {
-            if (now > expiry) blockedIPs.delete(ip);
-        }
-
-        ipRequestCount.clear();
-
-    }, 60000);
-};
-
-export {startCleaner,checkRequest,completeRequest}
-
-
-/*
-Not unbecoming men that strove with Gods.
-The lights begin to twinkle from the rocks; The long day wanes; the slow moon climbs; the deep Moans round with many voices. Come, my friends.
-'T is not too late to seek a newer world.
-Push off, and sitting well in order smite
-The sounding furrows; for my purpose holds To sail beyond the sunset, and the baths
-Of all the western stars, until I die. It may be that the gulfs will wash us down;
-It may be we shall touch the Happy Isles, And see the great Achilles, whom we knew.
-Tho' much is taken, much abides; and tho'
-We are not now that strength which in old days Moved earth and heaven, that which we are, we are,
-One equal temper of heroic hearts, Made weak by time and fate, but strong in will To strive, to seek, to find, and not to yield.
-*/

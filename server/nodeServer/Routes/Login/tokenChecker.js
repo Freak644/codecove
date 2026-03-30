@@ -73,6 +73,6 @@ export const checkAuth = async (rkv,rspo) => {
         console.log(error.message)
         rspo.status(401).send({loggedIn:true,details:error.message})
     } finally {
-        completeRequest(crntIP,crntAPI)
+        completeRequest(crntIP,crntAPI);
     }
 }

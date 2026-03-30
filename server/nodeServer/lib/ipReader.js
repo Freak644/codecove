@@ -8,7 +8,7 @@ export const attachIP = (rkv, rspo, next) => {
   ip = ip.replace(/^::ffff:/, "");
   if (ip === "::1") ip = "127.0.0.1";
 
-  console.log(ip)
+
   rkv.userIp = ip;
 
   next();

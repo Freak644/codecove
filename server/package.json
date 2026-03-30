@@ -1,0 +1,42 @@
+{
+  "name": "codecove-server",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "myServer.js",
+  "scripts": {
+    "dev": "nodemon nodeServer/myServer.js",
+    "start": "node myServer.js",
+    "migrate": "node nodeServer/migrate.js"
+  },
+  "dependencies": {
+    "arctic": "^3.7.0",
+    "bcrypt": "^6.0.0",
+    "chalk": "^5.6.2",
+    "cloudinary": "^2.8.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.2.1",
+    "express-session": "^1.19.0",
+    "file-type": "^21.3.0",
+    "geoip-lite": "^1.4.10",
+    "handlebars": "^4.7.8",
+    "isomorphic-dompurify": "^3.7.1",
+    "jsdom": "^27.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "mysql2": "^3.14.5",
+    "nanoid": "^5.1.6",
+    "node-fetch": "^3.3.2",
+    "nodemailer": "^8.0.4",
+    "p-limit": "^7.3.0",
+    "request-ip": "^3.3.0",
+    "sharp": "^0.34.4",
+    "socket.io": "^4.8.1",
+    "ua-parser-js": "^2.0.6",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

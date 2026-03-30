@@ -53,14 +53,14 @@ import { VerifyMergeToken } from './Routes/AdditionalAuth/handleMerge.js';
 // import { addNewAchievement } from './Routes/Achievement/createAchievement.js';
 let myApp = express();
 myApp.use(cors({
-  origin: "http://localhost:3221",
+  origin: "http://localhost:3221/",
   credentials: true
 }));
 myApp.use(express.json({limit:"20mb"}));
 myApp.use(requestIp.mw())
 myApp.set("trust proxy",1)
 myApp.use(cookieParser());
-myApp.use("/Images",express.static('Images'));
+// myApp.use("/Images",express.static('Images'));
 
 myApp.use(session({
   secret:process.env.jwt_sec,

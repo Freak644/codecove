@@ -1,5 +1,7 @@
 import { database } from "../../Controllers/myConnectionFile.js";
 import { completeRequest } from "../../Controllers/progressTracker.js";
+import { Decrypt } from "../../utils/Encryption.js";
+import jwt from 'jsonwebtoken';
 
 export const VerifyMergeToken = async (rkv, rspo) => {
     const crntIP = rkv.userIp;
@@ -14,7 +16,7 @@ export const VerifyMergeToken = async (rkv, rspo) => {
         if (requestInfo.length === 0 ) {
             throw new Error("Token not valid");   
         }
-        console.log(requestInfo[0])
+   
         let {created_at, user_id, isUsed} = requestInfo[0];
         // CONVERT THE TIME INTO TIME STR
         // let timeFromDb = new Date(created_at);
@@ -29,8 +31,23 @@ export const VerifyMergeToken = async (rkv, rspo) => {
         //check if the user have CodeCove account
         const [userInfo] = await database.query("SELECT password FROM users WHERE id = ? LIMIT 1",[user_id]);
         let {password} = userInfo[0];
+
         if (password !== null) {
-            return rspo.redirect(`${process.env.FRONTEND_URL}userfound?code=${encodeURIComponent("password")}`)
+            let token = rkv.session.Token;
+
+            if (!token) {
+                return rspo.status(400).send({ err: "Session Cookie is missing or expired" });
+            }
+
+            // decoding the token
+            let decryptedToken = await Decrypt(token);
+            let tokenData = jwt.decode(decryptedToken, process.env.jwt_sec);
+            let decodedTime = Math.floor(Date.now()/1000);
+            if (tokenData.exp<decodedTime) {
+                return rspo.status(504).send({err:"Google Data is now Expire"});
+            }
+            console.log(tokenData)
+            return rspo.redirect(`${process.env.FRONTEND_URL}userfound?data=${encodeURIComponent()}`)
         }
 
 

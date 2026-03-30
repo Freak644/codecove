@@ -17,10 +17,11 @@ export const VerifyUserMail = async (rkv, rspo) => {
     try {
         let request_id = nanoid();
         
-        let token = rkv.cookies.mergeRequest;
+        let token = rkv.session.Token;
+        console.log(rkv.session)
 
         if (!token) {
-            return rspo.status(400).send({ err: "OTP Cookie is missing or expired" });
+            return rspo.status(400).send({ err: "Session Cookie is missing or expired" });
         }
 
         // decoding the token
@@ -57,12 +58,7 @@ export const VerifyUserMail = async (rkv, rspo) => {
             let authToken = jwt.sign({...tokenData, request_id},process.env.jwt_sec);
             let encryptedToken = await Encrypt(authToken);
 
-            rspo.cookie("mergeRequest", encryptedToken, {
-                httpOnly:true,
-                secure:true,
-                sameSite:"strict",
-                maxAge: 60 * 60 * 1000 // 10 minute
-            });
+            rkv.session.Token = encryptedToken;
             return rspo.json({pass:"Email Sent"});
         } else {
             return rspo.json({err:"Error with email server"})

@@ -7,14 +7,12 @@ import Password from "./enterPassword";
 
 export default function MeargeBasse() {
     let [searchParams] = useSearchParams();
-    const [pramsData] = useState(JSON.parse(decodeURIComponent(searchParams.get("data"))));
-    const code = searchParams.get("code");
+    const [pramsData] = useState(JSON.parse(decodeURIComponent(searchParams.get("data"))) || {});
+  
 
     const [cnrtTab, setTab] = useState("home");
 
-    useEffect(()=> {
-        setTab(code)
-    },[code])
+
 
 
     return(

@@ -38,12 +38,7 @@ export const googleCallBackHandler = async (rkv, rspo) => {
           let authToken = jwt.sign({...authData, user_id, username, provider_name},process.env.jwt_sec, {expiresIn:"60m"});
           let encryptedToken = await Encrypt(authToken);
 
-          rspo.cookie("mergeRequest", encryptedToken, {
-            httpOnly:true,
-            secure:true,
-            sameSite:"strict",
-            maxAge: 60 * 60 * 1000 // 10 minute
-          });
+          rkv.session.Token = encryptedToken;
           rspo.redirect(
               `${process.env.FRONTEND_URL}userfound?data=${encodeURIComponent(JSON.stringify({username,avatar,provider_name, crntProvider:"Google", email:authData.email, crntMergeAvatar:authData.avatar}))}`
           )

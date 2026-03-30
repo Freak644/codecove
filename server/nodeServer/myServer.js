@@ -40,7 +40,6 @@ import { followAPI } from './Routes/editProfileAPIs/followUnfollow.js';
 import { changeBioSocket } from './socketIO/userProfileSocket.js';
 import { acceptSolution } from './Routes/Achievement/writeAchievemtns/acceptSolution.js';
 import { getPost } from './Routes/usersPOSTAPIs/readThings/getSiglePost.js';
-import router from './utils/tempFile.js';
 import { Chartdata } from './Routes/usersPOSTAPIs/readThings/getChartData.js';
 import { DeletePost, ReportPost } from './Routes/usersPOSTAPIs/writeThings/reportAndDelete.js';
 import { startGithubLogin, startGoogleLogin } from './Controllers/auth.controller.js';
@@ -50,6 +49,7 @@ import { attachIP } from './lib/ipReader.js';
 
 import { VerifyUserMail } from './Routes/AdditionalAuth/accountVerify.js';
 import { VerifyMergeToken } from './Routes/AdditionalAuth/handleMerge.js';
+import { connectRedis } from './lib/redis.js';
 // import { addNewAchievement } from './Routes/Achievement/createAchievement.js';
 let myApp = express();
 myApp.use(cors({
@@ -120,6 +120,8 @@ const upload = multer({
     limits: { fileSize: 3 * 1024 * 1024 } 
 });
 
+
+
 myApp.get("/getUsername",usernameCheckLimiter,attachIP,checkRequest,getUsers);
 myApp.post("/sendVerifyEmail",EmailRateLimiter,attachIP,checkRequest,SendEmailVerify);
 myApp.post("/verifyEmail",verifyEmailLiter,attachIP,checkRequest,verifyEmail);
@@ -161,7 +163,7 @@ myApp.post("/writePost/reportPost",RateLimiter,attachIP,checkRequest,Auth,Report
 myApp.delete("/writePost/deletePost",RateLimiter,attachIP,checkRequest,Auth,DeletePost);
 // myApp.post("/createAchievement",addNewAchievement);
 
-
+await connectRedis()
 
 const myServer = http.createServer(myApp);
 const io = new Server(myServer, {

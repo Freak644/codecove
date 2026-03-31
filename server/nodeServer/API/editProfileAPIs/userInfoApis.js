@@ -1,7 +1,7 @@
 import { fileTypeFromBuffer } from "file-type";
 import sharp from "sharp";
 import { database } from "../../Controllers/myConnectionFile.js";
-import { getIO } from "../../myServer.js";
+import { getIO } from "../../m.js";
 import fs from 'fs';
 import path from 'path';
 import { completeRequest } from "../../Controllers/progressTracker.js";

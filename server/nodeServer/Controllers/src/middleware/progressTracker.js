@@ -1,4 +1,4 @@
-import redis from "../lib/redis.js";
+import redis from "./src/config/redis.js";
 
 const ROUTE_LIMITS = {
   "/login": { burst: 5, rate: 20 },
@@ -55,8 +55,7 @@ export const checkRequest = async (req, res, next) => {
       return res.status(429).json({ err: "Rate limit exceeded" });
     }
 
-    // ✅ Attach cleanup hook (THIS IS YOUR completeRequest)
-  
+
 
     next();
 };

@@ -4,7 +4,7 @@ import {Server} from 'socket.io';
 import chalk from 'chalk';
 import cookieParser from 'cookie-parser';
 import requestIp from 'request-ip';
-import {diskUpload} from './Controllers/diskMulter.js'
+import {diskUpload} from './Controllers/src/middleware/diskMulter.js'
 import dotenv from 'dotenv';
 import cors from 'cors'
 dotenv.config();
@@ -49,7 +49,7 @@ import { attachIP } from './lib/ipReader.js';
 
 import { VerifyUserMail } from './Routes/AdditionalAuth/accountVerify.js';
 import { VerifyMergeToken } from './Routes/AdditionalAuth/handleMerge.js';
-import { connectRedis } from './lib/redis.js';
+import { connectRedis } from './Controllers/src/config/redis.js';
 // import { addNewAchievement } from './Routes/Achievement/createAchievement.js';
 let myApp = express();
 myApp.use(cors({
@@ -69,33 +69,7 @@ myApp.use(session({
 }))
 
 
-myApp.use((req, res, next) => {
-  const controller = new AbortController();
-  req.abortController = controller;
 
-  const TIMEOUT = 60_000; // 60 seconds (better than 5 min)
-
-  const timer = setTimeout(() => {
-    controller.abort();
-
-    if (!res.headersSent) {
-      res.status(408).json({ error: "Request Timeout" });
-    }
-  }, TIMEOUT);
-
-  // Clear timer when response finishes normally
-  res.on("finish", () => {
-    clearTimeout(timer);
-  });
-
-  // Clear timer if client aborts early
-  req.on("aborted", () => {
-    controller.abort();
-    clearTimeout(timer);
-  });
-
-  next();
-});
 
 
 

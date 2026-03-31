@@ -1,6 +1,6 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
 import { completeRequest } from "../../../Controllers/progressTracker.js";
-import {getIO} from '../../../myServer.js';
+import {getIO} from '../../../m.js';
 export const miniToggleDy = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];

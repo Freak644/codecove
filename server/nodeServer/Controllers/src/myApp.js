@@ -21,5 +21,7 @@ myApp.use("trust proxy",1);
 myApp.use(sessionConfig);
 myApp.use(timeOut);
 
+myApp.use("/User")
+
 
 export default myApp;

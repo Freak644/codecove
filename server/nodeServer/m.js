@@ -96,25 +96,25 @@ const upload = multer({
 
 
 
-myApp.get("/getUsername",usernameCheckLimiter,attachIP,checkRequest,getUsers);
-myApp.post("/sendVerifyEmail",EmailRateLimiter,attachIP,checkRequest,SendEmailVerify);
-myApp.post("/verifyEmail",verifyEmailLiter,attachIP,checkRequest,verifyEmail);
-myApp.post("/CreateUser",RateLimiter,attachIP,checkRequest,upload.single("avatar"),CreateUser);
-myApp.post("/login",RateLimiter,attachIP,checkRequest,LoginAPI);
+//myApp.get("/getUsername",usernameCheckLimiter,attachIP,checkRequest,getUsers);
+//myApp.post("/sendVerifyEmail",EmailRateLimiter,attachIP,checkRequest,SendEmailVerify);
+//myApp.post("/verifyEmail",verifyEmailLiter,attachIP,checkRequest,verifyEmail);
+//myApp.post("/CreateUser",RateLimiter,attachIP,checkRequest,upload.single("avatar"),CreateUser);
+//myApp.post("/login",RateLimiter,attachIP,checkRequest,LoginAPI);
 myApp.get("/auth/google",RateLimiter,attachIP,checkRequest,startGoogleLogin);
 myApp.get("/auth/google/callback",RateLimiter, attachIP, checkRequest,googleCallBackHandler);
 myApp.get("/auth/github",RateLimiter,attachIP,checkRequest,startGithubLogin);
 myApp.get("/auth/github/callback",RateLimiter, attachIP, checkRequest,githubCallBackHandler);
-myApp.get("/sendMergeMail",RateLimiter,attachIP,checkRequest,VerifyUserMail);
+//myApp.get("/sendMergeMail",RateLimiter,attachIP,checkRequest,VerifyUserMail);
 myApp.get("/verify/mergeToken",RateLimiter,attachIP,checkRequest,VerifyMergeToken) 
-myApp.get("/GetUserInfo",RateLimiter,attachIP,checkRequest,Auth,CrntUser);
+//myApp.get("/GetUserInfo",RateLimiter,attachIP,checkRequest,Auth,CrntUser);
 myApp.get("/auth",RateLimiter,attachIP,checkRequest,checkAuth);
-myApp.get("/Logout",RateLimiter,attachIP,checkRequest,Auth,loggedMeOut);
-myApp.get("/checkActive",RateLimiter,attachIP,checkRequest,ActivityInfo);
-myApp.put("/upDatePass",RateLimiter,attachIP,checkRequest,changePassSecure);
-myApp.post("/ForgotPassword",RateLimiter,attachIP,checkRequest,forgotPass);
-myApp.post("/ForgotPassword/verify",RateLimiter,attachIP,checkRequest,verification);
-myApp.put("/ForgotPassword/reset",RateLimiter,attachIP,checkRequest,resetPassword);
+//myApp.get("/Logout",RateLimiter,attachIP,checkRequest,Auth,loggedMeOut);
+//myApp.get("/checkActive",RateLimiter,attachIP,checkRequest,ActivityInfo);
+//myApp.put("/upDatePass",RateLimiter,attachIP,checkRequest,changePassSecure);
+//myApp.post("/ForgotPassword",RateLimiter,attachIP,checkRequest,forgotPass);
+//myApp.post("/ForgotPassword/verify",RateLimiter,attachIP,checkRequest,verification);
+//myApp.put("/ForgotPassword/reset",RateLimiter,attachIP,checkRequest,resetPassword);
 myApp.post("/CreatePost",RateLimiter,attachIP,checkRequest,diskUpload.array("postFiles",5),Auth,CreatePost);
 myApp.put("/PostControll/toggle",RateLimiter,attachIP,checkRequest,Auth,miniToggleDy)
 myApp.get("/getPost",RateLimiter,attachIP,checkRequest,Auth,GetPosts);
@@ -123,7 +123,7 @@ myApp.post("/writePost/addStar",RateLimiter,attachIP,checkRequest,Auth,starPost)
 myApp.post("/writePost/addComment",RateLimiter,attachIP,checkRequest,Auth,CommentAPI)
 myApp.get("/readPost/getComment",RateLimiter,attachIP,checkRequest,Auth,getComment);
 myApp.post("/writePost/addLikeComment",RateLimiter,attachIP,checkRequest,Auth,likeComment);
-myApp.get("/readUser/getUserInfo",RateLimiter,attachIP,checkRequest,Auth,getUserinfo);
+// myApp.get("/readUser/getUserInfo",RateLimiter,attachIP,checkRequest,Auth,getUserinfo);
 myApp.put("/writeUser/changeBio",RateLimiter,attachIP,checkRequest,Auth,changeBio);
 myApp.post("/writeUser/follow",RateLimiter,attachIP,checkRequest,Auth,followAPI);
 myApp.put("/writeUser/changeDP",RateLimiter,attachIP,checkRequest,upload.single("avatar"),Auth,changeDP);

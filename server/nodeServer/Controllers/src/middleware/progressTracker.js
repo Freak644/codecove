@@ -1,4 +1,4 @@
-import redis from "./src/config/redis.js";
+import redis from "../config/redis.js";
 
 const ROUTE_LIMITS = {
   "/login": { burst: 5, rate: 20 },

@@ -1,9 +1,9 @@
 import { database } from "../../Controllers/myConnectionFile.js";
-import { sendTheMail } from "../../Controllers/nodemailer.js";
+import { sendTheMail } from "../../Controllers/EmailService/nodemailer.js";
 import geoip from 'geoip-lite';
 import { UAParser } from "ua-parser-js";
 import { nanoid } from "nanoid";
-import { completeRequest } from "../../Controllers/progressTracker.js";
+import { completeRequest } from "../../Controllers/src/middleware/progressTracker.js";
 export const forgotPass = async (rkv,rspo) => {
     const miniIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];

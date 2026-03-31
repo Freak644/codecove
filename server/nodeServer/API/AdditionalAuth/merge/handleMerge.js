@@ -1,6 +1,6 @@
-import { database } from "../../Controllers/myConnectionFile.js";
-import { completeRequest } from "../../Controllers/progressTracker.js";
-import { Decrypt } from "../../utils/Encryption.js";
+import { database } from "../../../Controllers/myConnectionFile.js";
+import { completeRequest } from "../../../Controllers/src/middleware/progressTracker.js";
+import { Decrypt } from "../../../utils/Encryption.js";
 import jwt from 'jsonwebtoken';
 
 export const VerifyMergeToken = async (rkv, rspo) => {

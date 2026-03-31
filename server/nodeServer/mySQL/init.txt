@@ -284,7 +284,7 @@ import { FileChecker } from './fileChecker.js';
 import  {nanoid} from 'nanoid';
 import { database } from '../../Controllers/myConnectionFile.js';
 import {getIO} from '../../myServer.js';
-import { completeRequest } from '../../Controllers/progressTracker.js';
+import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
 /* THe flow will be 
 React (FormData)
    ↓

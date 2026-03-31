@@ -2,7 +2,7 @@ import geoip from 'geoip-lite';
 import {UAParser} from "ua-parser-js";
 import { database } from '../../Controllers/myConnectionFile.js';
 import {nanoid} from 'nanoid'
-import { completeRequest } from '../../Controllers/progressTracker.js';
+import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
 export const SaveThisSession = async (rkv,userID) => {
     let session_id = nanoid();
     const ip = rkv.userIp;

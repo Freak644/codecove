@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { database } from "../../../Controllers/myConnectionFile.js";
 import { sendChangePassMail } from "../../../utils/sendChangeMail.js";
 import { nanoid } from "nanoid";
-import { completeRequest } from "../../../Controllers/progressTracker.js";
+import { completeRequest } from "../../../Controllers/src/middleware/progressTracker.js";
 const verification = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];

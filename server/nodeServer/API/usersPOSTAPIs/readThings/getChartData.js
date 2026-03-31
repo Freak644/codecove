@@ -1,5 +1,5 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
-import { completeRequest } from "../../../Controllers/progressTracker.js";
+import { completeRequest } from "../../../Controllers/src/middleware/progressTracker.js";
 
 export const Chartdata = async (rkv,rspo) => {
     const crntIP = rkv.userIp;

@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import {envGoogle} from '../../lib/arctic.js';
 import { handleOAuthLogin } from './authService.js';
 import { Encrypt } from '../../utils/Encryption.js';
-import { completeRequest } from '../../Controllers/progressTracker.js';
+import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
 export const googleCallBackHandler = async (rkv, rspo) => {
   const crntIP = rkv.userIp;
   const crntAPI = rkv.originalUrl.split("?")[0];

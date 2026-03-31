@@ -2,7 +2,7 @@ import { database } from "../../Controllers/myConnectionFile.js";
 import bcrypt from 'bcrypt';
 import { nanoid } from "nanoid";
 import { sendChangePassMail } from "../../utils/sendChangeMail.js";
-import { completeRequest } from "../../Controllers/progressTracker.js";
+import { completeRequest } from "../../Controllers/src/middleware/progressTracker.js";
 export const changePassSecure = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];

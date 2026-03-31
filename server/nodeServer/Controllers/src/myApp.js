@@ -5,6 +5,9 @@ import requestIp from 'request-ip';
 
 import sessionConfig from './config/session.js';
 import {timeOut} from './middleware/timeOut.js';
+import { readRoutes, userRoutes, writeRoutes } from './Routes/user.route.js';
+import { authRoute } from './Routes/auth.Route.js';
+import { readPost, writePost } from './Routes/post.Route.js';
 
 
 const myApp = express();
@@ -17,11 +20,17 @@ myApp.use(cors({
 myApp.use(express.json({limit:"20mb"}));
 myApp.use(cookieParser());
 myApp.use(requestIp.mw());
-myApp.use("trust proxy",1);
+myApp.set("trust proxy",1);
 myApp.use(sessionConfig);
 myApp.use(timeOut);
 
-myApp.use("/User")
+//Routes 
+myApp.use("/user",userRoutes);
+myApp.use("/auth", authRoute);
+myApp.use("/readUser", readRoutes);
+myApp.use("/writeUser", writeRoutes);
+myApp.use("/readPost", readPost);
+myApp.use("/writePost", writePost);
 
 
 export default myApp;

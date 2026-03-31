@@ -1,6 +1,6 @@
 import session from "express-session";
-import RedisStore from "connect-redis";
-import { redis } from "./redis.js";
+import { RedisStore } from "connect-redis";
+import  redis  from "./redis.js";
 
 const store = new RedisStore({
   client: redis

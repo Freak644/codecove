@@ -1,5 +1,5 @@
 
-import { completeRequest } from "../../Controllers/progressTracker.js";
+import { completeRequest } from "../../Controllers/src/middleware/progressTracker.js";
 import { envGithub } from "../../lib/arctic.js";
 import { handleOAuthLogin } from "./authService.js";
 

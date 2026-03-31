@@ -6,7 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { Decrypt } from '../../utils/Encryption.js';
 import jwt from 'jsonwebtoken';
-import { completeRequest } from '../../Controllers/progressTracker.js';
+import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
 
 
 async function checkDuplicate(sqlData, username, email) {

@@ -9,7 +9,7 @@ import createDOMPurify from 'isomorphic-dompurify';
 import {JSDOM} from 'jsdom';
 import https from 'https';
 import pLimit from 'p-limit';
-import { completeRequest } from '../../Controllers/progressTracker.js';
+import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
 dotenv.config();
 cloudinary.config({
   cloud_name:process.env.cloudinary_name,

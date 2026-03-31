@@ -1,7 +1,7 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
 import {nanoid} from 'nanoid';
-import { getIO } from "../../../m.js";
-import { completeRequest } from "../../../Controllers/progressTracker.js";
+import { getIO } from "../../../myServer.js";
+import { completeRequest } from "../../../Controllers/src/middleware/progressTracker.js";
 const validateComment = async (blockCat,comment) => {
     const enableCat = Object.keys(blockCat).filter(k=>blockCat[k]);
     if (enableCat.length === 0) return false;

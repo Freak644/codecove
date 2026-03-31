@@ -1,8 +1,8 @@
 import {database} from '../../Controllers/myConnectionFile.js';
 import jwt from 'jsonwebtoken';
-import {sendTheMail} from '../../Controllers/nodemailer.js'
+import {sendTheMail} from '../../Controllers/EmailService/nodemailer.js'
 import { Decrypt, Encrypt } from '../../utils/Encryption.js';
-import { completeRequest } from '../../Controllers/progressTracker.js';
+import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
 export const SendEmailVerify = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];

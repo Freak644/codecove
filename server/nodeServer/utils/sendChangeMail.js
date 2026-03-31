@@ -1,6 +1,6 @@
 import geoip from "geoip-lite";
 import { UAParser } from "ua-parser-js";
-import { sendTheMail } from "../Controllers/nodemailer.js";
+import { sendTheMail } from "../Controllers/EmailService/nodemailer.js";
 
 export const sendChangePassMail = async (rkv,email,newToken_id,username) => {
     

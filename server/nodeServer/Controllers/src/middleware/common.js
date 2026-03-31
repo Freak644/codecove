@@ -1,5 +1,5 @@
 import {RateLimiter} from '../../rateLimits.js';
-import {checkRequest} from '../../progressTracker.js'
+import {checkRequest} from './progressTracker.js'
 import {attachIP} from '../../../lib/ipReader.js';
 
 export const commonStack = [

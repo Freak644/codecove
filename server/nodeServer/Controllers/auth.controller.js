@@ -1,5 +1,5 @@
 import { generateCodeVerifier, generateState } from "arctic";
-import { completeRequest } from "./progressTracker.js"
+import { completeRequest } from "./src/middleware/progressTracker.js"
 import { envGithub, envGoogle } from "../lib/arctic.js";
 
 export const startGoogleLogin = async (rkv,rspo) => {

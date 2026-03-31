@@ -1,9 +1,7 @@
 import { Router } from 'express';
 import {commonStack} from '../middleware/common.js'
-import { usernameCheckLimiter } from '../../rateLimits';
+import { usernameCheckLimiter } from '../../rateLimits.js';
 import {getUsers} from '../../../API/getUsers/getUsers.js'
-import { upload } from '../middleware/upload.js';
-import {CreateUser} from '../../../API/CreateUser/createUser.js';
 import {LoginAPI} from '../../../API/Login/loginAPI.js';
 import {loggedMeOut} from '../../../API/Login/userSession.js';
 import {ActivityInfo} from '../../../API/Login/getSessionInfo.js'
@@ -21,7 +19,6 @@ import {changeBio, changeDP} from '../../../API/editProfileAPIs/userInfoApis.js'
 const userRoutes = Router();
 
 userRoutes.get("/getUsername",usernameCheckLimiter,commonStack[1],commonStack[2],getUsers);
-userRoutes.post("/CreateUser",...commonStack,upload.single("avatar"),CreateUser);
 userRoutes.post("/login",...commonStack,LoginAPI);
 userRoutes.get("/Logout",...commonStack,Auth,loggedMeOut);
 userRoutes.get("/checkActivety",...commonStack,ActivityInfo);
@@ -40,8 +37,9 @@ readRoutes.get("/getUserInfo",...commonStack,Auth,getUserinfo);
 
 const writeRoutes = Router();
 
-writeRoutes.patch("/follow",...commonStack,Auth,followAPI);
+writeRoutes.post("/follow",...commonStack,Auth,followAPI);
 writeRoutes.patch("/changeBio",...commonStack,Auth,changeBio);
 writeRoutes.patch("/changeDP",...commonStack,Auth,changeDP);
+
 
 export {userRoutes, readRoutes,writeRoutes};

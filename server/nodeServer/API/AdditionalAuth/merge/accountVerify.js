@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
 // import { sendTheMail } from "../../Controllers/nodemailer";
-import { Decrypt, Encrypt } from "../../utils/Encryption.js";
+import { Decrypt, Encrypt } from "../../../utils/Encryption.js";
 import {nanoid} from 'nanoid';
-import { completeRequest } from "../../Controllers/progressTracker.js";
-import { database } from "../../Controllers/myConnectionFile.js";
+import { completeRequest } from "../../Controllers/src/middleware/progressTracker.js";
+import { database } from "../../../Controllers/myConnectionFile.js";
 import geoip from 'geoip-lite';
 import { UAParser } from "ua-parser-js";
-import { sendTheMail } from "../../Controllers/nodemailer.js";
+import { sendTheMail } from "../../Controllers/EmailService/nodemailer.js";
 export const VerifyUserMail = async (rkv, rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];

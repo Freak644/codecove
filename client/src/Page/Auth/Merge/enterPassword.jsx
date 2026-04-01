@@ -6,7 +6,7 @@ export default function Password({pramsData}) {
     const sendMail = async () => {
         setCalling(true);
         try {
-            let rkv = await axios("/myServer/sendMergeMail");
+            let rkv = await axios("/myServer/email/sendMergeMail");
             console.log(rkv)
             toast.success("Check Your Inbox")
         } catch (error) {

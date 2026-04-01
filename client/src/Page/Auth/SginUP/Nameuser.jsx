@@ -73,7 +73,7 @@ export default function UserNameEl({stoggle}) {
             checkAv();
         }else{
             try {
-                let request = await fetch(`/myServer/getUsername?username=${username}`)
+                let request = await fetch(`/myServer/user/getUsername?username=${username}`)
                 let result = await request.json();
                 if (result.avalable === true) {
                     checkAv();
@@ -127,7 +127,7 @@ export default function UserNameEl({stoggle}) {
             if (!email.endsWith("@gmail.com")) {
                 throw new Error("We only process with gmail.com")
             }
-            let request = await fetch("/myServer/sendVerifyEmail",{
+            let request = await fetch("/myServer/email/sendVerifyEmail",{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"

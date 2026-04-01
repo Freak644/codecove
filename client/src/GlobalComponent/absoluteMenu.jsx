@@ -21,7 +21,7 @@ export default function AbsoluteMenu() {
     }, [isMenuToggling]);
 
     const handleLogout = async () => {
-        let rqst = await fetch("/myServer/Logout",{
+        let rqst = await fetch("/myServer/user/Logout",{
             headers:{
                 "Content-Type":"application/json"
             },

@@ -6,7 +6,7 @@ import { UnivuUserInfo } from "../lib/basicUserinfo";
 const SWIPE_THRESHOLD = 120;
 const VELOCITY_THRESHOLD = 600;
 
-export default function SwipeNavigator({ children }) {
+export default function SwipeNaigator({ children }) {
     const username = UnivuUserInfo(stat=>stat.userInfo?.username);
   const location = useLocation();
   const navigate = useNavigate();

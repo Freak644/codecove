@@ -22,7 +22,7 @@ export default function MenuEL(params) {
     },[])
     const getUserInfo = async () => {
         try {
-            let rkv = await fetch("/myServer/getUserInfo")
+            let rkv = await fetch("/myServer/user/getUserInfo")
             let result = await rkv.json();
             if (result.err) {
                 throw new Error(result.err);

@@ -87,7 +87,7 @@ export default function MyApp() {
         toggleTheme(currentTheme)
         const checkAuth = async () => { 
             try {
-                let rqst = await fetch("/myServer/auth",{credentials:"include"})
+                let rqst = await fetch("/myServer/auth/checkAuth",{credentials:"include"})
                 let result = await rqst.json();
                 // console.log(result?.details)
                 if (result.loggedIn) {

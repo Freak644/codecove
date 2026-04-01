@@ -1,8 +1,7 @@
 import { Router } from 'express';
 import {commonStack} from '../middleware/common.js'
 import { usernameCheckLimiter } from '../../rateLimits.js';
-import {getUsers} from '../../../API/getUsers/getUsers.js'
-import {LoginAPI} from '../../../API/Login/loginAPI.js';
+import {getUsers} from '../../../API/getUsers/getUsers.js';
 import {loggedMeOut} from '../../../API/Login/userSession.js';
 import {ActivityInfo} from '../../../API/Login/getSessionInfo.js'
 import {changePassSecure} from '../../../API/Secure/SecureAccount.js';
@@ -12,14 +11,15 @@ import {Auth} from '../../../API/Login/tokenChecker.js';
 import {getUserinfo} from '../../../API/getUsers/prifileAPIs.js';
 import {followAPI} from '../../../API/editProfileAPIs/followUnfollow.js';
 import {changeBio, changeDP} from '../../../API/editProfileAPIs/userInfoApis.js';
-
+import { upload } from '../middleware/upload.js';
+import {CreateUser} from '../../../API/CreateUser/createUser.js'
 
 
 //absolute User Routes there path will look like /user/apiPath
 const userRoutes = Router();
 
 userRoutes.get("/getUsername",usernameCheckLimiter,commonStack[1],commonStack[2],getUsers);
-userRoutes.post("/login",...commonStack,LoginAPI);
+userRoutes.post("/CreateUser",...commonStack, upload.single("avatar"),CreateUser)
 userRoutes.get("/Logout",...commonStack,Auth,loggedMeOut);
 userRoutes.get("/checkActivety",...commonStack,ActivityInfo);
 userRoutes.patch("/upDatePass",...commonStack,changePassSecure);

@@ -92,7 +92,7 @@ export default function LoginCon({toggle}) {
         }
         try {
             if(!Email?.trim() || !Password?.trim()) throw new Error("Fields are required");
-            let rkv = await fetch("/myServer/login",{
+            let rkv = await fetch("/myServer/auth/login",{
                 headers:{
                     "Content-Type":"application/json"
                 },

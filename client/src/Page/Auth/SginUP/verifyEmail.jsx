@@ -24,7 +24,7 @@ export default function VerifyEl() {
       if (btnRef.current.disabled != true) {
         toggleLoader(true);
         try {
-            let request = await fetch(`/myServer/sendVerifyEmail`,{
+            let request = await fetch(`/myServer/email/sendVerifyEmail`,{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
@@ -129,7 +129,7 @@ export default function VerifyEl() {
     let inOTP = otp.join("");
    try {
         
-        let rqst = await fetch("/myServer/verifyEmail",{
+        let rqst = await fetch("/myServer/email/verifyEmail",{
           method:"POST",
           headers:{
             "Content-Type":"application/json"

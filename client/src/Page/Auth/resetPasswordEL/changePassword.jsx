@@ -109,7 +109,7 @@ export default function ChangePassword({toggle}) {
             if (password.pass !== password.conPass) throw new Error("Password do not match");
             if (password.strength < 3) toast.info("Your current password is !== Strong");
             let {pass,conPass} = password;
-            let rqst = await fetch("/myServer/ForgotPassword/reset",{
+            let rqst = await fetch("/myServer/user/ForgotPassword/reset",{
                 headers:{
                     "Content-Type":"application/json"
                 },

@@ -40,7 +40,7 @@ export default function ForgotEl() {
         
         try {
             if(!Email.trim()) throw new Error("Field is requird");
-            let rqst = await fetch("/myServer/ForgotPassword",{
+            let rqst = await fetch("/myServer/email/ForgotPassword",{
                 headers:{
                     "Content-Type":"application/json"
                 },

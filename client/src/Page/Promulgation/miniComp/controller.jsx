@@ -58,7 +58,7 @@ export default function UploadController() {
                 formData.append("postFiles",img.file)
             })
             
-            let responce = await axios.post("/myServer/CreatePost",formData,{
+            let responce = await axios.post("/myServer/writePost/CreatePost",formData,{
                 headers:{
                     "Content-Type":"multipart/form-data"
                 },

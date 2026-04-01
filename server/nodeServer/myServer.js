@@ -1,12 +1,13 @@
-import dotenv from 'dotenv';
+import 'dotenv/config'
 import http from 'http';
 import chalk from 'chalk';
-dotenv.config();
 
 import myApp from './Controllers/src/myApp.js';
 import {Server} from 'socket.io';
 import {connectRedis} from './Controllers/src/config/redis.js';
 import initSockets from './socketIO/index.js';
+
+
 
 await connectRedis();
 const myServer = http.createServer(myApp);

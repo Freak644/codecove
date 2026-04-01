@@ -12,7 +12,7 @@ import NotificaitonMini from '../Notification/Components/notificationFeed';
 import axios from 'axios';
 export default function HonePage() {
   const [Posts,setPosts] = useState([])
-  const [offset,setOffset] = useState(0)
+
   const [isEnd,setEnd] = useState(false)
   const userInfo = UnivuUserInfo(stat=>stat.userInfo);
   const crntTab = toggleSlider(stat=>stat.isMiniTab);
@@ -22,7 +22,7 @@ export default function HonePage() {
 
   const fetchPost = async () => {
     try {
-      let rqst = await axios.get("/myServer/getPost");
+      let rqst = await axios.get("/myServer/readPost/getPost");
       console.log(rqst)
       if (!rqst.data.hasMore) {
         setEnd(true)
@@ -56,7 +56,7 @@ export default function HonePage() {
     toggleLoader(true)
     console.log("in main Fetcher")
     try {
-      let rqst = await fetch(`/myServer/getPost?limit=10&offset=${crntSet}`); 
+      let rqst = await fetch(`/myServer/readPost/getPost?limit=10&offset=${crntSet}`); 
       let data = await rqst.json();
       if (data.err) {
         throw new Error("");
@@ -66,7 +66,7 @@ export default function HonePage() {
       if (!data.hasMore) {
         setEnd(true)
       }
-      setOffset(crntSet+10);
+
       setPosts(prev=>[...prev,...data.post]);
     } catch (error) {
       toast.info(error.message)

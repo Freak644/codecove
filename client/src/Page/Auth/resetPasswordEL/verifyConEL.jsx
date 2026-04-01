@@ -37,7 +37,7 @@ export default function VerifyCon({toggle}) {
             if (token.length !== 32) throw new Error("Invalid Token please re-create it");
             if (/[A-Z]/.test(Username)) throw new Error("Invalid Username");
             if (!Email.endsWith("@gmail.com")) throw new Error("Enter! a valid Email");
-            let rqst = await fetch("/myServer/ForgotPassword/verify",{
+            let rqst = await fetch("/myServer/user/ForgotPassword/verify",{
                 headers:{
                     "Content-Type":"application/json"
                 },

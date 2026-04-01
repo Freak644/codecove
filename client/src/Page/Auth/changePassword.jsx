@@ -41,11 +41,11 @@ export default function ChangePassword({toggle}) {
         if (!basePass.trim()) {return toast.error("Empty ^_^")}
         if(basePass !== confPass) return toast.error("Password === Confirm.password()")
         try {
-            let rqst = await fetch("/myServer/upDatePass",{
+            let rqst = await fetch("/myServer/user/upDatePass",{
                 headers:{
                     "Content-Type":"application/json"
                 },
-                method:"PUT",
+                method:"PATCH",
                 body:JSON.stringify({basePass,token})
             })
             let result = await rqst.json();

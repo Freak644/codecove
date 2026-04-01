@@ -189,7 +189,7 @@ export default function CpassEL() {
         //     console.log(`${key}:`, value);
         //     });
         try {
-            let rkv = await fetch("/myServer/CreateUser",{
+            let rkv = await fetch("/myServer/user/CreateUser",{
                 method:"POST",
                 body:formData
             })

@@ -11,7 +11,7 @@ export default function CheckInfo(params) {
     const navi = useNavigate();
     const getSessionInfo = async () => {
         try {
-            let rqst = await fetch(`/myServer/checkActive?token=${token}`)
+            let rqst = await fetch(`/myServer/user/checkActivety?token=${token}`)
             let result = await rqst.json();
             if (result.err) {
                 console.log(result.err)
@@ -34,7 +34,7 @@ export default function CheckInfo(params) {
             <div className="flex items-center flex-col gap-2 text-white">
                 <div className="container relative flex items-center md:justify-center gap-5 h-screen p-4">
                     <div
-                        className="h-70 w-[450px] rounded-2xl 
+                        className="h-70 w-112.5 rounded-2xl 
                         flex items-center justify-center gap-10 p-6 relative"
                         >
                         <div className="eyesHere bg-white rounded-full shadow-inner shadow-gray-700">
@@ -52,7 +52,7 @@ export default function CheckInfo(params) {
                             New Login Detected
                         </h1>
                     </div>
-                    <div className="userInfoher p-2 w-[450px] rounded-2xl relative top-6
+                    <div className="userInfoher p-2 w-112.5 rounded-2xl relative top-6
                         flex items-center flex-col gap-10
                         bg-linear-to-br from-white/10 via-white/5 to-transparent
                         border border-cyan-500/20 shadow-[0_0_30px_rgba(0,255,255,0.15)]

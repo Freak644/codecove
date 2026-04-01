@@ -34,7 +34,7 @@ export default function MiniDropDown({postInfo,toggle}) {
         if (isLoading) return;
         try {
             toggleLoader(true)
-             await axios.put("myServer/PostControll/toggle",{setting,post_id},{
+             await axios.patch("myServer/writePost/toggles",{setting,post_id},{
                 headers:{
                     "Content-Type": "application/json"
                 }

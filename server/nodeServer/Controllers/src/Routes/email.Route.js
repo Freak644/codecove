@@ -1,8 +1,8 @@
 import {Router} from 'express';
-import { EmailRateLimiter, verifyEmailLiter } from '../../rateLimits';
+import { EmailRateLimiter, verifyEmailLiter } from '../../rateLimits.js';
 import {commonStack} from '../middleware/common.js';
-import { SendEmailVerify, verifyEmail } from '../../../API/CreateUser/verifyUser';
-import {VerifyUserMail} from '../../../API/AdditionalAuth/accountVerify.js';
+import { SendEmailVerify, verifyEmail } from '../../../API/CreateUser/verifyUser.js';
+import {VerifyUserMail} from '../../../API/AdditionalAuth/merge/accountVerify.js';
 import { forgotPass } from '../../../API/Secure/forgotPassMail.js';
 
 const emailRoute = Router();

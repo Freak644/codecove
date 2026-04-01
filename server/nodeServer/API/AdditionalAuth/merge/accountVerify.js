@@ -50,7 +50,7 @@ export const VerifyUserMail = async (rkv, rspo) => {
                 city:geo?.city,
                 regione:geo?.region,
                 country:geo?.country,
-                verify_url:`${process.env.BACKEND_URL}verify/mergeToken?token=${encodeURIComponent(request_id)}`
+                verify_url:`${process.env.BACKEND_URL}/authverify/mergeToken?token=${encodeURIComponent(request_id)}`
             }
         );
 

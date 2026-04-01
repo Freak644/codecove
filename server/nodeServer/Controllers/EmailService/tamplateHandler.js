@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 
 async function renderTemplate(templateName, templateData = {}) {
   try {
-    const filePath = path.join(__dirname, "../EmailTamp", templateName + ".html");
+    const filePath = path.join(__dirname, "./EmailTamp", templateName + ".html");
     const source = await fs.readFile(filePath, "utf8");
     const template = handlebars.compile(source);
     return template(templateData);

@@ -3,6 +3,8 @@ import FaceToggle from "../../lib/tabToggle";
 import { toast } from "react-toastify";
 import { Loader} from "../../lib/loader";
 import LogoCom from "../../utils/logoComp";
+import {FcGoogle} from 'react-icons/fc'
+import { VscGithub } from "react-icons/vsc";
 
 export default function LoginCon({toggle}) {
     const pwdRef = useRef();
@@ -66,9 +68,15 @@ export default function LoginCon({toggle}) {
     const togglePassword = ()=>{
         let pwd = pwdRef.current
         if (pwd.type === "password") {
-            setType("text")
+            setType(prev=>({
+                ...prev,
+                pwdType:"text"
+            }))
         }else{
-            setType("password")
+            setType(prev=>({
+                ...prev,
+                pwdType:"password"
+            }))
         }
     }
     const getClass = ()=> {
@@ -135,8 +143,9 @@ export default function LoginCon({toggle}) {
                                     passwordVal:evnt.target.value
                                 }))} value={mgmtPass.passwordVal} ref={pwdRef} onBlur={(evnt)=>handleBlur(evnt.target)} type={mgmtPass.pwdType} name="Password" id="Paswrd" required/>
                                 <label htmlFor="Paswrd"><i className="bx bx-key">Password</i></label>
-                                <i onClick={togglePassword} className={`bx bx-${getClass()} absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer`}></i>
-                                <div className="suggestionDiv absolute right-0 cursor-pointer -bottom-5 text-purple-500 text-[12px] hover:text-blue-500" onClick={()=>setTab("left")}>
+                                <i onClick={togglePassword} className={`bx bx-${getClass()} absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer`}></i>
+                                <div className="suggestionDiv absolute right-0 cursor-pointer -bottom-5 text-purple-500 text-[12px] hover:text-blue-500
+                                hover:underline" onClick={()=>setTab("left")}>
                                     Forgot Password ?
                                 </div>
                             </div>
@@ -146,10 +155,11 @@ export default function LoginCon({toggle}) {
                             </div>
                             
                             <div className="decorDiv flex items-center flex-col p-2.5 m-auto gap-2.5 font-normal">
-                                <p className="opacity-50 text-sm"><span>___________</span> OR <span>___________</span></p>
-                                <div className="iconHelper flex items-center justify-between w-full">
-                                    <i onClick={loginWithGithub} className="bx bxl-github"></i>
-                                    <i onClick={loginWithGoogle} disabled={isTrue} className="bx bxl-google"></i>
+                                <p className="opacity-50 text-sm text-gray-300"><span className="font-bold">___________</span> OR <span className="font-bold">___________</span></p>
+                                <div className="iconHelper flex items-center flex-row p-1
+                                ">
+                                    <button disabled={isTrue} onClick={loginWithGithub} title="Continue With GigHub" className="">Continue With <VscGithub className=" -top-px relative"/> </button>
+                                    <button disabled={isTrue} onClick={loginWithGoogle} title="Continue With Google" className="">Continue With <FcGoogle/> </button>
                                 </div>
                             </div>
                     </form>

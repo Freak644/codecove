@@ -38,12 +38,7 @@ export default function MenuEL(params) {
     }
 
     const handleLogout = async () => {
-        let rqst = await fetch("/myServer/Logout",{
-            headers:{
-                "Content-Type":"application/json"
-            },
-            method:"POST",
-        })
+        let rqst = await fetch("/myServer/user/Logout")
         let result = await rqst.json();
         console.log(result)
         if (result.pass) {

@@ -649,19 +649,31 @@ select{
   }
 }
 
-.iconHelper{
-  
-  i{
-    font-size: large;
+.iconHelper {
+  gap: 10px;
+
+  button{
+    position: relative;
     padding: 5px;
-    border-radius: 5px;
-    border: 1.4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    border: 1px solid gray;
+    color: rgb(165, 165, 165);
+    font-size: 13px !important;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
     cursor: pointer;
+    transition: all .3s ease;
+    i{
+      font-size: 14px;
+    }
 
     &:hover{
-      color: blue;
-      opacity: .8;
-      border-color: rgb(80, 80, 255);
+      border-color: rgba(164, 164, 255, 0.851);
+      color: rgba(179, 179, 255, 0.833);
+      transform: translateY(-5px);
     }
   }
 }

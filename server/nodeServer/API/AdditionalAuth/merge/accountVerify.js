@@ -17,8 +17,7 @@ export const VerifyUserMail = async (rkv, rspo) => {
     try {
         let request_id = nanoid();
         
-        let token = rkv.session.Token;
-        console.log(rkv.session)
+        let token = rkv.cookies.myMergeData;
 
         if (!token) {
             return rspo.status(400).send({ err: "Session Cookie is missing or expired" });
@@ -50,7 +49,7 @@ export const VerifyUserMail = async (rkv, rspo) => {
                 city:geo?.city,
                 regione:geo?.region,
                 country:geo?.country,
-                verify_url:`${process.env.BACKEND_URL}/authverify/mergeToken?token=${encodeURIComponent(request_id)}`
+                verify_url:`${process.env.BACKEND_URL}auth/verify/mergeToken?token=${encodeURIComponent(request_id)}`
             }
         );
 
@@ -58,7 +57,12 @@ export const VerifyUserMail = async (rkv, rspo) => {
             let authToken = jwt.sign({...tokenData, request_id},process.env.jwt_sec);
             let encryptedToken = await Encrypt(authToken);
 
-            rkv.session.Token = encryptedToken;
+             rspo.cookie("myMergeData",encryptedToken,{
+                httpOnly:true,
+                secure:true,
+                sameSite:"lax",
+                maxAge:6 * 60 * 1000 // 6m
+            });
             return rspo.json({pass:"Email Sent"});
         } else {
             return rspo.json({err:"Error with email server"})

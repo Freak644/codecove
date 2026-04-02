@@ -28,7 +28,7 @@ export default function MergeType({pramsData}) {
                     {/* Provider Avatar */}
                     <div className="h-14 w-14 rounded-full overflow-hidden flex items-center justify-center relative">
                     <img
-                        src={pramsData.provider_name ? pramsData.avatar : `/myServer/${pramsData.avatar}`}
+                        src={pramsData.provider_name ? pramsData.avatar : `/myServer/${pramsData.accountAv}`}
                         className="h-full w-full object-cover"
                     />
                     <i
@@ -42,7 +42,7 @@ export default function MergeType({pramsData}) {
                     {/* Current User Avatar */}
                     <div className="h-14 w-14 rounded-full overflow-hidden flex items-center justify-center">
                     <img
-                        src={pramsData?.crntMergeAvatar}
+                        src={pramsData?.avatar}
                         className="h-full w-full object-cover"
                         alt="User avatar"
                     />

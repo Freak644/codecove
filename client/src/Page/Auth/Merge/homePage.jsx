@@ -1,3 +1,4 @@
+import MergeAccountSkeleton from "./loading/SkelCom"
 
 export default function HomePage({pramsData, setTab}) {
     
@@ -5,12 +6,13 @@ export default function HomePage({pramsData, setTab}) {
         setTab("second")
     }
     return (
-        <div className="h-4/5 rounded-lg flex items-center justify-center bg-gray-800 px-4">
+        <>
+        {Object.keys(pramsData).length > 0 ? <div className="h-4/5 rounded-lg flex items-center justify-center bg-gray-800 px-4">
                     <div className="max-w-md w-full bg-black shadow-lg rounded-2xl p-8">
                         {/* Header */}
                         <div className="text-center">
                         <div className="mx-auto mb-4 h-14 w-14 overflow-hidden flex items-center justify-center rounded-full bg-transparent">
-                            <img src={pramsData.provider_name ? pramsData.avatar : `/myServer/${pramsData.avatar}`} />
+                            <img src={pramsData.provider_name ? pramsData.avatar : `/myServer/${pramsData.accountAv}`} />
                         </div>
                         <h2 className="text-2xl font-semibold text-gray-600">
                             Account Already Exists
@@ -50,6 +52,7 @@ export default function HomePage({pramsData, setTab}) {
                         Need help? Contact support.
                         </p>
                     </div>
-                </div>
+                </div> : <MergeAccountSkeleton/>}
+                </>
     )
 }

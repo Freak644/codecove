@@ -33,7 +33,9 @@ export const VerifyMergeToken = async (rkv, rspo) => {
         let {password} = userInfo[0];
 
         if (password !== null) {
-            let token = rkv.session.Token;
+            
+            let token = rkv.cookies.myMergeData;
+            console.log(token)
 
             if (!token) {
                 return rspo.status(400).send({ err: "Session Cookie is missing or expired" });
@@ -47,7 +49,7 @@ export const VerifyMergeToken = async (rkv, rspo) => {
                 return rspo.status(504).send({err:"Google Data is now Expire"});
             }
             console.log(tokenData)
-            return rspo.redirect(`${process.env.FRONTEND_URL}userfound?data=${encodeURIComponent()}`)
+            return rspo.redirect(`${process.env.FRONTEND_URL}userfound?password`)
         }
 
 

@@ -1,8 +1,10 @@
 import jwt from 'jsonwebtoken'
 import {envGoogle} from '../../lib/arctic.js';
 import { handleOAuthLogin } from './authService.js';
-import { Encrypt } from '../../utils/Encryption.js';
+import {Encrypt} from '../../utils/Encryption.js'
 import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
+import redis from '../../Controllers/src/config/redis.js';
+
 export const googleCallBackHandler = async (rkv, rspo) => {
   const crntIP = rkv.userIp;
   const crntAPI = rkv.originalUrl.split("?")[0];
@@ -32,16 +34,31 @@ export const googleCallBackHandler = async (rkv, rspo) => {
     }
 
     const OAuthInfo = await handleOAuthLogin(rkv, authData);
-
-    if (OAuthInfo.code === 302) { // same userData in token don't pass it to frontEnd
+    //check for cooldown
+    let isCoolDown = await redis.exists(`isCoolDown:${authData.email}`);
+    if (OAuthInfo.code === 302 && !isCoolDown) { // same userData in token don't pass it to frontEnd
           let {user_id, username, avatar, provider_name } = OAuthInfo;
-          let authToken = jwt.sign({...authData, user_id, username, provider_name},process.env.jwt_sec, {expiresIn:"60m"});
+          let authToken = jwt.sign({...authData, user_id, username, provider_name,accountAv:avatar},process.env.jwt_sec, {expiresIn:"60m"});
           let encryptedToken = await Encrypt(authToken);
+          
+          rspo.cookie("myMergeData",encryptedToken,{
+            httpOnly:true,
+            secure:true,
+            maxAge:6 * 60 * 1000 // 6m
+          });
+                
+          //setting is coolDown 
+          await redis.set(`isCoolDown:${authData.email}`,"1",{
+            EX:361
+          })
 
-          rkv.session.Token = encryptedToken;
+          
           rspo.redirect(
-              `${process.env.FRONTEND_URL}userfound?data=${encodeURIComponent(JSON.stringify({username,avatar,provider_name, crntProvider:"Google", email:authData.email, crntMergeAvatar:authData.avatar}))}`
+              `${process.env.FRONTEND_URL}userfound`
           )
+      } else {
+        return rspo.redirect(
+          `${process.env.FRONTEND_URL}?err="Email sending on cooldown"`);
       }
 
     

@@ -23,7 +23,7 @@ export const handleOAuthLogin = async (rkv, userInfo) => {
              WHERE u.email = ? LIMIT 1`, [email]);
         
         if (uAccount.length !== 0) {
-            console.log(uAccount)
+           
             let { user_id, username,avatar,provider_name} = uAccount[0];
             return {user_id,username, avatar ,provider_name,code:302}
         }

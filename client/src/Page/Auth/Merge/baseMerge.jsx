@@ -1,17 +1,34 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom"
 import CompAnim from "../../../assets/animations/compAnimation";
 import HomePage from "./homePage";
 import MergeType from "./secondComp";
 import Password from "./enterPassword";
+import { toast } from "react-toastify";
 
 export default function MeargeBasse() {
-    let [searchParams] = useSearchParams();
-    const [pramsData] = useState(JSON.parse(decodeURIComponent(searchParams.get("data"))) || {});
-  
-
+    const [data,setData] = useState({});
     const [cnrtTab, setTab] = useState("home");
 
+    const getUserData = async ()=> {
+        console.log("ehre")
+        try {
+            let rkv = await fetch("/myServer/user/userFound");
+            let result = await rkv.json();
+            console.log(result)
+            if (result.err) {
+                throw new Error(result.err);
+                
+            }
+            setData(result.pass)
+        } catch (error) {
+            toast.error(error.message);
+        }
+    }
+
+    useEffect(()=>{
+        if (Object.keys(data).length > 0) return;
+        getUserData();
+    },[data])
 
 
 
@@ -23,8 +40,8 @@ export default function MeargeBasse() {
                 cnrtTab === "password" ? "password" : "none"
             } 
              className="h-full w-full" >
-                {cnrtTab === "home" && <HomePage pramsData={pramsData} setTab={setTab} />}
-                {cnrtTab === "second" && <MergeType pramsData={pramsData}/>}
+                {cnrtTab === "home" && <HomePage pramsData={data} setTab={setTab} />}
+                {cnrtTab === "second" && <MergeType pramsData={data}/>}
                 {cnrtTab === "password" && <Password />}
             </CompAnim>
         </div>

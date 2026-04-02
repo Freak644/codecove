@@ -13,6 +13,7 @@ import {followAPI} from '../../../API/editProfileAPIs/followUnfollow.js';
 import {changeBio, changeDP} from '../../../API/editProfileAPIs/userInfoApis.js';
 import { upload } from '../middleware/upload.js';
 import {CreateUser} from '../../../API/CreateUser/createUser.js'
+import { MergeRequestData } from '../../../API/getUsers/mergeRequestData.js';
 
 
 //absolute User Routes there path will look like /user/apiPath
@@ -26,6 +27,7 @@ userRoutes.patch("/upDatePass",...commonStack,changePassSecure);
 userRoutes.post("/ForgotPassword/verify",...commonStack,verification);
 userRoutes.patch("/ForgotPassword/reset",...commonStack,resetPassword);
 userRoutes.get("/GetUserInfo",...commonStack,Auth,CrntUser);
+userRoutes.get("/userFound",...commonStack,MergeRequestData)
 
 //profileUserRoutes there path will look like /readUser/apiPath
 

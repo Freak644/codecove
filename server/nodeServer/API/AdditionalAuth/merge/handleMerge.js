@@ -2,6 +2,7 @@ import { database } from "../../../Controllers/myConnectionFile.js";
 import { completeRequest } from "../../../Controllers/src/middleware/progressTracker.js";
 import { Decrypt } from "../../../utils/Encryption.js";
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 export const VerifyMergeToken = async (rkv, rspo) => {
     const crntIP = rkv.userIp;
@@ -33,27 +34,11 @@ export const VerifyMergeToken = async (rkv, rspo) => {
         let {password} = userInfo[0];
 
         if (password !== null) {
-            
-            let token = rkv.cookies.myMergeData;
-            console.log(token)
-
-            if (!token) {
-                return rspo.status(400).send({ err: "Session Cookie is missing or expired" });
-            }
-
-            // decoding the token
-            let decryptedToken = await Decrypt(token);
-            let tokenData = jwt.decode(decryptedToken, process.env.jwt_sec);
-            let decodedTime = Math.floor(Date.now()/1000);
-            if (tokenData.exp<decodedTime) {
-                return rspo.status(504).send({err:"Google Data is now Expire"});
-            }
-            console.log(tokenData)
-            return rspo.redirect(`${process.env.FRONTEND_URL}userfound?password`)
+            return rspo.redirect(`${process.env.FRONTEND_URL}userfound?page=${encodeURIComponent("password")}`)
         }
 
 
-        rspo.json({pas:"till now"});
+        
     } catch (error) {
         console.log(error.message)
         rspo.redirect(
@@ -61,5 +46,41 @@ export const VerifyMergeToken = async (rkv, rspo) => {
         );
     } finally {
         completeRequest(crntIP, crntAPI)
+    }
+}
+
+export const verifyPassword = async (rkv, rspo) => {
+    const crntIP = rkv.userIp;
+    const crntAPI = rkv.originalUrl.split("?")[0];
+    let {password} = rkv.body;
+    try {
+        if (!password || !password.trim()) return rspo.status(400).send({err:"Something Went Wrong"});
+        let token = rkv.cookies.myMergeData;
+        if (!token) {
+            return rspo.status(400).send({ err: "Session Cookie is missing or expired" });
+        }
+        // decoding the token
+        let decryptedToken = await Decrypt(token);
+        let tokenData = jwt.decode(decryptedToken, process.env.jwt_sec);
+        let decodedTime = Math.floor(Date.now()/1000);
+        if (tokenData.exp<decodedTime) {
+            return rspo.status(504).send({err:"Google Data is now Expire"});
+        }
+        let {user_id} = tokenData;
+        let [userInfo] = await database.query("SELECT email,password as userPass FROM users WHERE id = ?",[user_id]);
+        if (userInfo.length === 0) return rspo.status(401).send({err:"Token is currepted"});
+        let {userPass} = userInfo[0];
+
+        let isPassMatch = await bcrypt.compare(password,userPass);
+        if (!isPassMatch) {
+            return rspo.status(401).send({err:"Check your Password"});
+        }
+        
+        rspo.json({pass:"till now"});
+    } catch (error) {
+        console.log(error.message)
+        rspo.json({err:"Server side error"});
+    } finally {
+        completeRequest(crntIP, crntAPI);
     }
 }

@@ -150,7 +150,7 @@ export default function LoginCon({toggle}) {
                                 </div>
                             </div>
                             <div className="inputDiv twobtnInput ">
-                                <button disabled={isTrue} type="submit" className="btn bigBtn btnBorder">{isTrue ? <div className="miniLoader"></div> : "Log in"}</button>
+                                <button disabled={isTrue} type="submit" className="btn bigBtn">{isTrue ? <div className="miniLoader"></div> : "Log in"}</button>
                                 <button onClick={()=>setTab("right")} type="button" className="text-btn ">Create an Accound</button>
                             </div>
                             

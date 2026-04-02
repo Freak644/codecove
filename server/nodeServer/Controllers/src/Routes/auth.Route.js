@@ -3,7 +3,7 @@ import {commonStack} from '../middleware/common.js';
 import { startGithubLogin, startGoogleLogin } from '../../auth.controller.js';
 import { googleCallBackHandler } from '../../../API/AdditionalAuth/google.services.js';
 import { githubCallBackHandler } from '../../../API/AdditionalAuth/github.services.js';
-import { VerifyMergeToken } from '../../../API/AdditionalAuth/merge/handleMerge.js';
+import { VerifyMergeToken, verifyPassword } from '../../../API/AdditionalAuth/merge/handleMerge.js';
 import { upload } from '../middleware/upload.js';
 import {LoginAPI} from '../../../API/Login/loginAPI.js'
 import {checkAuth} from '../../../API/Login/tokenChecker.js';
@@ -17,5 +17,6 @@ authRoute.get("/github", ...commonStack, startGithubLogin);
 authRoute.get("/github/callback", ...commonStack, githubCallBackHandler);
 authRoute.get("/verify/mergeToken",...commonStack,VerifyMergeToken);
 authRoute.post("/login", ...commonStack, LoginAPI);
-authRoute.get("/checkAuth", ...commonStack, checkAuth)
+authRoute.get("/checkAuth", ...commonStack, checkAuth);
+authRoute.post("/verifyPassword", ...commonStack, verifyPassword);
 export {authRoute};

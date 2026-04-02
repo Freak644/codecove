@@ -3,17 +3,24 @@ import { useState } from "react";
 import {toast} from 'react-toastify'
 export default function Password({pramsData}) {
     const [iscalling, setCalling] = useState(false);
-    const sendMail = async () => {
-        setCalling(true);
-        try {
-            let rkv = await axios("/myServer/email/sendMergeMail");
-            console.log(rkv)
-            toast.success("Check Your Inbox")
-        } catch (error) {
     
-            toast.info(error.response?.data?.err);
-        } finally {
-            setCalling(false);
+    const verfiyPwd = async (evnt) => {
+        evnt.preventDefault();
+        try {
+            let formData = new FormData(evnt.target);
+            let {password} = Object.fromEntries(formData);
+            console.log(password)
+            if (password.length < 6) {
+                throw new Error("Too small");
+            }
+            await axios.post("/myServer/auth/verifyPassword",{password},{
+                "headers":{
+                    "Content-Type":"application/json"
+                }
+            })
+            toast.success("Account Merged Succefully 🎉")
+         } catch (error) {
+            toast.info(error.response?.data?.err || error.message)
         }
     }
 
@@ -28,7 +35,7 @@ export default function Password({pramsData}) {
                     {/* Provider Avatar */}
                     <div className="h-14 w-14 rounded-full overflow-hidden flex items-center justify-center relative">
                     <img
-                        src={pramsData.provider_name ? pramsData.avatar : `/myServer/${pramsData.avatar}`}
+                        src={pramsData.provider_name ? pramsData.avatar : `/myServer/${pramsData.accountAv}`}
                         className="h-full w-full object-cover"
                     />
                     <i
@@ -42,7 +49,7 @@ export default function Password({pramsData}) {
                     {/* Current User Avatar */}
                     <div className="h-14 w-14 rounded-full overflow-hidden flex items-center justify-center">
                     <img
-                        src={pramsData?.crntMergeAvatar}
+                        src={pramsData?.avatar}
                         className="h-full w-full object-cover"
                         alt="User avatar"
                     />
@@ -52,33 +59,36 @@ export default function Password({pramsData}) {
                 </div>
 
                 {/* Heading */}
-                <h2 className="text-xl font-semibold text-white text-center">
-                Verify your identity
-                </h2>
-
-                {/* Permissions */}
-                <p className="text-sm text-gray-400 text-center leading-relaxed">
-                CodeCove will request access to:
-                </p>
-                <div className="text-sm text-gray-300 text-center space-y-1">
-                <p>• Your email address</p>
-                <p>• Your profile picture</p>
+                <div className="mt-6 bg-gray-800 rounded-lg p-4 text-sm text-gray-600 w-full">
+                        <p>
+                            <span className="font-medium text-gray-400">Email:</span>{" "}
+                            {pramsData.email}
+                        </p>
+                        <p className="mt-1">
+                            Please enter your password
+                        </p>
+                        <p className="mt-1">
+                            this is one time verification
+                        </p>
                 </div>
 
-                {/* Info Box */}
-                <div className="w-full bg-gray-900 border border-gray-800 rounded-lg p-4 text-sm text-gray-400 text-center">
-                <p>We’ll send a secure verification link to your email.</p>
-                <p className="mt-1">Just one click and you’re ready to go.</p>
+                <div className="formDiv">
+                    <form action="" onSubmit={verfiyPwd}>
+                        <div className="inputDiv">
+                            <input type="password" name="password" id="pwd"  required/>
+                            <label htmlFor="pwd"><i className="bx bx-key">Password</i></label>
+                        </div>
+                        <div className="inputDiv twobtnInput">
+                            <button disabled={iscalling} type="submit" className="btn bigBtn">
+                                Verify
+                            </button>
+                        </div>
+                    </form>
                 </div>
-
-                {/* CTA Button */}
-                <button onClick={sendMail} disabled={iscalling} className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-500 active:scale-[0.99] cursor-pointer text-white font-medium rounded-lg transition flex items-center justify-center">
-                 {iscalling ? <div className="miniLoader"></div> : "Continue with Email Link 🔗"}
-                </button>
 
                 <button onClick={()=>{
                             window.location.href = "http://localhost:3221/"
-                        }} className="w-full py-2.5 px-4 border border-gray-300 hover:border-blue-600 hover:text-blue-600 cursor-pointer text-gray-700 font-medium rounded-lg transition">
+                        }} className="w-4/5 py-2.5 px-4 border border-gray-300 hover:border-blue-600 hover:text-blue-600 cursor-pointer text-gray-700 font-medium rounded-lg transition">
                         Go To Login
                 </button>
 

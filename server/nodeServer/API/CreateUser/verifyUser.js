@@ -66,7 +66,7 @@ export const verifyEmail = async (rkv,rspo) => {
         }
         let token = rkv.cookies.otpToken;
         if (!token) {
-            return rspo.status(400).send({ err: "OTP Cookie is missing or expired" });
+            return rspo.status(400).send({ err: "OTP is now expire" });
         }
         let decryptedToken = await Decrypt(token);
         let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec)

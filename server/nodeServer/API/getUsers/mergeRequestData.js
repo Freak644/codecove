@@ -16,6 +16,8 @@ export const MergeRequestData = async (rkv, rspo) => {
         if (tokenData.exp<decodedTime) {
             return rspo.status(504).send({err:"Google Data is now Expire"});
         }
+        delete tokenData.accessToken;
+        delete tokenData.providerAccount_id;
         rspo.json({pass:tokenData});
     } catch (error) {
         console.log(error.message)

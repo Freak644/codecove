@@ -1,8 +1,8 @@
 import {getColor} from './getGradnt';
-export default function LogoCom() {
+export default function LogoCom({CustomclassName}) {
     let gradColor = getColor();
     return(
-        <div className="Logotxt flex items-center flex-col w-30">
+        <div className={`Logotxt flex items-center flex-col w-30 ${CustomclassName || ""}`}>
             <i className={`bx bx-code-alt text-5xl
             transition-all duration-500 ease-in-out bg-size-[200%_200%]
             bg-linear-to-tr ${gradColor}

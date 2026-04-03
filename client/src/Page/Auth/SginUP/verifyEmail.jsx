@@ -3,6 +3,7 @@ import verifyZu from '../../../lib/verifyZu';
 import { toast } from 'react-toastify';
 import { Loader } from '../../../lib/loader';
 import { toggleMini } from '../../../lib/tabToggle';
+import LogoCom from '../../../utils/logoComp';
 export default function VerifyEl() {
     const {email,Tusername,setVTab,setMail,setEstatus} = verifyZu();
     const {isTrue,toggleLoader} = Loader();
@@ -157,13 +158,14 @@ export default function VerifyEl() {
             <div className="verifyDiv flex items-center justify-center h-full w-full">
                 <div className="formDiv">
                     <form action="" onSubmit={handleSubmit}>
-                        <div className="txtDiv flex items-center flex-col p-2 gap-2">
-                            <img className='h-25' src="./Logo/CodeCove_Logo.png" alt="" />
+                 
+                        <div className="txtDiv relative top-10 flex items-center flex-col p-2 gap-2">
+                            <img className='h-25' src="./Logo/LOGO.png" alt="" />
                             <p className='font-light text-skin-text'>We sent a verification Code on.</p>
                             <span className='text-[12px] text-skin-ptext'>{email}</span>
                             <button className='text-btn' onClick={()=>{setMail(""),setVTab(false)}} type='button'>Change</button>
                         </div>
-                        <div className="otp-container flex justify-center gap-2 m-[2rem 0] text-white">
+                        <div className="otp-container flex justify-center gap-2 m-10 text-white">
                            {
                             otp.map((value,index)=>(
                                  <input 

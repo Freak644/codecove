@@ -26,7 +26,7 @@ export const CreateUser = async (rkv, rspo) => {
   try {
 
     let token = rkv.cookies.emailStatus; // this is the Encrypted token
-    if (!token) return rspo.status(403).send({err:"Email Cookie is missing"});
+    if (!token) return rspo.status(403).send({err:"OTP verification is Expired"});
     let decryptedToken = await Decrypt(token);
     let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec);
     let decodedTime = Math.floor(Date.now()/1000);

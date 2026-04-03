@@ -194,8 +194,11 @@ export default function CpassEL() {
                 body:formData
             })
             let result = await rkv.json();
+            if (rkv.status === 403) {
+                toggleMiniTab("user")
+                setEstatus()
+            }
             if (result.err) {
-                console.log(result.err)
                 throw new Error(result.err)
             }
             toast.success(result.pass)
@@ -203,10 +206,11 @@ export default function CpassEL() {
             setimg({file:null,
                 fileUrl:""})
             toggleMiniTab("user")
-            toggleLoader(false);
             setTab("front")
         } catch (error) {
             toast.error(error.message)
+        } finally {
+            toggleLoader(false);
         }
     }
     return(
@@ -217,7 +221,7 @@ export default function CpassEL() {
                         <LogoCom/>
                         <div className="inputDiv flex-col! h-20!  items-center!">
                             <input type="file" onChange={(evnt)=>handleImg(evnt)} style={{display:"none"}} id="files" name="files" accept="image/*" multiple={false} />
-                            <label className="left-[40%]! top-13! cursor-pointer!" htmlFor="files"><i className="bx bx-image text-blue-500">Avatar</i></label>
+                            <label className="left-[35%]! top-13! cursor-pointer!" htmlFor="files"><i className="bx bx-image text-blue-500">Avatar</i></label>
                             <div onClick={()=> document.getElementById("files").click()}  className="imgDiv flex items-center justify-center h-13 w-13 rounded-full">
                                 <img src={myImage.fileUrl || "https://i.postimg.cc/jS1mc6X5/katana_Girl_Black_white.jpg"} className="h-12 w-12 rounded-full object-cover" alt="DP" />
                             </div>
@@ -244,9 +248,9 @@ export default function CpassEL() {
                                 </div>
                             </div>
                         </div>
-                        <div className="inputDiv">
-                            <button className="text-btn" type="button" onClick={()=>toggleMiniTab("user")}>Back</button>
-                            <button type="submit" className="btn">{isTrue ? "Sgining" : "Sgin-up"}</button>
+                        <div className="inputDiv justify-between!">
+                            <button className="text-btn w-25!" type="button" onClick={()=>toggleMiniTab("user")}>Back</button>
+                            <button type="submit" className="btn text-sm text-nowrap">{isTrue ? "Sgining" : "Sgin-up"}</button>
                         </div>
                     </form>
                 </div>

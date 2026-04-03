@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS oauth_accounts (
 CREATE TABLE IF NOT EXISTS roles (
   user_id CHAR(36) PRIMARY KEY,
   role_code INT NOT NULL DEFAULT 0,
-  permoter_id CHAR(36),
+  permoter_id CHAR(36) DEFAULT 'system',
   role_name ENUM('user', 'moderator', 'admin', 'verified') NOT NULL DEFAULT 'user',
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

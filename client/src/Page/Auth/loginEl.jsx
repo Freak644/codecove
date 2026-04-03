@@ -5,6 +5,7 @@ import { Loader} from "../../lib/loader";
 import LogoCom from "../../utils/logoComp";
 import {FcGoogle} from 'react-icons/fc'
 import { VscGithub } from "react-icons/vsc";
+import bat from '../../assets/Images/bat.gif';
 
 export default function LoginCon({toggle}) {
     const pwdRef = useRef();
@@ -150,7 +151,7 @@ export default function LoginCon({toggle}) {
                                 </div>
                             </div>
                             <div className="inputDiv twobtnInput ">
-                                <button disabled={isTrue} type="submit" className="btn bigBtn">{isTrue ? <div className="miniLoader"></div> : "Log in"}</button>
+                                <button disabled={isTrue} type="submit" className="btn bigBtn relative h-9 ">{!isTrue ? <img src={bat} className="bat" alt="" /> : "Log in"}</button>
                                 <button onClick={()=>setTab("right")} type="button" className="text-btn ">Create an Accound</button>
                             </div>
                             

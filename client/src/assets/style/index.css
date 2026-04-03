@@ -23,3 +23,10 @@ html[data-theme="dark-white"]{
   height: 100dvh;
 }
 
+
+:root{
+  --bat-color: #fff;
+}
+
+
+

@@ -36,6 +36,7 @@ export const VerifyUserMail = async (rkv, rspo) => {
         await database.query(`INSERT INTO merge_request (request_id, user_id, ip) VALUE (?, ?, ?);`,
             [request_id, tokenData.user_id, crntIP]
         )
+       
 
         
         let send = await sendTheMail(

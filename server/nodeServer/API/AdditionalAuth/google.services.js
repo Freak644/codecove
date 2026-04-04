@@ -4,6 +4,7 @@ import { handleOAuthLogin } from './authService.js';
 import {Encrypt} from '../../utils/Encryption.js'
 import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
 import redis from '../../Controllers/src/config/redis.js';
+import { NewOAuthAc, OAuthLogin } from './handleOAuth.js';
 
 export const googleCallBackHandler = async (rkv, rspo) => {
   const crntIP = rkv.userIp;
@@ -33,12 +34,28 @@ export const googleCallBackHandler = async (rkv, rspo) => {
       accessToken: tokens.data.access_token
     }
 
-    const OAuthInfo = await handleOAuthLogin(rkv, authData);
+    const OAuthInfo = await handleOAuthLogin(authData);
+    if (OAuthInfo.code === 202) {
+      let LoginRkv = await OAuthLogin(rkv, OAuthInfo);
+          if (LoginRkv.err) {
+            return rspo.status(500).send(LoginRkv.err);
+          }
+          rspo.cookie("myAuthToken", LoginRkv, {
+            httpOnly:true,
+            secure:true,
+            sameSite:"lax",
+            maxAge: 24 * 60 * 60 * 1000
+          })
+          return rspo.redirect(process.env.FRONTEND_URL);
+    }
     //check for cooldown
-    let isCoolDown = await redis.exists(`isCoolDown:${authData.email}`);
+    const key = `isCoolDown:${authData.email}`
+    let isCoolDown = await redis.exists(key);
+    console.log(isCoolDown)
+    let ttl = await redis.ttl(key);
     if (OAuthInfo.code === 302 && !isCoolDown) { // same userData in token don't pass it to frontEnd
           let {user_id, username, avatar, provider_name } = OAuthInfo;
-          let authToken = jwt.sign({...authData, user_id, username, provider_name,accountAv:avatar},process.env.jwt_sec, {expiresIn:"60m"});
+          let authToken = jwt.sign({...authData, user_id, username, provider_name,accountAv:avatar},process.env.jwt_sec, {expiresIn:"6m"});
           let encryptedToken = await Encrypt(authToken);
           
           rspo.cookie("myMergeData",encryptedToken,{
@@ -46,23 +63,45 @@ export const googleCallBackHandler = async (rkv, rspo) => {
             secure:true,
             maxAge:6 * 60 * 1000 // 6m
           });
+          console.log("inside")
                 
           //setting is coolDown 
           await redis.set(`isCoolDown:${authData.email}`,"1",{
             EX:361
           })
-
           
-          rspo.redirect(
-              `${process.env.FRONTEND_URL}userfound`
+          
+          return rspo.redirect(
+            `${process.env.FRONTEND_URL}userfound`
           )
-      } else {
-        return rspo.redirect(
-          `${process.env.FRONTEND_URL}?err="Email sending on cooldown"`);
+        } else if (OAuthInfo.code === 302) {
+          let timeLeft = Math.ceil(ttl / 60);
+          return rspo.redirect(
+          `${process.env.FRONTEND_URL}?err="This action is on cooldown. Please try again in ${timeLeft} minutes."`);
+        } 
+
+      if (OAuthInfo.code === 404) {
+        let username = authData.email.split("@")[0];
+
+          const request = await NewOAuthAc({...authData, username});
+          if (request.err) {
+            return rspo.status(500).send(request.err);
+          }
+          let LoginRkv = await OAuthLogin(rkv, request);
+          if (LoginRkv.err) {
+            return rspo.status(500).send(LoginRkv.err);
+          }
+          rspo.cookie("myAuthToken", LoginRkv, {
+            httpOnly:true,
+            secure:true,
+            sameSite:"lax",
+            maxAge: 24 * 60 * 60 * 1000
+          })
+          return rspo.redirect(process.env.FRONTEND_URL);
       }
 
     
-    //rspo.redirect(process.env.FRONTEND_URL)
+       rspo.redirect(`${process.env.FRONTEND_URL}?err="Something Went wrong"`);
   } catch (error) {
     console.log(error.message)
     rspo.json({err:"Server side error"})

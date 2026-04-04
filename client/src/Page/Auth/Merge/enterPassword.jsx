@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
 import {toast} from 'react-toastify'
+import {useNavigation} from 'react-router-dom';
 export default function Password({pramsData}) {
     const [iscalling, setCalling] = useState(false);
+    const navi = useNavigation()
     
     const verfiyPwd = async (evnt) => {
         evnt.preventDefault();
@@ -19,6 +21,7 @@ export default function Password({pramsData}) {
                 }
             })
             toast.success("Account Merged Succefully 🎉")
+            navi("/")
          } catch (error) {
             toast.info(error.response?.data?.err || error.message)
         }

@@ -64,7 +64,7 @@ export const VerifyUserMail = async (rkv, rspo) => {
                 sameSite:"lax",
                 maxAge:6 * 60 * 1000 // 6m
             });
-            return rspo.json({pass:"Email Sent"});
+            return rspo.redirect(process.env.FRONTEND_URL);
         } else {
             return rspo.json({err:"Error with email server"})
         }

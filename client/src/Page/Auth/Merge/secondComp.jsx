@@ -27,10 +27,7 @@ export default function MergeType({pramsData}) {
 
                     {/* Provider Avatar */}
                     <div className="h-14 w-14 rounded-full overflow-hidden flex items-center justify-center relative">
-                    <img
-                        src={pramsData.provider_name ? pramsData.avatar : `/myServer/${pramsData.accountAv}`}
-                        className="h-full w-full object-cover"
-                    />
+                     <img src={(pramsData.provider_name && !pramsData.accountAv.startsWith("Images")) ? pramsData.avatar : `/myServer/${pramsData.accountAv}`}  className="h-full w-full object-cover"/>
                     <i
                         className={`bx bxl-${pramsData?.provider_name?.toLowerCase()} absolute text-white left-1 bottom-1 text-sm`}
                     ></i>

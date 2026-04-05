@@ -16,8 +16,7 @@ export const googleCallBackHandler = async (rkv, rspo) => {
     if (!state || state !== rkv.session.googleState || !code) {
       delete rkv.session.googleState;
       delete rkv.session.googleCodeVerifier;
-      rspo.redirect(process.env.FRONTEND_URL);
-      return rspo.status(400).json({err:"Invalid state"});
+      return rspo.redirect(`${process.env.FRONTEND_URL}?err="Something went wrong"`);
     };
 
     //Arctic magic
@@ -51,8 +50,10 @@ export const googleCallBackHandler = async (rkv, rspo) => {
     //check for cooldown
     const key = `isCoolDown:${authData.email}`
     let isCoolDown = await redis.exists(key);
-    console.log(isCoolDown)
-    let ttl = await redis.ttl(key);
+    // console.log(isCoolDown)
+
+    let ttl = await redis.ttl(key); // getting time left
+
     if (OAuthInfo.code === 302 && !isCoolDown) { // same userData in token don't pass it to frontEnd
           let {user_id, username, avatar, provider_name } = OAuthInfo;
           let authToken = jwt.sign({...authData, user_id, username, provider_name,accountAv:avatar},process.env.jwt_sec, {expiresIn:"6m"});
@@ -63,10 +64,10 @@ export const googleCallBackHandler = async (rkv, rspo) => {
             secure:true,
             maxAge:6 * 60 * 1000 // 6m
           });
-          console.log("inside")
+          
                 
           //setting is coolDown 
-          await redis.set(`isCoolDown:${authData.email}`,"1",{
+          await redis.set(key,"1",{
             EX:361
           })
           

@@ -1,17 +1,16 @@
 import axios from "axios";
 import { useState } from "react";
 import {toast} from 'react-toastify'
-import {useNavigation} from 'react-router-dom';
+
 export default function Password({pramsData}) {
     const [iscalling, setCalling] = useState(false);
-    const navi = useNavigation()
     
     const verfiyPwd = async (evnt) => {
         evnt.preventDefault();
         try {
             let formData = new FormData(evnt.target);
             let {password} = Object.fromEntries(formData);
-            console.log(password)
+       
             if (password.length < 6) {
                 throw new Error("Too small");
             }
@@ -21,7 +20,7 @@ export default function Password({pramsData}) {
                 }
             })
             toast.success("Account Merged Succefully 🎉")
-            navi("/")
+           
          } catch (error) {
             toast.info(error.response?.data?.err || error.message)
         }
@@ -37,10 +36,7 @@ export default function Password({pramsData}) {
 
                     {/* Provider Avatar */}
                     <div className="h-14 w-14 rounded-full overflow-hidden flex items-center justify-center relative">
-                    <img
-                        src={pramsData.provider_name ? pramsData.avatar : `/myServer/${pramsData.accountAv}`}
-                        className="h-full w-full object-cover"
-                    />
+                    <img src={(pramsData.provider_name && !pramsData.accountAv.startsWith("Images")) ? pramsData.avatar : `/myServer/${pramsData.accountAv}`}  className="h-full w-full object-cover"/>
                     <i
                         className={`bx bxl-${pramsData?.provider_name?.toLowerCase()} absolute text-white left-1 bottom-1 text-sm`}
                     ></i>

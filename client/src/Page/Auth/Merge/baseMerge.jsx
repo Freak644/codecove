@@ -28,6 +28,7 @@ export default function MeargeBasse() {
                 throw new Error(result.err);
                 
             }
+            console.log(result.pass)
             setData(result.pass)
         } catch (error) {
             toast.error(error.message);

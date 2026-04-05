@@ -54,10 +54,12 @@ export const VerifyMergeToken = async (rkv, rspo) => {
         }
 
         const request = await NewOAuthAc(tokenData);
+        console.log(request)
           if (request.err) {
             return rspo.status(500).send(request.err);
           }
           let LoginRkv = await OAuthLogin(rkv, request);
+          console.log(LoginRkv)
           if (LoginRkv.err) {
             return rspo.status(500).send(LoginRkv.err);
           }
@@ -102,22 +104,20 @@ export const verifyPassword = async (rkv, rspo) => {
         let [userInfo] = await database.query("SELECT email,password as userPass FROM users WHERE id = ?",[user_id]);
         if (userInfo.length === 0) return rspo.status(401).send({err:"Token is currepted"});
         let {userPass} = userInfo[0];
-
+        
         let isPassMatch = await bcrypt.compare(password,userPass);
         if (!isPassMatch) {
             return rspo.status(401).send({err:"Check your Password"});
         }
-
-        let oToken = rkv.cookies.myMergeData;
-        if (!oToken) {
-            return rspo.status(400).send({err:"Cookie is missing or expired"})
-        }
-
+        
         const request = await NewOAuthAc(tokenData);
+        console.log(password)
+        console.log(request)
           if (request.err) {
             return rspo.status(500).send({err:request.err});
           }
           let LoginRkv = await OAuthLogin(rkv, request);
+          console.log(LoginRkv)
           if (LoginRkv.err) {
             return rspo.status(500).send(LoginRkv.err);
           }
@@ -127,6 +127,8 @@ export const verifyPassword = async (rkv, rspo) => {
             sameSite:"lax",
             maxAge: 24 * 60 * 60 * 1000
           })
+
+          rspo.cookie("myMergeData", "", { expires: new Date(0) });
 
           rspo.redirect(process.env.FRONTEND_URL);
 

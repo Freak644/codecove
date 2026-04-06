@@ -15,33 +15,7 @@ export default function LoginCon({toggle}) {
         passwordVal:"",
     })
 
-    async function requestNotificationPermission() {
-        if (!("Notification" in window)) {
-            alert("This browser does not support notifications");
-            return;
-        }
-
-        if (Notification.permission === "granted") {
-            console.log("Notification already granted");
-            return;
-        }
-
-        if (Notification.permission === "denied") {
-            alert("You have blocked notifications in browser settings");
-            return;
-        }
-
-        const permission = await Notification.requestPermission();
-
-        if (permission === "granted") {
-            new Notification("CodeCove",{
-                body:"Notificaiton are now enabled🎉",
-                icon:"https://i.postimg.cc/L4kDbPrj/favicon.png"
-            })
-        } else {
-            console.log("Notification permission denied");
-        }
-    }
+    
 
 
 
@@ -113,7 +87,7 @@ export default function LoginCon({toggle}) {
             if (result.err) {
                 throw new Error(result.err)
             }
-            await requestNotificationPermission();
+      
             location.reload();
         } catch (error) {
             toast.error(error.message)

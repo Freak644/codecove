@@ -9,15 +9,15 @@ const NewOAuthAc = async (tokenData) => {
     let uuid = uuid4();
     let {provider, providerAccount_id, email, avatar,
         accessToken, user_id, username, accountAv, iat, exp} = tokenData;
-        console.log(tokenData)
+       
         try {
-            if (user_id || user_id.trim() || user_id.length === 36) {
+            if (user_id && user_id.trim() && user_id.length === 36) {
                 await database.query(`INSERT INTO oauth_accounts 
                     (id, user_id, provider_name, provider_account_id, provider_email, access_token) 
                     VALUE (?, ?, ?, ?, ?, ?);`,[OAuth_id, user_id, provider, providerAccount_id, email, accessToken]);
                     return {id:OAuth_id, user_id}
             }else {
-                await database.query(`INSERT INTO users (id, username, email, avatar) VALUES (?, ?, ?, ?);`,[uuid, username, email, accountAv,]);
+                await database.query(`INSERT INTO users (id, username, email, avatar) VALUES (?, ?, ?, ?);`,[uuid, username, email, avatar || accountAv,]);
                 await database.query("INSERT INTO roles (user_id) VALUES (?)",[uuid])
                 return {id:OAuth_id, user_id:uuid}
             }

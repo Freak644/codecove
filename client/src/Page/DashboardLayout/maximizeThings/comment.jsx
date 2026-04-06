@@ -157,7 +157,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
                         <div className="userAndComment flex items-start gap-2 w-[93%] p-2">
                             <Link className="flex items-start" to={`/Lab/${username}`}>
                                 <img
-                                    src={`/myServer${avatar}`}
+                                    src={avatar}
                                     className="h-10 w-10 rounded-full shrink-0"
                                     alt=""
                                 />

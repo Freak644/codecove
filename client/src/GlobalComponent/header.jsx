@@ -76,7 +76,7 @@ export default function Header() {
                 </div>
                 <div className="userMenu relative flex items-center lg:hidden text-skin-text!">
                     <div onClick={()=>setToggle(prev=>!prev)} className=" h-10 w-10 bg-black rounded-full flex items-center justify-center border-2 border-amber-200">
-                        <img className="h-7.5 w-7.5 rounded-full" src={userData.avatar ? `/myServer/${userData.avatar}` :"https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" />
+                        <img className="h-7.5 w-7.5 rounded-full" src={userData.avatar ? userData.avatar :"https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" />
                     </div>
                     {
                     isToggle && <div className="dropDown absolute px-3 border border-white-20 shadow-lg rounded-2xl

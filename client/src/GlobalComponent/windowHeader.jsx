@@ -73,7 +73,7 @@ export default function WindowHerder() {
                         <i title="Source Code"  onClick={()=>window.open("https://github.com/Freak644","_blank")} className="bx bxl-github border border-skin-ptext/30 p-1 rounded-lg cursor-pointer"></i>
                         <i onClick={()=>toggleMiniTab("noti")} title="Notification" className="bx bx-bell border border-skin-ptext/30 p-1 rounded-lg cursor-pointer"></i>
                         <div title={userData.username || "Loading"} className="h-9 w-9 overflow-hidden cursor-pointer border rounded-full flex items-center justify-center relative">
-                            <img className="h-full" src={userData.avatar ? `/myServer/${userData.avatar}` : "https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" />
+                            <img className="h-full" src={userData.avatar ? userData.avatar : "https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" />
                         </div>
                     </div>
                 </div>

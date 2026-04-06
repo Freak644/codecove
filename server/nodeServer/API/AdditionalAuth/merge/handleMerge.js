@@ -20,7 +20,7 @@ export const VerifyMergeToken = async (rkv, rspo) => {
         }
    
         let {created_at, user_id} = requestInfo[0];
-        console.log(created_at)
+       
         //  CONVERT THE TIME INTO TIME STR
         let timeFromDb = new Date(created_at);
         let now = Date.now();
@@ -54,12 +54,12 @@ export const VerifyMergeToken = async (rkv, rspo) => {
         }
 
         const request = await NewOAuthAc(tokenData);
-        console.log(request)
+  
           if (request.err) {
             return rspo.status(500).send(request.err);
           }
           let LoginRkv = await OAuthLogin(rkv, request);
-          console.log(LoginRkv)
+  
           if (LoginRkv.err) {
             return rspo.status(500).send(LoginRkv.err);
           }
@@ -111,13 +111,12 @@ export const verifyPassword = async (rkv, rspo) => {
         }
         
         const request = await NewOAuthAc(tokenData);
-        console.log(password)
-        console.log(request)
+
           if (request.err) {
             return rspo.status(500).send({err:request.err});
           }
           let LoginRkv = await OAuthLogin(rkv, request);
-          console.log(LoginRkv)
+         
           if (LoginRkv.err) {
             return rspo.status(500).send(LoginRkv.err);
           }
@@ -130,7 +129,7 @@ export const verifyPassword = async (rkv, rspo) => {
 
           rspo.cookie("myMergeData", "", { expires: new Date(0) });
 
-          rspo.redirect(process.env.FRONTEND_URL);
+          rspo.json({pass:"Merged"});
 
         
     } catch (error) {

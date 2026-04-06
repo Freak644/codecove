@@ -12,7 +12,7 @@ export default function HomePage({pramsData, setTab}) {
                         {/* Header */}
                         <div className="text-center">
                         <div className="mx-auto mb-4 h-14 w-14 overflow-hidden flex items-center justify-center rounded-full bg-transparent">
-                            <img src={(pramsData.provider_name && !pramsData.accountAv.startsWith("Images")) ? pramsData.avatar : `/myServer/${pramsData.accountAv}`} />
+                            <img src={(pramsData.provider_name && !pramsData.accountAv.startsWith("Images")) ? pramsData.avatar : pramsData.accountAv} />
                         </div>
                         <h2 className="text-2xl font-semibold text-gray-600">
                             Account Already Exists

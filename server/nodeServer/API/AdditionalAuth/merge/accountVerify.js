@@ -7,6 +7,7 @@ import { database } from "../../../Controllers/myConnectionFile.js";
 import geoip from 'geoip-lite';
 import { UAParser } from "ua-parser-js";
 import { sendTheMail } from "../../../Controllers/EmailService/nodemailer.js";
+import redis from "../../../Controllers/src/config/redis.js";
 export const VerifyUserMail = async (rkv, rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
@@ -18,15 +19,19 @@ export const VerifyUserMail = async (rkv, rspo) => {
         let request_id = nanoid();
         
         let token = rkv.cookies.myMergeData;
-
+        
         if (!token) {
             return rspo.status(400).send({ err: "Session Cookie is missing or expired" });
         }
-
+        
         // decoding the token
         let decryptedToken = await Decrypt(token);
         let tokenData = jwt.decode(decryptedToken, process.env.jwt_sec);
         let decodedTime = Math.floor(Date.now()/1000);
+        let isExist = await redis.exists(`isCoolDown:${tokenData.email}`)
+        if (isExist) {
+            return rspo.status(400).send({err:"An Verification Email is already Sent"});
+        }
         if (tokenData.exp<decodedTime) {
             return rspo.status(504).send({err:"Google Data is now Expire"});
         }
@@ -52,6 +57,7 @@ export const VerifyUserMail = async (rkv, rspo) => {
                 country:geo?.country,
                 verify_url:`${process.env.BACKEND_URL}auth/verify/mergeToken?token=${encodeURIComponent(request_id)}`
             }
+            
         );
 
         if (send.rejected.length === 0) {

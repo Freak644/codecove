@@ -19,17 +19,45 @@ export default function HonePage() {
   let {toggleMiniTab} = toggleSlider();
   let {toggleLoader} = Loader();
 
+  async function requestNotificationPermission() {
+        if (!("Notification" in window)) {
+            alert("This browser does not support notifications");
+            return;
+        }
+
+        if (Notification.permission === "granted") {
+            console.log("Notification already granted");
+            return;
+        }
+
+        if (Notification.permission === "denied") {
+            alert("You have blocked notifications in browser settings");
+            return;
+        }
+
+        const permission = await Notification.requestPermission();
+
+        if (permission === "granted") {
+            new Notification("CodeCove",{
+                body:"Notificaiton are now enabled🎉",
+                icon:"https://i.postimg.cc/L4kDbPrj/favicon.png"
+            })
+        } else {
+            console.log("Notification permission denied");
+        }
+    }
 
   const fetchPost = async () => {
     try {
       let rqst = await axios.get("/myServer/readPost/getPost");
-      console.log(rqst)
+      
       if (!rqst.data.hasMore) {
         setEnd(true)
         setPosts(rqst.data.post);
       }else{
         setPosts(rqst.data.post);
       }
+      await requestNotificationPermission()
     } catch (error) {
       
        toast.error(error.response.data.err);;
@@ -42,7 +70,7 @@ export default function HonePage() {
         if (Posts.length === 0 && isTrue) {
           fetchPost();
         }
-        console.log(Posts)
+        console.table(Posts)
         isTrue = false;
   },[Posts])
 
@@ -88,7 +116,7 @@ export default function HonePage() {
         <div className="rightHome flex-1 h-full p-2">
             <div className="h-1/10 w-full p-3 flex items-center justify-center flex-row gap-2.5 text-skin-text overflow-hidden">
                 <div className="h-10 w-10 border rounded-full flex items-center justify-center overflow-hidden">
-                  <img src={Object.keys(userInfo).length > 0 ? `/myServer${userInfo?.avatar}` : null} alt="" />  
+                  <img src={Object.keys(userInfo).length > 0 ? userInfo.avatar : null} alt="" />  
                 </div>            
                 <p>{userInfo.username || "username"}</p>
                 <div

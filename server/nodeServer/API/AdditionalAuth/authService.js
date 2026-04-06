@@ -11,7 +11,6 @@ export const handleOAuthLogin = async (userInfo) => {
         let [account] = await database.query(`SELECT user_id, id 
                 FROM oauth_accounts WHERE provider_name = ? AND provider_account_id = ? LIMIT 1`
             ,[provider,providerAccount_id]);
-        
         if (account.length !== 0) { // create session and return details for JWT
             let {user_id, id} = account[0];
             return {user_id, id,code:202}
@@ -20,17 +19,16 @@ export const handleOAuthLogin = async (userInfo) => {
         let [uAccount] = await database.query(`SELECT u.id as user_id, u.username, u.avatar, oa.provider_name FROM users as u 
             LEFT JOIN oauth_accounts oa ON u.id = oa.user_id
              WHERE u.email = ? LIMIT 1`, [email]);
-        
         if (uAccount.length !== 0) {
            
             let { user_id, username,avatar,provider_name} = uAccount[0];
             return {user_id,username, avatar ,provider_name,code:302}
         }
 
-        if (account.length === 0 && uAccount === 0) {
+        if (account.length === 0 && uAccount.length === 0) {
             return {code:404};
         }
-
+     
         return {err:"Something went Wrong"}
         
     } catch (error) {

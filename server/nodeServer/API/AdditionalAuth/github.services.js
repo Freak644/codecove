@@ -51,12 +51,14 @@ export const githubCallBackHandler = async (rkv, rspo) => {
             accessToken,
             username:userInfo.login
         }
-
-
+        
+        
         const OAuthInfo = await handleOAuthLogin(authData);
         
         if (OAuthInfo.code === 202) {
-            let LoginRkv = await OAuthInfo(rkv, OAuthInfo);
+            let LoginRkv = await OAuthLogin(rkv, OAuthInfo);
+
+         
             if (LoginRkv.err) {
                 return rspo.status(500).session(LoginRkv.err);
             }

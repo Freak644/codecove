@@ -34,6 +34,7 @@ export const googleCallBackHandler = async (rkv, rspo) => {
     }
 
     const OAuthInfo = await handleOAuthLogin(authData);
+    
     if (OAuthInfo.code === 202) {
       let LoginRkv = await OAuthLogin(rkv, OAuthInfo);
           if (LoginRkv.err) {
@@ -82,6 +83,7 @@ export const googleCallBackHandler = async (rkv, rspo) => {
         } 
 
       if (OAuthInfo.code === 404) {
+        
         let username = authData.email.split("@")[0];
 
           const request = await NewOAuthAc({...authData, username});

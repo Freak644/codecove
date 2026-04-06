@@ -106,7 +106,7 @@ export const CreateUser = async (rkv, rspo) => {
       fs.writeFileSync(avatarPath, file.buffer);
     }
 
-    const avatar = `Images/Avtar/${avatarFileName}`;
+    const avatar = `/myServer/Images/Avtar/${avatarFileName}`;
 
 
     const hashPass = await bcrypt.hash(password, 10);

@@ -96,17 +96,17 @@ export const CreateUser = async (rkv, rspo) => {
       return rspo.status(302).send({ err: `${duplicate} already has an account` });
     }
 
-    const dir = "./Images/Avtar";
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    const dir = `./Images/${username}/Avatar`;
+    if (!fs.existsSync(dir)) await fs.promises.mkdir(dir, { recursive: true });
 
     
     if (file) {
       avatarFileName = username+Date.now()+file.originalname;
       const avatarPath = path.join(dir, avatarFileName);
-      fs.writeFileSync(avatarPath, file.buffer);
+      await fs.promises.writeFile(avatarPath, file.buffer);
     }
 
-    const avatar = `/myServer/Images/Avtar/${avatarFileName}`;
+    const avatar = `/myServer/Images/${username}/Avatar/${avatarFileName}`;
 
 
     const hashPass = await bcrypt.hash(password, 10);

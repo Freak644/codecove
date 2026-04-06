@@ -645,7 +645,7 @@ form>h1>span{
         display: none;
     }
 }
-@media (max-width:500px) {
+@media (max-width:600px) {
     .routeContainer{
         width: 100vw !important;
         left: 0px !important;
@@ -676,58 +676,12 @@ form>h1>span{
             height: 100%;
             width: 100dvw;
             flex-direction: row;
-            background: rgba(10, 0, 0, 0.3);
+            background: rgba(10, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-radius: 5px 5px;
-            ul{
-                width: 100%;
-                flex-direction: row;
-                border: 1px;
-                align-items: center;
-                justify-content: space-around;
-                gap: 1px;
-                font-size: 30px;
-                position: absolute;
-                bottom: 0px;
-                li{
-                    font-size: 28px;
-                }
-                li:nth-child(2),li:nth-child(3){
-                    display: none;
-                }
-
-                
-                li:nth-child(5){
-                    padding: 17px;
-                    background-color: var(--bg-color);
-                    /* transform: translateY(-15px); */
-                    border-radius: 50%;
-                    display: grid !important;
-                    position: relative;
-                }
-                li:nth-child(5):after,
-                li:nth-child(5):before{
-                    content: '';
-                    position: absolute;
-                    top: -18px; left: -20px;
-                    height: 150%; width: 150%;
-                    border-radius: 50%;
-                    border: 3px solid transparent;
-                    grid-area: 1/1;
-                    animation: miniLoader 3s infinite;
-                    pointer-events: none;
-                }
-                li:nth-child(5):after {
-                    border-color: #0028c7 transparent transparent; /* Indigo-600 from Tailwind palette */
-                    animation-direction: alternate-reverse;
-                }
-
-                li:nth-child(5):before {
-                    border-color: #e1e907 transparent transparent; /* Emerald-500 from Tailwind palette */
-                }
-            }
-        }
+          
+        } 
         .Logotxt,.secul{
             display: none;
         }

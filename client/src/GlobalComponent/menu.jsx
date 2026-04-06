@@ -6,6 +6,7 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import MenuSkeleton from './menuSkel';
 import { toggleABMenu } from '../lib/toggleTheme';
 import {getColor} from '../utils/getGradnt.js';
+import MiniMenu from './miniNavigation.jsx';
 export default function MenuEL(params) {
     let gradColor = getColor();
     const [currentTab,setTab] = useState('Home');
@@ -15,6 +16,7 @@ export default function MenuEL(params) {
     const {setInfo} = UnivuUserInfo();
     const dropRef = useRef();
     const navi = useNavigate();
+    const [miniMenu, setMenu] = useState(false);
     const crntLocation = useLocation();
     const toggleMenu = toggleABMenu(state=>state.toggleMenu);
     useEffect(()=>{
@@ -83,9 +85,17 @@ export default function MenuEL(params) {
         }
     },[isHidden])
 
+    useEffect(()=>{
+        if (window.innerWidth <= 600) {
+            setMenu(true);
+        } else {
+            setMenu(false);
+        }
+    },[])
+
     return(
         <>
-        {userinfo.avatar?.length < 2 ? <MenuSkeleton/> : <div className="menuDiv transition-all duration-700 relative left-0 border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
+        {userinfo.avatar?.length < 2 ? <MenuSkeleton/> : <div className="menuDiv transition-all duration-700 relative left-0 sm:border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
         flex items-center flex-col gap-5
          z-20
         "> <p id='secBtn' onClick={()=>setHidden(prev=>!prev)} className="h-8 w-8 flex logotxt items-center justify-center text-2xl cursor-pointer border-skin-ptext/30 border rounded-full absolute top-3 -right-2"><i className="bx bx-menu text-skin-ptext"></i></p>
@@ -99,8 +109,8 @@ export default function MenuEL(params) {
                 bg-linear-to-tr ${gradColor}
                 bg-clip-text text-transparent`}>NullVain</h2>
             </div>
-            <div className='menuContainer relative flex items-center flex-col gap-10 lg:text-[18px] sm:text-2xl text-skin-text'>
-                <ul className='topU flex items-start flex-col gap-3 border-b-2 border-gray-400 my-scroll'>
+            <div className={`${miniMenu ? "miniMenu" : "menuContainer" } relative flex items-center flex-col gap-10 lg:text-[18px] sm:text-2xl text-skin-text`}>
+                {!miniMenu ? <> <ul className='topU flex items-start flex-col gap-3 sm:border-b-2 border-gray-400 my-scroll'>
                     <li>
                         <Link to="/">
                         <i className={`bx ${currentTab === 'Home' ? "bxs" : "bx"}-home text-skin-text`}></i>
@@ -170,7 +180,10 @@ export default function MenuEL(params) {
                     </div>}
                     </li>
                     <li ><i className='bx bx-menu-alt-left'></i><span>Tools</span></li>
-                </ul>
+                </ul> </> : <MiniMenu avatar={userinfo?.avatar} crntTab={currentTab} username={userinfo?.username} />
+                
+                }
+               
             </div>
         </div>}
         </>

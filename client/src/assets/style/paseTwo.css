@@ -677,3 +677,131 @@ select{
     }
   }
 }
+
+.miniMenu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: rgba(10, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+
+.miniMenu ul li {
+  position: relative;
+  list-style: none;
+  width: 70px;
+  height: 70px;
+  z-index: 1;
+}
+
+.miniMenu ul li a {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+}
+
+.miniMenu ul li a .icon {
+  position: relative;
+  display: block;
+  line-height: 75px;
+  font-size: 1.7em;
+  text-align: center;
+  transition: 0.5s;
+  color: var(--p-text-color);
+  opacity: 0.75;
+}
+
+.miniMenu ul li.activeLi a .icon {
+  transform: translateY(-17px);
+  opacity: 1;
+  color: rgb(76, 31, 255);
+}
+
+
+.indicator {
+  position: absolute;
+  top: -10px;
+  width: 70px;
+  height: 70px;
+  border-bottom-left-radius: 35px;
+  border-bottom-right-radius: 35px;
+  border: 6px solid transparent;
+  background: transparent;
+
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.indicator::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: -25.75px;
+  width: 20px;
+  height: 20px;
+  border-top-right-radius: 20px;
+ 
+}
+
+.indicator::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: -25.75px;
+  width: 20px;
+  height: 20px;
+  border-top-left-radius: 20px;
+ 
+  z-index: -1;
+}
+
+.miniMenu ul li:nth-child(1).activeLi~.indicator {
+  transform: translateX(calc(70px * 0)) translateY(-7px);
+}
+
+.miniMenu ul li:nth-child(2).activeLi~.indicator {
+  transform: translateX(calc(76px * 1)) translateY(-7px);
+}
+
+.miniMenu ul li:nth-child(3).activeLi~.indicator {
+  transform: translateX(calc(76px * 2)) translateY(-7px);
+}
+
+.miniMenu ul li:nth-child(4).activeLi~.indicator {
+  transform: translateX(calc(76px * 3)) translateY(-7px);
+}
+
+.miniMenu ul li:nth-child(5).activeLi~.indicator {
+  transform: translateX(calc(76px * 4)) translateY(-7px);
+}
+
+.miniMenu ul li:nth-child(6).activeLi~.indicator {
+  transform: translateX(calc(76px * 4)) translateY(-7px);
+}
+
+
+.indicator span {
+  position: absolute;
+  bottom: 3px;
+  left: -1px;
+  width: 60px;
+  height: 60px;
+  border: 4px solid transparent;
+  border-radius: 12px;
+  background: 
+    linear-gradient(black, black) padding-box,
+    linear-gradient(45deg, rgb(0, 0, 142), rgb(124, 1, 195)) border-box;
+
+  border-radius: 50%;
+  transform-origin: bottom;
+
+  transform: scale(0.85);
+}

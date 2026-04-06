@@ -49,8 +49,8 @@ export default function Header() {
 
                         </i>
                         <p className={`text-2xl bg-size-[200%_200%]
-                            bg-linear-to-tr ${gradColor}
-                            bg-clip-text text-transparent font-bold`}>CodeCove
+                            bg-linear-to-tl ${gradColor}
+                            bg-clip-text text-transparent font-bold`}>NullVain
                         </p>
                 </div>
 

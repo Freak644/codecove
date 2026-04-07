@@ -683,18 +683,20 @@ select{
   align-items: center;
   justify-content: center;
   width: 100%;
-  background: rgba(10, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  
+
 }
 
 
 .miniMenu ul li {
   position: relative;
   list-style: none;
-  width: 70px;
+  width: 81px;
   height: 70px;
-  z-index: 1;
+  background: rgba(10, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+  
 }
 
 .miniMenu ul li a {
@@ -706,6 +708,8 @@ select{
   width: 100%;
   text-align: center;
   font-weight: 500;
+  transform: translateY(-5px);
+
 }
 
 .miniMenu ul li a .icon {
@@ -719,7 +723,7 @@ select{
   opacity: 0.75;
 }
 
-.miniMenu ul li.activeLi a .icon {
+.miniMenu ul li.activeLi .icon {
   transform: translateY(-17px);
   opacity: 1;
   color: rgb(76, 31, 255);
@@ -744,10 +748,10 @@ select{
   content: "";
   position: absolute;
   top: 4px;
-  left: -25.75px;
+  left: -28.75px;
   width: 20px;
   height: 20px;
-  border-top-right-radius: 20px;
+ 
  
 }
 
@@ -755,16 +759,16 @@ select{
   content: "";
   position: absolute;
   top: 4px;
-  right: -25.75px;
+  right: -28.75px;
   width: 20px;
   height: 20px;
-  border-top-left-radius: 20px;
+
  
   z-index: -1;
 }
 
 .miniMenu ul li:nth-child(1).activeLi~.indicator {
-  transform: translateX(calc(70px * 0)) translateY(-7px);
+  transform: translateX(calc(10px)) translateY(-7px);
 }
 
 .miniMenu ul li:nth-child(2).activeLi~.indicator {
@@ -787,6 +791,23 @@ select{
   transform: translateX(calc(76px * 4)) translateY(-7px);
 }
 
+.miniMenu ul li.activeLi {
+  clip-path: url(#curve);
+}
+
+.miniMenu ul li.activeLi~.indicator {
+  animation: breath 3s infinite ease-in-out;
+}
+
+@keyframes breath {
+  0%,100% {
+    transform: translateY(-7px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
 
 .indicator span {
   position: absolute;
@@ -802,6 +823,15 @@ select{
 
   border-radius: 50%;
   transform-origin: bottom;
-
   transform: scale(0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.indicator .dyicon {
+  color: rgb(50, 50, 249);
+  font-size: 35px;
+  font-weight: 500;
+
 }

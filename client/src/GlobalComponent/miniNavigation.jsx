@@ -6,7 +6,7 @@ import { MdOutlineNotificationsNone } from "react-icons/md";
 export default function MiniMenu({avatar, crntTab, username}) {
     
     return(
-        <ul className="flex w-full! bg-skin-bg justify-between">
+        <ul className="flex w-full!   justify-between">
             <li className={crntTab === "Home" && "activeLi"}>
                 <Link to={"/"}>
                     <span>
@@ -52,7 +52,25 @@ export default function MiniMenu({avatar, crntTab, username}) {
             </li>
 
 
-            <div class="indicator"><span></span></div>
+            <div class="indicator"><span>
+                <AiOutlineHome className='dyicon'/>
+                </span></div>
+           <svg width="0" height="0" className='absolute'>
+            <clipPath id="curve" clipPathUnits="objectBoundingBox">
+                <path d="
+                M0,0 
+                H1 
+                V1 
+                H0 
+                Z
+
+                M0,0.0
+                C0.25,0 0.10,0.95 0.6,0.80
+                C0.80,0.80 0.80,0 1,0
+                Z
+                " />
+            </clipPath>
+            </svg>
         </ul>
     )
 }

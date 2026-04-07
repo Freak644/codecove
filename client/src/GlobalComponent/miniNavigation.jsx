@@ -5,17 +5,39 @@ import { RiGitRepositoryCommitsLine } from "react-icons/ri";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 export default function MiniMenu({avatar, crntTab, username}) {
     
+    const getEl = (Tab)=> {
+        console.log(Tab)
+        switch (Tab) {
+            case "Home":
+                return <AiOutlineHome className='dyicon'/>;
+            case "Explore":
+                return <FaWpexplorer className='dyicon' />;
+            case "Commit":
+                return <RiGitRepositoryCommitsLine className='dyicon' />;
+            case "Notification":
+                return <MdOutlineNotificationsNone className='dyicon' />;
+            case "Lab":
+                return <img
+                            className='h-9 rounded-full w-9'
+                            src={avatar}
+                            alt=""
+                        />
+            default:
+                break;
+        }
+    }
+
     return(
         <ul className="flex w-full!   justify-between">
-            <li className={crntTab === "Home" && "activeLi"}>
+            <li className={crntTab === "Home" ? "activeLi" : ""}>
                 <Link to={"/"}>
                     <span>
-                        <AiOutlineHome  className='icon'/>
+                        <AiOutlineHome className='icon'/>
                     </span>
                 </Link>
             </li>
 
-            <li className={crntTab === "Explore" && "activeLi"}>
+            <li className={crntTab === "Explore" ? "activeLi" : ""}>
                 <Link to={"/Explore"} >
                     <span>
                         <FaWpexplorer className='icon' />
@@ -23,7 +45,7 @@ export default function MiniMenu({avatar, crntTab, username}) {
                 </Link>
             </li>
 
-            <li className={crntTab === "Commit" && "activeLi"}>
+            <li className={crntTab === "Commit" ? "activeLi" : ""}>
                 <Link to={"/Commit"}>
                     <span>
                         <RiGitRepositoryCommitsLine className='icon' />
@@ -31,7 +53,7 @@ export default function MiniMenu({avatar, crntTab, username}) {
                 </Link>
             </li>
 
-            <li className={crntTab === "Notification" && "activeLi"}>
+            <li className={crntTab === "Notification" ? "activeLi" : ""}>
                 <Link to={"/Notifications"}>
                     <span>
                         <MdOutlineNotificationsNone className='icon' />
@@ -39,7 +61,7 @@ export default function MiniMenu({avatar, crntTab, username}) {
                 </Link>
             </li>
 
-            <li className={crntTab == "Lab" && "activeLi"}>
+            <li className={crntTab == "Lab" ? "activeLi" : ""}>
                 <Link to={`/Lab/${username}`} >
                     <span className='border icon rounded-full flex items-center justify-center'>
                             <img
@@ -52,8 +74,8 @@ export default function MiniMenu({avatar, crntTab, username}) {
             </li>
 
 
-            <div class="indicator"><span>
-                <AiOutlineHome className='dyicon'/>
+            <div className="indicator"><span>
+                    {getEl(crntTab)}
                 </span></div>
            <svg width="0" height="0" className='absolute'>
             <clipPath id="curve" clipPathUnits="objectBoundingBox">

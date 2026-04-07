@@ -129,12 +129,12 @@ export default function LoginCon({toggle}) {
                                 <button onClick={()=>setTab("right")} type="button" className="text-btn ">Create an Accound</button>
                             </div>
                             
-                            <div className="decorDiv flex items-center flex-col p-2.5 m-auto gap-2.5 font-normal">
+                            <div className="decorDiv flex items-center flex-col p-2.5 m-auto gap-2.5 font-normal sm:translate-0 -translate-x-2.5">
                                 <p className="opacity-50 text-sm text-gray-300"><span className="font-bold">___________</span> OR <span className="font-bold">___________</span></p>
                                 <div className="iconHelper flex items-center flex-row p-1
                                 ">
-                                    <button disabled={isTrue} onClick={loginWithGithub} title="Continue With GigHub" className="">Continue With <VscGithub className=" -top-px relative"/> </button>
-                                    <button disabled={isTrue} onClick={loginWithGoogle} title="Continue With Google" className="">Continue With <FcGoogle/> </button>
+                                    <button disabled={isTrue} onClick={loginWithGithub} title="Continue With GigHub" className="flex items-center justify-center text-nowrap">Continue With <VscGithub className=" -top-px relative"/> </button>
+                                    <button disabled={isTrue} onClick={loginWithGoogle} title="Continue With Google" className="flex items-center justify-center text-nowrap">Continue With <FcGoogle/> </button>
                                 </div>
                             </div>
                     </form>

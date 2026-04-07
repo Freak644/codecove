@@ -768,46 +768,34 @@ select{
 }
 
 .miniMenu ul li:nth-child(1).activeLi~.indicator {
-  transform: translateX(calc(10px)) translateY(-7px);
+  transform: translateX(calc(5px)) translateY(-7px);
 }
 
 .miniMenu ul li:nth-child(2).activeLi~.indicator {
-  transform: translateX(calc(76px * 1)) translateY(-7px);
+  transform: translateX(calc(78px * 1)) translateY(-7px) !important;
 }
 
 .miniMenu ul li:nth-child(3).activeLi~.indicator {
-  transform: translateX(calc(76px * 2)) translateY(-7px);
+  transform: translateX(calc(78px * 2)) translateY(-7px) !important;
 }
 
 .miniMenu ul li:nth-child(4).activeLi~.indicator {
-  transform: translateX(calc(76px * 3)) translateY(-7px);
+  transform: translateX(calc(77px * 3)) translateY(-7px) !important;
 }
 
 .miniMenu ul li:nth-child(5).activeLi~.indicator {
-  transform: translateX(calc(76px * 4)) translateY(-7px);
+  transform: translateX(calc(76px * 4)) translateY(-7px) !important;
 }
 
 .miniMenu ul li:nth-child(6).activeLi~.indicator {
-  transform: translateX(calc(76px * 4)) translateY(-7px);
+  transform: translateX(calc(76px * 4)) translateY(-7px) !important;
 }
 
 .miniMenu ul li.activeLi {
   clip-path: url(#curve);
 }
 
-.miniMenu ul li.activeLi~.indicator {
-  animation: breath 3s infinite ease-in-out;
-}
 
-@keyframes breath {
-  0%,100% {
-    transform: translateY(-7px);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-}
 
 .indicator span {
   position: absolute;

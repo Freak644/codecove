@@ -9,7 +9,10 @@ export default function MiniMenu({avatar, crntTab, username}) {
         console.log(Tab)
         switch (Tab) {
             case "Home":
-                return <AiOutlineHome className='dyicon'/>;
+                    return <Link to={"/"}>
+                        
+                            <AiOutlineHome className='icon'/>
+                    </Link>
             case "Explore":
                 return <FaWpexplorer className='dyicon' />;
             case "Commit":
@@ -17,11 +20,15 @@ export default function MiniMenu({avatar, crntTab, username}) {
             case "Notification":
                 return <MdOutlineNotificationsNone className='dyicon' />;
             case "Lab":
-                return <img
+                return <Link to={`/Lab/${username}`} >
+                    <span className='border icon rounded-full flex items-center justify-center'>
+                            <img
                             className='h-9 rounded-full w-9'
                             src={avatar}
                             alt=""
-                        />
+                            />
+                    </span>
+                </Link>
             default:
                 break;
         }

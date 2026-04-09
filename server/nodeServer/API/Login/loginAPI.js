@@ -28,6 +28,9 @@ export const LoginAPI = async (rkv,rspo) => {
         }
         let {password,username,email,id,acStatus,avatar} = isUser[0];
         if (acStatus !== 1) return rspo.status(401).send({err:"Your account Block"});
+        if (!password) {
+            return rspo.status(404).send({err:"You have an OAuth service account"});
+        }
         let isPassMatch = await bcrypt.compare(Password,password);
         if (!isPassMatch) {
             return rspo.status(401).send({ err: "Check your Password"})
@@ -76,7 +79,7 @@ export const LoginAPI = async (rkv,rspo) => {
             rspo.status(504).send({err:"Something went wrong while Login"})
         }
     } catch (error) {
-        //console.log(error.message)
+        console.log(error.message)
         rspo.clearCookie("myAuthToken");
         await database.query("DELETE v,s FROM validationToken v JOIN user_sessions s ON v.session_id = s.session_id WHERE v.token_id = ?",[token_id]);
         rspo.status(500).send({ err: "Sever Side Error"});

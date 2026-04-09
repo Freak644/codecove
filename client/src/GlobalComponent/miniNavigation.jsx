@@ -1,18 +1,17 @@
-import {Link} from 'react-router-dom';
+import {Link, useNavigation} from 'react-router-dom';
 import { AiOutlineHome } from "react-icons/ai"
 import { FaWpexplorer } from "react-icons/fa6";
 import { RiGitRepositoryCommitsLine } from "react-icons/ri";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 export default function MiniMenu({avatar, crntTab, username}) {
     
+  
+
     const getEl = (Tab)=> {
         console.log(Tab)
         switch (Tab) {
             case "Home":
-                    return <Link to={"/"}>
-                        
-                            <AiOutlineHome className='icon'/>
-                    </Link>
+                return <AiOutlineHome className='dyicon'/>;
             case "Explore":
                 return <FaWpexplorer className='dyicon' />;
             case "Commit":
@@ -20,19 +19,18 @@ export default function MiniMenu({avatar, crntTab, username}) {
             case "Notification":
                 return <MdOutlineNotificationsNone className='dyicon' />;
             case "Lab":
-                return <Link to={`/Lab/${username}`} >
-                    <span className='border icon rounded-full flex items-center justify-center'>
-                            <img
+                return <img
                             className='h-9 rounded-full w-9'
                             src={avatar}
                             alt=""
-                            />
-                    </span>
-                </Link>
+                        />
             default:
                 break;
         }
     }
+
+
+
 
     return(
         <ul className="flex w-full!   justify-between">

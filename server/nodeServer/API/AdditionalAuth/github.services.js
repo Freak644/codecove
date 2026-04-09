@@ -74,7 +74,7 @@ export const githubCallBackHandler = async (rkv, rspo) => {
         
         
         const key = `isCoolDown:${primaryEmail}`;
-        await redis.del(key)
+  
         let isCoolDown = await redis.exists(key);
         let ttl = await redis.ttl(key);
     

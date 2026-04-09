@@ -11,6 +11,7 @@ export const handleOAuthLogin = async (userInfo) => {
         let [account] = await database.query(`SELECT user_id, id 
                 FROM oauth_accounts WHERE provider_name = ? AND provider_account_id = ? LIMIT 1`
             ,[provider,providerAccount_id]);
+        console.log(providerAccount_id,provider)
         if (account.length !== 0) { // create session and return details for JWT
             let {user_id, id} = account[0];
             return {user_id, id,code:202}

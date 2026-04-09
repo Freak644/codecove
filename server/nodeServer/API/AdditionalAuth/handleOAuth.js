@@ -46,6 +46,9 @@ const NewOAuthAc = async (tokenData) => {
                     avatar = `/myServer/Images/${username}/Avatar/${avatarFileName}`
                 await database.query(`INSERT INTO users (id, username, email, avatar) VALUES (?, ?, ?, ?);`,[uuid, username, email, avatar || accountAv,]);
                 await database.query("INSERT INTO roles (user_id) VALUES (?)",[uuid])
+                await database.query(`INSERT INTO oauth_accounts 
+                    (id, user_id, provider_name, provider_account_id, provider_email, access_token) 
+                    VALUE (?, ?, ?, ?, ?, ?);`,[OAuth_id, uuid, provider, providerAccount_id, email, accessToken]);
                 return {id:OAuth_id, user_id:uuid}
             }
             throw new Error("Something went Wrong");

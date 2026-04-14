@@ -23,7 +23,7 @@ const connection = await sql();
 
 async function migrate() {
     try {
-        let dbStepFile = fs.readFileSync("./server/nodeServer/mySQL/init.sql","utf-8");
+        let dbStepFile = fs.readFileSync("nodeServer/mySQL/init.sql","utf-8");
         dbStepFile = dbStepFile.replace(/^\uFEFF/,''); //strip the BOM from the file if present
         await connection.query(dbStepFile);
         console.log(chalk.bold.green("✅succesfully! CREATE DATABASE IN YOUR MATCHINE"));

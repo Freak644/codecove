@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon nodeServer/myServer.js",
     "start": "node myServer.js",
-    "migrate": "node nodeServer/migrate.js"
+    "migrate": "node nodeServer/mySQL/migrate.js"
   },
   "dependencies": {
     "arctic": "^3.7.0",

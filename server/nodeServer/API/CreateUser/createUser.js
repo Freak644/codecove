@@ -4,9 +4,8 @@ import sharp from 'sharp';
 import { fileTypeFromBuffer } from 'file-type';
 import fs from 'fs';
 import path from 'path';
-import { Decrypt } from '../../utils/Encryption.js';
-import jwt from 'jsonwebtoken';
 import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
+import redis from '../../Controllers/src/config/redis.js';
 
 
 async function checkDuplicate(sqlData, username, email) {
@@ -25,13 +24,11 @@ export const CreateUser = async (rkv, rspo) => {
   let avatarFileName = "default.webp";
   try {
 
-    let token = rkv.cookies.emailStatus; // this is the Encrypted token
-    if (!token) return rspo.status(403).send({err:"OTP verification is Expired"});
-    let decryptedToken = await Decrypt(token);
-    let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec);
-    let decodedTime = Math.floor(Date.now()/1000);
-    if (tokenData.exp < decodedTime) return rspo.status(504).send({err:"Your email verification is expire"});
-    if (!tokenData.verify) return rspo.status(401).send({err:"We found that your email verifycation is Unauthorise!!!"});
+    let isValid = await redis.exists(`emailVerified:${email}`);
+    if (!isValid) {
+      return rspo.status(401).send({err:"Your Email Verification is not Valid Or Expired"})
+    }
+
     if (file) { // if file then check it is it a valid image file 
         if (!Buffer.isBuffer(file.buffer)) {
             return rspo.status(400).send({ err: "Invalid file buffer" });
@@ -61,7 +58,7 @@ export const CreateUser = async (rkv, rspo) => {
 
         const MAX_WIDTH = 4096;
         const MAX_HEIGHT = 4096;
-        const MAX_PIXELS = 4096 * 4096;
+        const MAX_PIXELS = 16 * 1024 * 1024;
 
         if (
             metaData.width > MAX_WIDTH ||

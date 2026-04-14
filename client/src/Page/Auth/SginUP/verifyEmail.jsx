@@ -25,6 +25,10 @@ export default function VerifyEl() {
       if (btnRef.current.disabled != true) {
         toggleLoader(true);
         try {
+            if (!username || !email) {
+              throw new Error("Invalid Info");
+              
+            }
             let request = await fetch(`/myServer/email/sendVerifyEmail`,{
                 method:"POST",
                 headers:{
@@ -185,7 +189,7 @@ export default function VerifyEl() {
                                   handleAPICall();
                                   setCoundown();
                                 }}
-                                 type='button' className='text-btn'>Resend (120s)</button>
+                                 type='button' className='text-btn w-auto!'>Resend (120s)</button>
                             <button ref={vbtnRef} type='submit' className='btn'>{isLoader ? <div className="miniLoader"></div> :"Verify"}</button>
                         </div>
                     </form>

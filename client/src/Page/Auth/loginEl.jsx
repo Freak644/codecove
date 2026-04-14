@@ -126,7 +126,7 @@ export default function LoginCon({toggle}) {
                             </div>
                             <div className="inputDiv twobtnInput ">
                                 <button disabled={isTrue} type="submit" className="btn bigBtn relative h-9 ">{isTrue ? <img src={bat} className="bat" alt="" /> : "Log in"}</button>
-                                <button onClick={()=>setTab("right")} type="button" className="text-btn ">Create an Accound</button>
+                                <button onClick={()=>setTab("right")} type="button" className="text-btn ">Create an Account</button>
                             </div>
                             
                             <div className="decorDiv flex items-center flex-col p-2.5 m-auto gap-2.5 font-normal sm:translate-0 -translate-x-2.5">

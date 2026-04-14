@@ -8,14 +8,14 @@ const MAX_PIXELS = 50_000_000;
 
 export const FileChecker = async (filePath, fileSize) => {
   const sizeMB = fileSize / (1024 * 1024);
-  if (sizeMB > 3) {
-    return { err: "file.size <= 3MB" };
+  if (sizeMB > 5) {
+    return { err: "file.size >= 5MB" };
   }
 
 
   const buffer = await fs.promises.readFile(filePath);
   const type = await fileTypeFromBuffer(buffer);
-  if (!type || !["image/png", "image/jpg", "image/jpeg"].includes(type.mime)) {
+  if (!type || !["image/png", "image/jpg", "image/jpeg", "image/webp"].includes(type.mime)) {
     return { err: "Invalid file type" };
   }
 

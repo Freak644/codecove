@@ -138,7 +138,7 @@ export default function UserNameEl({stoggle}) {
             if (result.pass) {
                 setMail(email)
                 setTUsername(username)
-                toast.success("We sucsfuLy send the otp ")
+                toast.success("OTP! Sent")
                 setVTab(true)
             }else{
                 toast.error(result.err)

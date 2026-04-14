@@ -100,7 +100,7 @@ export const CreatePost = async (rkv,rspo) => {
       rspo.status(201).send({pass:"Your Post is POst", postData:{post_id,id,cloudLiks,caption,blockCat:{Absuse,Spam,Link,Violence},visibility:visibility == "true" ? 1 : 0, canComment: canComment === "true" ? 1 : 0,likeCount: likeCount == "true" ? 1 : 0, canSave, postGroup}})
 
     } catch (error) {
-        //console.log(error)
+        console.log(error)
         await clearTemp(imgArray);
         return rspo.status(500).send({err:"server side error"});
     } finally {

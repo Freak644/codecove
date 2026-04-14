@@ -76,11 +76,11 @@ export const googleCallBackHandler = async (rkv, rspo) => {
           return rspo.redirect(
             `${process.env.FRONTEND_URL}userfound`
           )
-        } else if (OAuthInfo.code === 302) {
+    } else if (OAuthInfo.code === 302) {
           let timeLeft = Math.ceil(ttl / 60);
           return rspo.redirect(
           `${process.env.FRONTEND_URL}?err="This action is on cooldown. Please try again in ${timeLeft} minutes."`);
-        } 
+    } 
 
       if (OAuthInfo.code === 404) {
         

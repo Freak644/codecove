@@ -81,7 +81,7 @@ export default function MiniMenu({avatar, crntTab, username}) {
 
             <div className="indicator"><span>
                     {getEl(crntTab)}
-                </span></div>
+            </span></div>
            <svg width="0" height="0" className='absolute'>
             <clipPath id="curve" clipPathUnits="objectBoundingBox">
                 <path d="

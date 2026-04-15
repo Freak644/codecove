@@ -705,7 +705,7 @@ select{
 .miniMenu ul li {
   position: relative;
   list-style: none;
-  width: 81px;
+  flex: 1;
   height: 70px;
   background: rgba(10, 0, 0, 0.1);
             backdrop-filter: blur(10px);
@@ -747,13 +747,15 @@ select{
 .indicator {
   position: absolute;
   top: -10px;
-  width: 70px;
+  width: calc(100% / 5);
   height: 70px;
   border-bottom-left-radius: 35px;
   border-bottom-right-radius: 35px;
   border: 6px solid transparent;
   background: transparent;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   transition: 0.5s;
 }
@@ -781,29 +783,27 @@ select{
   z-index: -1;
 }
 
-.miniMenu ul li:nth-child(1).activeLi~.indicator {
-  transform: translateX(calc(5px)) translateY(-7px);
+.miniMenu ul li:nth-child(1).activeLi ~ .indicator {
+  transform: translateX(0%) translateY(-7px);
 }
 
-.miniMenu ul li:nth-child(2).activeLi~.indicator {
-  transform: translateX(calc(78px * 1)) translateY(-7px) !important;
+.miniMenu ul li:nth-child(2).activeLi ~ .indicator {
+  transform: translateX(100%) translateY(-7px);
 }
 
-.miniMenu ul li:nth-child(3).activeLi~.indicator {
-  transform: translateX(calc(78px * 2)) translateY(-7px) !important;
+.miniMenu ul li:nth-child(3).activeLi ~ .indicator {
+  transform: translateX(200%) translateY(-7px);
 }
 
-.miniMenu ul li:nth-child(4).activeLi~.indicator {
-  transform: translateX(calc(77px * 3)) translateY(-7px) !important;
+.miniMenu ul li:nth-child(4).activeLi ~ .indicator {
+  transform: translateX(300%) translateY(-7px);
 }
 
-.miniMenu ul li:nth-child(5).activeLi~.indicator {
-  transform: translateX(calc(76px * 4)) translateY(-7px) !important;
+.miniMenu ul li:nth-child(5).activeLi ~ .indicator {
+  transform: translateX(400%) translateY(-7px);
 }
 
-.miniMenu ul li:nth-child(6).activeLi~.indicator {
-  transform: translateX(calc(76px * 4)) translateY(-7px) !important;
-}
+
 
 .miniMenu ul li.activeLi {
   clip-path: url(#curve);
@@ -812,9 +812,7 @@ select{
 
 
 .indicator span {
-  position: absolute;
-  bottom: 3px;
-  left: -1px;
+  
   width: 60px;
   height: 60px;
   border: 4px solid transparent;

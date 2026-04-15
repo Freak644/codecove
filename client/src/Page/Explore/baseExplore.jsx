@@ -1,8 +1,17 @@
+import { useEffect, useState } from "react"
+
 export default function BaseExplore() {
-    
-    return(
-        <div className="underTaker">
+    const [isPadding, setPadding] = useState(true);
+    useEffect(()=> {
+        let width = window.innerWidth;
+        if (width<800) {
             
+        }
+    },[])
+
+    return(
+        <div className="underTaker  bg-linear-to-tl from-yellow-500/20 to-purple-500/20 via-pink-500/20">
+
         </div>
     )
 }

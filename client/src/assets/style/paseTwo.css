@@ -270,7 +270,7 @@ select{
 }
 
 .comSpace{
-  box-shadow: 0 0 25px 6px rgba(105, 105, 105, 0.419);
+  box-shadow: 0 0 25px 6px rgba(105, 105, 105, 0.04);
 }
 
 .singlePost{
@@ -312,7 +312,7 @@ select{
 
 .miniDropHome{
   padding: 10px;
-  /* background: linear-gradient(136deg,#110e0e,#252525); */
+  background: linear-gradient(136deg,#110e0e92,#02031bbc);
   z-index: 99;
   border-radius: 16px;
 
@@ -329,11 +329,25 @@ select{
       text-align: start;
       border-bottom: 1px solid rgba(100, 100, 100, 0.2);
       cursor: pointer;
+      transition: .3s ease;
+      border-radius: 10px;
       
       i{
         margin-right: 10px;
       }
+
+      &:hover {
+        background: rgba(105, 105, 105, 0.419);
+        color: var(--text-color);
+      }
     }
+  }
+  ul:hover li {
+    opacity: .5;
+  }
+  ul:hover li:hover {
+    opacity: 1;
+
   }
 }
 

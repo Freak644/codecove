@@ -8,7 +8,7 @@ export default function MiniMenu({avatar, crntTab, username}) {
   
 
     const getEl = (Tab)=> {
-        console.log(Tab)
+      
         switch (Tab) {
             case "Home":
                 return <AiOutlineHome className='dyicon'/>;

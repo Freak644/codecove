@@ -6,6 +6,7 @@ import NotFound from '../../GlobalComponent/404NotFound';
 import MaximizeContainer from '../../Page/DashboardLayout/maximizeThings/baseContainer';
 import MainLapCom from '../../Page/userProfile/mainLap';
 import PostANDComment from '../../Page/DashboardLayout/maximizeThings/noBGComment';
+import BaseExplore from '../../Page/Explore/baseExplore';
 //import CreateAchievement from '../../Admin/createAcheivement';
 export default function AnimateRoute({location}) {
     const noAnimetArray = ['/']
@@ -20,6 +21,7 @@ export default function AnimateRoute({location}) {
                         <Route path='/Commit' element={<BaseCreate/>} />
                         <Route path='/Lab/:username' element={<MainLapCom/>} />
                         <Route path='/post/:pID' element={<PostANDComment/>} />
+                        <Route path='/Explore' element={<BaseExplore/>} />
                         {/* <Route path='/Ache' element={<CreateAchievement/>} /> */}
                         <Route path='*' element={<NotFound/>} />
                     </Routes>

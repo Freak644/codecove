@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) NOT NULL UNIQUE CHECK (LENGTH(username) > 0),
     email VARCHAR(100) NOT NULL UNIQUE CHECK (LENGTH(email) > 0),
     password VARCHAR(255) NULL,
-    avatar VARCHAR(255) DEFAULT '/Images/Avtar/default.png',
+    avatar VARCHAR(255) NOT NULL DEFAULT '/myServer/Images/Avtar/default.png',
     bio VARCHAR(100) DEFAULT 'Stay! Ahead, Follow the Revolution',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     acStatus BOOLEAN DEFAULT 1,

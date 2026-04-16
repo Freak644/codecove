@@ -18,6 +18,7 @@ export default function HonePage() {
   const crntTab = toggleSlider(stat=>stat.isMiniTab);
   let {toggleMiniTab} = toggleSlider();
   let {toggleLoader} = Loader();
+  const [cursor,setCursor] = useState([]);
 
   async function requestNotificationPermission() {
         if (!("Notification" in window)) {
@@ -54,6 +55,7 @@ export default function HonePage() {
       if (!rqst.data.hasMore) {
         setEnd(true)
         setPosts(rqst.data.post);
+        setCursor(rqst.data.cursorObj);
       }else{
         setPosts(rqst.data.post);
       }
@@ -80,27 +82,26 @@ export default function HonePage() {
   
   const fetchMorePost = async (crntSet) => {
     if (isEnd) return;
-    console.log("i am here")
     toggleLoader(true)
-    console.log("in main Fetcher")
-    try {
-      let rqst = await fetch(`/myServer/readPost/getPost?limit=10&offset=${crntSet}`); 
-      let data = await rqst.json();
-      if (data.err) {
-        throw new Error("");
+    console.log("in main Fetcher",cursor);
+    // try {
+    //   let rqst = await fetch(`/myServer/readPost/getPost?limit=10&cursorAt=${crntSet.cursorAt}&cursorPost_id=${crntSet.cursorPost_id}`); 
+    //   let data = await rqst.json();
+    //   if (data.err) {
+    //     throw new Error("");
         
-      }
+    //   }
 
-      if (!data.hasMore) {
-        setEnd(true)
-      }
+    //   if (!data.hasMore) {
+    //     setEnd(true)
+    //   }
 
-      setPosts(prev=>[...prev,...data.post]);
-    } catch (error) {
-      toast.info(error.message)
-    } finally {
-      toggleLoader(false)
-    }
+    //   setPosts(prev=>[...prev,...data.post]);
+    // } catch (error) {
+    //   toast.info(error.message)
+    // } finally {
+    //   toggleLoader(false)
+    // }
   }
     return (
       <div className="underTaker">

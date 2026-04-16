@@ -10,8 +10,8 @@ export default function BaseExplore() {
     },[])
 
     return(
-        <div className="underTaker  bg-linear-to-tl from-yellow-500/20 to-purple-500/20 via-pink-500/20">
-
+        <div className={`underTaker  ${isPadding && "bg-linear-to-tl from-yellow-500/20 to-purple-500/20 via-pink-500/20 p-2.5"}`}>
+            
         </div>
     )
 }

@@ -21,7 +21,6 @@ export const CreateUser = async (rkv, rspo) => {
   const file = rkv.file;
 
   //if (!file) return rspo.status(400).send({ err: "Please upload an Avtar" });
-  let avatarFileName = "default.webp";
   try {
 
     let isValid = await redis.exists(`emailVerified:${email}`);
@@ -96,19 +95,22 @@ export const CreateUser = async (rkv, rspo) => {
     const dir = `./Images/${username}/Avatar`;
     if (!fs.existsSync(dir)) await fs.promises.mkdir(dir, { recursive: true });
 
+    let avatarFileName = "default.webp";
+    let avatar;
     
     if (file) {
       avatarFileName = username+Date.now()+file.originalname;
       const avatarPath = path.join(dir, avatarFileName);
       await fs.promises.writeFile(avatarPath, file.buffer);
+      avatar = `/myServer/Images/${username}/Avatar/${avatarFileName}`;
     }
+    
 
-    const avatar = `/myServer/Images/${username}/Avatar/${avatarFileName}`;
 
 
     const hashPass = await bcrypt.hash(password, 10);
-    const createQuery = "INSERT INTO users (username,email,password,avatar) VALUES (?,?,?,?)";
-    await database.query(createQuery, [username, email, hashPass, avatar]);
+    await database.query("INSERT INTO users (username,email,password,avatar) VALUES (?,?,?,COALESCE(?, DEFAULT(avatar)))",
+       [username, email, hashPass, avatar ?? null]);
 
     // Optional: send welcome email
     // await sendTheMail(email, "Welcome to CodeCove🎉", "Welcome", { username });

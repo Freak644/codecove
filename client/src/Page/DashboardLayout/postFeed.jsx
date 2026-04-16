@@ -7,13 +7,12 @@ import { useRef, useState } from "react";
 
 export default function PostFeedMGMT({ posts, fetcher, isEnd }) {
   const isLoader = Loader(stat => stat.isTrue);
-  const [offset, setOffset] = useState(10);
+  
 
   const fechingHelper = async () => {
     if (isEnd) return;
     try {
-      setOffset(prev => prev + 10);
-      await fetcher(offset);
+      await fetcher(10);
     } catch (err) {
       console.log("Error fetching posts:", err);
     }
@@ -29,11 +28,12 @@ export default function PostFeedMGMT({ posts, fetcher, isEnd }) {
 
       data={posts}
 
-      itemContent={(index, post) => (
+      itemContent={(index, post) => { console.log(index)  
+        return (
         <div className="w-full flex justify-center">
           <PostsCon posts={post} />
         </div>
-      )}
+      )}}
 
       endReached={() => {
         if (!isEnd) {

@@ -52,28 +52,31 @@ export default function TODOList({crntPost_id}) {
     //     return () => socket.emit("leavePost",post_id);
     // },[crntPost]);
 
-    function formatCount(value) {
-        if (value == null || isNaN(value)) return "0";
+        function formatCount(value) {
+            if (value == null || isNaN(value)) return "0";
 
-        const abs = Math.abs(value);
+            const abs = Math.abs(value);
+            const units = [
+                { limit: 1e9, suffix: "B" },
+                { limit: 1e6, suffix: "M" },
+                { limit: 1e3, suffix: "K" }
+            ];
 
-        const units = [
-            { limit: 1e9, suffix: "B" },
-            { limit: 1e6, suffix: "M" },
-            { limit: 1e3, suffix: "K" }
-        ];
+            for (const { limit, suffix } of units) {
+                if (abs >= limit) {
+                    // 👇 truncate instead of round
+                    const truncated = Math.floor((abs / limit) * 10) / 10;
 
-        for (const { limit, suffix } of units) {
-            if (abs >= limit) {
-            const formatted = (value / limit)
-                .toFixed(1)
-                .replace(/\.0$/, "");
-            return formatted + suffix;
+                    return (value < 0 ? "-" : "") +
+                        truncated.toString().replace(/\.0$/, "") +
+                        suffix;
+                }
             }
+
+            return value.toString();
         }
 
-        return value.toString();
-    }
+
 
     const downloadAll = async (choice) => {
         setToggle(false)

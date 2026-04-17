@@ -6,8 +6,8 @@ export const GetPosts = async (rkv,rspo) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     const limit = 10
-    const cursorAt = rkv.query.created_at || null;
-    const cursorPost_id = rkv.query.post_id || null;
+    const cursorAt = rkv.query.cursorAt || null;
+    const cursorPost_id = rkv.query.cursorPost_id || null;
 
     try {
         let [rows] = await database.query(`SELECT 
@@ -48,7 +48,7 @@ export const GetPosts = async (rkv,rspo) => {
 
                         WHERE p.visibility = 1
                         AND (
-                            ? IS NULL
+                            (? IS NULL AND ? IS NULL)
                             OR (
                                 p.created_at < ?
                                 OR (p.created_at = ? AND p.post_id < ?)
@@ -57,7 +57,10 @@ export const GetPosts = async (rkv,rspo) => {
                         ORDER BY p.created_at DESC, p.post_id DESC
                         LIMIT 11;
             `,
-        [id,id,id,id,cursorAt,cursorAt,cursorAt,cursorPost_id]); // what the hake from today(19-02-26) i will wirte my all query in column format
+        [ id, id, id, id,
+          cursorAt, cursorPost_id,
+          cursorAt, cursorAt, cursorPost_id
+            ]) // what the hake from today(19-02-26) i will wirte my all query in column format
         if (rows.length < 1) return rspo.status(404).send({err:"No posts",count:0});
         //  console.log(rows[0])
         let hasMore = rows.length > limit;

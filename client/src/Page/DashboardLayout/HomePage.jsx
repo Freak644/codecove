@@ -55,10 +55,10 @@ export default function HonePage() {
       if (!rqst.data.hasMore) {
         setEnd(true)
         setPosts(rqst.data.post);
-        setCursor(rqst.data.cursorObj);
       }else{
         setPosts(rqst.data.post);
       }
+      setCursor(rqst.data.cursorObj);
       await requestNotificationPermission()
     } catch (error) {
       
@@ -69,39 +69,44 @@ export default function HonePage() {
   let isTrue = true
 
   useEffect(()=>{
-        if (Posts.length === 0 && isTrue) {
+        if ((Posts && Posts.length === 0) && isTrue) {
           fetchPost();
         }
         console.table(Posts)
         isTrue = false;
   },[Posts])
 
+  useEffect(()=> {
+    console.log(cursor)
+  },[cursor])
+
 
 
 
   
-  const fetchMorePost = async (crntSet) => {
+  const fetchMorePost = async () => {
     if (isEnd) return;
     toggleLoader(true)
-    console.log("in main Fetcher",cursor);
-    // try {
-    //   let rqst = await fetch(`/myServer/readPost/getPost?limit=10&cursorAt=${crntSet.cursorAt}&cursorPost_id=${crntSet.cursorPost_id}`); 
-    //   let data = await rqst.json();
-    //   if (data.err) {
-    //     throw new Error("");
+    
+    try {
+      let rqst = await fetch(`/myServer/readPost/getPost?cursorAt=${cursor.cursorAt}&cursorPost_id=${cursor.cursorPost_id}`); 
+      let data = await rqst.json();
+      if (data.err) {
+        throw new Error("");
         
-    //   }
+      }
 
-    //   if (!data.hasMore) {
-    //     setEnd(true)
-    //   }
+      if (!data.hasMore) {
+        setEnd(true)
+      }
 
-    //   setPosts(prev=>[...prev,...data.post]);
-    // } catch (error) {
-    //   toast.info(error.message)
-    // } finally {
-    //   toggleLoader(false)
-    // }
+      setPosts(prev=>[...prev,...data.post]);
+      setCursor(data.cursorObj)
+    } catch (error) {
+      toast.info(error.message)
+    } finally {
+      toggleLoader(false)
+    }
   }
     return (
       <div className="underTaker">

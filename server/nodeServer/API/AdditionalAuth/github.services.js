@@ -107,9 +107,9 @@ export const githubCallBackHandler = async (rkv, rspo) => {
         if (OAuthInfo.code === 404) {
        
 
-            const createAccount = await NewOAuthAc({authData});
+            const createAccount = await NewOAuthAc(authData);
             if (createAccount.err) {
-                return rspo.status(500).send(request.err);
+                return rspo.status(500).send(createAccount.err);
             }
             let LoginRkv = await OAuthLogin(rkv, createAccount);
             if (LoginRkv.err) {

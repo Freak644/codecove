@@ -15,17 +15,19 @@ const NewOAuthAc = async (tokenData) => {
     let {provider, providerAccount_id, email, avatar,
         accessToken, user_id, username, accountAv, iat, exp} = tokenData;
        
+        console.log("creating new acoutn")
         try {
-            if (user_id && user_id.trim() && user_id.length === 36) {
+            if (user_id && user_id.trim() && user_id.length === 36) { // Insert user info in Oauth table 
                 
                 await database.query(`INSERT INTO oauth_accounts 
                     (id, user_id, provider_name, provider_account_id, provider_email, access_token) 
                     VALUE (?, ?, ?, ?, ?, ?);`,[OAuth_id, user_id, provider, providerAccount_id, email, accessToken]);
                     return {id:OAuth_id, user_id}
                 }else if (!user_id) {
-                
+                    
                     if (!avatar) return {err:"File not Found"};
-    
+                    
+                    
                     let imgRkv = await fetch(avatar); 
                     if (!imgRkv.ok) {
                         return {err:"Failed to fetch Image"}

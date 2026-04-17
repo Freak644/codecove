@@ -6,8 +6,8 @@ export const GetPosts = async (rkv,rspo) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     const limit = 10
-    const cursorAt = rkv.query.cursorAt || null;
-    const cursorPost_id = rkv.query.cursorPost_id || null;
+    
+    const cursorPost_sr = rkv.query.cursorPost_sr || null;
 
     try {
         let [rows] = await database.query(`SELECT 
@@ -47,21 +47,13 @@ export const GetPosts = async (rkv,rspo) => {
                         INNER JOIN users u ON u.id = p.id
 
                         WHERE p.visibility = 1
-                        AND (
-                            (? IS NULL AND ? IS NULL)
-                            OR (
-                                p.created_at < ?
-                                OR (p.created_at = ? AND p.post_id < ?)
-                            )
-                        )
-                        ORDER BY p.created_at DESC, p.post_id DESC
+                        AND (? IS NULL OR p.post_sr < ?)
+                        ORDER BY p.post_sr DESC
                         LIMIT 11;
             `,
-        [ id, id, id, id,
-          cursorAt, cursorPost_id,
-          cursorAt, cursorAt, cursorPost_id
-            ]) // what the hake from today(19-02-26) i will wirte my all query in column format
-        if (rows.length < 1) return rspo.status(404).send({err:"No posts",count:0});
+        [ id, id, id, id, cursorPost_sr, cursorPost_sr]) // what the hake from today(19-02-26) i will wirte my all query in column format
+            if (rows.length < 1) return rspo.status(404).send({err:"No posts",count:0});
+        
         //  console.log(rows[0])
         let hasMore = rows.length > limit;
         rows = rows.slice(0,limit);
@@ -72,7 +64,7 @@ export const GetPosts = async (rkv,rspo) => {
         });
         let cursorObj = {};
         cursorObj.cursorAt = rows[rows.length - 1].created_at;
-        cursorObj.cursorPost_id = rows[rows.length - 1].post_id;
+        cursorObj.cursorPost_sr = rows[rows.length - 1].post_sr;
 
         rspo.status(200).send({pass:"Found",post:rows,hasMore,cursorObj})
     } catch (error) {

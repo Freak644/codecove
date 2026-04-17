@@ -87,9 +87,9 @@ export default function HonePage() {
   const fetchMorePost = async () => {
     if (isEnd) return;
     toggleLoader(true)
-    
+    console.log(cursor)
     try {
-      let rqst = await fetch(`/myServer/readPost/getPost?cursorAt=${cursor.cursorAt}&cursorPost_id=${cursor.cursorPost_id}`); 
+      let rqst = await fetch(`/myServer/readPost/getPost?cursorAt=${cursor.cursorAt}&cursorPost_sr=${cursor.cursorPost_sr}`); 
       let data = await rqst.json();
       if (data.err) {
         throw new Error("");

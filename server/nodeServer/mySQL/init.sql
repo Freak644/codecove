@@ -114,6 +114,7 @@ CREATE TABLE IF NOT EXISTS validationToken (
 
 CREATE TABLE IF NOT EXISTS posts (
   post_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+  post_sr BIGINT AUTO_INCREMENT UNIQUE,
   id CHAR(36) NOT NULL,
   images_url JSON NOT NULL,
   caption TEXT,
@@ -129,7 +130,7 @@ CREATE TABLE IF NOT EXISTS posts (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_user_id (id),
-  INDEX idx_feed_cursor (visibility, created_at DESC, post_id DESC)
+  INDEX idx_feed_cursor (visibility, post_sr DESC)
 );
 
 

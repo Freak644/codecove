@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS posts (
   blockCat JSON NOT NULL,
   visibility BOOLEAN DEFAULT 1,
   totalLike BIGINT DEFAULT 0,
-  totalComment BIGINT DEFAULT 0,
+  totalComment BIGINT DEFAULT 0,k
   totalSave BIGINT DEFAULT 0,
   post_moment VARCHAR(100) NOT NULL,
   canComment BOOLEAN DEFAULT 1,

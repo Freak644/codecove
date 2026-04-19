@@ -33,9 +33,9 @@ export default function UserNameEl({stoggle}) {
     toggleLoader(true);
     divRef.current.classList.remove('avlbl', 'notavlbl');
     
-    if (/[A-Z]/.test(username)) {
+    if (!/^[a-z0-9_]+$/.test(username)) {
         divRef.current.classList.add("notavlbl")
-        toast.warning("All chracters must be small");
+        toast.warning("Username can only contain lowercase letters, numbers, and underscore (_)");
     }
 
     if (takenList.length > 0) {

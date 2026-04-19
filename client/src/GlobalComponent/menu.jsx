@@ -90,7 +90,7 @@ export default function MenuEL(params) {
             setMenu(true);
         } else {
             setMenu(false);
-        }
+        } 
     },[])
 
     return(

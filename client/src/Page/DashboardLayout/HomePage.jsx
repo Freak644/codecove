@@ -119,8 +119,11 @@ export default function HonePage() {
         }
         </div>
 
-        <div className="rightHome flex-1 h-full p-2">
-            <div className="h-1/10 w-full p-3 flex items-center justify-center flex-row gap-2.5 text-skin-text overflow-hidden">
+        <div className="rightHome flex-1 h-full p-2 bg-linear-to-br
+                from-blue-800/10 via-transparent to-transparent border border-cyan-500/20 
+                hover:bg-size-[200%_200%] gap-2.5 relative rounded-lg
+                shadow-[0_0_10px_rgba(0,255,255,0.1)] backdrop-blur-md">
+            <div className="h-1/10 w-full p-3 flex items-center justify-start flex-row gap-2.5 text-skin-text overflow-hidden">
                 <div className="h-10 w-10 border rounded-full flex items-center justify-center overflow-hidden">
                   <img src={Object.keys(userInfo).length > 0 ? userInfo.avatar : null} alt="" />  
                 </div>            

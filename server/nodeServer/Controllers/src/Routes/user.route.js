@@ -29,7 +29,7 @@ userRoutes.post("/ForgotPassword/verify",...commonStack,verification);
 userRoutes.patch("/ForgotPassword/reset",...commonStack,resetPassword);
 userRoutes.get("/GetUserInfo",...commonStack,Auth,CrntUser);
 userRoutes.get("/userFound",...commonStack,MergeRequestData);
-userRoutes.get("/searchUsers",...commonStack, findUsers);
+userRoutes.get("/searchUsers",...commonStack, Auth,findUsers);
 
 //profileUserRoutes there path will look like /readUser/apiPath
 

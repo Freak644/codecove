@@ -5,7 +5,7 @@ export default function SearchEl({inputClass='', iconClass=''}) {
     const [username,setUsername] = useState("");
     const [cache,setCache] = useState([]);
     const [history,setHistory] = useState(JSON.parse(localStorage.getItem("history")) || []);
-
+    const [indecator,setIndecator] = useState(false)
     const findUsers = async () => {
 
         try {
@@ -21,7 +21,6 @@ export default function SearchEl({inputClass='', iconClass=''}) {
     }
 
     useEffect(()=> {
-        console.log(username)
         if (username.length<4) return;
         if (!username || username.length<4) return;
         if (!/^[a-z0-9_]+$/.test(username)) return;
@@ -35,13 +34,14 @@ export default function SearchEl({inputClass='', iconClass=''}) {
 
     return(
             <div className='p-1 relative'>
-                <input type="text" value={username} onChange={(evnt)=>setUsername(evnt.target.value)} name='searchBox' placeholder='Type to search..'
+                <input onBlur={()=>{setUsername("")}} onFocus={()=>setIndecator(true)} type="text" value={username} onChange={(evnt)=>setUsername(evnt.target.value)} name='searchBox' placeholder='Type to search..'
                 className={inputClass} />
                 <i className={iconClass}></i>
-                <div className='absolute top-10 backdrop-blur-2xl -left-2.5 max-h-100 w-70
-                z-30! my-scroll'>
-                    <ShowUser data={cache}/>
-                </div>
+                {indecator && <div id='testing' className='absolute top-10 backdrop-blur-2xl -left-2.5 max-h-100 w-70
+                z-30! my-scroll '>
+                    
+                    <ShowUser data={cache.length>0 ? cache : history}  history={history} />
+                </div>}
             </div>
     )
 }

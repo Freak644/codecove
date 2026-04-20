@@ -154,7 +154,7 @@ body{
         padding: 10px;
         transition: all .3s ease;
         li{
-            transition: all .6s ease-out;
+            transition: all .3s ease-out;
             display: flex;
             gap: 10px;
             align-items: center;
@@ -166,6 +166,9 @@ body{
                 background-color: var(--p-text-color);
                 color: var(--bg-color);
             } */
+             &:hover{
+                transform: scale(1.1);
+             }
         
         }
 
@@ -187,12 +190,12 @@ body{
             }
         }
     }
-    /* ul:hover li{
-        opacity: .5;
+    ul:hover li{
+        opacity: .6;
     }
     ul:hover li:hover{
-        opacity: .8;
-    } */
+        opacity: 1;
+    }
 }
 /* @media (max-width:426px) {
     .routeContainer{
@@ -813,4 +816,10 @@ form>h1>span{
 
 .bat {
   height: 60px; width: 100px;
+}
+
+#testing {
+    background: rgba(10, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 }

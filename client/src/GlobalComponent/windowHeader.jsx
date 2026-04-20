@@ -36,7 +36,7 @@ export default function WindowHerder() {
         <div className=" h-1 absolute w-full bg-linear-to-l from-purple-600 via-pink-600 to-yellow-500 ]"></div>
         </div>
         <div className="mainheaderCom relative w-screen h-12.5 flex items-center justify-between p-1 
-            border-amber-200 border-b border-b-gray-500 bg-blue-800/10 backdrop-blur-lg z-40
+            border-amber-200 border-b border-b-gray-500 bg-blue-800/10 backdrop-blur-md z-40
         "> 
             <div className="leftHeader text-4xl flex flex-1 gap-4 pl-5">
                 <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 menuBTN cursor-pointer w-10 flex logotxt items-center justify-center text-3xl border-skin-ptext/30 border rounded-full"><i className="bx bx-menu text-skin-ptext"></i></div>

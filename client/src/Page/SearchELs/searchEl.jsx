@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify';
 import ShowUser from './showUsers';
 export default function SearchEl({inputClass='', iconClass=''}) {
     const [username,setUsername] = useState("");
     const [cache,setCache] = useState([]);
     const [history,setHistory] = useState(JSON.parse(localStorage.getItem("history")) || []);
-    const [indecator,setIndecator] = useState(false)
+    const [indecator,setIndecator] = useState(false);
+
+    const containerRef = useRef();
     const findUsers = async () => {
 
         try {
@@ -32,8 +34,19 @@ export default function SearchEl({inputClass='', iconClass=''}) {
         return ()=> clearTimeout(debounceTimeout);
     },[username])
 
+    useEffect(()=> {
+        const handleClick = (evnt)=> {
+            if (containerRef.current && !containerRef.current.contains(evnt.target)) {
+                setIndecator(false)
+            }     
+        }
+
+        document.addEventListener("click",handleClick);
+        return ()=> document.removeEventListener("click",handleClick);
+    },[])
+
     return(
-            <div className='p-1 relative'>
+            <div className='p-1 relative' ref={containerRef}>
                 <input onBlur={()=>{setUsername("")}} onFocus={()=>setIndecator(true)} type="text" value={username} onChange={(evnt)=>setUsername(evnt.target.value)} name='searchBox' placeholder='Type to search..'
                 className={inputClass} />
                 <i className={iconClass}></i>

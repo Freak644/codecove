@@ -4,7 +4,7 @@ const EmojiPicker = React.lazy(()=>import("emoji-picker-react"));
 import {toast} from 'react-toastify'
 import { univPostStore, UnivuUserInfo } from "../../../lib/basicUserinfo";
 import { Loader } from "../../../lib/loader";
-import sound from "../../../assets/Sounds/star.mp3"
+import {starAudio} from '../../../utils/sound.js'
 import CommentsContainer from "./comment";
 import { Virtuoso } from "react-virtuoso";
 import socket from "../../../utils/socket";
@@ -30,7 +30,6 @@ export default function CommentEl() {
 
     const [canComment,setCanComnt] = useState(true);
 
-    const soundMp3 = new Audio(sound)
 
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     let  {isTrue,toggleLoader}  = Loader();
@@ -133,7 +132,8 @@ export default function CommentEl() {
                 };
             });
 
-                soundMp3.play();
+                starAudio.currentTime = 0;
+                starAudio.play();
         };
 
 
@@ -167,7 +167,8 @@ export default function CommentEl() {
                 }
             })
             
-            soundMp3.play();
+            starAudio.currentTime = 0;
+            starAudio.play();
         }
 
         socket.on("newComment",handleComments);
@@ -193,7 +194,8 @@ export default function CommentEl() {
             });
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
-            soundMp3.play()
+            starAudio.currentTime = 0;
+            starAudio.play();
             commentRef.current.value = ""
         } catch (error) {
             toast.error(error.message);

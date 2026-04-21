@@ -5,7 +5,7 @@ export default function MenuSkeleton() {
       bg-blue-800/10 backdrop-blur-lg overflow-hidden">
 
       {/* Logo Area */}
-      <div className="Logotxt flex items-center lg:mt-3.5! flex-col w-[120px]">
+      <div className="Logotxt flex items-center lg:mt-3.5! flex-col w-30">
         <div className="h-12 w-12 rounded-xl bg-gray-500/20 animate-pulse"></div>
         <div className="h-5 w-24 rounded-md bg-gray-500/20 mt-3 animate-pulse"></div>
       </div>

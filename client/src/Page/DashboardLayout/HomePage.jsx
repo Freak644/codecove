@@ -18,7 +18,7 @@ export default function HonePage() {
   const crntTab = toggleSlider(stat=>stat.isMiniTab);
   let {toggleMiniTab} = toggleSlider();
   let {toggleLoader} = Loader();
-  const [cursor,setCursor] = useState([]);
+  const [cursor,setCursor] = useState({});
 
   async function requestNotificationPermission() {
         if (!("Notification" in window)) {
@@ -49,20 +49,23 @@ export default function HonePage() {
     }
 
   const fetchPost = async () => {
+    toggleLoader(true)
     try {
       let rqst = await axios.get("/myServer/readPost/getPost");
       
+      setPosts(rqst.data.post);
+      setCursor(rqst.data.cursorObj);
+      
       if (!rqst.data.hasMore) {
         setEnd(true)
-        setPosts(rqst.data.post);
-      }else{
-        setPosts(rqst.data.post);
       }
-      setCursor(rqst.data.cursorObj);
+      
       await requestNotificationPermission()
     } catch (error) {
       
        toast.error(error.response.data.err);;
+    } finally {
+      toggleLoader(false);
     }
   }
 
@@ -86,7 +89,7 @@ export default function HonePage() {
   
   const fetchMorePost = async () => {
     if (isEnd) return;
-    toggleLoader(true)
+   
     
     try {
       let rqst = await fetch(`/myServer/readPost/getPost?cursorAt=${cursor.cursorAt}&cursorPost_sr=${cursor.cursorPost_sr}`); 
@@ -104,8 +107,6 @@ export default function HonePage() {
       setCursor(data.cursorObj)
     } catch (error) {
       toast.info(error.message)
-    } finally {
-      toggleLoader(false)
     }
   }
     return (

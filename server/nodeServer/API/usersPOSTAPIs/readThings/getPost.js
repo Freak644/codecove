@@ -4,8 +4,10 @@ import { completeRequest } from "../../../Controllers/src/middleware/progressTra
 export const GetPosts = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
-    let {id} = rkv.authData;
-    const limit = 10
+    const Limit = parseInt(rkv?.query?.Limit, 10);
+    const { id } = rkv.authData;
+
+    const limit = Number.isNaN(Limit) ? 10 : Limit;
     
     const cursorPost_sr = rkv.query.cursorPost_sr || null;
 
@@ -49,9 +51,9 @@ export const GetPosts = async (rkv,rspo) => {
                         WHERE p.visibility = 1
                         AND (? IS NULL OR p.post_sr < ?)
                         ORDER BY p.post_sr DESC
-                        LIMIT 11;
+                        LIMIT ?;
             `,
-        [ id, id, id, id, cursorPost_sr, cursorPost_sr]) // what the hake from today(19-02-26) i will wirte my all query in column format
+        [ id, id, id, id, cursorPost_sr, cursorPost_sr,limit + 1]) // what the hake from today(19-02-26) i will wirte my all query in column format
             if (rows.length < 1) return rspo.status(404).send({err:"No posts",count:0});
         
         //  console.log(rows[0])

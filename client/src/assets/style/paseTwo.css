@@ -835,3 +835,18 @@ select{
   font-weight: 500;
 
 }
+
+
+.portrate {
+  height: 200px;
+  width: 100px;
+}
+
+.landScape {
+  height: 100px;
+  width: 250px;
+}
+
+.squr {
+  height: 100px; width: 100px;
+}

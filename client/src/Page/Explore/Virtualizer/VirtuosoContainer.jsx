@@ -26,7 +26,7 @@ export default function ExPostFeedMGMT({posts, fetcher, isEnd}) {
         data={posts}
         
         itemContent={(index, post)=>(
-            <div className="w-full grid grid-cols-5 gap-2 p-2.5" >
+            <div className="underTaker gap-2" >
                 <PostPriview post={post} i={index}  />
             </div>
         )}

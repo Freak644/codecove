@@ -12,23 +12,15 @@ export default function PostPriview({post,i}) {
 
     let type = pattern[i % pattern.length];
 
-    // useEffect(()=>{
-        
-        
+    useEffect(()=>{
+        let item = Refs.current[i];
        
-    //     let image = item.querySelector("img");
+        let image = item.querySelector("img");
 
-    //     if (image.complete) {
-    //         handleResize();
-    //     } else {
-    //         image.onload = handleResize;
-    //     }
-
-    //     window.addEventListener("resize", handleResize);
-    //     return ()=> window.removeEventListener("resize", handleResize);
-    //},[])
+        console.log(image.naturalWidth, image.naturalHeight);
+    },[])
     return (
-        <div key={i} className="rounded-md grid-cols-1 grid-rows-1  bg-blue-50">
+        <div key={i} ref={setCallback(i)} className="rounded-md bg-blue-50 flex items-center justify-center p-px  overflow-hidden">
             <img src={post?.images_url[0]} alt="" className="h-full w-full object-cover block" />
         </div>
     )

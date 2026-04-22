@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { data } from "react-router-dom";
 import ExplorSkel from "./skelton";
+import ExPostFeedMGMT from "./Virtualizer/VirtuosoContainer";
 
 export default function BaseExplore() {
     const [isPadding, setPadding] = useState(true);
@@ -17,6 +18,7 @@ export default function BaseExplore() {
     useEffect(()=> {
         setPadding(window.innerWidth > 800);
         console.log("time")
+        fetchPost();
     },[]);
 
     const fetchPost = async () => {
@@ -58,7 +60,7 @@ export default function BaseExplore() {
         <div className={`underTaker  ${isPadding && "bg-linear-to-tl from-yellow-500/20 to-purple-500/20 via-pink-500/20 p-2.5"}`}>
             <div className="h-full rounded-lg p-2.5 bg-gray-950 w-full border-2 border-cyan-600/30">
                 {
-                    posts.length === 0 ? <ExplorSkel/> : ""
+                    posts.length === 0 ? <ExplorSkel/> : <ExPostFeedMGMT posts={posts} fetcher={fetchMorePost} isEnd={isEnd} />
                 }
             </div>
         </div>

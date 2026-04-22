@@ -1,47 +1,43 @@
 import { Virtuoso } from "react-virtuoso";
-import PostsCon from "./postContainer";
-import { Loader } from "../../lib/loader";
-import { useRef, useState } from "react";
+import { Loader } from "../../../lib/loader";
+import PostPriview from "./postPrev";
 
 
+export default function ExPostFeedMGMT({posts, fetcher, isEnd}) {
+    const isLoader = Loader(stat=>stat.isTrue);
 
-export default function PostFeedMGMT({ posts, fetcher, isEnd }) {
-  const isLoader = Loader(stat => stat.isTrue);
-  
 
-  const fechingHelper = async () => {
-    if (isEnd) return;
-    try {
-      await fetcher();
-    } catch (err) {
-      console.log("Error fetching posts:", err);
-    }
-  };
-
-  return (
-    <Virtuoso
-      style={{
-        height: "100%",
-        width: "100%",
-      }}
-      className="my-scroll"
-
-      data={posts}
-
-      itemContent={(index, post) => { 
-        return (
-        <div className="w-full flex justify-center">
-          <PostsCon posts={post} />
-        </div>
-      )}}
-
-      endReached={() => {
-        if (!isEnd) {
-          fechingHelper();
+    const fetchingHelper = async () => {
+        if (isEnd) return;
+        try {
+            await fetcher();
+        } catch (error) {
+            console.log("Error fetching posts:", error);
         }
-      }}
+    };
 
-      components={{
+    return (
+        <Virtuoso 
+        style={{
+            height:"100%",
+            widows:"100%"
+        }}
+        className="my-scroll"
+        data={posts}
+        
+        itemContent={(index, post)=>(
+            <div className="w-full grid grid-cols-5 gap-2 p-2.5" >
+                <PostPriview post={post} i={index}  />
+            </div>
+        )}
+
+        endReached={() => {
+            if (!isEnd) {
+                fetchingHelper();
+            }
+        }}
+
+        components={{
         Footer: () => (
           <div className="h-20 w-full flex justify-center items-center">
             {isLoader ? (
@@ -68,7 +64,10 @@ export default function PostFeedMGMT({ posts, fetcher, isEnd }) {
         ),
       }}
 
-      increaseViewportBy={400} // loads posts earlier for smoother scroll
-    />
-  );
+      increaseViewportBy={200}
+        />
+    )
+
+
+    
 }

@@ -16,19 +16,30 @@ export default function ExPostFeedMGMT({posts, fetcher, isEnd}) {
         }
     };
 
+    function chunk(posts, size = 5) {
+        const rows = [];
+        for (let i = 0; i < posts.length; i += size) {
+          rows.push(posts.slice(i, i + size));
+        }
+        return rows;
+    }
+    const rows = chunk(posts);
+
     return (
         <Virtuoso 
-        style={{
-            height:"100%",
-            widows:"100%"
-        }}
+          style={{
+              height:"100%",
+              width:"100%"
+          }}
         className="my-scroll"
-        data={posts}
+        data={rows}
         
-        itemContent={(index, post)=>(
-            <div className="underTaker gap-2" >
-                <PostPriview post={post} i={index}  />
-            </div>
+        itemContent={(index, row) => (
+          <div className="grid grid-cols-10 gap-2 expGrid">
+            {row.map((post, i) => (
+              <PostPriview key={i} post={post} />
+            ))}
+          </div>
         )}
 
         endReached={() => {

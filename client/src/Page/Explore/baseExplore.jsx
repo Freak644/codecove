@@ -42,6 +42,7 @@ export default function BaseExplore() {
         try {
             let rqst = await fetch(`/myServer/readPost/getPost?Limit=20&cursorAt=${cursor.cursorAt}&cursorPost_sr=${cursor.cursorPost_sr}`);
             let result = await rqst.json();
+            console.log(result)
             if (result.err) {
                 throw new Error(result.err);
             }

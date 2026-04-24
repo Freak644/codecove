@@ -131,7 +131,7 @@ export default function ImageSlider({ imgArray, setArray,toggle, postInfo }) {
 
                 if (swipe < -swipeConstHold) nextImg();
                 else if (swipe > swipeConstHold) prevImg();
-              }}
+         k     }}
             >
               {/* Floating start animation  */}
               {Object.keys(postInfo || {}).length === 3 && <FloationStart post_id={postInfo?.post_id} like={postInfo?.isLiked} totalLike={postInfo?.totalLike}/>}
@@ -142,6 +142,7 @@ export default function ImageSlider({ imgArray, setArray,toggle, postInfo }) {
                 title={imgArray[index]?.file?.name}
                 className="max-h-full max-w-full pointer-events-none object-contain rounded-2xl"
                 draggable={false} alt="Post"
+                loading="lazy"
               />
               <div className="overlay absolute h-full w-full bg-transparent"></div>
             </motion.div>

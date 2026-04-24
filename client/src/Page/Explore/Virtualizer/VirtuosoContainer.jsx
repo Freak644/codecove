@@ -35,7 +35,7 @@ export default function ExPostFeedMGMT({posts, fetcher, isEnd}) {
         data={rows}
         
         itemContent={(index, row) => (
-          <div className="grid grid-cols-10 gap-2 expGrid">
+          <div className="grid grid-cols-5 gap-2">
             {row.map((post, i) => (
               <PostPriview key={i} post={post} />
             ))}

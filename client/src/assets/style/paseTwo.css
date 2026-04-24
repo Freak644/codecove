@@ -835,37 +835,3 @@ select{
   font-weight: 500;
 
 }
-
-.expGrid {
-  grid-auto-rows: 80px;
-  grid-auto-flow: dense !important;
-}
-
-.square {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-
-.landscape {
-  grid-column: span 3;
-  grid-row: span 2;
-}
-
-.portrait {
-  grid-column: span 2;
-  grid-row: span 4;
-}
-
-.portrate {
-  height: 250px;
-  width: 150px;
-}
-
-.landScape {
-  height: 150px;
-  width: 250px;
-}
-
-.squr {
-  height: 100px; width: 100px;
-}

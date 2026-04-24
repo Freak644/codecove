@@ -21,6 +21,7 @@ export default function MyApp() {
     let [currentTheme] = useState(localStorage.getItem('theme') || "dark-white")
     let currentLocation = useLocation();
     let [isLogin,setLogin] = useState(true);
+    let [isAuth,setAuth] = useState(true);
     const [winddowHerder,setHeader] = useState(true);
     const {isTrue,toggleLoader} = Loader();
     const [isChecking,setCheck] = useState(false);
@@ -96,7 +97,8 @@ export default function MyApp() {
                 setLogin(false)
             } catch (error) {
                 // console.log(error.message)
-                setLogin(true)
+                setLogin(true);
+                setAuth(false);
             }
         }
         checkAuth();
@@ -118,7 +120,7 @@ export default function MyApp() {
            {(!isLogin && !isChecking) && <MenuEL/>}
            {isCropping && <CropperEL prevImg={fileURL} />}
            <AbsoluteMenu/>
-           {(isLogin && !isChecking) && (<div className='loginContainer flex items-center content-center h-screen w-screen'>{<LoginEL/>}</div>)}
+           {(isLogin && !isAuth && !isChecking) && (<div className='loginContainer flex items-center content-center h-screen w-screen'>{<LoginEL/>}</div>)}
 
             {(!isLogin || isChecking) && (
                 isChecking ? <NoAnimRoutes/> : <AnimateRoute location={currentLocation} />

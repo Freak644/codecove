@@ -43,7 +43,7 @@ export default function LoginEL() {
                 <VerifyEl/>
             </div>}
             <div className="login my-scroll h-full w-full flex flex-col items-center text-skin-text">
-                <div className="loginbase p-4 h-full w-full flex items-center flex-row">
+                <div className="loginbase p-1 md:p-4 h-full w-full flex items-center flex-row">
                     <div className="leftside h-full lg:flex-1 flex items-center flex-col w-full
                     ">
                         <img src={banner} alt="bannerImage" className="z-0 absolute top-20 h-2/3 w-3/5!" />

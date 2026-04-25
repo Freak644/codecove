@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 :root {
-    --bg-color: rgb(232, 232, 255);
-    --text-color: #000000;
-    --p-text-color:#363636;
+    --bg-color: rgb(21, 21, 43);
+    --text-color: #ffffff;
+    --p-text-color:#dbdbdb;
     --login-txt-color:black;
     --post-container: linear-gradient(145deg, #ffffff, #dde1ff);
 
@@ -34,7 +34,7 @@
 body{
     margin: 0px; padding: 0px;
     background-color: var(--bg-color);
-    background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://res.cloudinary.com/dcq0dge7f/image/upload/v1776872179/Diana_Pragmata_edeo6c.jpg');
+    /* background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://res.cloudinary.com/dcq0dge7f/image/upload/v1776872179/Diana_Pragmata_edeo6c.jpg'); */
     /* background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://i.postimg.cc/bNSNbS5G/kiara_Anime.jpg'); */
     /* background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://res.cloudinary.com/dcq0dge7f/image/upload/v1771176970/dangerGirl_p1cvzq.jpg'); */
     background-position: center;
@@ -44,11 +44,9 @@ body{
     overscroll-behavior: none;
     overflow: hidden;
 }
-#rootContainer,.middlerWhere{
-    height: 100dvb; 
-    width: 100vw;
+.middlerWhere{
     display: flex;
-    
+
     align-items: flex-start;
     flex-direction: column;
     /* background: var(--mini-bg-color);
@@ -57,8 +55,6 @@ body{
     position: relative; 
     overflow:hidden;
     overscroll-behavior: none;
-}
-.middlerWhere{
     height: 100% !important;
     width: 100% !important;
     z-index: 9 !important;
@@ -823,3 +819,6 @@ form>h1>span{
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
 }
+
+
+

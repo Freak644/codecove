@@ -16,9 +16,83 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./Icon/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NullVain</title>
+
+    <style>
+      body{
+        background-color: rgb(21, 21, 43);
+        margin: 0px; padding: 0px;
+      }
+      #rootContainer {
+        height: 100dvb; 
+        width: 100vw;
+        display: flex;
+
+        align-items: flex-start;
+        flex-direction: column;
+
+        position: relative; 
+        overflow:hidden;
+        overscroll-behavior: none;
+      }
+      #mainAppLoader {
+          height: 100%; width: 430px;
+          margin: auto;
+          border: 2px solid white;
+          border-radius: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-wrap: wrap;
+          position: relative;
+      }
+      .nameHolder {
+        height: 100px; width: 100%;
+        border: 1px solid white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 3px;
+
+        p{
+          height: 1/2;
+          width: 100%;
+        }
+    }
+
+    .nameHolder>#first {
+        font-weight: bold;
+        font-size: 30px;
+        background-clip: text !important;
+        color: transparent;
+        background: linear-gradient(to bottom, #93c5fd, #2563eb);
+    }
+    
+    .nameHolder>#second {
+      font-weight: bold;
+        font-size: 30px;
+        background-clip: text !important;
+        color: transparent;
+        background: linear-gradient(
+        to bottom,
+        #fdba74 0%,
+        #fdba74 40%,
+        #ec4899 65%,
+        #a855f7 100%
+      );
+    }
+    </style>
   </head>
   <body>
-    <div id="rootContainer"></div>
+    <div id="rootContainer">
+      <div id="mainAppLoader">
+        <div class="nameHolder">
+          <p>&lt;/&gt;</p>
+          <h2 id="first">Echo</h2>
+          <h2 id="second">Nexy</h2>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/mainBuilder.jsx"></script>
   </body>
 </html>

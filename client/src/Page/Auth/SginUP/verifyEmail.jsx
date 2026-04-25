@@ -164,7 +164,7 @@ export default function VerifyEl() {
                     <form action="" onSubmit={handleSubmit}>
                  
                         <div className="txtDiv relative top-10 flex items-center flex-col p-2 gap-2">
-                            <img className='h-25' src="./Logo/LOGO.png" alt="" />
+                            <img className='h-25' src="./Logo/LOGO.webp" alt="" />
                             <p className='font-light text-skin-text'>We sent a verification Code on.</p>
                             <span className='text-[12px] text-skin-ptext'>{email}</span>
                             <button className='text-btn' onClick={()=>{setMail(""),setVTab(false)}} type='button'>Change</button>

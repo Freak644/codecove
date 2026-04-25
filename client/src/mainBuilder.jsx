@@ -5,23 +5,26 @@ import {createRoot} from 'react-dom/client';
 import MyApp from './components/myApp';
 import './assets/style/index.css'
 import './assets/style/baseStyle.css'
-// createRoot(document.getElementById('rootContainer')).render(
-//     <StrictMode>
-//         <BrowserRouter>
-//         <MyApp/>
-//         </BrowserRouter>
-//         <ToastContainer
-//             position='top-right'
-//             autoClose={3000}
-//             hideProgressBar={false}
-//             newestOnTop
-//             closeOnClick
-//             rtl={false}
-//            // pauseOnFocusLoss
-//             draggable
-//             pauseOnHover
-//             theme='dark'
-//             toastClassName="custom-toast"
-//         />
-//     </StrictMode>
-// )
+createRoot(document.getElementById('rootContainer')).render(
+    <StrictMode>
+        <BrowserRouter>
+        <MyApp/>
+        </BrowserRouter>
+        <ToastContainer
+            position='top-right'
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+           // pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme='dark'
+            toastClassName="custom-toast"
+        />
+    </StrictMode>
+)
+
+const loader = document.getElementById("mainAppLoader");
+if (loader) loader.remove();

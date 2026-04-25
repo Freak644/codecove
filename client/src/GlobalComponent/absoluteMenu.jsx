@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import {getColor} from '../utils/getGradnt';
 import ExploreEL from "../utils/ExploreCom";
 import ThemeButton from "../components/toggleButton";
+import { FaLaptopCode } from "react-icons/fa";
+import { GradientSVG } from "../utils/getSVG";
 export default function AbsoluteMenu() {
     let mainRef = useRef();
     const isMenuToggling = toggleABMenu(state => state.isMenuToggling);
@@ -64,14 +66,12 @@ export default function AbsoluteMenu() {
         <div ref={mainRef} className="absoluteMenu z-99  absolute flex top-[9vh] h-[90vh] items-center justify-center flex-wrap
         p-4 -left-87.5 opacity-0 transition-all duration-500 bg-blue-800/5 backdrop-blur-lg w-3xs">
              <div className="Logotxt sticky top-0 flex items-center mt-3.5! flex-col w-30">
-                <i className={`bx bx-code-block text-5xl
-                transition-all duration-500 ease-in-out bg-size-[200%_200%]
+                <GradientSVG id={"abMenui"} />
+                <FaLaptopCode style={{fill: "url(#abMenui)"}} className="text-5xl " />
+               
+                <h2 className={`font-bold! text-3xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
                 bg-linear-to-tr ${getColor()}
-                bg-clip-text text-transparent
-                `}></i>
-                <h2 className={`font-bold! text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
-                bg-linear-to-tr ${getColor()}
-                bg-clip-text text-transparent`}>NullVain</h2>
+                bg-clip-text text-transparent`}>EchoNexy</h2>
             </div>
             <div className="AbMenuDiv my-scroll w-full h-4/5 my-scroll 
             flex items-center flex-col text-md text-skin-text">

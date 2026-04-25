@@ -5,15 +5,15 @@
     <!-- <link rel="manifest" href="./manifest.json" />
     <meta name="theme-color" content="#141338" /> -->
     <meta name="description" content="Sociel Media Platform For developer. Where they can learn, share, Chat and Grow Together">
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Saira:wdth,wght@112.5,500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira:wdth,wght@112.5,500&display=swap">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Saira:wdth,wght@112.5,500&display=swap" rel="stylesheet"/>
 
     <!-- Standard favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="./icon/favicon.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="./Icon/favicon.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="./Icon/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./icon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="192x192" href="./Icon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="./Icon/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NullVain</title>
 
@@ -37,7 +37,7 @@
       #mainAppLoader {
           height: 100%; width: 430px;
           margin: auto;
-          border: 2px solid white;
+         
           border-radius: 16px;
           display: flex;
           align-items: center;
@@ -45,32 +45,102 @@
           flex-wrap: wrap;
           position: relative;
       }
-      .nameHolder {
+
+      main {
+        height: 200px;
+        width: 100%;
+      }
+
+      .baseName {
+        all: unset;
         height: 100px; width: 100%;
-        border: 1px solid white;
+   
         display: flex;
-        align-items: center;
-        justify-content: center;
+        align-items:end;
+        justify-content:center;
         flex-wrap: wrap;
         gap: 3px;
+        position: relative;
+      }
 
-        p{
-          height: 1/2;
-          width: 100%;
-        }
-    }
+      .iconImgDiv {
+        position: absolute;
+        bottom: 50px;
+        height: 60px; width: 60px;
+        overflow: hidden;
+        
+      }
+      .iconImgDiv>img{
+        height: 100%; width: 100%;
+        object-fit: scale-down;
+      }
 
-    .nameHolder>#first {
+      .h2Style {
+        all: unset;
+        font-family: 'Saira', Arial, sans-serif;
         font-weight: bold;
         font-size: 30px;
+        background-clip: text !important;
+        color: transparent;
+      }
+
+      .rightH2Color{
+        background: linear-gradient(
+        to bottom,
+        #fdba74 0%,
+        #fdba74 40%,
+        #ec4899 65%,
+        #a855f7 100%
+      );
+      }
+
+      .leftH2Color {
+        background: linear-gradient(to bottom, #93c5fd, #2563eb);
+      }
+
+      .footerHolder {
+        all: unset;
+        height: 100px; width: 100%;
+      
+        display: flex;
+        align-items:flex-end;
+        justify-content:center;
+        flex-wrap: wrap;
+        gap: 3px;
+        position: absolute;
+        bottom: 8px;
+    }
+
+    .footerHolder>p{
+      width: 100%;
+      text-align: center;
+      color: rgb(81, 81, 98);
+    }
+
+    .footerHolder>img{
+      position: absolute;
+      bottom: 23px;
+      height: 30px;
+      width: 30px;
+      object-fit:cover ;
+    }
+
+
+    .footerHolder>#first {
+        all: unset;
+        font-family: 'Saira', Arial, sans-serif;
+        font-weight: bold;
+        font-size: 18px;
         background-clip: text !important;
         color: transparent;
         background: linear-gradient(to bottom, #93c5fd, #2563eb);
     }
     
-    .nameHolder>#second {
+    .footerHolder>#second {
+      all: unset;
+      font-family: 'Saira', Arial, sans-serif;
       font-weight: bold;
-        font-size: 30px;
+        font-size: 18px;
         background-clip: text !important;
         color: transparent;
         background: linear-gradient(
@@ -86,10 +156,19 @@
   <body>
     <div id="rootContainer">
       <div id="mainAppLoader">
-        <div class="nameHolder">
-          <p>&lt;/&gt;</p>
-          <h2 id="first">Echo</h2>
-          <h2 id="second">Nexy</h2>
+        <main>
+          <div class="baseName">
+            <div class="iconImgDiv">
+              <img src="./Logo/logo-80.webp"  width="75" height="67" alt="">
+            </div>
+            <h2 class="h2Style leftH2Color">Echo</h2> <h2 class="h2Style rightH2Color">Nexy</h2>
+          </div>
+        </main>
+        <div class="footerHolder">
+          <p>from</p>
+          <img src="./Icon/icon-42x38.webp" alt="">
+          <h2 id="first">Null</h2>
+          <h2 id="second">Vain</h2>
         </div>
       </div>
     </div>

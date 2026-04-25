@@ -4,13 +4,19 @@ import { Link } from "react-router-dom";
 import {getColor} from '../utils/getGradnt';
 import ExploreEL from "../utils/ExploreCom";
 import ThemeButton from "../components/toggleButton";
-import { FaLaptopCode } from "react-icons/fa";
+import { FaLaptopCode, FaTools, FaSave, FaGithubSquare, FaUserMd } from "react-icons/fa";
 import { GradientSVG } from "../utils/getSVG";
+import { MdDashboard, MdExplore, MdOutlineSettingsSuggest} from "react-icons/md";
+import { FaFileCirclePlus } from "react-icons/fa6";
+import { FiActivity } from "react-icons/fi";
+import { GrAchievement } from "react-icons/gr";
+import { RiUserCommunityFill } from "react-icons/ri";
+import { AiOutlineIssuesClose } from "react-icons/ai";
 export default function AbsoluteMenu() {
     let mainRef = useRef();
     const isMenuToggling = toggleABMenu(state => state.isMenuToggling);
     const toggleMenu = toggleABMenu(state => state.toggleMenu);
-    const [isDD,setDD] = useState(true)
+    const [isDD,setDD] = useState(false)
     useEffect(() => {
         const menuDiv = document.querySelector(".absoluteMenu");
         if (!menuDiv) return;
@@ -78,82 +84,76 @@ export default function AbsoluteMenu() {
                 <ul className="w-full p-4 flex items-start justify-center flex-wrap gap-2">
                     <li>
                         <Link to="/DashBord">
-                        <i className="bx bxs-dashboard"></i>
+                        <MdDashboard/>
                         <span>Dashbord</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="/Commit">
-                        <i className={`bx bxs-plus-circle text-skin-text`}></i>
+                        <FaFileCirclePlus/>
                         <span>Commit</span>
                         </Link>
                     </li>
 
                     <li className="justify-start! flex-wrap">
-                        <i onClick={()=>setDD(prev=>!prev)}  className={`bx bxs-compass text-skin-text cursor-pointer`}></i>
-                        <span onClick={()=>setDD(prev=>!prev)} className='flex items-center cursor-pointer'>Explore<i className={`bx bx-chevron-${isDD?"down":"right"} mt-0.5`}></i></span>
+                        <MdExplore onClick={()=>setDD(prev=>!prev)}/>
+                        <span onClick={()=>setDD(prev=>!prev)} className='flex items-center cursor-pointer'>Explore {isDD?"^": ">"}</span>
                         {isDD && <ExploreEL/>}
                     </li>
 
                     <li>
                         <Link to="" title="Profile" >
-                            <i>🧑‍💻</i>
+                            <FaLaptopCode/>
                             <span>My Lab</span>
                         </Link>
                     </li>
                     <li>
                         <Link to="" title="Login Activity" >
-                            <i>📈</i>
+                            <FiActivity/>
                             <span>Your Sessions</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="" title="Account">
-                            <i>🧑‍💻</i>
+                            <FaLaptopCode/>
                             <span>Mgmt Account</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="" title="Dev Tools">
-                            <i>🔫</i>
+                            <FaTools/>
                             <span>Tools</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="" title="">
-                            <i>🔖</i>
+                            <FaSave />
                             <span>Saved</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="" title="Achievements">
-                            <i>🏆</i>
+                            <GrAchievement/>
                             <span>Achievements</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="" title="">
-                            <i>⚙️</i>
+                            <MdOutlineSettingsSuggest />
                             <span>Setting</span>
                         </Link>
                     </li>
 
-                    <li>
-                        <Link to="" title="">
-                            <i>📝</i>
-                            <span>Tasks</span>
-                        </Link>
-                    </li>
 
                     <li>
                         <Link to="" title="">
-                            <i>🧱</i>
+                            <RiUserCommunityFill/>
                             <span>Communities</span>
                         </Link>
                     </li>
@@ -164,19 +164,19 @@ export default function AbsoluteMenu() {
 
                     <li>
                         <Link to="" title="Source Code">
-                            <i className="bx bxl-github"></i>
+                            <FaGithubSquare/>
                             <span>Source Code</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="" title="Repor a Issue">
-                            <i>ℹ️</i>
+                            <AiOutlineIssuesClose/>
                             <span>Issue</span>
                         </Link>
                     </li>
                     <li onClick={handleLogout}>
-                            <i>👤</i>
+                            <FaUserMd/>
                             <span>Logout</span>
                     </li>
                 </ul>

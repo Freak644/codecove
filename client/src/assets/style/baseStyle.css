@@ -61,7 +61,7 @@ body{
 }
 .dropDown{
     top: 100%;
-    left: -150%;
+    left: -180%;
     padding: 10px;
     display: flex;
     align-items: center;

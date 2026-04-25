@@ -4,9 +4,17 @@ import { UnivuUserInfo } from "../lib/basicUserinfo";
 import { useLocation } from "react-router-dom";
 import {toggleABMenu} from '../lib/toggleTheme';
 import {getColor} from '../utils/getGradnt'
+import { GradientSVG } from "../utils/getSVG";
+import { FaLaptopCode, FaGithubSquare } from "react-icons/fa";
+import { IoMenu } from "react-icons/io5";
+import { LiaGhostSolid } from "react-icons/lia";
+import { IoMdArrowDropdown, IoMdSettings } from "react-icons/io";
+import { MdReportGmailerrorred } from "react-icons/md";
+import { TbMessageChatbotFilled } from "react-icons/tb";
+import { ImProfile } from "react-icons/im";
+import { RiLogoutCircleRLine } from "react-icons/ri";
 export default function Header() {
     const [isToggle,setToggle] = useState(false)
-    const [isHome,setHome] = useState(true)
     const [userData,setdata] = useState({});
     const [toggleBtn,setBtn] = useState(true)
     let {userInfo} = UnivuUserInfo();
@@ -18,11 +26,6 @@ export default function Header() {
         setdata(userInfo);
     },[userInfo])
 
-    useEffect(()=>{
-        if (window.innerWidth > 1023 && crntLocation.pathname !== "/") {
-            setHome(false)
-        }
-    },[crntLocation])
     const handleLogout = async () => {
         let rqst = await fetch("/myServer/Logout",{
             headers:{
@@ -38,16 +41,14 @@ export default function Header() {
     }
     return(
         <>
-        {(Object.keys(userData).length !== 0 && isHome) && <div className={`headerContainer h-[7dvh] cursor-pointer lg:h-10 lg:w-50 lg:rounded-4xl lg:absolute lg:top-4/5  w-full  rounded flex items-center justify-between
-                lg:bg-linear-to-tr lg:from-yellow-400 lg:via-purple-600 lg:to-pink-500 bg-blue-800/10 backdrop-blur-lg ${(toggleBtn && isHome) ? "lg:left-full!":"lg:left-4/5!"} 
-                bg-size-[200%_200%] lg:hover:via-blue-500 lg:text-white hover:text-skin-text transition-all duration-700 ease-in-out text-skin-text border-b border-gray-500 z-20`}>
+        {(Object.keys(userData).length !== 0) && <div className={`headerContainer h-[7dvh] cursor-pointer lg:hidden  w-full  rounded flex items-center justify-between
+                bg-blue-800/10 backdrop-blur-lg 
+                bg-size-[200%_200%]  hover:text-skin-text transition-all duration-700 ease-in-out text-skin-text border-b border-gray-500 z-20`}>
                 <div className="firstHalf lg:hidden w-1/2 flex items-center pl-3 gap-2">
-                <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 w-10 menuBTN flex items-center justify-center text-3xl border-gray-500 border rounded-lg"><i className="bx bx-menu text-skin-ptext"></i></div>
-                        <i className={`bx bx-code-block text-3xl bg-size-[200%_200%]
-                            bg-linear-to-tr ${gradColor}
-                            bg-clip-text text-transparent`}>
-
-                        </i>
+                <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 w-10 menuBTN flex items-center justify-center text-3xl border-gray-500 border rounded-lg"><IoMenu/></div>
+                        <GradientSVG id={"abMenui"} />
+                        <FaLaptopCode style={{fill: "url(#abMenui)"}} className="text-3xl " />
+                                       
                         <p className={`text-2xl bg-size-[200%_200%]
                             bg-linear-to-tl ${gradColor}
                             bg-clip-text text-transparent font-bold`}>NullVain
@@ -55,24 +56,23 @@ export default function Header() {
                 </div>
 
                 <div className="middleWhr lg:hidden relative flex items-center flex-row">
-                    <i className={`absolute left-1.5 bx bx-code-block transition-all duration-500
-                ease-in-out bg-size-[200%_200%] bg-linear-to-br ${gradColor} 
-                bg-clip-text text-transparent text-2xl`}
-                ></i>
-                    <input type="text" name="searchBox1" />
+                    <FaLaptopCode style={{fill: "url(#abMenui"}} className="absolute left-1.5 text-2xl"/>
+                    <input type="text" name="searchBox1" placeholder="Type to serch" />
                 </div>
                 {/* <ThemeButton/> */}
-                <div className="scondHalf  lg:w-full w-1/3 flex items-center justify-around text-2xl">
-                    <div className="lg:hidden cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">
-                        <i className="bx bx-ghost m-1 border-r"></i>
-                        <i className='bx bx-chevron-down text-[18px]'></i>
+                <div className="scondHalf   w-1/3 flex items-center justify-around text-2xl">
+                    <div className=" cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">
+                        <LiaGhostSolid className="m-1 border-r" />
+                        <IoMdArrowDropdown className=' text-[18px]' />
                   </div>
-                    <div className="lg:hidden cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">
-                        <i title="Source Code" className="bx bxl-github m-1 pr-1 border-r"></i>
-                        <i title="Report an issue" className="bx bx-info-circle m-0.5"></i>
+                    <div className=" cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">
+                        <FaGithubSquare title="Source Code" className="m-1 pr-1 border-r"/>
+                        <MdReportGmailerrorred title="Report an issue" className=" m-0.5"/>
                     </div>
-                    {/* <i className="bx bx-cog lg:hidden!"></i> */}
-                    <i className='bx bx-message-rounded-detail lg:border-0 border-2 border-skin-ptext/30 p-1 rounded-lg relative'><span className="lg:inline hidden">Message</span> <i id="badBtnToobad" onClick={()=>setBtn(prev=>!prev)} className={`${toggleBtn ? "absolute bx bxs-left-arrow-square -left-17.5": "bx bxs-right-arrow-square"}`}></i></i>
+                  
+                    <div className=" cursor-pointer p-1 miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">
+                        <TbMessageChatbotFilled/>
+                    </div>
                 </div>
                 <div className="userMenu relative flex items-center lg:hidden text-skin-text!">
                     <div onClick={()=>setToggle(prev=>!prev)} className=" h-10 w-10 bg-black rounded-full flex items-center justify-center border-2 border-amber-200">
@@ -83,10 +83,10 @@ export default function Header() {
                     z-50 backdrop-blur-md bg-skin-bg/50 
                     ">
                         <ul>
-                            <li><i className="bx bx-user-circle text-skin-text!"></i> Profile</li>
+                            <li><ImProfile/> Profile</li>
                             <li><ThemeButton/></li>
-                            <li><i className="bx bx-cog text-skin-text!"></i> Setting</li>
-                            <li onClick={handleLogout}><i className="bx bx-log-out text-skin-text!"></i> Logout</li>
+                            <li><IoMdSettings/> Setting</li>
+                            <li onClick={handleLogout}><RiLogoutCircleRLine/> Logout</li>
                         </ul>
                     </div>
                     }

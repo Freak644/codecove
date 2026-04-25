@@ -835,3 +835,17 @@ select{
   font-weight: 500;
 
 }
+
+.AbMenuDiv {
+   li {
+    display: flex;
+    align-items: center;
+    gap: 5px !important;
+
+    a{
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+  }
+}

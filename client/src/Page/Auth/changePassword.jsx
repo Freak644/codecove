@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import verifyZu from "../../lib/verifyZu";
 import FaceToggle from "../../lib/tabToggle";
 import LogoCom from "../../utils/logoComp";
+import { FaRegEye } from "react-icons/fa";
 
 export default function ChangePassword({toggle}) {
     let {token}= useParams();
@@ -78,30 +79,30 @@ export default function ChangePassword({toggle}) {
     }
 }
     return(
-        <div className="flex h-screen w-screen items-center flex-col absolute z-50
+        <div className="flex thornPrincess items-center flex-col absolute z-50 top-0
                         bg-linear-to-br from-white/10 via-white/5 to-transparent
                         border border-cyan-500/20 shadow-[0_0_30px_rgba(0,255,255,0.15)]
-                        backdrop-blur-lg">
-                <div className="formDiv mt-[10%] relative">
+                        backdrop-blur-lg bg-skin-bg">
+                <div className="formDiv relative mt-1/10!">
                     <form action="" onSubmit={handleSubmit} className="bg-skin-bg p-10! rounded-lg shadow-[0_0_30px_rgba(0,255,255,0.15)]">
                         <LogoCom/>
                         <button className="text-2xl text-red-600 absolute top-0 right-0 font-bold cursor-pointer" onClick={()=>toggle(false)} type="button">X</button>
                         <div className="inputDiv">
-                            <i onClick={(evnt)=>togglePassword(evnt.target)} className="bx bx-show absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer"></i>
+                            <FaRegEye onClick={(evnt)=>togglePassword(evnt.target)} className="absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer"></FaRegEye>
                             <input value={mgmtPassword.basePass} onChange={(evnt)=>setPassword(prev=>({
                                 ...prev,
                                 basePass:evnt.target.value
                             }))} onBlur={(evnt)=>handleBlur(evnt.target)} type={mgmtPassword.basePassType} name="password" id="basePassType"/>
-                            <label htmlFor="basePassType"><i className="bx bx-key">Password</i></label>
+                            <label htmlFor="basePassType">Password</label>
                         </div>
                         <div className="inputDiv">
-                            <i onClick={(evnt)=>togglePassword(evnt.target)} className="bx bx-show absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer"></i>
+                            <FaRegEye onClick={(evnt)=>togglePassword(evnt.target)} className="absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer"></FaRegEye>
                             <input value={mgmtPassword.confPass} onChange={(evnt)=>setPassword(prev=>({
                                 ...prev,
                                 confPass:evnt.target.value
                             
                             }))} onBlur={(evnt)=>handleBlur(evnt.target)} type={mgmtPassword.ConfpassType} name="password" id="ConfpassType"/>
-                            <label htmlFor="ConfpassType"><i className="bx bx-key">Confirm Password</i></label>
+                            <label htmlFor="ConfpassType">Confirm Password</label>
                         </div>
                         <div className="inputDiv">
                             <button type="submit" className="btn w-full flex items-center justify-center ">Change</button>

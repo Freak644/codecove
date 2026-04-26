@@ -4,7 +4,7 @@ import { Loader } from "../../lib/loader";
 import ChangePassword from "./changePassword";
 import LogoCom from "../../utils/logoComp";
 import { useState } from "react";
-
+import { FaUser, FaUserShield } from "react-icons/fa";
 export default function ForgotEl() {
     let {setTab} = FaceToggle();
     let {isTrue,toggleLoader} = Loader();
@@ -77,11 +77,11 @@ export default function ForgotEl() {
 
                         <div className="inputDiv">
                             <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="USEmail" required autoComplete="off" />
-                            <label htmlFor="USEmail"><i className="bx bx-user">Email OR userName</i></label>
+                            <label htmlFor="USEmail"><FaUser/> <span className="font-normal text-sm">Email OR userName</span></label>
                         </div>
                         <div className={`inputDiv ${isFinding.isFindst ? "" : "pointer-events-none"}`}>
                             <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="e_mail" id="e_mail" />
-                            <label htmlFor="e_mail"><i className="bx bx-user">{isFinding.whatTo || ""}</i></label>
+                            <label htmlFor="e_mail"><FaUserShield /> <span className="font-normal text-sm">{isFinding.whatTo || ""}</span></label>
                         </div>
                         <div className="inputDiv twobtnInput">
                             <button type="submit" className="btn bigBtn">{isTrue ? <div className="miniLoader"></div> : "Find Account"}</button>

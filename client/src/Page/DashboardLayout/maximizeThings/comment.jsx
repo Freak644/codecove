@@ -5,7 +5,10 @@ import {Link} from "react-router-dom"
 import {useContext} from 'react';
 import {btnContext} from './baseContainer';
 import CommentSkeleton from "./commentSkeL";
-
+import { GiAchievement } from "react-icons/gi";
+import { FaHeartbeat, FaRegHeart } from "react-icons/fa";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { MdReportProblem, MdDeleteForever } from "react-icons/md";
 export default function CommentsContainer({commentData,likeFun,delComment,acceptFun}) {
     let {username,inProcess,avatar,isPostOwner, isReported,commentID,isAccepted,post_moment,comment,post_id,isLiked,id,totalLike,created_at} = commentData;
     const toggelBtn = useContext(btnContext);
@@ -165,31 +168,32 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
                             <div className="flex flex-col gap-2">
                                 <Link className="flex items-center gap-1.5" to={`/Lab/${username}`}>
                                     <span className="font-semibold">{username}</span>
-                                    {isAccepted ? <i title="Comment accept by Post Owner" className="bx bxs-badge-check text-green-400"></i> : ""}
+                                    {isAccepted ? <GiAchievement title="Comment accept by Post Owner" className="text-green-400"/> : ""}
                                 </Link>
                                 <p className="text-wrap wrap-break-words pointer-events-none">{comment}</p>
                             </div>
                         </div>
                         <div className="likeCommentd flex items-center flex-col gap-2 w-[7%] text-lg">
                             <div className="relative" ref={setCallback(commentID)}>
-                                <i className="bx bx-dots-vertical text-gray-500 cursor-pointer" onClick={()=>setFloting({float:true,clickID:commentID})}></i>
+                                <BsThreeDotsVertical className="text-gray-500 cursor-pointer" onClick={()=>setFloting({float:true,clickID:commentID})} />
                                 <div className={`flex absolute right-0 transition-all duration-300 ${(isFloating.float && isFloating.clickID === commentID) ? "top-0! opacity-100" : "-top-5 opacity-0 pointer-events-none "} p-1 rounded-md bg-blue-500/20 backdrop-blur-md`}>
                                     <ul>
-                                        <li className="border-b m-1 text-gray-500"><i onClick={()=>{
+                                        <li className="border-b m-1 text-gray-500"><MdReportProblem onClick={()=>{
                                             if (isReported) return;
                                             reportComment(commentID,post_id);
-                                        }} className="bx bxs-report cursor-pointer">{isReported ? "Reported" : "Report"}</i></li>
-                                        {(uID === id || isPostOwner) ? <li className="border-b m-1 text-red-500"><i onClick={()=>deleteComment(commentID,post_id)} className="bx bx-trash cursor-pointer">Delete</i></li> : ""}
-                                        {(isPostOwner && post_moment === "Bugs" && !isAccepted) ? <li onClick={()=>acceptSolution(commentID)} className="border-b m-1 text-nowrap cursor-pointer text-green-400"><i className="bx bxs-badge-check"></i>Accepte</li> : ""}
+                                        }} className="cursor-pointer"/>{isReported ? "Reported" : "Report"}</li>
+                                        {(uID === id || isPostOwner) ? <li className="border-b m-1 text-red-500"><MdDeleteForever onClick={()=>deleteComment(commentID,post_id)} className="cursor-pointer"/>Delete</li> : ""}
+                                        {(isPostOwner && post_moment === "Bugs" && !isAccepted) ? <li onClick={()=>acceptSolution(commentID)} className="border-b m-1 text-nowrap cursor-pointer text-green-400"><GiAchievement />Accepte</li> : ""}
                                     </ul>
                                 </div>
                             </div>
-                            <i onClick={()=>handleLike(commentID,post_id,isLiked)} className={isLiked ? "bx bxs-heart text-rose-500 cursor-pointer" : "bx bx-heart cursor-pointer text-gray-500"}></i>
+                            {isLiked ? <FaHeartbeat onClick={()=>handleLike(commentID,post_id,isLiked)} className="text-rose-500 cursor-pointer"/> : <FaRegHeart onClick={()=>handleLike(commentID,post_id,isLiked)} className="cursor-pointer text-gray-500"/>}
+                            
                         </div>
                     </div>
                     <div className="layerTwo flex items-center w-full pl-10  justify-start text-gray-500 text-[13px] gap-4">
-                        <i className="bx">{`${totalLike} like`}</i>
-                        <i className="bx">{timeAgoIntl(created_at)}</i>
+                        <i className="">{`${totalLike} like`}</i>
+                        <i className="">{timeAgoIntl(created_at)}</i>
                     </div>
                 </div>}
             </>

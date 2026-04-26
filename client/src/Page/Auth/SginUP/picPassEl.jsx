@@ -5,6 +5,8 @@ import { Loader } from "../../../lib/loader";
 import verifyZu from "../../../lib/verifyZu";
 import { toast } from "react-toastify";
 import LogoCom from "../../../utils/logoComp";
+import { MdImageSearch, MdPassword } from "react-icons/md";
+import {FaEye, FaEyeSlash} from 'react-icons/fa'
 export default function CpassEL() {
     const [myImage,setimg] = useState({
         file:null,
@@ -221,15 +223,15 @@ export default function CpassEL() {
                         <LogoCom/>
                         <div className="inputDiv flex-col! h-20!  items-center!">
                             <input type="file" onChange={(evnt)=>handleImg(evnt)} style={{display:"none"}} id="files" name="files" accept="image/*" multiple={false} />
-                            <label className="left-[35%]! top-13! cursor-pointer!" htmlFor="files"><i className="bx bx-image text-blue-500">Avatar</i></label>
+                            <label className="left-[35%]! top-13! cursor-pointer!" htmlFor="files"><MdImageSearch className=" text-blue-500"/> Avatar</label>
                             <div onClick={()=> document.getElementById("files").click()}  className="imgDiv flex items-center justify-center h-13 w-13 rounded-full">
                                 <img src={myImage.fileUrl || "https://i.postimg.cc/jS1mc6X5/katana_Girl_Black_white.jpg"} className="h-12 w-12 rounded-full object-cover" alt="DP" />
                             </div>
                         </div>
                         <div className="inputDiv">
                             <input type={password.type} name="password" id="password" onBlur={(evnt)=>handleBlur(evnt.target)} value={password.password} onChange={handleChange} />
-                            <label htmlFor="password"><i className="bx bx-key">Password</i></label>
-                            <i onClick={togglePassword} className={`bx bx-${getClass()} absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer`}></i>
+                            <label htmlFor="password"><MdPassword/> <span>Password</span></label>
+                            {mgmtPass.pwdType === "password" ? <FaRegEye onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" /> : <FaRegEyeSlash onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" />}
                             <div className="suggestionDiv absolute flex items-center justify-between -bottom-3.5 gap-1.5">
                                 {
                                     [1,2,3].map(bar=>{

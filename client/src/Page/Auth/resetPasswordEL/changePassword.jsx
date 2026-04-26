@@ -3,6 +3,7 @@ import { Loader } from "../../../lib/loader";
 import LogoCom from "../../../utils/logoComp";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
+import { FaRegEye, FaRegEyeSlash, FaUserShield } from "react-icons/fa";
 
 export default function ChangePassword({toggle}) {
     const {isLoader,toggleLoader} = Loader(); 
@@ -14,13 +15,7 @@ export default function ChangePassword({toggle}) {
         strength:0,
         type:"password"
     })
-    const getClass = ()=>{
-        switch (password.type) {
-            case "text": return "show";
-            case "password": return "hide";
-            default:return "show"
-        }
-    }
+
     const handleBlur = (inp)=>{
         if (inp && inp.value) {
             let labl = inp.nextElementSibling;
@@ -136,7 +131,7 @@ export default function ChangePassword({toggle}) {
                     <div className="inputDiv">
                         <input onChange={(evnt)=>handleChange(evnt)} value={password.pass} required onBlur={(evnt)=>handleBlur(evnt.target)} type={password.type} name="pass" id="Password"/>
                         <label htmlFor="Password">Password</label>
-                        <i onClick={togglePassword} className={`bx bx-${getClass()} absolute text-gray-500 right-3 top-3 transition-all duration-200 cursor-pointer`}></i>
+                       {mgmtPass.pwdType === "password" ? <FaRegEye onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" /> : <FaRegEyeSlash onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" />}
                         <div className="suggestionDiv absolute flex items-center justify-center -bottom-4 gap-2.5">
                             {
                                 [1,2,3].map(bar=>{
@@ -163,7 +158,7 @@ export default function ChangePassword({toggle}) {
                         <button type="submit" className={`postCommitBtn flex items-center justify-center w-40 bg-linear-to-r from-purple-500 via-pink-500 to-blue-600
                         p-2 cursor-pointer bg-size-[200%_200%] hover:bg-position-[100%_150%] transition-all duration-500 ease-in-out overflow-hidden rounded-lg mt-5 ${isLoader && "cursor-not-allowed"}`}>{
                             isLoader ? <div className="miniLoader"></div> :
-                            <div className="text-lg h-full w-full font-bold"><span>Modify</span><i className="bx bx-shield-quarter"></i></div>
+                            <div className="text-lg h-full w-full font-bold"><span>Modify</span> <FaUserShield/></div>
                             }</button>
                     </div>
                 </form>

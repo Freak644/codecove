@@ -8,7 +8,7 @@
 
 }
 [data-theme='dark-yellow']{
-    --bg-color: #0c020c;
+    --bg-color: #110411;
     --text-color: #fff700;
     --p-text-color:#fbff7d;
     --login-txt-color:white;
@@ -432,6 +432,11 @@ body{
                 
                 align-items: center;
                 justify-content: center;
+
+                span{
+                    font-weight: normal;
+                    margin-left: 5px;
+                }
             }
         }
     }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import VerifyCon from "./verifyConEL";
 import CompAnim from "../../../assets/animations/compAnimation";
 import ChangePassword from "./changePassword";
+import { FaUserShield } from "react-icons/fa";
 
 export default function ResetBase() {
     const [tabTogle,setToggle] = useState({
@@ -23,7 +24,7 @@ export default function ResetBase() {
                 <div className="leftSideReset h-full flex-1  flex items-center justify-center">
                     <img src="https://i.postimg.cc/L85RGFn2/temp-Gif.gif" className="h-full w-full rounded-full overflow-hidden mix-blend-screen" alt="" />
                     <div className="expend absolute">
-                        <i className="bx bx-face text-purple-600 text-6xl"></i>
+                        <FaUserShield/>
                     </div>
                     
                 </div>

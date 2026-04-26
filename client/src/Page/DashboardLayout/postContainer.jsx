@@ -5,7 +5,7 @@ import TODOList from "./miniCom/TODOCompunent";
 import MiniDropDown from "./miniCom/threedotDropDown";
 import { univPostStore } from "../../lib/basicUserinfo";
 import { Link } from "react-router-dom";
-
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 export default function PostsCon({posts}) {
     let {caption,canComment,images_url,canSave, post_id,username,avatar,post_moment,likeCount, isLiked,visibility,totalLike,id,isFollowing} = posts;
@@ -66,7 +66,7 @@ export default function PostsCon({posts}) {
                                 </p>   
                             </div>
                             <div ref={setCallback(post_id)} className="innerINFODiv flex-1 flex items-center justify-end relative! top-2.5!">
-                                <i onClick={()=>setDropDown({...isDropDown,p_id:post_id,isTrue:true})} className='bx bx-dots-vertical-rounded text-2xl cursor-pointer'></i>
+                                <BsThreeDotsVertical onClick={()=>setDropDown({...isDropDown,p_id:post_id,isTrue:true})} className='text-2xl cursor-pointer' />
                                 {(isDropDown?.p_id===post_id && isDropDown.isTrue) && <MiniDropDown postInfo={{username,isFollowing,images_url,post_id,canComment,likeCount, visibility}} toggle={setDropDown}/>}
                             </div>
                             <Caption text={caption} />

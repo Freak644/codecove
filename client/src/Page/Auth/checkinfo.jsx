@@ -10,27 +10,28 @@ export default function CheckInfo(params) {
     const [userInfo,setInfo] = useState({})
     const navi = useNavigate();
     const getSessionInfo = async () => {
-        try {
-            let rqst = await fetch(`/myServer/user/checkActivety?token=${token}`)
-            let result = await rqst.json();
-            if (result.err) {
-                console.log(result.err)
-                throw new Error(result.details);
-            }
-            setInfo(result.data);
-        } catch (error) {
-            toast.error(error.message);
-            navi('/')
-        }
+        console.log(token)
+        // try {
+        //     let rqst = await fetch(`/myServer/user/checkActivety?token=${token}`)
+        //     let result = await rqst.json();
+        //     if (result.err) {
+        //         console.log(result.err)
+        //         throw new Error(result.details);
+        //     }
+        //     setInfo(result.data);
+        // } catch (error) {
+        //     toast.error(error.message);
+        //     navi('/')
+        // }
     }
 
     useEffect(()=>{
         getSessionInfo()
     },[token])
     return(
-        <div className="h-dvh w-dvw flex items-center flex-col bg-skin-bg absolute top-0 z-40">
+        <div className="thornPrincess flex items-center flex-col bg-skin-bg top-0 z-40 p-2.5">
            {isChanging && <ChangePassword toggle={setchanging} />}
-            <LogoCom/>
+            <LogoCom CustomclassName={"absolute top-1"} />
             <div className="flex items-center flex-col gap-2 text-white">
                 <div className="container relative flex items-center md:justify-center gap-5 h-screen p-4">
                     <div
@@ -65,7 +66,7 @@ export default function CheckInfo(params) {
                             <p><strong className="text-skin-ptext">Location:</strong>{`${userInfo.city} ,${userInfo.region} ,${userInfo.country}`}</p>
                             <p><strong className="text-skin-ptext">Login Time:</strong>{userInfo.time}</p>
                         </div>
-                        <button disabled={Object.keys(userInfo).length !== 11 } onClick={()=>setchanging(prev=>!prev)} className="mt-4 bg-linear-to-br from-cyan-500 to-blue-600 via-pink-400 hover:from-cyan-400 hover:to-blue-500 hover:via-yellow-300
+                        <button disabled={Object.keys(userInfo).length !== 11 } onClick={()=>setchanging(prev=>!prev)} className="mt-4 bg-linear-to-b from-yellow-500 to-purple-600 via-pink-500 hover:bg-linear-to-br hover:scale-90
             text-white font-semibold py-2 px-6 rounded-lg shadow-md
             transition-all duration-300 cursor-pointer">Change Password</button>
                     </div>

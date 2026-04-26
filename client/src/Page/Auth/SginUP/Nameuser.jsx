@@ -4,6 +4,9 @@ import {toast} from 'react-toastify'
 import verifyZu from "../../../lib/verifyZu";
 import { Loader } from "../../../lib/loader";
 import LogoCom from "../../../utils/logoComp";
+import { MdAlternateEmail } from "react-icons/md";
+import { FaRegUser } from "react-icons/fa";
+import { IoCheckboxSharp } from "react-icons/io5";
 export default function UserNameEl({stoggle}) {
     const {setTab} = FaceToggle();
     const {setMail,setTUsername,setVTab,emailStatus,email,Tusername} = verifyZu();
@@ -169,8 +172,8 @@ export default function UserNameEl({stoggle}) {
                                 onBlur={(evnt)=>handleBlur(evnt.target)}
                                     onChange={(evnt)=>setUsername(evnt.target.value)}
                                 id="UserName" autoComplete="off" name="username" value={username} required/>
-                                <label htmlFor="UserName"><i className="bx bx-user">Username</i></label>
-                                <i id="checkbox" className="bx bxs-check-circle absolute right-0 top-2 transition-all duration-700 "></i>
+                                <label htmlFor="UserName"><FaRegUser/> <span>Username</span> </label>
+                                <IoCheckboxSharp id="checkbox" className="absolute right-0 top-2 transition-all duration-700 "></IoCheckboxSharp>
                              <div className="suggestionDiv absolute flex items-center justify-center -bottom-3.5 gap-1.5">
                                 {cache?.map((value,index)=>(
                                     <p onClick={()=>{setUsername(value),setCache([])}} className=" rounded-2xl md:text-[11px] " key={index}>{value}</p>
@@ -180,7 +183,7 @@ export default function UserNameEl({stoggle}) {
                             
                         <div className="inputDiv">
                             <input type="text" onBlur={(evnt)=>handleBlur(evnt.target)} id="email" name="email" required autoComplete="nn" />
-                            <label htmlFor="email"><i className="bx bx-id-card">Email</i></label>
+                            <label htmlFor="email"><MdAlternateEmail/> <span>Email</span></label>
                         </div>
                         <div className="inputDiv">
                             <button type="button" className="text-btn" onClick={()=>setTab("front")} >Already have Account?</button>

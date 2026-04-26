@@ -1,6 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
-import {toast} from 'react-toastify'
+import {toast} from 'react-toastify';
+import {FcGoogle} from 'react-icons/fc'
+import { VscGithub } from "react-icons/vsc";
+import { TbLockPassword } from "react-icons/tb";
 
 export default function Password({pramsData}) {
     const [iscalling, setCalling] = useState(false);
@@ -37,9 +40,8 @@ export default function Password({pramsData}) {
                     {/* Provider Avatar */}
                     <div className="h-14 w-14 rounded-full overflow-hidden flex items-center justify-center relative">
                     <img src={(pramsData.provider_name && !pramsData.accountAv.startsWith("Images")) ? pramsData.avatar : pramsData.accountAv}  className="h-full w-full object-cover"/>
-                    <i
-                        className={`bx bxl-${pramsData?.provider_name?.toLowerCase()} absolute text-white left-1 bottom-1 text-sm`}
-                    ></i>
+                   
+                    {pramsData.data?.provider_name == "Google" ? <FcGoogle className="absolute left-1 bottom-1 text-sm" /> : <VscGithub className="absolute left-1 bottom-1 text-sm" />}
                     </div>
 
                     {/* Connector Line */}
@@ -75,7 +77,7 @@ export default function Password({pramsData}) {
                     <form action="" onSubmit={verfiyPwd}>
                         <div className="inputDiv">
                             <input type="password" name="password" id="pwd"  required/>
-                            <label htmlFor="pwd"><i className="bx bx-key">Password</i></label>
+                            <label htmlFor="pwd"> <TbLockPassword/> <span>Password</span> </label>
                         </div>
                         <div className="inputDiv twobtnInput">
                             <button disabled={iscalling} type="submit" className="btn bigBtn">

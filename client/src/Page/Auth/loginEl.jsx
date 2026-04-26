@@ -6,7 +6,8 @@ import LogoCom from "../../utils/logoComp";
 import {FcGoogle} from 'react-icons/fc'
 import { VscGithub } from "react-icons/vsc";
 import bat from '../../assets/Images/bat.gif';
-
+import {FaUserShield, FaRegEye, FaRegEyeSlash } from 'react-icons/fa'
+import { TbLockPassword } from "react-icons/tb";
 export default function LoginCon({toggle}) {
     const pwdRef = useRef();
     const {setTab} = FaceToggle();
@@ -54,13 +55,7 @@ export default function LoginCon({toggle}) {
             }))
         }
     }
-    const getClass = ()=> {
-        switch (mgmtPass.pwdType) {
-            case "text": return "hide";
-            case "password": return "show";
-            default: return "show"
-        }
-    }
+
     useEffect(()=>{
         handleBlur();
     },[mgmtPass.passwordVal])
@@ -110,15 +105,15 @@ export default function LoginCon({toggle}) {
                          <LogoCom/>
                             <div className="inputDiv">
                                 <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="Email" required autoComplete="off"/>
-                                <label htmlFor="Email"><i className="bx bx-user">Username</i></label>
+                                <label htmlFor="Email"><FaUserShield /><span>Username</span></label>
                             </div>
                             <div className="inputDiv mb-8">
                                 <input onChange={(evnt)=>setType(prev=>({
                                     ...prev,
                                     passwordVal:evnt.target.value
                                 }))} value={mgmtPass.passwordVal} ref={pwdRef} onBlur={(evnt)=>handleBlur(evnt.target)} type={mgmtPass.pwdType} name="Password" id="Paswrd" required/>
-                                <label htmlFor="Paswrd"><i className="bx bx-key">Password</i></label>
-                                <i onClick={togglePassword} className={`bx bx-${getClass()} absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer`}></i>
+                                <label htmlFor="Paswrd"><TbLockPassword /> <span>Password</span></label>
+                                {mgmtPass.pwdType === "password" ? <FaRegEye onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" /> : <FaRegEyeSlash onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" />}
                                 <div className="suggestionDiv absolute right-0 cursor-pointer -bottom-5 text-purple-500 text-[12px] hover:text-blue-500
                                 hover:underline" onClick={()=>setTab("left")}>
                                     Forgot Password ?

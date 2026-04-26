@@ -17,7 +17,6 @@ createRoot(document.getElementById('rootContainer')).render(
             newestOnTop
             closeOnClick
             rtl={false}
-           // pauseOnFocusLoss
             draggable
             pauseOnHover
             theme='dark'

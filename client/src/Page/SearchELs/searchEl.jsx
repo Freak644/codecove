@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify';
 import ShowUser from './showUsers';
+import {FaLaptopCode} from 'react-icons/fa'
+import { GradientSVG } from '../../utils/getSVG';
 export default function SearchEl({inputClass='', iconClass=''}) {
     const [username,setUsername] = useState("");
     const [cache,setCache] = useState([]);
@@ -49,7 +51,8 @@ export default function SearchEl({inputClass='', iconClass=''}) {
             <div className='p-1 relative' ref={containerRef}>
                 <input onBlur={()=>{setUsername("")}} onFocus={()=>setIndecator(true)} type="text" value={username} onChange={(evnt)=>setUsername(evnt.target.value)} name='searchBox' placeholder='Type to search..'
                 className={inputClass} />
-                <i className={iconClass}></i>
+                <GradientSVG id={"searchBox"} />
+                <FaLaptopCode style={{fill: "url(#searchBox)"}} className={iconClass} />
                 {indecator && <div id='testing' className='absolute top-10 backdrop-blur-2xl -left-2.5 max-h-100 w-70
                 z-30! my-scroll '>
                     

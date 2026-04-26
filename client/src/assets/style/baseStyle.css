@@ -162,9 +162,7 @@ body{
                 background-color: var(--p-text-color);
                 color: var(--bg-color);
             } */
-             &:hover{
-                transform: scale(1.1);
-             }
+            
         
         }
 
@@ -172,7 +170,7 @@ body{
             display: flex;
             align-items: center;
             flex-direction: row;
-            gap: 10px;
+            gap: 5px;
             padding: 1px;
         }
         .secul{

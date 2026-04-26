@@ -65,8 +65,15 @@ export default function MyApp() {
             setHeader(true)
         }else{
             setHeader(false)
-        }
-    },[])
+        };
+        const preventSelect = (e) => e.preventDefault();
+        document.addEventListener("selectstart", preventSelect);
+
+        return () => {
+            document.removeEventListener("selectstart", preventSelect);
+        };
+    },[]);
+
     useEffect(()=>{
         let checkingRoute = ["checkInfo", "resetPassword", "userfound"]
         let currentPath = currentLocation.pathname.split("/")

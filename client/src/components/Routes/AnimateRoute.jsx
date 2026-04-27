@@ -1,12 +1,13 @@
 import {Routes,Route} from 'react-router-dom';
-import PageTransition from "../../assets/animations/framerMotion";
-import HomePage from '../../Page/DashboardLayout/HomePage'
-import BaseCreate from '../../Page/Promulgation/baseCreateCom';
-import NotFound from '../../GlobalComponent/404NotFound';
-import MaximizeContainer from '../../Page/DashboardLayout/maximizeThings/baseContainer';
-import MainLapCom from '../../Page/userProfile/mainLap';
-import PostANDComment from '../../Page/DashboardLayout/maximizeThings/noBGComment';
-import BaseExplore from '../../Page/Explore/baseExplore';
+import { lazy, Suspense } from "react";
+import PageTransition from '../../assets/animations/framerMotion'
+import HomeSkeleton from '../../Page/DashboardLayout/skeletonForHome'
+const HomePage = lazy(() => import('../../Page/DashboardLayout/HomePage'));
+const BaseCreate = lazy(() => import('../../Page/Promulgation/baseCreateCom'));
+const MainLapCom = lazy(() => import('../../Page/userProfile/mainLap'));
+const PostANDComment = lazy(() => import('../../Page/DashboardLayout/maximizeThings/noBGComment'));
+const BaseExplore = lazy(() => import('../../Page/Explore/baseExplore'));
+const NotFound = lazy(() => import('../../GlobalComponent/404NotFound'));
 //import CreateAchievement from '../../Admin/createAcheivement';
 export default function AnimateRoute({location}) {
     const noAnimetArray = ['/']
@@ -17,7 +18,9 @@ export default function AnimateRoute({location}) {
          <div className='routeContainer'>
                   <PageTransition location={background || location} key={(background || location).pathname} shouldAnimat={shoultAnimate} >
                     <Routes location={background || location}>
-                        <Route path='/' element={<HomePage/>} />
+                        <Route path='/' element={<Suspense fallback={<HomeSkeleton/>}>
+                            <HomePage/>
+                        </Suspense>} />
                         <Route path='/Commit' element={<BaseCreate/>} />
                         <Route path='/Lab/:username' element={<MainLapCom/>} />
                         <Route path='/post/:pID' element={<PostANDComment/>} />

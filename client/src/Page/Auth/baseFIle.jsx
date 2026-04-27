@@ -1,10 +1,10 @@
-import { use, useEffect, useState } from "react"
-import SginUp from "./SginUP/sginUp";
+import { use,lazy, Suspense, useEffect, useState } from "react"
 import FaceToggle from "../../lib/tabToggle";
-import VerifyEl from "./SginUP/verifyEmail";
-import LoginCon from "./loginEl";
 import verifyZu from "../../lib/verifyZu";
-import ForgotEl from "./forgotPass";
+const SginUp = lazy(() => import("./SginUP/sginUp"));
+const VerifyEl = lazy(() => import("./SginUP/verifyEmail"));
+const LoginCon = lazy(() => import("./loginEl"));
+const ForgotEl = lazy(() => import("./forgotPass"));
 import banner from '../../assets/Banner/NewImage.webp'
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -40,7 +40,9 @@ export default function LoginEL() {
         <div className="underTaker font-bold">
 
             {isVerifying && <div className="baseverifyDiv flex items-center justify-center">
-                <VerifyEl/>
+                <Suspense fallback={null}>
+                    <VerifyEl/>
+                </Suspense>
             </div>}
             <div className="login my-scroll h-full w-full flex flex-col items-center text-skin-text">
                 <div className="loginbase p-1 md:p-4 h-full w-full flex items-center flex-row">
@@ -67,12 +69,24 @@ export default function LoginEL() {
                         <div className="container p-4 h-130 w-125  flex items-center justify-center">
                             <div className="senceDiv h-full w-full perspective-distant flex items-center justify-center">
                                 <div className={`cube relative transform-3d transition-all duration-1000 flex items-center justify-center ${getRotation()}`}>
-                                    <div className="face front"><LoginCon/></div>
-                                    <div className="face right"><SginUp toggle={setFace}/></div>
-                                    <div className="face back"></div>
-                                    <div className="face left"><ForgotEl/></div>
+                                    <div className="face front">
+                                            <Suspense fallback={null}>
+                                                <LoginCon />
+                                            </Suspense>
+                                        </div>
+
+                                        <div className="face right">
+                                            <Suspense fallback={null}>
+                                                <SginUp toggle={setFace} />
+                                            </Suspense>
+                                        </div>
+
+                                        <div className="face left">
+                                            <Suspense fallback={null}>
+                                                <ForgotEl />
+                                            </Suspense>
+                                        </div>
                                 </div>
-                               
                             </div>
                         </div>
                     </div>

@@ -14,6 +14,7 @@ import {
 import { $generateNodesFromDOM } from "@lexical/html";
 import DOMPurify from "dompurify";
 import { usePostStore } from "../../../lib/basicUserinfo";
+import { FaBold, FaItalic, FaStrikethrough, FaUnderline } from "react-icons/fa";
 
 const LIMIT = 300;
 
@@ -79,10 +80,10 @@ function Toolbar() {
 
   return (
     <div className="flex gap-2 sticky top-0 bg-skin-bg p-2 rounded-xl z-10">
-      <button className={btnClass(active.bold)} onMouseDown={e => e.preventDefault()} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold")}><i className="bx bx-bold" /></button>
-      <button className={btnClass(active.italic)} onMouseDown={e => e.preventDefault()} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic")}><i className="bx bx-italic" /></button>
-      <button className={btnClass(active.underline)} onMouseDown={e => e.preventDefault()} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline")}><i className="bx bx-underline" /></button>
-      <button className={btnClass(active.strikethrough)} onMouseDown={e => e.preventDefault()} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough")}><i className="bx bx-strikethrough" /></button>
+      <button className={btnClass(active.bold)} onMouseDown={e => e.preventDefault()} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold")}><FaBold/></button>
+      <button className={btnClass(active.italic)} onMouseDown={e => e.preventDefault()} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic")}> <FaItalic/> </button>
+      <button className={btnClass(active.underline)} onMouseDown={e => e.preventDefault()} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline")}> <FaUnderline/> </button>
+      <button className={btnClass(active.strikethrough)} onMouseDown={e => e.preventDefault()} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough")}> <FaStrikethrough/> </button>
     </div>
   );
 }

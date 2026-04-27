@@ -6,6 +6,8 @@ import {Loader} from '../../../lib/loader'
 import MainAchievments from "./abElement";
 import socket from "../../../utils/socket";
 import { mngCrop } from "../../../lib/toggleTheme";
+import {FaEdit} from 'react-icons/fa';
+import { IoMdCloseCircle } from "react-icons/io";
 export default function MyProfile({validation}) {
     const [isEditing,setEdit] = useState(false);
     const [crntData,setData] = useState({});
@@ -200,7 +202,7 @@ export default function MyProfile({validation}) {
                         <div className="flex items-center w-full flex-row gap-2.5 relative">
                             {Object.keys(crntData).length > 1 && <img src={crntData?.avatar} alt="DP" className="h-15 w-15 rounded-full" />}
                             <input type="file" className="hidden" onChange={(evnt)=>handelImg(evnt)} name="DP" id="DP"/>
-                            {isEditing && <label htmlFor="DP" className="absolute" ><i className="bx bx-edit text-2xl text-white bg-gray-500/10 backdrop-blur-sm cursor-pointer p-4.5 rounded-full"></i></label>}
+                            {isEditing && <label htmlFor="DP" className="absolute bg-gray-500/20 p-2 backdrop-blur-2xl rounded-full" >✒️</label>}
                             <p className="ml-1.5 font-bold text-lg">{crntData?.username}</p>
                             <div className="h-full p-2.5 flex items-center flex-row gap-4.5">
                                 <span className="ml-5 font-bold">Follower <i className="bx w-full pl-2.5"> {formatCount(crntData?.follower_count)}</i></span>
@@ -214,7 +216,7 @@ export default function MyProfile({validation}) {
                             {isEditing ? <textarea name="" value={tempBio} onChange={(evnt)=>setBio(evnt.target.value)} className="resize-none my-scroll pl-1.5 text-lg h-30 w-full text-skin-text" id="BioCap"></textarea> : crntData?.bio}
                             {isEditing && <i onClick={()=>{setEdit(prev=>!prev),submitBio()}} className={`ml-2 bx bxs-save cursor-pointer`}></i>}
                     </p>
-                    {isEditing && <i onClick={()=>setEdit(false)} className="bx bx-x cursor-pointer ml-2 text-2xl text-skin-text"></i>}
+                    {isEditing && <IoMdCloseCircle onClick={()=>setEdit(false)} className="cursor-pointer ml-2 text-2xl text-skin-text"></IoMdCloseCircle>}
 
                     <div className="followFollowing h-1/12 w-3/5 flex items-center flex-row gap-4 relative">
                         {crntData?.id !== uID  && <><i className='bx bxs-info-circle text-2xl activaterIcon cursor-help  text-gray-600'></i>

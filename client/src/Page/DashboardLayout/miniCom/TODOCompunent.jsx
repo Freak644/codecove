@@ -2,9 +2,11 @@ import {useEffect, useRef, useState } from "react"
 import { univPostStore, UnivuUserInfo } from "../../../lib/basicUserinfo";
 import {Link, useLocation} from 'react-router-dom';
 import socket from "../../../utils/socket";
-import star from "../../../assets/Sounds/star.mp3";
+import {starAudio} from '../../../utils/sound';
 import {toast} from 'react-toastify';
 import axios from 'axios';
+import {FaRegStar, FaStar, FaComments, FaRegBookmark, FaBookmark, FaDownload, FaShareAlt} from 'react-icons/fa';
+import { RiNotification3Fill } from "react-icons/ri";
 export default function TODOList({crntPost_id}) {
     const toggleRef = useRef(null);
     const [crntPost,setCrntPost] = useState({})
@@ -14,7 +16,7 @@ export default function TODOList({crntPost_id}) {
     const index = UnivuUserInfo(stat=>stat.index);
     const [isToggle,setToggle] = useState(false);
     let {setUnivPost} = univPostStore();
-    const starMp3 = new Audio(star);
+    
     
     const handelCount = ({likeStat}) => {
         setUnivPost({
@@ -23,7 +25,8 @@ export default function TODOList({crntPost_id}) {
                 isLiked:likeStat
             }
         })
-        starMp3.play()
+        starAudio.currentTime = 0;
+        starAudio.play();
     }
 
     const handleSaveStatus = ({newInfo}) => {
@@ -208,20 +211,25 @@ export default function TODOList({crntPost_id}) {
     return(
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
-                <i onClick={handleStar} className={`${isLiked ? "bx bxs-star stared" : "bx bx-star"} starAnim`}></i>
+                
+                {!isLiked ? <FaRegStar onClick={handleStar} /> : <FaStar onClick={handleStar} className="starAnim stared text-3xl"/>}
                 <span>{likeCount ? formatCount(totalLike) : ""}</span>
             </div>
             <div className={`TodoInner ${canComment ? "" : "cursor-none pointer-events-none"}`}> <Link className="flex items-center justify-center gap-1" to={`/post/${post_id}`}
                 state={{background:crntLocation}}
             >
-                <i className={`bx bx-comment`}></i>
+                <FaComments/>
                     <span>{(canComment && likeCount) ? formatCount(totalComment) : ""}</span>
                 </Link>
             </div>
+            <div className={`TodoInner ${!canSave && "pointer-events-none"}`} onClick={()=>handleSave(post_id,canSave,isFollowing)} >
+                {isSaved ? <FaBookmark/> : <FaRegBookmark/>}
+                <span>{likeCount ? formatCount(totalSave) : ""}</span>
+            </div>
             <div ref={toggleRef} className="TodoInner relative">
-                <i className="bx bx-download" onClick={()=>{
+                <FaDownload onClick={()=>{
                     images_url.length === 1 ? downloadAll() : setToggle(prev=>!prev);
-                }}></i>
+                }}/>
                 {
                     isToggle && <div className="flex items-center flex-col absolute bottom-1 z-50 p-2 border border-skin-ptext/30 bg-black/5 backdrop-blur-lg rounded-2xl"> 
                         <p onClick={()=>downloadAll(true)} className="border-b border-gray-500/50 p-2 text-nowrap">Only this one</p>
@@ -229,12 +237,9 @@ export default function TODOList({crntPost_id}) {
                     </div>
                 }
             </div>
-            <div className={`TodoInner ${!canSave && "pointer-events-none"}`} onClick={()=>handleSave(post_id,canSave,isFollowing)} >
-                <i className={`bx ${isSaved ? "bxs":"bx"}-bookmark`}></i>
-                <span>{likeCount ? formatCount(totalSave) : ""}</span>
-            </div>
+            
             <div className="TodoInner perspective-distant" onClick={()=>handleShare(post_id)}>
-                <i className="bx bxs-share transform-3d rotate-y-180"></i>
+               <FaShareAlt/>
             </div>
         </div>
     )

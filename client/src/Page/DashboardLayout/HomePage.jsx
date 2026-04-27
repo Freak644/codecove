@@ -1,14 +1,13 @@
-import { use, useEffect, useState } from 'react';
-import HomeSkeleton from './skeletonForHome';
-import NewsComp from './miniCom/newsTech';
+import { lazy, Suspense, useEffect, useState } from 'react';
+const NewsComp = lazy(()=> import("./miniCom/newsTech"));
 import { univPostStore, UnivuUserInfo } from '../../lib/basicUserinfo';
-import ChartsEL from './miniCom/miniCharts';
+const ChartsEL = lazy(()=>import("./miniCom/miniCharts"))
 import { toggleSlider } from '../../lib/tabToggle';
-import CompAnim from '../../assets/animations/compAnimation';
+import CompAnim from '../../assets/animations/compAnimation'; 
 import PostFeedMGMT from './postFeed';
 import { toast } from 'react-toastify';
 import { Loader } from '../../lib/loader';
-import NotificaitonMini from '../Notification/Components/notificationFeed';
+const NotificaitonMini = lazy(()=>import("../Notification/Components/notificationFeed"));
 import axios from 'axios';
 export default function HonePage() {
   const [Posts,setPosts] = useState([])
@@ -113,7 +112,7 @@ export default function HonePage() {
       <div className="underTaker">
         <div className="leftHome h-full w-full flex-1 lg:flex-2 flex items-center justify-center flex-wrap my-scroll">
           {
-          Posts.length === 0 ? (<HomeSkeleton/>) :
+          Posts.length === 0 ? (<div className='miniLoader'/>) :
            (
               <PostFeedMGMT posts={Posts} fetcher={fetchMorePost} isEnd={isEnd} />
            )
@@ -147,10 +146,18 @@ export default function HonePage() {
               crntTab.message ? "msg" : 
               crntTab.noti ? "noti" : "none"
             } >
-              {crntTab.news && <NewsComp/>}
-              {crntTab.charts && <ChartsEL/>}
-              {crntTab.message && ""}
-              {crntTab.noti && <NotificaitonMini/>}
+              {crntTab.news && <Suspense fallback={null}>
+                 <NewsComp/>
+                </Suspense>}
+              {crntTab.charts && <Suspense fallback={null}>
+                  <ChartsEL/>
+                </Suspense>}
+              {crntTab.message && <Suspense fallback={null}>
+                
+                </Suspense>}
+              {crntTab.noti && <Suspense fallback={null}>
+                  <NotificaitonMini/>
+                </Suspense>}
 
             </CompAnim>
         </div>

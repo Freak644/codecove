@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import UserNameEl from "./Nameuser";
-import CpassEL from "./picPassEl";
+const CpassEL = lazy(()=> import("./picPassEl"))
 import CompAnim from "../../../assets/animations/compAnimation";
 import { toggleMini } from "../../../lib/tabToggle";
 export default function SginUp({toggle}) {
@@ -17,7 +17,9 @@ export default function SginUp({toggle}) {
                     isCrtn.passDiv ? "passDiv" : "none"
                 }>
                     {isCrtn.usernameCom && <UserNameEl/>}
-                    {isCrtn.passDiv && <CpassEL/>}
+                    {isCrtn.passDiv && <Suspense fallback={null}>
+                            <CpassEL/>
+                        </Suspense>}
                 </CompAnim>
             </div>
         </div>

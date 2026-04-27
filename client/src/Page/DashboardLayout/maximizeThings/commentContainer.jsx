@@ -9,6 +9,7 @@ import CommentsContainer from "./comment";
 import { Virtuoso } from "react-virtuoso";
 import socket from "../../../utils/socket";
 import { m } from "framer-motion";
+import { FaKeyboard } from "react-icons/fa";
 
 let logicObj = {
     isFeching:true,
@@ -281,7 +282,10 @@ export default function CommentEl() {
                                 </div>
                             </Suspense>
                         }
-                        <i className={`bx bxs-${isEmoji ? "keyboard" : "smile"} absolute top-4 text-2xl cursor-pointer text-white`} onClick={()=>setEmoji(prev=>!prev)}></i>
+                        
+                        <div className="absolute top-4 text-2xl cursor-pointer text-white" onClick={()=> {setEmoji(prev=>!prev), set}}>
+                             {isEmoji ? <FaKeyboard/> : <span >👻</span>}
+                        </div>
                         <form action="" className="h-full w-9/10">
                             <textarea ref={commentRef} onClick={()=>setEmoji(false)}  className="my-scroll border-none outline-none p-1 resize-none text-skin-ptext h-full pl-10 text-[16px]  placeholder:pl-2 placeholder:pt-2 w-full" 
                                 placeholder="Share your thought...">

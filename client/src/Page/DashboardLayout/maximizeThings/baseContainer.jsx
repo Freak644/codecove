@@ -1,9 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
-import ImageSlider from "../../Promulgation/sliderCom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, lazy, Suspense } from "react";
+const ImageSlider = lazy(()=> import("../../Promulgation/sliderCom"))
 import { univPostStore } from "../../../lib/basicUserinfo";
-import SheetMiddleWhare from "./slideMiddleWr";
+const SheetMiddleWhare = lazy(()=> import("./slideMiddleWr"));
 import {createContext} from 'react';
+import { MdFullscreenExit, MdFullscreen } from "react-icons/md";
 export const btnContext = createContext();
 export default function MaximizeContainer() {
     let {pID} = useParams();
@@ -20,6 +21,7 @@ export default function MaximizeContainer() {
 
     useEffect(()=>{
         const handleClick = evnt=>{
+            console.log(evnt.target)
             const el = containerRef.current;
             if (el && !el.contains(evnt.target) && !toggleBtn) {
                 navi(-1);
@@ -31,7 +33,7 @@ export default function MaximizeContainer() {
     },[toggleBtn])
 
     return(
-            <div className="underTaker no-copy">
+            <div className="underTaker ">
                 <div className="closeBtn hidden md:flex items-center justify-center p-3 rounded-full text-2xl font-bold text-skin-ptext absolute top-5 right-2">
                     <button className="cursor-pointer" 
                     
@@ -41,12 +43,16 @@ export default function MaximizeContainer() {
                 </div>
                 <div ref={containerRef} className="commentAndImage h-9/10 w-5/6 rounded-lg p-2 flex items-center justify-center flex-wrap bg-black/80  md:bg-black/50 backdrop-blur-lg">
                     <div className="ImageCon flex-1  flex items-center justify-center h-full relative transition-all duration-200">
-                        <i className={`bx bx${isFull ? "-exit-" : "-"}fullscreen absolute bottom-4 right-5 z-20 text-skin-ptext text-2xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>setFull(prev=>!prev)}></i>
-                        <ImageSlider imgArray={crntPost?.images_url || []} toggle={setToggel} />
+                        {isFull ? <MdFullscreenExit className={`absolute bottom-4 right-5 z-20 text-skin-ptext text-4xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>{setFull(prev=>!prev), setToggel(true)}} /> : <MdFullscreen className={`absolute bottom-4 right-5 z-20 text-skin-ptext text-4xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>{setFull(prev=>!prev), setToggel(true)}} />}
+                        <Suspense fallback={null}>
+                            <ImageSlider imgArray={crntPost?.images_url || []} toggle={setToggel} />
+                        </Suspense>
                     </div>
                    <div className={`${isFull ? "w-0!" : "flex-1"} transition-all duration-200 flex items-center justify-center h-full`}>
                         <btnContext.Provider value={setToggel}>
-                            <SheetMiddleWhare/>
+                            <Suspense fallback={null}>
+                                <SheetMiddleWhare/>
+                            </Suspense>
                         </btnContext.Provider>
                     </div>
                 </div>

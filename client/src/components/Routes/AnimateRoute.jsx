@@ -9,11 +9,13 @@ const MainLapCom = lazy(() => import('../../Page/userProfile/mainLap'));
 const PostANDComment = lazy(() => import('../../Page/DashboardLayout/maximizeThings/noBGComment'));
 const BaseExplore = lazy(() => import('../../Page/Explore/baseExplore'));
 const NotFound = lazy(() => import('../../GlobalComponent/404NotFound'));
+const MaximizeContainer = lazy(()=> import("../../Page/DashboardLayout/maximizeThings/baseContainer"))
 //import CreateAchievement from '../../Admin/createAcheivement';
 export default function AnimateRoute({location}) {
     const noAnimetArray = ['/']
     const background = location.state?.background;
     let shoultAnimate = !background && !noAnimetArray.includes(location.pathname);
+    
     return(
         <>
          <div className='routeContainer'>
@@ -33,7 +35,9 @@ export default function AnimateRoute({location}) {
                         </Suspense>} />
                         <Route path='/Explore' element={<BaseExplore/>} />
                         {/* <Route path='/Ache' element={<CreateAchievement/>} /> */}
-                        <Route path='*' element={<NotFound/>} />
+                        <Route path='*' element={<Suspense fallback={null}>
+                            <NotFound/>
+                        </Suspense>} />
                     </Routes>
                 </PageTransition>
             </div>

@@ -42,6 +42,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
     }
 
     const handleLike = async (commentID,post_id,like) => {
+        toggelBtn(true)
         if (!commentID || !post_id) return;
         let newLike = !like
         try {

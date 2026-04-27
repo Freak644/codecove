@@ -69,7 +69,7 @@ export default function AbsoluteMenu() {
     }, [isMenuToggling]);
 
     return(
-        <div ref={mainRef} className="absoluteMenu z-99  absolute flex top-[9vh] h-[90vh] items-center justify-center flex-wrap
+        <div ref={mainRef} className="absoluteMenu no-copy z-99  absolute flex top-[9vh] h-[90vh] items-center justify-center flex-wrap
         p-4 -left-87.5 opacity-0 transition-all duration-500 bg-blue-800/5 backdrop-blur-lg w-3xs">
              <div className="Logotxt sticky top-0 flex items-center mt-3.5! flex-col w-30">
                 <GradientSVG id={"abMenui"} />

@@ -66,12 +66,7 @@ export default function MyApp() {
         }else{
             setHeader(false)
         };
-        const preventSelect = (e) => e.preventDefault();
-        document.addEventListener("selectstart", preventSelect);
-
-        return () => {
-            document.removeEventListener("selectstart", preventSelect);
-        };
+        
     },[]);
 
     useEffect(()=>{

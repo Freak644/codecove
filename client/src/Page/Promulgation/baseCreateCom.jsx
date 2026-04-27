@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { getColor } from "../../utils/getGradnt"
-import CaptionEl from "./miniComp/Caption";
+const CaptionEl = lazy(()=> import("./miniComp/Caption"))
 import { usePostStore } from "../../lib/basicUserinfo";
 import CompAnim from "../../assets/animations/compAnimation";
-import DragDropBox from "./dropBox";
-import UploadController from "./miniComp/controller";
+const DragDropBox = lazy(()=> import("./dropBox"))
+const UploadController = lazy(()=> import("./miniComp/controller"))
 
 export default function BaseCreate() {
     let gradColor = getColor();
@@ -31,7 +31,7 @@ export default function BaseCreate() {
     }
 
     return(
-        <div className="underTaker ">
+        <div className="underTaker no-copy">
             <div className="mainCreate h-full flex items-start justify-start flex-wrap p-4 sm:p-8 text-skin-text gap-5 w-full">
                 <div className="headerDiv w-full flex items-start flex-col gap-4">
                     <h2 className={`font-extrabold! text-2xl pl-4 transition-all duration-500 ease-in-out bg-size-[200%_100%]
@@ -98,9 +98,15 @@ export default function BaseCreate() {
                             crntTab.image ? "image" : 
                             crntTab.uc ? "UC" : "none"
                         } className="h-full w-full"  >
-                            {crntTab.caption && <CaptionEl/>}
-                            {crntTab.image && <DragDropBox/>}
-                            {crntTab.uc && <UploadController/>}
+                            {crntTab.caption && <Suspense fallback={null}>
+                                    <CaptionEl/>
+                                </Suspense>}
+                            {crntTab.image && <Suspense fallback={null}>
+                                    <DragDropBox/>
+                                </Suspense>}
+                            {crntTab.uc && <Suspense fallback={null}>
+                                    <UploadController/>
+                                </Suspense>}
                         </CompAnim>
                 </div>
             </div>

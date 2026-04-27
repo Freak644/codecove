@@ -31,7 +31,7 @@ export default function MaximizeContainer() {
     },[toggleBtn])
 
     return(
-            <div className="underTaker">
+            <div className="underTaker no-copy">
                 <div className="closeBtn hidden md:flex items-center justify-center p-3 rounded-full text-2xl font-bold text-skin-ptext absolute top-5 right-2">
                     <button className="cursor-pointer" 
                     

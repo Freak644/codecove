@@ -37,7 +37,7 @@ export default function LoginEL() {
          }
     }
     return(
-        <div className="underTaker font-bold">
+        <div className="underTaker font-bold no-copy">
 
             {isVerifying && <div className="baseverifyDiv flex items-center justify-center">
                 <Suspense fallback={null}>

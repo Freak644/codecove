@@ -4,7 +4,6 @@ import SheetMiddleWhare from "./slideMiddleWr";
 import { toast } from "react-toastify";
 import axios from 'axios'
 import ImageSlider from "../../Promulgation/sliderCom";
-import POSTSkeloten from "../skeleton/noBGSkeleton";
 import { univPostStore } from "../../../lib/basicUserinfo";
 import PostsCon from "../postContainer";
 
@@ -37,7 +36,7 @@ export default function PostANDComment() {
     }
     return(
         <div className="underTaker p-10!">
-            { Object.keys(crntPost).length === 0 ? <POSTSkeloten/> : <>
+            { Object.keys(crntPost).length === 0 ? <div className="miniLoader"/> : <>
                 <div className="ImageCon md:flex-1 w-100 flex items-center justify-center h-full relative transition-all duration-200">
                     <i className={`bx bx${isFull ? "-exit-" : "-"}fullscreen md:flex hidden absolute bottom-4 right-5 z-20 text-skin-ptext text-2xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>setFull(prev=>!prev)}></i>
                     { crntWidth > 768 ? <ImageSlider imgArray={crntPost?.images_url} /> :

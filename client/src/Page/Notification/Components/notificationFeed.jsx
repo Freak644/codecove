@@ -16,7 +16,7 @@ export default function NotificaitonMini() {
         notification("Test 2/.3","Testing",true,"http://localhost:3221/post/kBO61tMtRgdpofmEHqmd4")
     }
     return(
-        <div className="underTaker flex-wrap bg-skin-text/1 rounded-lg backdrop-blur-lg shadow-lg overflow-hidden">
+        <div className="underTaker no-copy flex-wrap bg-skin-text/1 rounded-lg backdrop-blur-lg shadow-lg overflow-hidden">
     
                 {/* Header */}
                 <div className="NotificationHeader h-2/14 w-full flex items-start flex-wrap gap-3 text-skin-text justify-center px-4 py-3 border-b border-gray-400/20">

@@ -41,7 +41,7 @@ export default function Header() {
     }
     return(
         <>
-        {(Object.keys(userData).length !== 0) && <div className={`headerContainer h-[7dvh] cursor-pointer lg:hidden  w-full  rounded flex items-center justify-between
+        {(Object.keys(userData).length !== 0) && <div className={`headerContainer no-copy h-[7dvh] cursor-pointer lg:hidden  w-full  rounded flex items-center justify-between
                 bg-blue-800/10 backdrop-blur-lg 
                 bg-size-[200%_200%]  hover:text-skin-text transition-all duration-700 ease-in-out text-skin-text border-b border-gray-500 z-20`}>
                 <div className="firstHalf lg:hidden w-1/2 flex items-center pl-3 gap-2">

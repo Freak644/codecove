@@ -39,7 +39,7 @@ export default function WindowHerder() {
 
     return(
         <>
-        <div className="spaceLoaderDiv w-screen absolute top-0 -z-1">
+        <div className="spaceLoaderDiv no-copy w-screen absolute top-0 -z-1">
         <div className=" h-1 absolute w-full bg-linear-to-l from-purple-600 via-pink-600 to-yellow-500 ]"></div>
         </div>
         <div className="mainheaderCom relative w-screen h-12.5 flex items-center justify-between p-1 

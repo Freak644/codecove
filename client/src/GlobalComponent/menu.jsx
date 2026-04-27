@@ -102,7 +102,7 @@ export default function MenuEL(params) {
 
     return(
         <>
-        {userinfo.avatar?.length < 2 ? <MenuSkeleton/> : <div className="menuDiv transition-all duration-700 relative left-0 sm:border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
+        {userinfo.avatar?.length < 2 ? <MenuSkeleton/> : <div className="menuDiv no-copy transition-all duration-700 relative left-0 sm:border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
         flex items-center flex-col gap-5
          z-20
         "> <p id='secBtn' onClick={()=>setHidden(prev=>!prev)} className="h-8 w-8 flex logotxt items-center justify-center text-2xl cursor-pointer border-skin-ptext/30 border rounded-full absolute top-3 -right-2"><IoMdMenu className='text-skin-ptext'/></p>

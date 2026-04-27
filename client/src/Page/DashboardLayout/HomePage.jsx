@@ -109,7 +109,7 @@ export default function HonePage() {
     }
   }
     return (
-      <div className="underTaker">
+      <div className="underTaker no-copy">
         <div className="leftHome h-full w-full flex-1 lg:flex-2 flex items-center justify-center flex-wrap my-scroll">
           {
           Posts.length === 0 ? (<div className='miniLoader'/>) :

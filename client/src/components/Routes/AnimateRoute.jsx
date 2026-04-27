@@ -1,7 +1,8 @@
 import {Routes,Route} from 'react-router-dom';
 import { lazy, Suspense } from "react";
-import PageTransition from '../../assets/animations/framerMotion'
-import HomeSkeleton from '../../Page/DashboardLayout/skeletonForHome'
+import PageTransition from '../../assets/animations/framerMotion';
+import HomeSkeleton from '../../Page/DashboardLayout/skeletonForHome';
+import POSTSkeloten from '../../Page/DashboardLayout/skeleton/noBGSkeleton';
 const HomePage = lazy(() => import('../../Page/DashboardLayout/HomePage'));
 const BaseCreate = lazy(() => import('../../Page/Promulgation/baseCreateCom'));
 const MainLapCom = lazy(() => import('../../Page/userProfile/mainLap'));
@@ -21,9 +22,15 @@ export default function AnimateRoute({location}) {
                         <Route path='/' element={<Suspense fallback={<HomeSkeleton/>}>
                             <HomePage/>
                         </Suspense>} />
-                        <Route path='/Commit' element={<BaseCreate/>} />
-                        <Route path='/Lab/:username' element={<MainLapCom/>} />
-                        <Route path='/post/:pID' element={<PostANDComment/>} />
+                        <Route path='/Commit' element={<Suspense fallback={null}>
+                            <BaseCreate/>
+                        </Suspense>} />
+                        <Route path='/Lab/:username' element={<Suspense fallback={null}>
+                            <MainLapCom/>
+                        </Suspense>} />
+                        <Route path='/post/:pID' element={<Suspense fallback={<POSTSkeloten/>}>
+                            <PostANDComment/>
+                        </Suspense>} />
                         <Route path='/Explore' element={<BaseExplore/>} />
                         {/* <Route path='/Ache' element={<CreateAchievement/>} /> */}
                         <Route path='*' element={<NotFound/>} />

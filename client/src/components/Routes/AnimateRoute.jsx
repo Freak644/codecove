@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import PageTransition from '../../assets/animations/framerMotion';
 import HomeSkeleton from '../../Page/DashboardLayout/skeletonForHome';
 import POSTSkeloten from '../../Page/DashboardLayout/skeleton/noBGSkeleton';
+import ExplorSkel from '../../Page/Explore/skelton';
 const HomePage = lazy(() => import('../../Page/DashboardLayout/HomePage'));
 const BaseCreate = lazy(() => import('../../Page/Promulgation/baseCreateCom'));
 const MainLapCom = lazy(() => import('../../Page/userProfile/mainLap'));
@@ -33,7 +34,9 @@ export default function AnimateRoute({location}) {
                         <Route path='/post/:pID' element={<Suspense fallback={<POSTSkeloten/>}>
                             <PostANDComment/>
                         </Suspense>} />
-                        <Route path='/Explore' element={<BaseExplore/>} />
+                        <Route path='/Explore' element={<Suspense fallback={<ExplorSkel/>}>
+                            <BaseExplore/>
+                        </Suspense>} />
                         {/* <Route path='/Ache' element={<CreateAchievement/>} /> */}
                         <Route path='*' element={<Suspense fallback={null}>
                             <NotFound/>
@@ -42,9 +45,13 @@ export default function AnimateRoute({location}) {
                 </PageTransition>
             </div>
             {background && 
-                <Routes >
-                    <Route path='/post/:pID' element={<div className="thornPrincess">{<MaximizeContainer/>}</div>} />
-                </Routes>
+                <div className='thornPrincess'>
+                    <Routes >
+                        <Route path='/post/:pID' element={<Suspense fallback={<POSTSkeloten/>}>
+                            <MaximizeContainer/>
+                        </Suspense>} />
+                    </Routes>
+                </div>
             }
         </>
     )

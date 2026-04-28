@@ -38,7 +38,7 @@ export default function HonePage() {
         const permission = await Notification.requestPermission();
 
         if (permission === "granted") {
-            new Notification("CodeCove",{
+            new Notification("EchoNexy",{
                 body:"Notificaiton are now enabled🎉",
                 icon:"https://i.postimg.cc/L4kDbPrj/favicon.png"
             })

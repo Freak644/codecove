@@ -113,7 +113,7 @@ export const CreateUser = async (rkv, rspo) => {
        [username, email, hashPass, avatar ?? null]);
 
     // Optional: send welcome email
-    // await sendTheMail(email, "Welcome to CodeCove🎉", "Welcome", { username });
+    // await sendTheMail(email, "Welcome to Echo🎉", "Welcome", { username });
 
     rspo.status(201).send({ pass: "Account created successfully" });
 

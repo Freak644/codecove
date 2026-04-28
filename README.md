@@ -1,8 +1,8 @@
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![License: GNU AGPL v3](https://img.shields.io/badge/License-GNU%20AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
-# 🌐 CodeCove — An Anonymous Developer Social Media Platform
+# 🌐 EchoNexy — An Anonymous Developer Social Media Platform
 
-**CodeCove** is a modern, anonymous social media platform **built by developers, for developers**.  
+**EchoNexy** is a modern, anonymous social media platform **built by developers, for developers**.  
 Here, you can connect with people **without revealing your real identity**. Share code snippets, post images of your work, comment on posts, follow other devs, chat, and stay updated with the latest **tech, AI, and software revolutions**.
 
 
@@ -10,7 +10,7 @@ Here, you can connect with people **without revealing your real identity**. Shar
 
 ## 🧑‍💻 Live Demo
 
-🔗 [CodeCove (Demo Link Coming Soon)](#)
+🔗 [EchoNexy (Demo Link Coming Soon)](#)
 
 ---
 
@@ -19,6 +19,7 @@ Here, you can connect with people **without revealing your real identity**. Shar
 ### 👩‍💻 For Users:
 - ✅ **Anonymous Authentication** (no real identity needed)  
 - 📸 **Post Code Images** and snippets  
+- 📂 **Post Project zip** 
 - 💬 **Comment & Discuss** with other devs  
 - 👥 **Follow & Connect** with like-minded developers  
 - 📰 **News Section** for global tech & AI updates  

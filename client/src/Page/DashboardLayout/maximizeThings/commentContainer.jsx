@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useRef, useState } from "react"
+import React, { Suspense, useEffect, useRef, useState, useContext } from "react"
 import { useParams } from "react-router-dom";
 const EmojiPicker = React.lazy(()=>import("emoji-picker-react"));
 import {toast} from 'react-toastify'
@@ -10,11 +10,13 @@ import { Virtuoso } from "react-virtuoso";
 import socket from "../../../utils/socket";
 import { m } from "framer-motion";
 import { FaKeyboard } from "react-icons/fa";
+import {btnContext} from './baseContainer.jsx';
 
 let logicObj = {
     isFeching:true,
     isAllow:false
 }
+
 export default function CommentEl() {
     const [isEmoji,setEmoji] = useState(false);
     const {pID} = useParams();
@@ -24,6 +26,7 @@ export default function CommentEl() {
             commentIds: [],
             commentsById: {}
         });
+    const toggelBtn = useContext(btnContext);    
     const [isOver,setOver] = useState(false);
     const commentRef = useRef(null);
     let {setUnivPost} = univPostStore();
@@ -283,7 +286,7 @@ export default function CommentEl() {
                             </Suspense>
                         }
                         
-                        <div className="absolute top-4 text-2xl cursor-pointer text-white" onClick={()=> {setEmoji(prev=>!prev), set}}>
+                        <div className="absolute top-4 text-2xl cursor-pointer text-white" onClick={()=> {setEmoji(prev=>!prev), toggelBtn(true)}}>
                              {isEmoji ? <FaKeyboard/> : <span >👻</span>}
                         </div>
                         <form action="" className="h-full w-9/10">

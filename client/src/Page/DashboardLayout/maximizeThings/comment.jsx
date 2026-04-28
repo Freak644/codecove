@@ -42,7 +42,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
     }
 
     const handleLike = async (commentID,post_id,like) => {
-        toggelBtn(true)
+        if(toggelBtn) toggelBtn(true);
         if (!commentID || !post_id) return;
         let newLike = !like
         try {
@@ -83,7 +83,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
 
 
     const reportComment = async (comment_id,post_id) => {
-        toggelBtn(true)
+        if(toggelBtn) toggelBtn(true);
         try {
             let rqst = await fetch("/myServer/writePost/reportComment",{
                 method:"POST",
@@ -102,7 +102,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
     }
 
     const deleteComment = async (comment_id,post_id) => {
-        toggelBtn(true)
+        if(toggelBtn) toggelBtn(true);
         try {
             if (!comment_id.trim() || !post_id.trim()) throw new Error("Invalid info");
             delComment({commentID:comment_id,post_id})
@@ -122,7 +122,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
     }
 
     const acceptSolution = async (comment_id) => {
-        toggelBtn(true)
+        if(toggelBtn) toggelBtn(true);
         try {
             if (!comment_id || !comment_id.trim()) throw new Error("Invalid Info");
             acceptFun(comment_id)

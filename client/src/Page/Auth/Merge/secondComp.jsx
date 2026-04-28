@@ -55,7 +55,7 @@ export default function MergeType({pramsData}) {
 
                 {/* Permissions */}
                 <p className="text-sm text-gray-400 text-center leading-relaxed">
-                CodeCove will request access to:
+                EchoNexy will request access to:
                 </p>
                 <div className="text-sm text-gray-300 text-center space-y-1">
                 <p>• Your email address</p>

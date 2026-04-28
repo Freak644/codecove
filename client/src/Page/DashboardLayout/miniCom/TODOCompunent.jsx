@@ -36,7 +36,8 @@ export default function TODOList({crntPost_id}) {
                 isSaved:newInfo
             }
         });
-        starMp3.play()
+        starAudio.currentTime = 0;
+        starAudio.play();
     }
 
 
@@ -154,8 +155,8 @@ export default function TODOList({crntPost_id}) {
     const handleShare = async (post_id) => {
         let url = location.href+"post/"+post_id
         const shareData = {
-            title: "CodeCove",
-            text: "Check this post on CodeCove!",
+            title: "EchoNexy",
+            text: "Check this post on EchoNexy!",
             url
         };
 
@@ -179,7 +180,7 @@ export default function TODOList({crntPost_id}) {
 
     function showCustomShareModal(url) {
         const encodedURL = encodeURIComponent(url);
-        const text = encodeURIComponent("Check this post on CodeCove!");
+        const text = encodeURIComponent("Check this post on EchoNexy!");
 
         window.open(
             `https://wa.me/?text=${text}%20${encodedURL}`,

@@ -31,7 +31,7 @@ export const VerifyMergeToken = async (rkv, rspo) => {
             
         }
 
-        //check if the user have CodeCove account
+        //check if the user have echonexy account
         const [userInfo] = await database.query("SELECT password FROM users WHERE id = ? LIMIT 1",[user_id]);
         let {password} = userInfo[0];
 

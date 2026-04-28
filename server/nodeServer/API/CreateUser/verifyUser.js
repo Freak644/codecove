@@ -49,7 +49,7 @@ export const SendEmailVerify = async (rkv,rspo) => {
         
         let send = await sendTheMail(
             email,
-            "Welcome To CodeCove🎉",
+            "Welcome To EchoNexy🎉",
             "Wellcome",
             {username,otp}
         )

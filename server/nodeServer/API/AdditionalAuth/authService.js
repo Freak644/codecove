@@ -1,4 +1,3 @@
-import {v4 as getuuid} from 'uuid'
 import {database} from '../../Controllers/myConnectionFile.js';
 import { SaveThisSession } from '../Login/userSession.js';
 export const handleOAuthLogin = async (userInfo) => {
@@ -26,6 +25,7 @@ export const handleOAuthLogin = async (userInfo) => {
             return {user_id,username, avatar ,provider_name,code:302}
         }
 
+        //newUser
         if (account.length === 0 && uAccount.length === 0) {
             return {code:404};
         }

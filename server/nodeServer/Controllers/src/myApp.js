@@ -9,6 +9,7 @@ import { readRoutes, userRoutes, writeRoutes } from './Routes/user.route.js';
 import { authRoute } from './Routes/auth.Route.js';
 import { readPost, writePost } from './Routes/post.Route.js';
 import emailRoute from './Routes/email.Route.js';
+import { imgRoutes } from './Routes/Image.route.js';
 
 
 const myApp = express();
@@ -18,8 +19,11 @@ myApp.use(cors({
     credentials:true
 }));
 
+//imgRoute
+myApp.use(imgRoutes);
+
 myApp.use(express.json({limit:"20mb"}));
-myApp.use("/Images",express.static("Images"))
+// myApp.use("/Images",express.static("Images"))
 myApp.use(cookieParser());
 myApp.use(requestIp.mw());
 myApp.set("trust proxy",1);
@@ -34,6 +38,7 @@ myApp.use("/readUser", readRoutes);
 myApp.use("/writeUser", writeRoutes);
 myApp.use("/readPost", readPost);
 myApp.use("/writePost", writePost);
+
 
 
 export default myApp;

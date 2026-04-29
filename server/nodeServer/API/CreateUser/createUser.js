@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
 import redis from '../../Controllers/src/config/redis.js';
+import {v4 as uuidV4} from 'uuid'
 
 
 async function checkDuplicate(sqlData, username, email) {
@@ -14,12 +15,22 @@ async function checkDuplicate(sqlData, username, email) {
   if (sqlData.some(prv => prv.email === email)) return email;
 }
 
+export const getAvatarPath = (userId) => {
+  const a = userId.slice(0, 2);
+  const b = userId.slice(2, 4);
+
+  const dir = path.join("/Images/avatars/original", a, b);
+  const filePath = path.join(dir, `${userId}.webp`);
+
+  return { dir, filePath };
+};
 export const CreateUser = async (rkv, rspo) => {
   const crntIP = rkv.userIp;
   const crntAPI = rkv.originalUrl.split("?")[0];
   const { email, password, username } = rkv.body;
   const file = rkv.file;
-
+  let newUserID = uuidV4();
+  const { dir, filePath } = getAvatarPath(newUserID);
   //if (!file) return rspo.status(400).send({ err: "Please upload an Avtar" });
   try {
 
@@ -92,42 +103,47 @@ export const CreateUser = async (rkv, rspo) => {
       return rspo.status(302).send({ err: `${duplicate} already has an account` });
     }
 
-    const dir = `./Images/${username}/Avatar`;
-    if (!fs.existsSync(dir)) await fs.promises.mkdir(dir, { recursive: true });
 
-    let avatarFileName = "default.webp";
-    let avatar;
-    
-    if (file) {
-      avatarFileName = username+Date.now()+file.originalname;
-      const avatarPath = path.join(dir, avatarFileName);
-      await fs.promises.writeFile(avatarPath, file.buffer);
-      avatar = `/myServer/Images/${username}/Avatar/${avatarFileName}`;
+// ✅ ensure directory exists
+    if (!fs.existsSync(dir)) {
+      await fs.promises.mkdir(dir, { recursive: true });
     }
-    
 
+    let avatar = null;
 
+    if (file) {
+      // ✅ convert to optimized webp
+      await sharp(file.buffer)
+        .resize(256, 256, { fit: "cover" }) // avatar base size
+        .webp({ quality: 80 })
+        .toFile(filePath);
+
+      // ✅ clean API path (NO username, NO folders)
+      avatar = `/myServer/avatar/${newUserID}`;
+    }
 
     const hashPass = await bcrypt.hash(password, 10);
-    await database.query("INSERT INTO users (username,email,password,avatar) VALUES (?,?,?,COALESCE(?, DEFAULT(avatar)))",
-       [username, email, hashPass, avatar ?? null]);
 
+    await database.query(
+      "INSERT INTO users (id,username,email,password,avatar) VALUES (?,?,?,COALESCE(?, DEFAULT(avatar)))",
+      [newUserID, username, email, hashPass, avatar]
+    );
+    
     // Optional: send welcome email
     // await sendTheMail(email, "Welcome to Echo🎉", "Welcome", { username });
 
     rspo.status(201).send({ pass: "Account created successfully" });
 
-    let [crntUser] = await database.query("SELECT id FROM users WHERE username = ?",[username]);
-    let uid = crntUser[0].id;
+
     //await database.query("INSERT INTO userActivety_for_achievements (user_id) VALUE (?)",[uid]);
-    await database.query("INSERT INTO roles (user_id, permoter_id) VALUES (?,?);",[uid,"System"]);
+    await database.query("INSERT INTO roles (user_id, permoter_id) VALUES (?,?);",[newUserID,"System"]);
 
   } catch (error) {
     // anything fails after saving, delete the file
     console.log(error.message)
     if (rkv.file) {
       
-      try { fs.unlinkSync(avatarFileName); } catch (err) { console.error(err) };
+      try { fs.unlinkSync(filePath); } catch (err) { console.error(err) };
     }
     rspo.status(500).send({ err: "Something went wrong"});
   } finally {

@@ -12,6 +12,7 @@ import emailRoute from './Routes/email.Route.js';
 import { imgRoutes } from './Routes/Image.route.js';
 
 
+
 const myApp = express();
 
 myApp.use(cors({
@@ -19,8 +20,6 @@ myApp.use(cors({
     credentials:true
 }));
 
-//imgRoute
-myApp.use(imgRoutes);
 
 myApp.use(express.json({limit:"20mb"}));
 // myApp.use("/Images",express.static("Images"))
@@ -31,6 +30,7 @@ myApp.use(sessionConfig);
 myApp.use(timeOut);
 
 //Routes 
+myApp.use(imgRoutes)
 myApp.use("/email", emailRoute)
 myApp.use("/user",userRoutes);
 myApp.use("/auth", authRoute);

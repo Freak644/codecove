@@ -6,7 +6,8 @@ import jwt from 'jsonwebtoken'
 import { Encrypt } from '../../utils/Encryption.js';
 import fs from 'fs';
 import path from 'path';
-
+import sharp from 'sharp'
+import { getAvatarPath } from '../../utils/getImagePath.js';
 
 
 const NewOAuthAc = async (tokenData) => {
@@ -14,8 +15,8 @@ const NewOAuthAc = async (tokenData) => {
     let uuid = uuid4();
     let {provider, providerAccount_id, email, avatar,
         accessToken, user_id, username, accountAv, iat, exp} = tokenData;
-       
-        console.log("creating new acoutn")
+      
+     
         try {
             if (user_id && user_id.trim() && user_id.length === 36) { // Insert user info in Oauth table 
                 
@@ -37,15 +38,27 @@ const NewOAuthAc = async (tokenData) => {
                     if (!contantType.startsWith("image/")) {
                         return {err:"Invalid file type"};
                     }
-                    const buffer = Buffer.from(blogFile); // conver the array into buff
-                    const imageDir = `./Images/${username}/Avatar`;
-                    if (!fs.existsSync(imageDir)) await fs.promises.mkdir(imageDir, {recursive: true});
-                    let ext = contantType.split("/")[1]; //read ext name 
-                    let safeUsername = username.replace(/[^a-zA-Z0-9]/g, "")
-                    let avatarFileName = `${safeUsername}-${Date.now()}.${ext}`
-                    const avatarPath = path.join(imageDir, avatarFileName);
-                    await fs.promises.writeFile(avatarPath, buffer); // write the file
-                    avatar = `/myServer/Images/${username}/Avatar/${avatarFileName}`
+                    avatar = null;
+
+                    if (blogFile) {
+                    const buffer = Buffer.from(blogFile);
+
+                    const { dir, filePath } = getAvatarPath(uuid);
+
+                    // ✅ ensure directory exists
+                    if (!fs.existsSync(dir)) {
+                        await fs.promises.mkdir(dir, { recursive: true });
+                    }
+
+                    // ✅ convert + optimize
+                    await sharp(buffer)
+                        .resize(256, 256, { fit: "cover" })
+                        .webp({ quality: 80 })
+                        .toFile(filePath);
+
+                    // ✅ clean API path
+                    avatar = `/myServer/avatar/${uuid}`;
+                    }
                 await database.query(`INSERT INTO users (id, username, email, avatar) VALUES (?, ?, ?, ?);`,[uuid, username, email, avatar || accountAv,]);
                 await database.query("INSERT INTO roles (user_id) VALUES (?)",[uuid])
                 await database.query(`INSERT INTO oauth_accounts 

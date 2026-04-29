@@ -125,7 +125,7 @@ export default function HonePage() {
                 shadow-[0_0_10px_rgba(0,255,255,0.1)] backdrop-blur-md">
             <div className="h-1/10 w-full p-3 flex items-center justify-start flex-row gap-2.5 text-skin-text overflow-hidden">
                 <div className="h-10 w-10 border rounded-full flex items-center justify-center overflow-hidden">
-                  <img src={Object.keys(userInfo).length > 0 ? userInfo.avatar : null} alt="" />  
+                  <img src={Object.keys(userInfo).length > 0 ? userInfo.avatar+"?size=48" : null} alt="" />  
                 </div>            
                 <p>{userInfo.username || "username"}</p>
                 <div

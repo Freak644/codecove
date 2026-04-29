@@ -173,7 +173,7 @@ export default function UserNameEl({stoggle}) {
                                     onChange={(evnt)=>setUsername(evnt.target.value)}
                                 id="UserName" autoComplete="off" name="username" value={username} required/>
                                 <label htmlFor="UserName"><FaRegUser/> <span>Username</span> </label>
-                                <IoCheckboxSharp id="checkbox" className="absolute right-0 top-2 transition-all duration-700 "></IoCheckboxSharp>
+                                <IoCheckboxSharp id="checkbox" className="absolute right-0 top-2 transition-all duration-700 text-green-500"></IoCheckboxSharp>
                              <div className="suggestionDiv absolute flex items-center justify-center -bottom-3.5 gap-1.5">
                                 {cache?.map((value,index)=>(
                                     <p onClick={()=>{setUsername(value),setCache([])}} className=" rounded-2xl md:text-[11px] " key={index}>{value}</p>

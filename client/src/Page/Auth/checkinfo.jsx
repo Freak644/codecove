@@ -58,7 +58,7 @@ export default function CheckInfo(params) {
                         bg-linear-to-br from-white/10 via-white/5 to-transparent
                         border border-cyan-500/20 shadow-[0_0_30px_rgba(0,255,255,0.15)]
                         backdrop-blur-md">
-                            <img src={`/myServer/${userInfo.avatar}`} className="h-14 w-14 rounded-full border border-amber-200" alt="" />
+                            <img src={`/myServer/${userinfo.avatar+"?size=48"}`} className="h-14 w-14 rounded-full border border-amber-200" alt="" />
                             <p className="big404">Hello 👋 {userInfo.username}</p>
                         <div className="flex items-center flex-col gap-3">
                             <p><strong className="text-skin-ptext">Device:</strong>{userInfo.os +"," + userInfo.browser}</p>

@@ -7,6 +7,7 @@ import path from 'path';
 import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
 import redis from '../../Controllers/src/config/redis.js';
 import {v4 as uuidV4} from 'uuid'
+import { getAvatarPath } from '../../utils/getImagePath.js';
 
 
 async function checkDuplicate(sqlData, username, email) {
@@ -15,15 +16,7 @@ async function checkDuplicate(sqlData, username, email) {
   if (sqlData.some(prv => prv.email === email)) return email;
 }
 
-export const getAvatarPath = (userId) => {
-  const a = userId.slice(0, 2);
-  const b = userId.slice(2, 4);
 
-  const dir = path.join("/Images/avatars/original", a, b);
-  const filePath = path.join(dir, `${userId}.webp`);
-
-  return { dir, filePath };
-};
 export const CreateUser = async (rkv, rspo) => {
   const crntIP = rkv.userIp;
   const crntAPI = rkv.originalUrl.split("?")[0];
@@ -125,7 +118,7 @@ export const CreateUser = async (rkv, rspo) => {
     const hashPass = await bcrypt.hash(password, 10);
 
     await database.query(
-      "INSERT INTO users (id,username,email,password,avatar) VALUES (?,?,?,COALESCE(?, DEFAULT(avatar)))",
+      "INSERT INTO users (id,username,email,password,avatar) VALUES (?,?,?,?,COALESCE(?, DEFAULT(avatar)))",
       [newUserID, username, email, hashPass, avatar]
     );
     

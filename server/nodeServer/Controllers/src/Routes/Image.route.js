@@ -1,8 +1,9 @@
 import {Router} from 'express';
-import { getImage } from '../../img.controller.js';
+import { getAvatar } from '../../imgcontroller.js';
+
 
 const imgRoutes = Router();
 
-imgRoutes.get("/Image/:fullpath",getImage)
+imgRoutes.get("/avatar/:id",getAvatar)
 
 export {imgRoutes};

@@ -231,7 +231,7 @@ export default function CpassEL() {
                         <div className="inputDiv">
                             <input type={password.type} name="password" id="password" onBlur={(evnt)=>handleBlur(evnt.target)} value={password.password} onChange={handleChange} />
                             <label htmlFor="password"><MdPassword/> <span>Password</span></label>
-                            {mgmtPass.pwdType === "password" ? <FaRegEye onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" /> : <FaRegEyeSlash onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" />}
+                            {password.type === "password" ? <FaEye onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" /> : <FaRegEyeSlash onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" />}
                             <div className="suggestionDiv absolute flex items-center justify-between -bottom-3.5 gap-1.5">
                                 {
                                     [1,2,3].map(bar=>{

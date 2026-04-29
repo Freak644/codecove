@@ -445,9 +445,7 @@ body{
     transform: translate(5px,-20px);
                     background-color: var(--bg-color);
                     opacity: 1;
-                    i{
-                        color: var(--login-txt-color);
-                    }
+                    color: rgb(137, 137, 255) !important;
 }
 .btn{
     background-color: rgb(39, 39, 251);

@@ -17,8 +17,13 @@ cloudinary.config({
   api_secret: process.env.cloudinary_sec,
   http_agent: new https.Agent({ keepAlive: true, maxSockets: 5 })
 })
-const dir = path.join(process.cwd(),"./Images/temp")
-if(!fs.existsSync(dir)) fs.mkdirSync(dir);
+
+
+const dir = path.join(process.cwd(), "Images", "temp");
+
+if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir, { recursive: true });
+}
 const clearTemp = async (currentFiles) => {
   for (let file of currentFiles) {
     let imgPath = path.join(dir,file);

@@ -11,6 +11,7 @@ import socket from "../../../utils/socket";
 import { m } from "framer-motion";
 import { FaKeyboard } from "react-icons/fa";
 import {btnContext} from './baseContainer.jsx';
+import { IoSend } from "react-icons/io5";
 
 let logicObj = {
     isFeching:true,
@@ -268,7 +269,7 @@ export default function CommentEl() {
                     }
                 </div>
                 <div className="w-full h-1/10 absolute bottom-0">
-                    <div className="enterComment w-full h-full relative p-2 flex items-center flex-row">
+                    <div className="enterComment w-full h-full relative p-2 flex items-center rounded-lg flex-row bg-gray-500/40 backdrop-blur-lg">
                         {
                             isEmoji && 
                             <Suspense fallback={null} >
@@ -289,17 +290,16 @@ export default function CommentEl() {
                         <div className="absolute top-4 text-2xl cursor-pointer text-white" onClick={()=> {setEmoji(prev=>!prev), toggelBtn(true)}}>
                              {isEmoji ? <FaKeyboard/> : <span >👻</span>}
                         </div>
-                        <form action="" className="h-full w-9/10">
-                            <textarea ref={commentRef} onClick={()=>setEmoji(false)}  className="my-scroll border-none outline-none p-1 resize-none text-skin-ptext h-full pl-10 text-[16px]  placeholder:pl-2 placeholder:pt-2 w-full" 
+                        <form action="" className="h-full w-9/10 flex items-center justify-center">
+                            <textarea ref={commentRef} onClick={()=>setEmoji(false)}  className="my-scroll bg-black/80 rounded-lg p-1 resize-none text-skin-ptext h-full border border-amber-50 pl-10 text-[16px]  placeholder:pl-2 placeholder:pt-2 w-full" 
                                 placeholder="Share your thought...">
                             </textarea>
                         </form>
                         <button
                         onClick={handleSubmit}
-                        className={`postCommitBtn flex items-center justify-center w-22 bg-linear-to-r from-purple-500 via-blue-500 to-purple-600
-                        p-1 cursor-pointer bg-size-[200%_200%] hover:bg-position-[100%_150%]  transition-all duration-700 ease-in-out overflow-hidden rounded-lg`}
+                        className={`flex items-center justify-center w-18 p-1 cursor-pointer`}
                         
-                        ><div className="text-md h-full w-full font-bold text-white"><span>Send</span> <i className="bx bxs-send -rotate-45"></i>
+                        ><div className="h-full w-full  text-skin-ptext hover:text-skin-text"> <IoSend className="text-3xl ml-4"/>
                         </div></button>
                     </div>
                 </div>

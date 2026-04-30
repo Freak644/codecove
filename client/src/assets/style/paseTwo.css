@@ -212,7 +212,7 @@ select{
     align-items: center;
     justify-content: center;
     gap: 50px;
-    transform: translateX(32px);
+    transform: translateX(22px);
     transition: all .3s;
   }
 
@@ -233,7 +233,7 @@ select{
     span{
       display: none;
     }
-    i{
+    .icon{
       rotate: 0deg;
     }
     
@@ -291,8 +291,8 @@ select{
         color: var(--text-color);
       }
 
-      i{
-        font-size: x-large;
+      .icon{
+        font-size: larger;
       }
       span{
         font-size:12px;

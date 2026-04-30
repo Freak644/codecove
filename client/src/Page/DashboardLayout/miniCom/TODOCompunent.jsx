@@ -213,34 +213,34 @@ export default function TODOList({crntPost_id}) {
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
                 
-                {!isLiked ? <FaRegStar onClick={handleStar} /> : <FaStar onClick={handleStar} className="starAnim stared text-3xl"/>}
+                {!isLiked ? <FaRegStar className="icon" onClick={handleStar} /> : <FaStar onClick={handleStar} className="starAnim stared text-3xl"/>}
                 <span>{likeCount ? formatCount(totalLike) : ""}</span>
             </div>
             <div className={`TodoInner ${canComment ? "" : "cursor-none pointer-events-none"}`}> <Link className="flex items-center justify-center gap-1" to={`/post/${post_id}`}
                 state={{background:crntLocation}}
             >
-                <FaComments/>
+                <FaComments className="icon"/>
                     <span>{(canComment && likeCount) ? formatCount(totalComment) : ""}</span>
                 </Link>
             </div>
             <div className={`TodoInner ${!canSave && "pointer-events-none"}`} onClick={()=>handleSave(post_id,canSave,isFollowing)} >
-                {isSaved ? <FaBookmark/> : <FaRegBookmark/>}
+                {isSaved ? <FaBookmark className="icon"/> : <FaRegBookmark className="icon"/>}
                 <span>{likeCount ? formatCount(totalSave) : ""}</span>
             </div>
             <div ref={toggleRef} className="TodoInner relative">
-                <FaDownload onClick={()=>{
+                <FaDownload className="icon" onClick={()=>{
                     images_url.length === 1 ? downloadAll() : setToggle(prev=>!prev);
                 }}/>
                 {
                     isToggle && <div className="flex items-center flex-col absolute bottom-1 z-50 p-2 border border-skin-ptext/30 bg-black/5 backdrop-blur-lg rounded-2xl"> 
-                        <p onClick={()=>downloadAll(true)} className="border-b border-gray-500/50 p-2 text-nowrap">Only this one</p>
+                        <p onClick={()=>downloadAll(true)} className="border-b border-gray-500/50 p-2 text-nowrap">Only this </p>
                         <p onClick={()=>downloadAll(false)} className="border-b border-gray-500/50 p-2 text-nowrap">Download All {images_url.length}</p>
                     </div>
                 }
             </div>
             
             <div className="TodoInner perspective-distant" onClick={()=>handleShare(post_id)}>
-               <FaShareAlt/>
+               <FaShareAlt className="icon"/>
             </div>
         </div>
     )

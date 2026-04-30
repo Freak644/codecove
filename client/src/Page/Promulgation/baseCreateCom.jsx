@@ -92,7 +92,7 @@ export default function BaseCreate() {
                         <li onClick={()=>handleTabs("uc")} className={`${crntTab.uc ? "navSlider":""}`}>Upload & Control</li>
                     </ul>
                 </div>
-                <div className="comSpace  rounded-lg bg-blue-900/10 backdrop-blur-md h-2/3 sm:h-3/6 max-h-4/5 sm:w-3/5 w-full my-scroll">
+                <div className="comSpace  rounded-lg bg-blue-900/10 backdrop-blur-md h-2/3 sm:h-4/7 max-h-4/5 sm:w-3/5 w-full my-scroll">
                         <CompAnim key={
                             crntTab.caption ? "caption" : 
                             crntTab.image ? "image" : 

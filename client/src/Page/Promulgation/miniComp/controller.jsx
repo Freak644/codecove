@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import {useNavigate} from 'react-router-dom';
 import axios from "axios";
 import starSound from "../../../assets/Sounds/star.mp3"
+import { IoMdSend } from "react-icons/io";
 
 export default function UploadController() {
     const navi = useNavigate();
@@ -187,7 +188,7 @@ export default function UploadController() {
                     className={`postCommitBtn flex items-center justify-center w-30 bg-linear-to-r from-purple-500 via-pink-500 to-blue-600
                     p-2 cursor-pointer bg-size-[200%_200%] hover:bg-position-[100%_150%]  transition-all duration-700 ease-in-out overflow-hidden rounded-lg mt-5 ${isTrun && "cursor-not-allowed"}`}
                     
-                    ><div className="text-lg h-full w-full font-bold"><span>Commit</span> <i className="bx bxs-send -rotate-45"></i> </div></button>
+                    ><div className="text-lg h-full w-full font-bold"><span>Commit</span> <IoMdSend className="icon -rotate-45"/> </div></button>
                 </div>
                 
             </div>

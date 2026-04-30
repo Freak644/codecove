@@ -1,7 +1,7 @@
 import { use } from 'react';
 import {Link} from 'react-router-dom';
 export default function ShowUser({data, history}) {
-    
+    console.log(data)
     const afterFind = (userData)=> {
        
         const newHistory = [...history, userData];
@@ -18,7 +18,7 @@ export default function ShowUser({data, history}) {
             {data.map((userInfo, index) => (
                 <div className="h-12 w-full border-b z-1 border-gray-500 flex items-center justify-between" key={index}>
                     <Link to={`/Lab/${userInfo.username}`} className='flex items-center flex-row gap-2.5'>
-                        <img src={userinfo.avatar+"?size=48"} alt=""  className="h-10 w-10 rounded-full border border-yellow-300"/>
+                        <img src={userInfo.avatar+"?size=48"} alt=""  className="h-10 w-10 rounded-full border border-yellow-300"/>
                         <p onClick={()=>afterFind(userInfo)} className='text-skin-ptest hover:text-skin-text hover:underline underline-offset-1'>{userInfo.username}</p>
                     </Link>
                     <p className={``}>{userInfo.isFollowing ? "Following" : ""}</p>

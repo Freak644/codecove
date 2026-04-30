@@ -6,7 +6,7 @@ import MyApp from './components/myApp';
 import './assets/style/index.css'
 import './assets/style/baseStyle.css'
 createRoot(document.getElementById('rootContainer')).render(
-    <StrictMode>
+    <>
         <BrowserRouter>
         <MyApp/>
         </BrowserRouter>
@@ -22,7 +22,7 @@ createRoot(document.getElementById('rootContainer')).render(
             theme='dark'
             toastClassName="custom-toast"
         />
-    </StrictMode>
+    </>
 )
 
 const loader = document.getElementById("mainAppLoader");

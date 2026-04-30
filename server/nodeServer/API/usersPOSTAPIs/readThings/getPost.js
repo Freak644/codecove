@@ -13,45 +13,37 @@ export const GetPosts = async (rkv,rspo) => {
 
     try {
         let [rows] = await database.query(`SELECT 
-                            p.*,
-                            u.username,
-                            u.avatar,
+                                    p.*,
+                                    u.username,
+                                    u.avatar,
 
-                            EXISTS (
-                                SELECT 1
-                                FROM follows
-                                WHERE follower_id = ?
-                                AND following_id = u.id
-                            ) AS isFollowing,
+                                    (f.follower_id IS NOT NULL) AS isFollowing,
+                                    (li.id IS NOT NULL) AS isLiked,
+                                    (sp.id IS NOT NULL) AS isSaved,
+                                    (pr.id IS NOT NULL) AS isReported
 
-                            EXISTS (
-                                SELECT 1
-                                FROM likes li
-                                WHERE li.id = ?
-                                AND li.post_id = p.post_id
-                            ) AS isLiked,
+                                    FROM posts p
 
-                            EXISTS (
-                                SELECT 1 
-                                FROM savePost
-                                WHERE id = ? 
-                                AND post_id = p.post_id
-                            ) AS isSaved,
+                                    INNER JOIN users u 
+                                    ON u.id = p.id
 
-                            EXISTS (
-                                SELECT 1
-                                FROM postReports
-                                WHERE post_id = p.post_id 
-                                AND id = ?
-                            ) AS isReported
+                                    LEFT JOIN follows f
+                                    ON f.following_id = u.id AND f.follower_id = ?
 
-                        FROM posts p
-                        INNER JOIN users u ON u.id = p.id
+                                    LEFT JOIN likes li
+                                    ON li.post_id = p.post_id AND li.id = ?
 
-                        WHERE p.visibility = 1
-                        AND (? IS NULL OR p.post_sr < ?)
-                        ORDER BY p.post_sr DESC
-                        LIMIT ?;
+                                    LEFT JOIN savePost sp
+                                    ON sp.post_id = p.post_id AND sp.id = ?
+
+                                    LEFT JOIN postReports pr
+                                    ON pr.post_id = p.post_id AND pr.id = ?
+
+                                    WHERE p.visibility = 1
+                                    AND (? IS NULL OR p.post_sr < ?)
+
+                                    ORDER BY p.post_sr DESC
+                                    LIMIT ?;
             `,
         [ id, id, id, id, cursorPost_sr, cursorPost_sr,limit + 1]) // what the hake from today(19-02-26) i will wirte my all query in column format
             if (rows.length < 1) return rspo.status(404).send({err:"No posts",count:0});

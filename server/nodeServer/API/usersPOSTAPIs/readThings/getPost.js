@@ -59,7 +59,7 @@ export const GetPosts = async (rkv,rspo) => {
         let cursorObj = {};
         cursorObj.cursorAt = rows[rows.length - 1].created_at;
         cursorObj.cursorPost_sr = rows[rows.length - 1].post_sr;
-
+        rspo.set("Cache-Control", "public, max-age=60");
         rspo.status(200).send({pass:"Found",post:rows,hasMore,cursorObj})
     } catch (error) {
         console.log("jj",error.message)

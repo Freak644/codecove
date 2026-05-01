@@ -22,7 +22,7 @@ export default function NotificationMgmt({ data = [], cetogry }) {
                             <div className="h-12 w-12 min-w-12 overflow-hidden rounded-full ring-1 ring-gray-400/20">
                                 <img
                                     className="h-full w-full object-cover"
-                                    src={item?.logo_img || "https://res.cloudinary.com/dcq0dge7f/image/upload/v1771732188/loser_3221/o4gyl6yy7gwszvit1gch.jpg"}
+                                    src={item?.logo_img || "https://res.cloudinary.com/dcve50avm/image/upload/v1777656891/icon-42x38_xtq9s0.webp"}
                                     alt="user"
                                 />
                             </div>

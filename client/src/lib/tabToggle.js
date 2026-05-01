@@ -22,9 +22,9 @@ export const toggleMini = create((set) => ({
 export const toggleSlider = create((set)=>({
   isMiniTab: {
     news:false,
-    charts:true,
+    charts:false,
     message:false,
-    noti:false
+    noti:true
   },
   toggleMiniTab: (value)=> 
     set({

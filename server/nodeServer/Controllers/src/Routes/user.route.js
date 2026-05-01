@@ -27,7 +27,7 @@ userRoutes.get("/checkActivety",...commonStack,ActivityInfo);
 userRoutes.patch("/upDatePass",...commonStack,changePassSecure);
 userRoutes.post("/ForgotPassword/verify",...commonStack,verification);
 userRoutes.patch("/ForgotPassword/reset",...commonStack,resetPassword);
-userRoutes.get("/GetUserInfo",...commonStack,Auth,CrntUser);
+// userRoutes.get("/GetUserInfo",...commonStack,Auth,CrntUser);
 userRoutes.get("/userFound",...commonStack,MergeRequestData);
 userRoutes.get("/searchUsers",...commonStack, Auth,findUsers);
 

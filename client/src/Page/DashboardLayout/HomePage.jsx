@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { Loader } from '../../lib/loader';
 const NotificaitonMini = lazy(()=>import("../Notification/Components/notificationFeed"));
 import axios from 'axios';
+import NotificationSkeleton from '../Notification/notiSkel';
 export default function HonePage() {
   const [Posts,setPosts] = useState([])
 
@@ -48,7 +49,7 @@ export default function HonePage() {
     }
 
   const fetchPost = async () => {
-    toggleLoader(true)
+   
     try {
       let rqst = await axios.get("/myServer/readPost/getPost");
       
@@ -63,8 +64,6 @@ export default function HonePage() {
     } catch (error) {
       
        toast.error(error.response.data.err);;
-    } finally {
-      toggleLoader(false);
     }
   }
 
@@ -78,9 +77,6 @@ export default function HonePage() {
         isTrue = false;
   },[Posts])
 
-  useEffect(()=> {
-    console.log(cursor)
-  },[cursor])
 
 
 
@@ -112,7 +108,34 @@ export default function HonePage() {
       <div className="underTaker no-copy">
         <div className="leftHome h-full w-full flex-1 lg:flex-2 flex items-center justify-center flex-wrap my-scroll">
           {
-          Posts.length === 0 ? (<div className='miniLoader'/>) :
+          Posts.length === 0 ? (<>
+
+             <div className="activst w-full flex justify-center items-center gap-2.5">
+                    {   [1,2,3,4,5].map(index=>{
+                        return(<div key={index} className="flex items-center justify-center gap-2.5">
+                                    <div className="taker flex items-center justify-center gap-2.5">
+                                    <div className="circle h-20 w-20 rounded-full bg-gray-500 animate-pulse"></div>
+                            </div>
+                        </div>)
+                    })
+
+                }
+                </div>
+                {
+                    [1,2,3,4].map(index=>{
+                        return(<div key={index} className="flex items-start flex-col gap-2">
+                                <div className="ownInfo w-40 h-5 rounded-lg bg-gray-500 animate-pulse"></div>
+                                <div className="imgCOn w-105 h-100 bg-gray-500 animate-pulse rounded-lg"></div>
+                                <div className="caption flex items-center w-26 justify-start flex-wrap gap-2">
+                                    <p className="w-25 h-5 bg-gray-500 rounded-lg animate-pulse"></p>
+                                    <p className="w-22 h-5 bg-gray-500 rounded-lg animate-pulse"></p>
+                                    <p className="w-20 h-5 bg-gray-500 rounded-lg animate-pulse"></p>
+                                </div>
+                        </div>)
+                    })
+                }
+          
+          </>) :
            (
               <PostFeedMGMT posts={Posts} fetcher={fetchMorePost} isEnd={isEnd} />
            )
@@ -146,17 +169,17 @@ export default function HonePage() {
               crntTab.message ? "msg" : 
               crntTab.noti ? "noti" : "none"
             } >
+              {crntTab.noti && <Suspense fallback={<NotificationSkeleton/>}>
+                  <NotificaitonMini/>
+                </Suspense>}
               {crntTab.news && <Suspense fallback={null}>
                  <NewsComp/>
                 </Suspense>}
               {crntTab.charts && <Suspense fallback={null}>
-                  <ChartsEL/>
+                    <ChartsEL/>
                 </Suspense>}
               {crntTab.message && <Suspense fallback={null}>
                 
-                </Suspense>}
-              {crntTab.noti && <Suspense fallback={null}>
-                  <NotificaitonMini/>
                 </Suspense>}
 
             </CompAnim>

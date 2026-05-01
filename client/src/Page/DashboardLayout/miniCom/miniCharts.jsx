@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import {Doughnut,Line} from 'react-chartjs-2';
 import axios from 'axios';
 import {toast} from 'react-toastify'
-import ProgressBar from './chartHelper/waitingOrProgress';
+
 
 defaults.maintainAspectRatio = false;
 defaults.responsive = true;
@@ -90,17 +90,20 @@ export default function ChartsEL() {
 
             return value
         }
-    useEffect(()=>{
-        if (postData.length > 0) return; 
-        getChartData();
-    },[postData])
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            getChartData();
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     
 
 
     return(
         <div className="underTaker gap-4 my-scroll bg-black/5 backdrop-blur-md flex-wrap">
-            {postData.length < 10 ? (<ProgressBar date={helper} posts={postData}/>) : (<> <div className="lineChart flex-1 h-1/2">
+            <> <div className="lineChart flex-1 h-1/2">
                 <Line
                     data={{
                         labels: postData.map((data, index) => index + 1),
@@ -209,7 +212,7 @@ export default function ChartsEL() {
                         },
                     }}
                 />
-            </div> </>) }
+            </div> </>
         </div>
     )
 }

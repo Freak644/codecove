@@ -22,6 +22,7 @@ export const Chartdata = async (rkv,rspo) => {
             postData.push(post)
         })
 
+        rspo.set("Cache-Control", "public, max-age=60");
         rspo.json(postData)
         
     } catch (error) {

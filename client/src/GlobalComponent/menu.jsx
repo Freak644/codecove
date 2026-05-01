@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify';
 import ThemeButton from '../components/toggleButton.jsx';
-import { UnivuUserInfo } from '../lib/basicUserinfo.js';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import MenuSkeleton from './menuSkel';
 import { toggleABMenu } from '../lib/toggleTheme';
@@ -14,38 +13,20 @@ import { MdHome, MdExplore, MdSearch, MdNotificationsActive, MdAppSettingsAlt, M
 import { HiChatAlt2 } from "react-icons/hi";
 import { RiGitRepositoryCommitsFill } from "react-icons/ri";
 import { FaTools } from "react-icons/fa";
+import { UnivuUserInfo } from '../lib/basicUserinfo.js';
 export default function MenuEL(params) {
     let gradColor = getColor();
     const [currentTab,setTab] = useState('Home');
-    const [userinfo,setUserInfo] = useState({});
     const [isDD,setDD] = useState(false);
     const [isHidden,setHidden] = useState(false)
-    const {setInfo} = UnivuUserInfo();
+    let {userInfo} = UnivuUserInfo();
     const dropRef = useRef();
     const navi = useNavigate();
     const [miniMenu, setMenu] = useState(false);
     const crntLocation = useLocation();
     const toggleMenu = toggleABMenu(state=>state.toggleMenu);
-    useEffect(()=>{
-        getUserInfo();
-    },[])
-    const getUserInfo = async () => {
-        try {
-            let rkv = await fetch("/myServer/user/getUserInfo")
-            let result = await rkv.json();
-            if (result.err) {
-                throw new Error(result.err);
-                } else if (result.login) {
-                    sessionStorage.clear();
-                    location.reload()
-                }
-                setUserInfo(result.userinfo[0])
-                setInfo(result.userinfo[0])
-        } catch (error) {
-            toast.error(error.message);
-        }
-    }
 
+ 
     const handleLogout = async () => {
         let rqst = await fetch("/myServer/user/Logout")
         let result = await rqst.json();
@@ -100,9 +81,11 @@ export default function MenuEL(params) {
         } 
     },[])
 
+  
+
     return(
         <>
-        {userinfo.avatar?.length < 2 ? <MenuSkeleton/> : <div className="menuDiv no-copy transition-all duration-700 relative left-0 sm:border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
+        {Object.keys(userInfo).length < 0 ? <MenuSkeleton/> : <div className="menuDiv no-copy transition-all duration-700 relative left-0 sm:border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
         flex items-center flex-col gap-5
          z-20
         "> <p id='secBtn' onClick={()=>setHidden(prev=>!prev)} className="h-8 w-8 flex logotxt items-center justify-center text-2xl cursor-pointer border-skin-ptext/30 border rounded-full absolute top-3 -right-2"><IoMdMenu className='text-skin-ptext'/></p>
@@ -159,11 +142,11 @@ export default function MenuEL(params) {
                     </li>
 
                     <li>
-                        <Link to={`/Lab/${userinfo?.username}`}>
+                        <Link to={`/Lab/${userInfo?.username}`}>
                         <div className='h-8 w-8 md:h-9 md:w-9 border rounded-full flex items-center justify-center'>
                             <img
                             className='h-full rounded-full w-full'
-                            src={userinfo.avatar?.length > 5 ? userinfo.avatar+"?size=48" : "https://i.postimg.cc/7ZTJzX5X/icon.png"}
+                            src={userInfo?.avatar?.length > 1 ? userInfo.avatar+"?size=48" : "https://i.postimg.cc/7ZTJzX5X/icon.png"}
                             alt=""
                             />
                         </div>
@@ -184,7 +167,7 @@ export default function MenuEL(params) {
                     </div>}
                     </li>
                     <li ><FaTools/><span>Tools</span></li>
-                </ul> </> : <MiniMenu avatar={userinfo?.avatar} crntTab={currentTab} username={userinfo?.username} />
+                </ul> </> : <MiniMenu avatar={userInfo?.avatar} crntTab={currentTab} username={userInfo?.username} />
                 
                 }
                

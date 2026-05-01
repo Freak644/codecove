@@ -27,3 +27,6 @@ createRoot(document.getElementById('rootContainer')).render(
 
 const loader = document.getElementById("mainAppLoader");
 if (loader) loader.remove();
+
+
+//merge 3 apis

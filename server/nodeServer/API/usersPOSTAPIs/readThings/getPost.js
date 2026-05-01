@@ -24,7 +24,7 @@ export const GetPosts = async (rkv,rspo) => {
 
                                     FROM posts p
 
-                                    INNER JOIN users u 
+                                    INNER JOIN users u  
                                     ON u.id = p.id
 
                                     LEFT JOIN follows f

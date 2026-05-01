@@ -8,6 +8,7 @@ const ForgotEl = lazy(() => import("./forgotPass"));
 import banner from '../../assets/Banner/NewImage.webp'
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import LoginSkeleton from "./loginSkel";
 export default function LoginEL() {
     let [searchParams] = useSearchParams();
     const [err] = useState(decodeURIComponent(searchParams.get("err")))
@@ -70,19 +71,19 @@ export default function LoginEL() {
                             <div className="senceDiv h-full w-full perspective-distant flex items-center justify-center">
                                 <div className={`cube relative transform-3d transition-all duration-1000 flex items-center justify-center ${getRotation()}`}>
                                     <div className="face front">
-                                            <Suspense fallback={null}>
+                                            <Suspense fallback={<LoginSkeleton/>}>
                                                 <LoginCon />
                                             </Suspense>
                                         </div>
 
                                         <div className="face right">
-                                            <Suspense fallback={null}>
+                                            <Suspense fallback={<LoginSkeleton/>}>
                                                 <SginUp toggle={setFace} />
                                             </Suspense>
                                         </div>
 
                                         <div className="face left">
-                                            <Suspense fallback={null}>
+                                            <Suspense fallback={<LoginSkeleton/>}>
                                                 <ForgotEl />
                                             </Suspense>
                                         </div>

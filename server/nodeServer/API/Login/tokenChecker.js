@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';;
 import { database } from '../../Controllers/myConnectionFile.js';
 import { Decrypt } from '../../utils/Encryption.js';
 import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
+import { CrntUser } from '../getUsers/getCurrentUserdata.js';
 const revokedToken = async (session_id) => {
      await database.execute(
             "UPDATE user_sessions SET revoked=? WHERE session_id=?",
@@ -51,7 +52,7 @@ export const checkAuth = async (rkv,rspo) => {
         let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec);
         let decodedTime = Math.floor(Date.now()/1000);
         let {id,session_id} = tokenData;
-
+        
         if (tokenData.exp<decodedTime){
             await revokedToken(session_id)
             throw new Error("Token Expired")
@@ -60,15 +61,20 @@ export const checkAuth = async (rkv,rspo) => {
             [id,session_id]
         )
         if (rows.length === 0) {
-        return rspo.status(404).send({loggedIn:true})
+            return rspo.status(404).send({loggedIn:true})
         }
+
         let revoked = Number(rows[0].revoked);
         if (revoked === 1 || rows[0].ip !== ip) {
             await revokedToken(session_id)
             throw new Error("token Revoked");
         }
-
-        rspo.status(201).send({loggedIn:false})
+        const userInfo = await CrntUser(id);
+        
+        if (userInfo.err) {
+            throw new Error(userInfo.err);
+        }
+        rspo.status(201).send({loggedIn:false,userInfo})
     } catch (error) {
         console.log(error.message)
         rspo.status(401).send({loggedIn:true,details:error.message})

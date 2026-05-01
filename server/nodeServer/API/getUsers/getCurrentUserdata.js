@@ -1,20 +1,16 @@
 import { database } from "../../Controllers/myConnectionFile.js";
-import { completeRequest } from "../../Controllers/src/middleware/progressTracker.js";
+//import { completeRequest } from "../../Controllers/src/middleware/progressTracker.js";
 
-export const CrntUser = async (rkv,rspo) => {
-    const crntIP = rkv.userIp;
-    const crntAPI = rkv.originalUrl.split("?")[0];
-    let {id} = rkv.authData;
+export const CrntUser = async (id) => {
+
     try {
         let [userinfo] = await database.execute(
            "SELECT avatar,username,email,id,bio FROM users WHERE id=? LIMIT 1",
         [id]
     )
-        if (userinfo.length === 0) return rspo.status(401).send({err:"Invalid userID"});
-        rspo.status(302).send({userinfo})
+        if (userinfo.length === 0) return {err:"Invalid user"};
+        return userinfo[0]
     } catch (error) {
-        rspo.status(500).send({err:"Server side error",details:error.message})
-    } finally {
-        completeRequest(crntIP,crntAPI)
+        return {err:"Server side error",details:error.message}
     }
 }

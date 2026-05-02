@@ -4,7 +4,7 @@ import { univPostStore, UnivuUserInfo } from '../../lib/basicUserinfo';
 const ChartsEL = lazy(()=>import("./miniCom/miniCharts"))
 import { toggleSlider } from '../../lib/tabToggle';
 import CompAnim from '../../assets/animations/compAnimation'; 
-import PostFeedMGMT from './postFeed';
+const PostFeedMGMT = lazy(()=> import("./postFeed"));
 import { toast } from 'react-toastify';
 import { Loader } from '../../lib/loader';
 const NotificaitonMini = lazy(()=>import("../Notification/Components/notificationFeed"));
@@ -107,8 +107,7 @@ export default function HonePage() {
     return (
       <div className="underTaker no-copy">
         <div className="leftHome h-full w-full flex-1 lg:flex-2 flex items-center justify-center flex-wrap my-scroll">
-          {
-          Posts.length === 0 ? (<>
+          <Suspense fallback={<>
 
              <div className="activst w-full flex justify-center items-center gap-2.5">
                     {   [1,2,3,4,5].map(index=>{
@@ -135,11 +134,9 @@ export default function HonePage() {
                     })
                 }
           
-          </>) :
-           (
+          </>} >
               <PostFeedMGMT posts={Posts} fetcher={fetchMorePost} isEnd={isEnd} />
-           )
-        }
+          </Suspense>
         </div>
 
         <div className="rightHome flex-1 h-full p-2 bg-linear-to-br

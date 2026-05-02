@@ -5,8 +5,7 @@ import socket from "../../../utils/socket";
 import {starAudio} from '../../../utils/sound';
 import {toast} from 'react-toastify';
 import axios from 'axios';
-import {FaRegStar, FaStar, FaComments, FaRegBookmark, FaBookmark, FaDownload, FaShareAlt} from 'react-icons/fa';
-import { RiNotification3Fill } from "react-icons/ri";
+
 export default function TODOList({crntPost_id}) {
     const toggleRef = useRef(null);
     const [crntPost,setCrntPost] = useState({})
@@ -213,22 +212,22 @@ export default function TODOList({crntPost_id}) {
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
                 
-                {!isLiked ? <FaRegStar className="icon" onClick={handleStar} /> : <FaStar onClick={handleStar} className="starAnim stared text-3xl"/>}
+                {!isLiked ? <i className="bx bx-star icon text-skin-ptext/70" onClick={handleStar} /> : <i onClick={handleStar} className="starAnim bx bxs-star stared text-3xl"/>}
                 <span>{likeCount ? formatCount(totalLike) : ""}</span>
             </div>
             <div className={`TodoInner ${canComment ? "" : "cursor-none pointer-events-none"}`}> <Link className="flex items-center justify-center gap-1" to={`/post/${post_id}`}
                 state={{background:crntLocation}}
             >
-                <FaComments className="icon"/>
+                <i className="bx bx-comment"></i>
                     <span>{(canComment && likeCount) ? formatCount(totalComment) : ""}</span>
                 </Link>
             </div>
             <div className={`TodoInner ${!canSave && "pointer-events-none"}`} onClick={()=>handleSave(post_id,canSave,isFollowing)} >
-                {isSaved ? <FaBookmark className="icon"/> : <FaRegBookmark className="icon"/>}
+                {isSaved ? <i className="bx bxs-bookmark-heart icon"/> : <i className="bx bx-bookmark text-skin-ptext/70 icon"/>}
                 <span>{likeCount ? formatCount(totalSave) : ""}</span>
             </div>
             <div ref={toggleRef} className="TodoInner relative">
-                <FaDownload className="icon" onClick={()=>{
+                <i className="bx bxs-download icon" onClick={()=>{
                     images_url.length === 1 ? downloadAll() : setToggle(prev=>!prev);
                 }}/>
                 {
@@ -240,7 +239,7 @@ export default function TODOList({crntPost_id}) {
             </div>
             
             <div className="TodoInner perspective-distant" onClick={()=>handleShare(post_id)}>
-               <FaShareAlt className="icon"/>
+               <i className="bx bx-share-alt icon"/>
             </div>
         </div>
     )

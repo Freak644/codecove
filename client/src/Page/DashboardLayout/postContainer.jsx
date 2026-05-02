@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import ImageSlider from "../Promulgation/sliderCom"
-import Caption from "./miniCom/captionCom";
+const Caption = lazy(()=> import("./miniCom/captionCom"));
 import TODOList from "./miniCom/TODOCompunent";
-import MiniDropDown from "./miniCom/threedotDropDown";
+const MiniDropDown = lazy(()=> import("./miniCom/threedotDropDown"));
 import { univPostStore } from "../../lib/basicUserinfo";
 import { Link } from "react-router-dom";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -67,7 +67,7 @@ export default function PostsCon({posts}) {
                             </div>
                             <div ref={setCallback(post_id)} className="innerINFODiv flex-1 flex items-center justify-end relative! top-2.5!">
                                 <BsThreeDotsVertical onClick={()=>setDropDown({...isDropDown,p_id:post_id,isTrue:true})} className='text-2xl cursor-pointer' />
-                                {(isDropDown?.p_id===post_id && isDropDown.isTrue) && <MiniDropDown postInfo={{username,isFollowing,images_url,post_id,canComment,likeCount, visibility}} toggle={setDropDown}/>}
+                                {(isDropDown?.p_id===post_id && isDropDown.isTrue) && <Suspense fallback={null}><MiniDropDown postInfo={{username,isFollowing,images_url,post_id,canComment,likeCount, visibility}} toggle={setDropDown}/></Suspense>}
                             </div>
                             <Caption text={caption} />
                         </div>

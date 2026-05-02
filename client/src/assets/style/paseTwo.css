@@ -291,8 +291,8 @@ select{
         color: var(--text-color);
       }
 
-      .icon{
-        font-size: larger;
+      i{
+        font-size: x-large;
       }
       span{
         font-size:12px;
@@ -859,4 +859,16 @@ select{
   -moz-user-select: none;    /* Firefox */
   -ms-user-select: none;     /* IE/Edge */
   user-select: none;         /* Standard */
+}
+
+@keyframes jiggle {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-8deg) scale(0.95); }
+  50% { transform: rotate(8deg) scale(1.05); }
+  75% { transform: rotate(-4deg) scale(0.98); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+
+.icon-jiggle:active {
+  animation: jiggle 0.3s ease;
 }

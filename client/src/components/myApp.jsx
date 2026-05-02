@@ -2,12 +2,13 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect, lazy, Suspense } from "react";
 
 const LoginEL = lazy(()=> import("../Page/Auth/baseFIle"))
-import Header from "../GlobalComponent/header";
-import MenuEL from "../GlobalComponent/menu";
+const MenuEL = lazy(()=> import("../GlobalComponent/menu"));
+
+const Header = lazy(()=> import("../GlobalComponent/header"));
 import LoaderEL from "../assets/animations/loadingBar";
 const CropperEL = lazy(() => import("./cropperEL"));
-import WindowHerder from "../GlobalComponent/windowHeader";
-import AbsoluteMenu from "../GlobalComponent/absoluteMenu";
+const WindowHerder = lazy(()=> import("../GlobalComponent/windowHeader"))
+const AbsoluteMenu = lazy(()=> import("../GlobalComponent/absoluteMenu"))
 
 const AnimateRoute = lazy(() => import('./Routes/AnimateRoute'));
 const NoAnimRoutes = lazy(() => import('./Routes/noAnimationRoute'));
@@ -60,9 +61,15 @@ export default function MyApp() {
     <>
       {isTrue && <LoaderEL />}
 
-      {windowHeader && !isLogin && !isChecking && <WindowHerder />}
-      {!isLogin && !isChecking && <Header />}
-      {!isLogin && !isChecking && <MenuEL />}
+      {windowHeader && !isLogin && !isChecking && <Suspense fallback={null}>
+          <WindowHerder/>
+        </Suspense>}
+      {!isLogin && !isChecking && <Suspense fallback={null}>
+            <Header/>
+        </Suspense>}
+      {!isLogin && !isChecking && <Suspense fallback={null}>
+            <MenuEL />
+        </Suspense>}
 
       {isCropping && (
             <Suspense fallback={<div className="miniLoader"/>}>
@@ -70,7 +77,9 @@ export default function MyApp() {
             </Suspense>
         )}
 
-      <AbsoluteMenu />
+      <Suspense fallback={null}>
+        <AbsoluteMenu />
+      </Suspense>
 
       {isLogin && !isAuth && !isChecking && (
             <div className="loginContainer flex items-center content-center h-screen w-screen">

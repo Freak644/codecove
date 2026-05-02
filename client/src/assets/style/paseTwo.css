@@ -869,6 +869,6 @@ select{
   100% { transform: rotate(0deg) scale(1); }
 }
 
-.icon-jiggle:active {
+.icon-jiggle-click {
   animation: jiggle 0.3s ease;
 }

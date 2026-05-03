@@ -19,6 +19,8 @@ cloudinary.config({
 })
 
 
+
+
 const dir = path.join(process.cwd(), "Images", "temp");
 
 if (!fs.existsSync(dir)) {
@@ -40,27 +42,38 @@ export const CreatePost = async (rkv,rspo) => {
     let {id} = rkv.authData;
     let {Absuse, Link, Spam, Violence, canComment, canSave, caption, likeCount, visibility, postGroup} = rkv.body;
     let imgArray = [];
-    console.log(canSave)
+
     try {
       if (fileArray.length === 0 ) return rspo.status(400).send({err:"No file Found"});
       fileArray.forEach(file => {
         imgArray.push(file.filename);
       });
-
-      const acceptOp = [
-        "true","false","Bugs","TIL","Snippets","Mini Blog","Setup Showcase",
-        "QuickTips","Meme","WIP","Everyone","Follower"
+      const validationError = "ValidationFaild"
+      const allowedCategories = [
+        "Bugs","TIL","Snippets","Mini Blog","Setup Showcase",
+        "QuickTips","Meme","WIP"
       ];
-      const payload = { Absuse, Link, Spam, Violence, canComment, canSave, likeCount, visibility, postGroup };
+      const allowedSave = ["Everyone","Follower","false"];
+      const boolValues = ["true","false"];
 
-      for (let key in payload) {
-        let value = payload[key];
+      if (!boolValues.includes(canComment)) throw new Error("BoolendError");
+      ;
+      if (!allowedSave.includes(canSave)) throw new Error("canSaveBoolError");
+      if (!allowedCategories.includes(postGroup)) throw new Error(validationError);;
+      if (!boolValues.includes(visibility)) throw new Error(validationError);;
 
-        if (!acceptOp.includes(value)) {
-          await clearTemp(imgArray);
-          return rspo.status(400).send({ err: "Bad Request: invalid value in " + key });
-        }
-      }
+      //const payload = { Absuse, Link, Spam, Violence, canComment, canSave, likeCount, visibility, postGroup };
+
+      const toBool = (v) => v === "true" ? 1 : 0;
+
+      const normalized = {
+        canComment: toBool(canComment),
+        canSave: toBool(canSave),
+        likeCount: toBool(likeCount),
+        visibility: toBool(visibility)
+      };
+
+    
       const window = new JSDOM('').window;
       const DOMpurify = createDOMPurify(window);
       const sanitiz = (str)=> DOMpurify.sanitize(str);
@@ -87,7 +100,10 @@ export const CreatePost = async (rkv,rspo) => {
               crntImg.path,
               {
                 folder: row[0].username,
-                transformation:[{quality:"auto"}]
+                transformation: [
+                  {quality: "auto", fetch_format: "auto"},
+                  {width: 800, crop: "scale"}
+                ]
               }
             )
             await fs.promises.unlink(crntImg.path)
@@ -97,9 +113,23 @@ export const CreatePost = async (rkv,rspo) => {
       const cloudLiks = await Promise.all(uploadImage)
    
       let post_id = nanoid();
-      await database.query("INSERT INTO posts (post_id, id, images_url, caption, blockCat, visibility, canComment, likeCount, canSave, post_moment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        [post_id, id, JSON.stringify(cloudLiks), caption, JSON.stringify({Absuse,Spam,Link,Violence}), visibility == "true" ? 1 : 0, canComment == "true" ? 1 : 0,likeCount == "true" ? 1 : 0, canSave, postGroup]
-      )
+      await database.query(
+        `INSERT INTO posts 
+        (post_id, id, images_url, caption, blockCat, visibility, canComment, likeCount, canSave, post_moment) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          post_id,
+          id,
+          JSON.stringify(cloudLiks),
+          caption,
+          JSON.stringify({ Absuse, Spam, Link, Violence }),
+          normalized.visibility,
+          normalized.canComment,
+          normalized.likeCount,
+          normalized.canSave,
+          postGroup
+        ]
+      );
 
       
       rspo.status(201).send({pass:"Your Post is POst", postData:{post_id,id,cloudLiks,caption,blockCat:{Absuse,Spam,Link,Violence},visibility:visibility == "true" ? 1 : 0, canComment: canComment === "true" ? 1 : 0,likeCount: likeCount == "true" ? 1 : 0, canSave, postGroup}})

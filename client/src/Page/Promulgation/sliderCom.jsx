@@ -42,6 +42,15 @@ export default function ImageSlider({ imgArray, setArray,toggle, postInfo }) {
     }
     setIndex((prev) => (prev - 1 + imgArray.length) % imgArray.length);
   };
+  const currentSrc = imgArray[index].preview || imgArray[index];
+  const optimizeImage = (url) => {
+  if (!url || url.startsWith("blob:")) return url;
+
+  return url.replace(
+    "/upload/",
+    "/upload/w_600,c_limit,f_auto,q_auto/"
+  );
+};
 
   const removeFile = () => {
     setArray((prev) => {
@@ -135,14 +144,21 @@ export default function ImageSlider({ imgArray, setArray,toggle, postInfo }) {
             >
               {/* Floating start animation  */}
               {Object.keys(postInfo || {}).length === 3 && <FloationStart post_id={postInfo?.post_id} like={postInfo?.isLiked} totalLike={postInfo?.totalLike}/>}
-              {/* ⬇️ preserve aspect ratio & bg visibility */}
+              {/* ⬇️ preserve aspect ratio & bg visibility */
+              }
               <img
                 key={imgArray[index]}
-                src={imgArray[index].preview || imgArray[index]}
+                src={optimizeImage(imgArray[index].preview || imgArray[index])}
+                
+                // srcSet={`
+                //   ${optimizeImage(currentSrc).replace("/w_600/", "/w_400/")} 400w,
+                //   ${optimizeImage(currentSrc).replace("/w_600/", "/w_800/")} 800w
+                // `}
+                // sizes="(max-width: 768px) 100vw, 600px"
                 title={imgArray[index]?.file?.name}
                 className="max-h-full max-w-full pointer-events-none object-contain rounded-2xl"
                 draggable={false} alt="Post"
-                loading="lazy"
+                loading={index === 0 ? "eager" : "lazy"}
               />
               <div className="overlay absolute h-full w-full bg-transparent"></div>
             </motion.div>

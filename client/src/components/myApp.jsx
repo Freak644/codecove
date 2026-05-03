@@ -26,6 +26,8 @@ import useAuthCheck from "../hooks/useAuthCheck";
 import useRouteCheck from "../hooks/useRouteCheck";
 
 import '../assets/style/paseTwo.css'
+import { AbsoluteMenuSkeleton, HeaderSkeleton, WindowHeaderSkeleton } from "../GlobalComponent/skel/windowSkeL";
+import MenuSkeleton from "../GlobalComponent/menuSkel";
 
 export default function MyApp() {
   useViewportFix();
@@ -61,13 +63,13 @@ export default function MyApp() {
     <>
       {isTrue && <LoaderEL />}
 
-      {windowHeader && !isLogin && !isChecking && <Suspense fallback={null}>
+      {windowHeader && !isLogin && !isChecking && <Suspense fallback={<WindowHeaderSkeleton/>}>
           <WindowHerder/>
         </Suspense>}
-      {!isLogin && !isChecking && <Suspense fallback={null}>
+      {!isLogin && !isChecking && <Suspense fallback={<HeaderSkeleton/>}>
             <Header/>
         </Suspense>}
-      {!isLogin && !isChecking && <Suspense fallback={null}>
+      {!isLogin && !isChecking && <Suspense fallback={<MenuSkeleton/>}>
             <MenuEL />
         </Suspense>}
 
@@ -77,7 +79,7 @@ export default function MyApp() {
             </Suspense>
         )}
 
-      <Suspense fallback={null}>
+      <Suspense fallback={<AbsoluteMenuSkeleton/>}>
         <AbsoluteMenu />
       </Suspense>
 

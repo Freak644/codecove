@@ -5,12 +5,9 @@ import { toggleABMenu } from "../lib/toggleTheme";
 import {getColor} from '../utils/getGradnt';
 import { toggleSlider } from "../lib/tabToggle";
 import SearchEl from "../Page/SearchELs/searchEl";
-import {MdMenu, MdReport} from 'react-icons/md'
 import { GradientSVG } from "../utils/getSVG";
-import {FaLaptopCode, FaSortDown, FaGithubSquare} from 'react-icons/fa'
-import { BiGhost } from "react-icons/bi";
-import { HiOutlineDocumentAdd } from "react-icons/hi";
-import { MdNotifications } from "react-icons/md";
+import {FaLaptopCode} from 'react-icons/fa'
+import { CommitIcon, GhotIcon, GitHubIcon, MenuIcon, ReportIcon, TringleIcon, NotificationBellIcon } from "../utils/SVG/SVG";
 
 export default function WindowHerder() {
     let location = useLocation();
@@ -46,7 +43,7 @@ export default function WindowHerder() {
             border-amber-200 border-b border-b-gray-500 bg-blue-800/10 backdrop-blur-md z-40
         "> 
             <div className="leftHeader text-4xl flex flex-1 gap-4 pl-5">
-                <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 menuBTN cursor-pointer w-10 flex logotxt items-center justify-center text-3xl border-skin-ptext/30 border rounded-full"><MdMenu className="text-skin-ptext"/></div>
+                <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 menuBTN cursor-pointer w-10 flex logotxt items-center justify-center text-3xl border-skin-ptext/30 border rounded-full"><MenuIcon className="text-skin-ptext"/></div>
                 <GradientSVG id={"winHeader"} />
                 <FaLaptopCode style={{fill: "url(#winHeader)"}}/>
                 <span className="text-skin-ptext text-[15px]  flex items-center">{pathName}</span>
@@ -59,22 +56,22 @@ export default function WindowHerder() {
                 `}/>
                    
                     <div className=" cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">
-                        <BiGhost className="m-1 border-r"/>
-                        <FaSortDown className='text-[18px] mb-1'/>
+                        <GhotIcon className="m-1 border-r"/>
+                        <TringleIcon className='text-[18px] mb-1'/>
                     </div>
                 </form>
 
                 <div className="secminiMenuDiv text-2xl flex items-center flex-row gap-[1vw] ">
                     <div className="createPost flex items-center justify-center ml-2.5 border-2 border-skin-ptext/40 rounded-lg
                     cursor-pointer ">
-                        <HiOutlineDocumentAdd className="border-r m-1" />
-                        <FaSortDown className='text-[18px] mb-1'/>
+                        <CommitIcon className="border-r m-1" />
+                        <TringleIcon className='text-[18px] mb-1'/>
                     </div>
 
                     <div className="userThings flex gap-[1vw]">
-                        <MdReport title="Report an issue" className="border text-[35px] border-skin-ptext/30 p-1 rounded-lg cursor-pointer"></MdReport>
-                        <FaGithubSquare title="Source Code"  onClick={()=>window.open("https://github.com/Freak644","_blank")} className="border border-skin-ptext/30 p-1 text-[38px] rounded-lg cursor-pointer"></FaGithubSquare>
-                        <MdNotifications onClick={()=>toggleMiniTab("noti")} title="Notification" className="border border-skin-ptext/30 text-[38px] p-1 rounded-lg cursor-pointer"></MdNotifications>
+                        <ReportIcon title="Report an issue" className="border text-[30px] border-skin-ptext/30 p-1 rounded-lg cursor-pointer"></ReportIcon>
+                        <GitHubIcon title="Source Code"  onClick={()=>window.open("https://github.com/Freak644","_blank")} className={`border border-skin-ptext/30  text-[30px] rounded-lg cursor-pointer`}/>
+                        <NotificationBellIcon onClick={()=>toggleMiniTab("noti")} title="Notification" className="border border-skin-ptext/30 text-[30px] rounded-lg cursor-pointer"></NotificationBellIcon>
                         <div title={userData.username || "Loading"} className="h-9 w-9 overflow-hidden cursor-pointer border rounded-full flex items-center justify-center relative">
                             <img className="h-full" src={userData.avatar ? userData.avatar : "https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" />
                         </div>

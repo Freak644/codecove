@@ -861,14 +861,27 @@ select{
   user-select: none;         /* Standard */
 }
 
-@keyframes jiggle {
-  0% { transform: rotate(0deg) scale(1); }
-  25% { transform: rotate(-8deg) scale(0.95); }
-  50% { transform: rotate(8deg) scale(1.05); }
-  75% { transform: rotate(-4deg) scale(0.98); }
-  100% { transform: rotate(0deg) scale(1); }
+/* icons.css */
+.svgicon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer; 
+  color: var(--text-color);
+  transition: transform 0.15s ease;
 }
 
-.icon-jiggle-click {
+.svgicon:hover {
+  transform: scale(0.95);
+}
+
+.svgicon.jiggle {
   animation: jiggle 0.3s ease;
+}
+
+@keyframes jiggle {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
+  75% { transform: rotate(-4deg); }
+  100% { transform: rotate(0deg); }
 }

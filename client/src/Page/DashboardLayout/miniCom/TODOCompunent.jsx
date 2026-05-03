@@ -3,8 +3,10 @@ import { univPostStore, UnivuUserInfo } from "../../../lib/basicUserinfo";
 import {Link, useLocation} from 'react-router-dom';
 import socket from "../../../utils/socket";
 import {starAudio} from '../../../utils/sound';
-import {toast} from 'react-toastify';
+import { toast} from 'react-toastify';
 import axios from 'axios';
+
+import { BookmarkHeartIcon, BookmarkIcon, CommentIcon, DownloadIcon, ShareIcon, StarFilledIcon, StarIcon } from "../../../utils/SVG/SVG";
 
 export default function TODOList({crntPost_id}) {
     const toggleRef = useRef(null);
@@ -212,24 +214,29 @@ export default function TODOList({crntPost_id}) {
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
                 
-                {!isLiked ? <i className="bx bx-star icon text-skin-ptext/70" onClick={handleStar} /> : <i onClick={handleStar} className="starAnim bx bxs-star stared text-3xl"/>}
+             
+            <i onClick={handleStar}>
+                {isLiked ? <StarFilledIcon className={`svgicon`} /> : <StarIcon className={`svgicon`}/> }
+            </i>
+           
+                
                 <span>{likeCount ? formatCount(totalLike) : ""}</span>
             </div>
             <div className={`TodoInner ${canComment ? "" : "cursor-none pointer-events-none"}`}> <Link className="flex items-center justify-center gap-1" to={`/post/${post_id}`}
                 state={{background:crntLocation}}
             >
-                <i className="bx bx-comment"></i>
+                <CommentIcon className={`svgicon`} />
                     <span>{(canComment && likeCount) ? formatCount(totalComment) : ""}</span>
                 </Link>
             </div>
             <div className={`TodoInner ${!canSave && "pointer-events-none"}`} onClick={()=>handleSave(post_id,canSave,isFollowing)} >
-                {isSaved ? <i className="bx bxs-bookmark-heart icon"/> : <i className="bx bx-bookmark text-skin-ptext/70 icon"/>}
+                {isSaved ? <BookmarkHeartIcon className={`svgicon`}/> : <BookmarkIcon className={`svgicon`} />}
                 <span>{likeCount ? formatCount(totalSave) : ""}</span>
             </div>
             <div ref={toggleRef} className="TodoInner relative">
-                <i className="bx bxs-download icon" onClick={()=>{
+                <i onClick={()=>{
                     images_url.length === 1 ? downloadAll() : setToggle(prev=>!prev);
-                }}/>
+                }}><DownloadIcon className={`svgicon`}/> </i>
                 {
                     isToggle && <div className="flex items-center flex-col absolute bottom-1 z-50 p-2 border border-skin-ptext/30 bg-black/5 backdrop-blur-lg rounded-2xl"> 
                         <p onClick={()=>downloadAll(true)} className="border-b border-gray-500/50 p-2 text-nowrap">Only this </p>
@@ -239,7 +246,7 @@ export default function TODOList({crntPost_id}) {
             </div>
             
             <div className="TodoInner perspective-distant" onClick={()=>handleShare(post_id)}>
-               <i className="bx bx-share-alt icon"/>
+                <ShareIcon className={`svgicon`} />
             </div>
         </div>
     )

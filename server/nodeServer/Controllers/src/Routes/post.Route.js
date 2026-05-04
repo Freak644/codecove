@@ -7,7 +7,7 @@ import {miniToggleDy} from '../../../API/usersPOSTAPIs/writeThings/miniToggleAPI
 import {starPost, likeComment, savePost} from '../../../API/usersPOSTAPIs/writeThings/likePost.js'
 import {CommentAPI} from '../../../API/usersPOSTAPIs/writeThings/addComment.js';
 import {ReportPost,DeleteCommentAPI,reportCommentAPI,DeletePost} from '../../../API/usersPOSTAPIs/writeThings/reportAndDelete.js'
-import {GetPosts, getPost} from '../../../API/usersPOSTAPIs/readThings/getPost.js';
+import {GetPostForFeed, getPost} from '../../../API/usersPOSTAPIs/readThings/getPost.js';
 import { getComment } from '../../../API/usersPOSTAPIs/readThings/getCrntPostComment.js';
 import { Chartdata } from '../../../API/usersPOSTAPIs/readThings/getChartData.js';
 
@@ -31,7 +31,7 @@ writePost.delete("/deleteComment", ...commonStack, Auth, DeleteCommentAPI);
 //readPost API full path will be look like /readPost/apiName
 const readPost = Router();
 
-readPost.get("/getPost", ...commonStack, Auth, GetPosts);
+readPost.get("/getPost", ...commonStack, Auth, GetPostForFeed);
 readPost.get("/getComment", ...commonStack, Auth, getComment);
 readPost.get("/getImage", ...commonStack, Auth, getPost);
 readPost.get("/getChartData", ...commonStack, Auth, Chartdata);

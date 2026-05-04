@@ -1,7 +1,7 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
+import redis from "../../../Controllers/src/config/redis.js";
 import { completeRequest } from "../../../Controllers/src/middleware/progressTracker.js";
-
-export const GetPosts = async (rkv,rspo) => {
+export const GetPostForFeed = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     const Limit = parseInt(rkv?.query?.Limit, 10);
@@ -49,13 +49,23 @@ export const GetPosts = async (rkv,rspo) => {
             if (rows.length < 1) return rspo.status(404).send({err:"No posts",count:0});
         
         //  console.log(rows[0])
+        const pipeline = redis.pipeline();
+
+        rows.forEach(row => {
+            const key = `post:likes:${row.post_id}`;
+            pipeline.scard(key);
+            pipeline.sismember(key, id);
+        });
+
+        const results = await pipeline.exec();
+
         let hasMore = rows.length > limit;
         rows = rows.slice(0,limit);
-        rows = rows.map((row)=>{
-            delete row.blockCat;
-            // row.id = id;
-            return row
-        });
+        // rows = rows.map((row)=>{
+        //     delete row.blockCat;
+        //     // row.id = id;
+        //     return row
+        // });
         let cursorObj = {};
         cursorObj.cursorAt = rows[rows.length - 1].created_at;
         cursorObj.cursorPost_sr = rows[rows.length - 1].post_sr;
@@ -90,7 +100,18 @@ export const getPost = async (rkv, rspo) => {
         if (row.length !== 1) return rspo.status(400).send({err:"Something went wrong"});
         let {visibility, user_id} = row[0];
         if (!visibility && id !== user_id) return rspo.status(401).send({err:"You did't have the access"});
+        const redisKey = `post:likes:${post_id}`;
 
+        let totalLikes = await redis.scard(redisKey);
+        if (totalLikes === 0) {
+            totalLikes = row[0].totalLike;
+        }
+
+        const isLiked = await redis.sismember(redisKey, id);
+
+        row[0].totalLike = totalLikes;
+        row[0].isLiked = Boolean(isLiked);
+        
         rspo.status(200).send({pass:row[0]})
     } catch (error) {
         rspo.status(500).send({err:"Server side error"})

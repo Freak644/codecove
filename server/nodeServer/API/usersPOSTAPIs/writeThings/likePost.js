@@ -1,35 +1,48 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
+import redis from "../../../Controllers/src/config/redis.js";
 import { completeRequest } from "../../../Controllers/src/middleware/progressTracker.js";
+import { QueueLikeUpdate } from "../../../Controllers/src/services/likeQueue.js";
 
 
 export const starPost = async (rkv,rspo) => {
-    const crntIP = rkv.userIp;
-    const crntAPI = rkv.originalUrl.split("?")[0];
-    let {id} = rkv.authData;
-    let {post_id} = rkv.body;
+   const crntIP = rkv.userIp;
+   const crntAPI = rkv.originalUrl.split("?")[0];
+   let {id} = rkv.authData;
+   let {post_id} = rkv.body;
+   const redisKey = `post:likes:${post_id}`;
 
-    try {
-        if (!post_id || !post_id.trim()) return rspo.status(401).send({err:"Something went wrong"});
-        let pass = false;
-        let [row] = await database.query("SELECT visibility FROM posts WHERE post_id = ?",[post_id]);
-        if (!row[0].visibility) return rspo.status(422).send({err:"The post is private"});
-        let [rows] = await database.query("SELECT post_id FROM likes WHERE post_id = ? AND id = ?",[post_id,id]);
-        if (rows.length === 0) {
-            await database.query("INSERT INTO likes (post_id, id) VALUES ( ?, ?) ",[post_id,id]);
-            await database.query("UPDATE posts SET totalLike = totalLike + 1 WHERE post_id = ?",[post_id]);
-
-        } else {
-            await database.query("DELETE FROM likes WHERE post_id = ? AND id = ?",[post_id,id]);
-            await database.query("UPDATE posts SET totalLike = totalLike - 1 WHERE post_id = ?",[post_id]);
-        }
-
-        rspo.status(200).send({pass});
-    } catch (error) {
-        rspo.status(500).send({err:"Server Side error "});
-    } finally {
-        completeRequest(crntIP,crntAPI)
+   try {
+    if (!post_id || !post_id.trim()) return rspo.status(401).send({err:"Invalid Post ID"});
+    
+    //Check Visibility and post ex;
+    let [row] = await database.query("SELECT visibility FROM posts WHERE post_id = ?",[post_id]);
+    if (row.length === 0 || !row[0].visibility) {
+        return rspo.status(422).send({err:" Private Post"});
     }
 
+    //Redis Toggle
+    const isLiked = await redis.SISMEMBER(redisKey, id);
+    console.log(isLiked)
+    let crntStatus;
+    if (isLiked) {
+        await redis.sRem(redisKey, id);
+        crntStatus = false;
+    } else {
+        await redis.sAdd(redisKey, id);
+        crntStatus = true;
+    }
+
+    const totalLike = await redis.sCard(redisKey);
+    
+    await QueueLikeUpdate({post_id, user_id: id, crntStatus});
+
+    rspo.json({pass:"Ok"})
+   } catch (error) {
+    console.log(error.message)
+    rspo.status(500).send({err:"Server Side error"})
+   } finally {
+    completeRequest(crntIP, crntAPI);
+   }
 }
 
 export const likeComment = async (rkv,rspo) => {

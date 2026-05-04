@@ -13,7 +13,7 @@ export const GetPostForFeed = async (rkv,rspo) => {
 
     try {
         let [rows] = await database.query(`SELECT 
-                                    p.*,
+                                    p.post_id, p.post_sr, p.id, p.images_url, p.caption, p.visibility, p.totalLike, p.totalComment, p.totalSave, p.post_moment, p.canComment, p.likeCount, p.canSave,
                                     u.username,
                                     u.avatar,
 
@@ -46,28 +46,42 @@ export const GetPostForFeed = async (rkv,rspo) => {
                                     LIMIT ?;
             `,
         [ id, id, id, id, cursorPost_sr, cursorPost_sr,limit + 1]) // what the hake from today(19-02-26) i will wirte my all query in column format
-            if (rows.length < 1) return rspo.status(404).send({err:"No posts",count:0});
+        
+        if (rows.length < 1) return rspo.status(404).send({err:"No posts",count:0});
         
         //  console.log(rows[0])
-        const pipeline = redis.pipeline();
+        
+        let hasMore = rows.length > limit;
+        rows = rows.slice(0,limit);
+
+        const pipeline = redis.multi();
 
         rows.forEach(row => {
             const key = `post:likes:${row.post_id}`;
-            pipeline.scard(key);
-            pipeline.sismember(key, id);
+            pipeline.sCard(key);
+          
+            pipeline.sIsMember(key, id);
         });
 
         const results = await pipeline.exec();
+        let i = 0;
 
-        let hasMore = rows.length > limit;
-        rows = rows.slice(0,limit);
+        rows = rows.map(row => {
+            const totalLike = results[i++][1];
+
+            return {
+                ...row,
+                totalLike: totalLike > 0 ? totalLike : row.totalLike,
+            };
+        });
+
         // rows = rows.map((row)=>{
         //     delete row.blockCat;
         //     // row.id = id;
         //     return row
         // });
         let cursorObj = {};
-        cursorObj.cursorAt = rows[rows.length - 1].created_at;
+        // cursorObj.cursorAt = rows[rows.length - 1].created_at;
         cursorObj.cursorPost_sr = rows[rows.length - 1].post_sr;
         // rspo.set("Cache-Control", "public, max-age=60");
         rspo.status(200).send({pass:"Found",post:rows,hasMore,cursorObj})
@@ -86,28 +100,25 @@ export const getPost = async (rkv, rspo) => {
     let {post_id} = rkv.query;
     try {
         if (!post_id || post_id.length !== 21) return rspo.status(400).send({err:"Link is Broken"});
-        let [row] = await database.query(`SELECT p.*, u.username, u.avatar,
+        let [row] = await database.query(`SELECT p.post_id, p.post_sr, p.id, p.images_url, p.caption, p.visibility, p.totalLike, p.totalComment, p.totalSave, p.post_moment, p.canComment, p.likeCount, p.canSave,
+                        u.username, u.avatar,
                         EXISTS (
                         SELECT 1 FROM follows 
                         WHERE follower_id = ?
-                        AND following_id = u.id) AS isFollowing,
-                        EXISTS (
-                        SELECT 1 FROM likes li
-                        WHERE li.id = ?
-                        AND li.post_id = p.post_id) AS isLiked FROM posts p
+                        AND following_id = u.id) AS isFollowing FROM posts p
                         INNER JOIN users u ON u.id = p.id
-                        WHERE post_id = ?`,[id,id,post_id]);
+                        WHERE post_id = ?`,[id,post_id]);
         if (row.length !== 1) return rspo.status(400).send({err:"Something went wrong"});
         let {visibility, user_id} = row[0];
         if (!visibility && id !== user_id) return rspo.status(401).send({err:"You did't have the access"});
         const redisKey = `post:likes:${post_id}`;
 
-        let totalLikes = await redis.scard(redisKey);
+        let totalLikes = await redis.sCard(redisKey);
         if (totalLikes === 0) {
             totalLikes = row[0].totalLike;
         }
 
-        const isLiked = await redis.sismember(redisKey, id);
+        const isLiked = await redis.sIsMember(redisKey, id);
 
         row[0].totalLike = totalLikes;
         row[0].isLiked = Boolean(isLiked);

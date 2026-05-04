@@ -42,7 +42,7 @@ export default function ImageSlider({ imgArray, setArray,toggle, postInfo }) {
     }
     setIndex((prev) => (prev - 1 + imgArray.length) % imgArray.length);
   };
-  const currentSrc = imgArray[index].preview || imgArray[index];
+  const currentSrc = imgArray[index]?.preview || imgArray[index];
   const optimizeImage = (url) => {
   if (!url || url.startsWith("blob:")) return url;
 

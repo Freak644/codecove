@@ -33,6 +33,7 @@ export const starPost = async (rkv,rspo) => {
     }
 
     const totalLike = await redis.sCard(redisKey);
+    console.log(totalLike)
     
     await QueueLikeUpdate({post_id, user_id: id, crntStatus});
 

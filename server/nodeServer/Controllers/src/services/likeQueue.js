@@ -1,8 +1,14 @@
 const likeQue = [];
+const savePostQue = [];
 
 export const QueueLikeUpdate = async (data) => {
-    console.log(data)
     likeQue.push(data);
 }
 
+
+export const QueueSavePost = async (data) => {
+    savePostQue.push(data);
+}
+
 export const getQueue = ()=> likeQue;
+export const getSaveQ = () => savePostQue;

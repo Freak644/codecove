@@ -68,10 +68,12 @@ export const GetPostForFeed = async (rkv,rspo) => {
 
         rows = rows.map(row => {
             const totalLike = results[i++][1];
-
+            const isLiked = results[i++][1];
+            const hasRedisData = totalLike > 0 || isLiked === 1;
             return {
                 ...row,
                 totalLike: totalLike > 0 ? totalLike : row.totalLike,
+                isLiked: hasRedisData ? Boolean(isLiked) : row.isLiked
             };
         });
 

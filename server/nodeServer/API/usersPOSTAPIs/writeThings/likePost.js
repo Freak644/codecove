@@ -1,8 +1,7 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
 import redis from "../../../Controllers/src/config/redis.js";
 import { completeRequest } from "../../../Controllers/src/middleware/progressTracker.js";
-import { QueueLikeUpdate } from "../../../Controllers/src/services/likeQueue.js";
-
+import { likeQueue } from "../../../Controllers/src/queue/myQue.js";
 
 export const starPost = async (rkv,rspo) => {
    const crntIP = rkv.userIp;
@@ -21,8 +20,8 @@ export const starPost = async (rkv,rspo) => {
     }
 
     //Redis Toggle
-    const isLiked = await redis.SISMEMBER(redisKey, id);
-    console.log(isLiked)
+    const isLiked = await redis.sIsMember(redisKey, id);
+  
     let crntStatus;
     if (isLiked) {
         await redis.sRem(redisKey, id);
@@ -33,9 +32,15 @@ export const starPost = async (rkv,rspo) => {
     }
 
     const totalLike = await redis.sCard(redisKey);
-    console.log(totalLike)
-    
-    await QueueLikeUpdate({post_id, user_id: id, crntStatus});
+   
+    await likeQueue.add("like-job",{
+        post_id,
+        user_id: id,
+        crntStatus
+    },{
+        removeOnComplete: 100, // keep last 100
+        removeOnFail: 50
+    })    
 
     rspo.json({pass:"Ok"})
    } catch (error) {

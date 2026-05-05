@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import http from 'http';
 import chalk from 'chalk';
-import './Controllers/src/workers/likeWorker.js'
+import  './Controllers/src/workers/workerStarter.js'
 import myApp from './Controllers/src/myApp.js';
 import {Server} from 'socket.io';
 import {connectRedis} from './Controllers/src/config/redis.js';

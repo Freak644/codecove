@@ -1,47 +1,30 @@
+import {Worker} from 'bullmq';
 import { database } from '../../myConnectionFile.js';
-import {getQueue} from '../services/likeQueue.js';
+import { bullRedis } from '../queue/IOconnection.js';
 
+export const likeWorker = new Worker("likeQueue",
+    async (job) => {
+        const {post_id, user_id, crntStatus} = job.data;
+        //  console.log(post_id, crntStatus)
+        if (crntStatus) {
+            const [rspo] = await database.query("INSERT IGNORE INTO likes (post_id, id) VALUES (?, ?)",[post_id,user_id]);
 
-
-const runWorker = async () => {
-    const likeQue = getQueue();
-
-    while (true) {
-        
-         while (likeQue.length > 0) {
-            const job = likeQue.shift();
+            if (rspo.affectedRows > 0) {
+                await database.query("UPDATE posts SET totalLike = totalLike + 1 WHERE post_id = ?",[post_id]);
+            }
+        } else {
+            const [rspo] = await database.query("DELETE FROM likes WHERE post_id = ? AND id = ?", [post_id, user_id]);
             
-            const {post_id, user_id, crntStatus} = job;
-            try {
-                if (crntStatus) {
-                    await database.query(
-                        "INSERT IGNORE INTO likes (post_id, id) VALUES (?, ?)",
-                        [post_id, user_id]
-                    );
-    
-                    await database.query(
-                        "UPDATE posts SET totalLike = totalLike + 1 WHERE post_id = ?",
-                        [post_id]
-                    );
-    
-                } else {
-                    await database.query(
-                        "DELETE FROM likes WHERE post_id = ? AND id = ?",
-                        [post_id, user_id]
-                    );
-    
-                    await database.query(
-                        "UPDATE posts SET totalLike = totalLike - 1 WHERE post_id = ?",
-                        [post_id]
-                    );
-                }
-            } catch (err) {
-                console.error("WORKER ERROR", err);
+            if (rspo.affectedRows > 0) {
+                await database.query("UPDATE posts SET totalLike = GREATEST(totalLike - 1, 0) WHERE post_id = ?",[post_id]);
             }
         }
+    },{connection: bullRedis, concurrency: 5}
+)
+// likeWorker.on("completed", job => {
+//   console.log("DONE:", job.id);
+// });
 
-        await new Promise(rspo=> setTimeout(rspo,3000));
-    }
-}
-
-runWorker();
+// likeWorker.on("failed", (job, err) => {
+//   console.error("FAILED:", job?.id, err);
+// });

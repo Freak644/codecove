@@ -1,7 +1,8 @@
 import { createClient } from "redis";
+import {REDIS_CONFIG} from './redisConfig.js';
 import chalk from 'chalk';
 const redis = createClient({
-  url: "redis://localhost:3224"
+  url: `redis://${REDIS_CONFIG.host}:${REDIS_CONFIG.port}`
 });
 
 redis.on("error", (err) => {

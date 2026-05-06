@@ -1,9 +1,9 @@
 import {database} from '../../Controllers/myConnectionFile.js';
 import jwt from 'jsonwebtoken';
-import {sendTheMail} from '../../Controllers/EmailService/nodemailer.js'
 import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
 import redis from '../../Controllers/src/config/redis.js';
 import crypto from 'crypto';
+import { emailQueue } from '../../Controllers/src/queue/myQue.js';
 export const SendEmailVerify = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
@@ -47,23 +47,29 @@ export const SendEmailVerify = async (rkv,rspo) => {
 
         const otp = Math.floor(100000 + Math.random() * 900000);
         
-        let send = await sendTheMail(
-            email,
-            "Welcome To EchoNexy🎉",
-            "Wellcome",
-            {username,otp}
-        )
+        await emailQueue.add("mail-job",{
+            mail:email,
+            subject:"Welcome To EchoNexy🎉",
+            tempLate:"Wellcome",
+            infoObj:{username,otp}
+        },{
+            attempts: 3,
+            backoff: {
+            type: "exponential",
+            delay: 5000
+            },
+            removeOnComplete: 100,
+            removeOnFail: 50
+        })
         let hashOtp = crypto.createHash("sha256").update(otp.toString()).digest('hex')
-        if (send.rejected.length===0) {
+        
             await redis.set(key,hashOtp,{
                 EX:300
             });
 
         
             rspo.status(200).send({pass:"Email Send"});
-        } else {
-            rspo.status(504).send({err:"Something went wrong while sending the OTP"})
-        }
+        
     
     } catch (error) {
         console.log(error.message)

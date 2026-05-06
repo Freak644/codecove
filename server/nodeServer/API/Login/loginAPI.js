@@ -2,10 +2,10 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { database } from '../../Controllers/myConnectionFile.js';
 import { SaveThisSession } from './userSession.js';
-import { sendTheMail } from '../../Controllers/EmailService/nodemailer.js';
 import { nanoid } from 'nanoid';
 import { Encrypt } from '../../utils/Encryption.js';
 import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
+import { emailQueue } from '../../Controllers/src/queue/myQue.js';
 export const LoginAPI = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
@@ -55,16 +55,24 @@ export const LoginAPI = async (rkv,rspo) => {
         )
 
         let activity_url = `http://localhost:3221/checkInfo/${token_id}`
-        let sendMail
+        
         if (rows[0]?.ip !== crntIP) {
-                sendMail = await sendTheMail(
-                email,
-                "New Login Detected 🧐",
-                "Login",
-                {platform,city,ip,country,region,device_type,username,login_time:formattedTime,activity_url,img_url:`http://localhost:3222${avatar}`}
-            )
+            await emailQueue.add("mail-job",{
+                mail:email,
+                subject:"New Login Detected 🧐",
+                tempLate:"Login",
+                infoObj:{platform,city,ip,country,region,device_type,username,login_time:formattedTime,activity_url,img_url:`http://localhost:3222${avatar}`}
+            },{
+                attempts: 3,
+                backoff: {
+                type: "exponential",
+                delay: 5000
+                },
+                removeOnComplete: 100,
+                removeOnFail: 50
+            })
         }
-        if (sendMail?.rejected?.length === 0 || rows[0].ip === crntIP) {
+        
             let authToken = jwt.sign({id,session_id},process.env.jwt_sec,{expiresIn:"1d"});
             let encryptedToken = await Encrypt(authToken);
             
@@ -75,9 +83,7 @@ export const LoginAPI = async (rkv,rspo) => {
                 maxAge: 24 * 60 * 60 *1000 //  1day
             })
             rspo.status(200).send({ pass: "Login",authToken:isUser[0].username,session_id})
-        }else{
-            rspo.status(504).send({err:"Something went wrong while Login"})
-        }
+       
     } catch (error) {
         console.log(error.message)
         rspo.clearCookie("myAuthToken");

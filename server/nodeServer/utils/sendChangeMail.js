@@ -1,6 +1,6 @@
 import geoip from "geoip-lite";
 import { UAParser } from "ua-parser-js";
-import { sendTheMail } from "../Controllers/EmailService/nodemailer.js";
+import { emailQueue } from "../Controllers/src/queue/myQue.js";
 
 export const sendChangePassMail = async (rkv,email,newToken_id,username) => {
     
@@ -32,11 +32,18 @@ export const sendChangePassMail = async (rkv,email,newToken_id,username) => {
             time:formattedTime,
             activity_url:`http://localhost:3221/resetPassword/${newToken_id}`
         }
-
-        await sendTheMail(
-            email,
-            "Password Changed",
-            "password",
-            emailObj
-        )
+        await emailQueue("mail-job",{
+            mail:email,
+            subject:"Password Changed",
+            tempLate:"password",
+            infoObj:emailObj
+        },{
+            attempts: 3,
+            backoff: {
+            type: "exponential",
+            delay: 5000
+            },
+            removeOnComplete: 100,
+            removeOnFail: 50
+        })
 }

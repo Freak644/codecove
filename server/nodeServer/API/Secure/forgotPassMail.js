@@ -1,9 +1,9 @@
 import { database } from "../../Controllers/myConnectionFile.js";
-import { sendTheMail } from "../../Controllers/EmailService/nodemailer.js";
 import geoip from 'geoip-lite';
 import { UAParser } from "ua-parser-js";
 import { nanoid } from "nanoid";
 import { completeRequest } from "../../Controllers/src/middleware/progressTracker.js";
+import { emailQueue } from "../../Controllers/src/queue/myQue.js";
 export const forgotPass = async (rkv,rspo) => {
     const miniIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
@@ -71,12 +71,21 @@ export const forgotPass = async (rkv,rspo) => {
         await database.query("INSERT INTO validationToken (token_id, id, session_id, username, email) VALUES (?,?,?,?,?);"
             ,[token_id,id,"",username,email]
         )
-        await sendTheMail(
-            email,
-            "Reset Password ?",
-            "forgot",
-            emailObj
-        )
+        await emailQueue("mail-job",{
+            mail:email,
+            subject:"Reset Password ?",
+            tempLate:"forgot",
+            infoObj:emailObj
+        },{
+            attempts: 3,
+            backoff: {
+            type: "exponential",
+            delay: 5000
+            },
+            removeOnComplete: 100,
+            removeOnFail: 50
+        })
+        
         rspo.status(200).send({pass:"We send the reset like on your Email"})
     } catch (error) {
         console.log(error.message)

@@ -3,8 +3,9 @@ import FaceToggle from "../../lib/tabToggle"
 import { Loader } from "../../lib/loader";
 import ChangePassword from "./changePassword";
 import LogoCom from "../../utils/logoComp";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FaUser, FaUserShield } from "react-icons/fa";
+import { debouncerGlob } from "../../utils/debounceFun";
 export default function ForgotEl() {
     let {setTab} = FaceToggle();
     let {isTrue,toggleLoader} = Loader();
@@ -69,10 +70,13 @@ export default function ForgotEl() {
             toggleLoader(false);
         }
     }
+    const submitDebouce = useMemo(()=> {
+        return debouncerGlob(handleSubmit);
+    })
     return(
         <div className="underTaker">
             <div className="formDiv">
-                <form action="" onSubmit={handleSubmit}>
+                <form action="" onSubmit={submitDebouce}>
                     <LogoCom/>
 
                         <div className="inputDiv">

@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useRef, useState, useContext } from "react"
+import React, { Suspense, useEffect, useRef, useState, useContext, useMemo } from "react"
 import { useParams } from "react-router-dom";
 const EmojiPicker = React.lazy(()=>import("emoji-picker-react"));
 import {toast} from 'react-toastify'
@@ -12,6 +12,7 @@ import { m } from "framer-motion";
 import { FaKeyboard } from "react-icons/fa";
 import {btnContext} from './baseContainer.jsx';
 import { IoSend } from "react-icons/io5";
+import { debouncerGlob } from "../../../utils/debounceFun.js";
 
 let logicObj = {
     isFeching:true,
@@ -207,6 +208,9 @@ export default function CommentEl() {
         }
     }
 
+    const bounceNewComment = useMemo(()=> {
+        return debouncerGlob(handleSubmit);
+    })
     const handleApprove = (comment_id) => {
         setComment(prev => ({
             ...prev,

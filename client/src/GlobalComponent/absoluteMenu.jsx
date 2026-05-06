@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { toggleABMenu } from "../lib/toggleTheme";
 import { Link } from "react-router-dom";
 import {getColor} from '../utils/getGradnt';
@@ -12,6 +12,8 @@ import { FiActivity } from "react-icons/fi";
 import { GrAchievement } from "react-icons/gr";
 import { RiUserCommunityFill } from "react-icons/ri";
 import { AiOutlineIssuesClose } from "react-icons/ai";
+import { debouncerGlob } from "../utils/debounceFun";
+
 export default function AbsoluteMenu() {
     let mainRef = useRef();
     const isMenuToggling = toggleABMenu(state => state.isMenuToggling);
@@ -67,6 +69,10 @@ export default function AbsoluteMenu() {
 
         return () => document.removeEventListener("click", handleClick);
     }, [isMenuToggling]);
+
+    const debounceLogout = useMemo(()=>{
+        return debouncerGlob(handleLogout)
+    })
 
     return(
         <div ref={mainRef} className="absoluteMenu no-copy z-99  absolute flex top-[9vh] h-[90vh] items-center justify-center flex-wrap
@@ -175,7 +181,7 @@ export default function AbsoluteMenu() {
                             <span>Issue</span>
                         </Link>
                     </li>
-                    <li onClick={handleLogout}>
+                    <li onClick={debounceLogout}>
                             <FaUserMd/>
                             <span>Logout</span>
                     </li>

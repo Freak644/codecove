@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import verifyZu from "../../lib/verifyZu";
 import FaceToggle from "../../lib/tabToggle";
 import LogoCom from "../../utils/logoComp";
 import { FaRegEye } from "react-icons/fa";
+import { debouncerGlob } from "../../utils/debounceFun";
 
 export default function ChangePassword({toggle}) {
     let {token}= useParams();
@@ -78,13 +79,16 @@ export default function ChangePassword({toggle}) {
             }))
     }
 }
+    const submitDebouce = useMemo(()=>{
+        return debouncerGlob(handleSubmit, 500)
+    })
     return(
         <div className="flex thornPrincess items-center flex-col absolute z-50 top-0
                         bg-linear-to-br from-white/10 via-white/5 to-transparent
                         border border-cyan-500/20 shadow-[0_0_30px_rgba(0,255,255,0.15)]
                         backdrop-blur-lg bg-skin-bg">
                 <div className="formDiv relative mt-1/10!">
-                    <form action="" onSubmit={handleSubmit} className="bg-skin-bg p-10! rounded-lg shadow-[0_0_30px_rgba(0,255,255,0.15)]">
+                    <form action="" onSubmit={submitDebouce} className="bg-skin-bg p-10! rounded-lg shadow-[0_0_30px_rgba(0,255,255,0.15)]">
                         <LogoCom/>
                         <button className="text-2xl text-red-600 absolute top-0 right-0 font-bold cursor-pointer" onClick={()=>toggle(false)} type="button">X</button>
                         <div className="inputDiv">

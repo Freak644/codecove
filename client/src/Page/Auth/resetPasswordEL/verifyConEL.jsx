@@ -4,6 +4,8 @@ import LogoCom from "../../../utils/logoComp";
 import {useNavigate, useParams} from 'react-router-dom';
 import { FaRegUser } from "react-icons/fa";
 import { MdAlternateEmail } from "react-icons/md";
+import { useMemo } from "react";
+import { debouncerGlob } from "../../../utils/debounceFun";
 
 export default function VerifyCon({toggle}) {
     let {isLoader,toggleLoader} = Loader();
@@ -58,10 +60,13 @@ export default function VerifyCon({toggle}) {
         }
     }
 
+    const verifyDebounce = useMemo(()=> {
+        return debouncerGlob(handleSubmit, 500)
+    })
     return(
         <div className="underTaker">
             <div className="formDiv">
-                <form action="" onSubmit={handleSubmit}>
+                <form action="" onSubmit={verifyDebounce}>
                     <LogoCom/>
                         <div className="inputDiv">
                             <input type="text"

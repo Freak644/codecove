@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { UnivuUserInfo } from "../../../lib/basicUserinfo";
 import { toast } from "react-toastify";
 import {Link} from "react-router-dom"
@@ -9,6 +9,7 @@ import { GiAchievement } from "react-icons/gi";
 import { FaHeartbeat, FaRegHeart } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdReportProblem, MdDeleteForever } from "react-icons/md";
+import { debouncerGlob } from "../../../utils/debounceFun";
 export default function CommentsContainer({commentData,likeFun,delComment,acceptFun}) {
     let {username,inProcess,avatar,isPostOwner, isReported,commentID,isAccepted,post_moment,comment,post_id,isLiked,id,totalLike,created_at} = commentData;
     const toggelBtn = useContext(btnContext);
@@ -63,6 +64,9 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
         }
     }
 
+    const likeBound = useMemo(()=>{
+        return debouncerGlob(handleLike,500);
+    })
     // const secondLastRef = (node) => {
     //     if (observerRef.current) observerRef.current.disconnect();
 
@@ -153,6 +157,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
         return ()=> document.removeEventListener("click",handleClick);
     },[isFloating])
 
+
     
     return(
             <>{ inProcess ? <CommentSkeleton/> :
@@ -188,7 +193,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
                                     </ul>
                                 </div>
                             </div>
-                            {isLiked ? <FaHeartbeat onClick={()=>handleLike(commentID,post_id,isLiked)} className="text-rose-500 cursor-pointer"/> : <FaRegHeart onClick={()=>handleLike(commentID,post_id,isLiked)} className="cursor-pointer text-gray-500"/>}
+                            {isLiked ? <FaHeartbeat onClick={()=>likeBound(commentID,post_id,isLiked)} className="text-rose-500 cursor-pointer"/> : <FaRegHeart onClick={()=>handleLike(commentID,post_id,isLiked)} className="cursor-pointer text-gray-500"/>}
                             
                         </div>
                     </div>

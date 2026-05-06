@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { mngCrop } from "../../../lib/toggleTheme";
 import FaceToggle, { toggleMini } from "../../../lib/tabToggle";
 import { Loader } from "../../../lib/loader";
@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import LogoCom from "../../../utils/logoComp";
 import { MdImageSearch, MdPassword } from "react-icons/md";
 import {FaEye, FaEyeSlash} from 'react-icons/fa'
+import { debouncerGlob } from "../../../utils/debounceFun";
 export default function CpassEL() {
     const [myImage,setimg] = useState({
         file:null,
@@ -215,11 +216,14 @@ export default function CpassEL() {
             toggleLoader(false);
         }
     }
+    const submitBounce = useMemo(()=> {
+        return debouncerGlob(handleSubmit, 500)
+    })
     return(
         <div className="underTaker">
             <div className="picPass flex items-center justify-center">
                 <div className="formDiv">
-                    <form action="" onSubmit={handleSubmit}>
+                    <form action="" onSubmit={submitBounce}>
                         <LogoCom/>
                         <div className="inputDiv flex-col! h-20!  items-center!">
                             <input type="file" onChange={(evnt)=>handleImg(evnt)} style={{display:"none"}} id="files" name="files" accept="image/*" multiple={false} />

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import FaceToggle from "../../lib/tabToggle";
 import { toast } from "react-toastify";
 import { Loader} from "../../lib/loader";
@@ -8,6 +8,7 @@ import { VscGithub } from "react-icons/vsc";
 import bat from '../../assets/Images/bat.gif';
 import {FaUserShield, FaRegEye, FaRegEyeSlash } from 'react-icons/fa'
 import { TbLockPassword } from "react-icons/tb";
+import { debouncerGlob } from "../../utils/debounceFun";
 export default function LoginCon({toggle}) {
     const pwdRef = useRef();
     const {setTab} = FaceToggle();
@@ -97,11 +98,14 @@ export default function LoginCon({toggle}) {
     const loginWithGithub = () => {
         window.location.href = `http://localhost:3222/auth/github`;
     }
+    const handleLogin = useMemo(()=> {
+        return debouncerGlob(handleSubmit, 500);
+    })
     return(
         <div className="underTaker">
             <div className="mainLogDiv flex items-center justify-center h-full w-full">
                 <div className="formDiv">
-                    <form action="" onSubmit={handleSubmit}>
+                    <form action="" onSubmit={handleLogin}>
                          <LogoCom/>
                             <div className="inputDiv">
                                 <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="Email" required autoComplete="off"/>

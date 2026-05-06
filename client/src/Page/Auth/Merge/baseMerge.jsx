@@ -40,7 +40,7 @@ export default function MeargeBasse() {
         getUserData();
     },[data])
 
-
+    
 
     return(
         <div className="underTaker">

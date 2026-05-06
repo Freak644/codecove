@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'react-toastify';
 import ThemeButton from '../components/toggleButton.jsx';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
@@ -14,6 +14,7 @@ import { HiChatAlt2 } from "react-icons/hi";
 import { RiGitRepositoryCommitsFill } from "react-icons/ri";
 import { FaTools } from "react-icons/fa";
 import { UnivuUserInfo } from '../lib/basicUserinfo.js';
+import { debouncerGlob } from '../utils/debounceFun.js';
 export default function MenuEL(params) {
     let gradColor = getColor();
     const [currentTab,setTab] = useState('Home');
@@ -30,7 +31,7 @@ export default function MenuEL(params) {
     const handleLogout = async () => {
         let rqst = await fetch("/myServer/user/Logout")
         let result = await rqst.json();
-        console.log(result)
+        // console.log(result)
         if (result.pass) {
            location.reload()
             navi('/')            
@@ -81,7 +82,9 @@ export default function MenuEL(params) {
         } 
     },[])
 
-  
+    const debounceLogout = useMemo(()=>{
+        return debouncerGlob(handleLogout)
+    })
 
     return(
         <>
@@ -162,7 +165,7 @@ export default function MenuEL(params) {
                             <li><MdBarChart/><span>Your Activity</span></li>
                             <li className='z-50 flex items-center p-0! mb-3'> <ThemeButton/> </li>
                             <li><MdReportProblem/><span className='flex items-center justify-center z-20'>Report an issue</span></li>
-                            <li onClick={handleLogout}><MdLogout/><span>Logout</span></li>
+                            <li onClick={debounceLogout}><MdLogout/><span>Logout</span></li>
                         </ul>
                     </div>}
                     </li>

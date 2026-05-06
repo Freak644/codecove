@@ -35,3 +35,28 @@ export const FileChecker = async (filePath, fileSize) => {
 
   return true;
 };
+
+export const safeUnlink = async (filePath, retries = 3) => {
+
+    for (let i = 0; i < retries; i++) {
+
+        try {
+
+            await fs.promises.unlink(filePath);
+            return;
+
+        } catch (err) {
+
+            if (err.code === "EBUSY") {
+
+                await new Promise(r => setTimeout(r, 300));
+
+            } else if (err.code !== "ENOENT") {
+
+                console.log(err.message);
+                return;
+
+            }
+        }
+    }
+};

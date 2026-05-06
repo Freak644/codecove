@@ -1,9 +1,10 @@
-import React, { useEffect, useRef,useState } from 'react'
+import React, { useEffect, useMemo, useRef,useState } from 'react'
 import verifyZu from '../../../lib/verifyZu';
 import { toast } from 'react-toastify';
 import { Loader } from '../../../lib/loader';
 import { toggleMini } from '../../../lib/tabToggle';
 import LogoCom from '../../../utils/logoComp';
+import { debouncerGlob } from '../../../utils/debounceFun';
 export default function VerifyEl() {
     const {email,Tusername,setVTab,setMail,setEstatus} = verifyZu();
     const {isTrue,toggleLoader} = Loader();
@@ -157,11 +158,18 @@ export default function VerifyEl() {
     vbtnRef.current.disabled = false;
    }
   }
+  const submitBounce = useMemo(()=> {
+          return debouncerGlob(handleSubmit, 500)
+    })
+
+    const handleAPIbounc = useMemo(()=> {
+        return debouncerGlob(handleAPICall, 500)
+    })
     return(
         <div className="underTaker my-scroll">
             <div className="verifyDiv flex items-center justify-center h-full w-full">
                 <div className="formDiv">
-                    <form action="" onSubmit={handleSubmit}>
+                    <form action="" onSubmit={submitBounce}>
                  
                         <div className="txtDiv relative top-10 flex items-center flex-col p-2 gap-2">
                             <img className='h-25' src="./Logo/LOGO.webp" alt="" />
@@ -186,7 +194,7 @@ export default function VerifyEl() {
                         </div>
                         <div className="inputDiv">
                             <button ref={btnRef} onClick={() => {
-                                  handleAPICall();
+                                  handleAPIbounc();
                                   setCoundown();
                                 }}
                                  type='button' className='text-btn w-auto!'>Resend (120s)</button>

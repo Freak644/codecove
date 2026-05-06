@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import FaceToggle, { toggleMini } from "../../../lib/tabToggle";
 import {toast} from 'react-toastify'
 import verifyZu from "../../../lib/verifyZu";
@@ -7,6 +7,7 @@ import LogoCom from "../../../utils/logoComp";
 import { MdAlternateEmail } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 import { IoCheckboxSharp } from "react-icons/io5";
+import { debouncerGlob } from "../../../utils/debounceFun";
 export default function UserNameEl({stoggle}) {
     const {setTab} = FaceToggle();
     const {setMail,setTUsername,setVTab,emailStatus,email,Tusername} = verifyZu();
@@ -152,11 +153,14 @@ export default function UserNameEl({stoggle}) {
             toggleLoader(false);
         }
     }
+    const submitBounce = useMemo(()=> {
+        return debouncerGlob(handleSubmit, 500)
+    })
     return(
         <div className="underTaker">
             <div className="nameComDiv flex items-center justify-center">
                 <div className="formDiv">
-                    <form action="" onSubmit={handleSubmit}>
+                    <form action="" onSubmit={submitBounce}>
                         <LogoCom/>
                         {/* <h1 className="flex items-center justify-center text-red-600 font-bold">Stay 
                             <span>

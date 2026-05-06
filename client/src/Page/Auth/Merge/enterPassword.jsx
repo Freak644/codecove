@@ -1,9 +1,10 @@
 import axios from "axios";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {toast} from 'react-toastify';
 import {FcGoogle} from 'react-icons/fc'
 import { VscGithub } from "react-icons/vsc";
 import { TbLockPassword } from "react-icons/tb";
+import { debouncerGlob } from "../../../utils/debounceFun";
 
 export default function Password({pramsData}) {
     const [iscalling, setCalling] = useState(false);
@@ -29,6 +30,9 @@ export default function Password({pramsData}) {
         }
     }
 
+    const verifyDebounce = useMemo(()=> {
+        return debouncerGlob(verfiyPwd, 500)
+    })
     return(
         <div className="h-full flex items-center justify-center bg-gray-900 px-4">
             <div className="max-w-md w-full bg-gray-950 shadow-xl rounded-2xl p-8 flex flex-col items-center gap-5 border border-gray-800">

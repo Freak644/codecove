@@ -2,7 +2,7 @@ import {v2 as cloudinary} from 'cloudinary';
 import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
-import { FileChecker } from './fileChecker.js';
+import { FileChecker, safeUnlink } from './fileChecker.js';
 import  {nanoid} from 'nanoid';
 import { database } from '../../Controllers/myConnectionFile.js';
 import createDOMPurify from 'isomorphic-dompurify';
@@ -93,7 +93,7 @@ export const CreatePost = async (rkv,rspo) => {
           return rspo.status(400).send(rekvst.err);
         }
       }
-
+      console.log("here")
       const uploadImage = fileArray.map(crntImg=>
           upLoadLimit(async ()=>{
             const result = await cloudinary.uploader.upload(
@@ -106,7 +106,8 @@ export const CreatePost = async (rkv,rspo) => {
                 ]
               }
             )
-            await fs.promises.unlink(crntImg.path)
+            await safeUnlink(crntImg.path)
+            console.log("here2")
             return result.secure_url;})
       )
 

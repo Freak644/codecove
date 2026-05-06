@@ -1,5 +1,5 @@
 import ThemeButton from "../components/toggleButton";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { UnivuUserInfo } from "../lib/basicUserinfo";
 import { useLocation } from "react-router-dom";
 import {toggleABMenu} from '../lib/toggleTheme';
@@ -13,6 +13,7 @@ import { MdReportGmailerrorred } from "react-icons/md";
 import { TbMessageChatbotFilled } from "react-icons/tb";
 import { ImProfile } from "react-icons/im";
 import { RiLogoutCircleRLine } from "react-icons/ri";
+import { debouncerGlob } from "../utils/debounceFun";
 export default function Header() {
     const [isToggle,setToggle] = useState(false)
     const [userData,setdata] = useState({});
@@ -39,6 +40,10 @@ export default function Header() {
             location.reload();
         }
     }
+
+    const debounceLogout = useMemo(()=>{
+        return debouncerGlob(handleLogout)
+    })
     return(
         <>
         {(Object.keys(userData).length !== 0) && <div className={`headerContainer no-copy h-[7dvh] cursor-pointer lg:hidden  w-full  rounded flex items-center justify-between
@@ -85,7 +90,7 @@ export default function Header() {
                             <li><ImProfile/> Profile</li>
                             <li><ThemeButton/></li>
                             <li><IoMdSettings/> Setting</li>
-                            <li onClick={handleLogout}><RiLogoutCircleRLine/> Logout</li>
+                            <li onClick={debounceLogout}><RiLogoutCircleRLine/> Logout</li>
                         </ul>
                     </div>
                     }

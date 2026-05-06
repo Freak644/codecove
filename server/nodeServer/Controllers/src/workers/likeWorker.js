@@ -2,10 +2,11 @@ import {Worker} from 'bullmq';
 import { database } from '../../myConnectionFile.js';
 import { bullRedis } from '../queue/IOconnection.js';
 
-export const likeWorker = new Worker("likeQueue",
+// post Like worker
+new Worker("likeQueue",
     async (job) => {
         const {post_id, user_id, crntStatus} = job.data;
-        //  console.log(post_id, crntStatus)
+        console.log(post_id, crntStatus)
         if (crntStatus) {
             const [rspo] = await database.query("INSERT IGNORE INTO likes (post_id, id) VALUES (?, ?)",[post_id,user_id]);
 
@@ -20,7 +21,27 @@ export const likeWorker = new Worker("likeQueue",
             }
         }
     },{connection: bullRedis, concurrency: 5}
-)
+);
+
+ //commentLikeWorker
+
+new Worker("commentLike",
+    async (job) => {
+    const {post_id, commentID, user_id, crntStatus} = job.data;
+    console.log(commentID, post_id, user_id, crntStatus)
+    if (crntStatus) {
+        const [rspo] = await database.query("INSERT IGNORE INTO commentLikes (commentID, post_id, id) VALUES (?, ?, ?)",[commentID, post_id, user_id]);
+        if (rspo.affectedRows > 0) {
+            await database.query("UPDATE comments SET totalLike = totalLike + 1 WHERE commentID = ?",[commentID]);
+        }
+    } else {
+        const [rspo] = await database.query("DELETE FROM commentLikes WHERE commentID = ? AND post_id = ? AND id = ?",[commentID,post_id,user_id]);
+
+        if (rspo.affectedRows > 0) {
+            await database.query("UPDATE comments SET totalLike = GREATEST(totalLike - 1, 0) WHERE commentID = ?",[commentID])
+        }
+    }
+},{connection: bullRedis, concurrency: 5});
 // likeWorker.on("completed", job => {
 //   console.log("DONE:", job.id);
 // });

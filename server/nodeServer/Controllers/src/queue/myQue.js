@@ -7,6 +7,7 @@ export const likeQueue = new Queue("likeQueue", {
 
 // await likeQueue.obliterate({ force: true });
 
-export const commentQueue = new Queue("commentQueue", {
+
+export const commentLikeQue = new Queue("commentLike", {
   connection: bullRedis
-});
+})

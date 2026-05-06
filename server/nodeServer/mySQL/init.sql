@@ -142,6 +142,7 @@ CREATE TABLE IF NOT EXISTS likes (
   UNIQUE(id, post_id),
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_like (post_id, id),
   INDEX idx_user_id (id)
 );
 
@@ -263,6 +264,7 @@ INSERT INTO blocked_words (word, category) VALUES
 */
 CREATE TABLE IF NOT EXISTS comments (
   commentID CHAR(36) PRIMARY KEY DEFAULT(UUID()),
+  comment_sr BIGINT AUTO_INCREMENT UNIQUE,
   post_id CHAR(36) NOT NULL,
   id CHAR(36) NOT NULL,
   comment TEXT NOT NULL,
@@ -273,7 +275,7 @@ CREATE TABLE IF NOT EXISTS comments (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  INDEX idx_comment_cursor (post_id, created_at DESC, commentID DESC)
+  INDEX idx_comment_cursor (post_id, isBlocked, comment_sr)
 );
 
 CREATE TABLE IF NOT EXISTS commentLikes (
@@ -285,8 +287,8 @@ CREATE TABLE IF NOT EXISTS commentLikes (
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (commentID) REFERENCES comments(commentID) ON DELETE CASCADE,
-  INDEX idx_user_id (id),
-  INDEX idx_post_id (post_id)
+  INDEX idx_commentLike (commentID, post_id, id),
+  INDEX idx_commentByPost (post_id)
 );
 
 CREATE TABLE IF NOT EXISTS postReports (
@@ -314,7 +316,7 @@ CREATE TABLE IF NOT EXISTS commentReports (
   id CHAR(36) NOT NULL,
   post_id CHAR(36) NOT NULL,
   commentID CHAR(36) NOT NULL,
-  UNIQUE(post_id,id,commentID),
+  UNIQUE(post_id,commentID, id),
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (commentID) REFERENCES comments(commentID) ON DELETE CASCADE

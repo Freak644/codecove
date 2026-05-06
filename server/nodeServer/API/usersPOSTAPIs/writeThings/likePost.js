@@ -1,7 +1,7 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
 import redis from "../../../Controllers/src/config/redis.js";
 import { completeRequest } from "../../../Controllers/src/middleware/progressTracker.js";
-import { likeQueue } from "../../../Controllers/src/queue/myQue.js";
+import { commentLikeQue, likeQueue } from "../../../Controllers/src/queue/myQue.js";
 
 export const starPost = async (rkv,rspo) => {
    const crntIP = rkv.userIp;
@@ -20,18 +20,18 @@ export const starPost = async (rkv,rspo) => {
     }
 
     //Redis Toggle
-    const isLiked = await redis.sIsMember(redisKey, id);
-  
     let crntStatus;
-    if (isLiked) {
+
+    const added = await redis.sAdd(redisKey, id);
+
+    if (added === 1) {
+        crntStatus = true;
+    } else {
         await redis.sRem(redisKey, id);
         crntStatus = false;
-    } else {
-        await redis.sAdd(redisKey, id);
-        crntStatus = true;
     }
 
-    const totalLike = await redis.sCard(redisKey);
+ 
    
     await likeQueue.add("like-job",{
         post_id,
@@ -56,20 +56,44 @@ export const likeComment = async (rkv,rspo) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {commentID,post_id} = rkv.body;
+    const redisKey = `comment:likes:${commentID}`;
     try {
         if (!post_id || !commentID || !post_id.trim() || !commentID.trim() || post_id.length !== 21) return rspo.status(401).send({err:"Something went wrong"});
         let [rows] = await database.query("SELECT visibility FROM posts WHERE post_id = ?",[post_id]);
         if (!rows[0].visibility) return rspo.status(422).send({err:"The post is private"});
-        let [row] = await database.query("SELECT commentID FROM commentLikes WHERE commentID = ? AND id = ?",[commentID,id]);
-        if (row.length === 0) {
-            await database.query("INSERT INTO commentLikes (commentID, post_id, id) VALUES (?,?,?)",[commentID,post_id,id]);
-            await database.query("UPDATE comments SET totalLike = totalLike + 1 WHERE commentID = ?",[commentID]);
+        
+        let crntStatus;
 
+        const added = await redis.sAdd(redisKey,id);
+
+        if (added === 1) {
+            crntStatus = true;
         } else {
-            await database.query("DELETE FROM commentLikes WHERE commentID = ? AND post_id = ? AND id = ?",[commentID,post_id,id]);
-            await database.query("UPDATE comments SET totalLike = totalLike - 1 WHERE commentID = ?",[commentID]);
-          
+            await redis.sRem(redisKey,id);
+            crntStatus = false;
         }
+        
+        await commentLikeQue.add("commentLike-job",{
+            commentID,
+            post_id,
+            user_id: id,
+            crntStatus
+        },{
+            removeOnComplete: 100,
+            removeOnFail: 50
+        })
+        
+        
+        // let [row] = await database.query("SELECT commentID FROM commentLikes WHERE commentID = ? AND id = ?",[commentID,id]);
+        // if (row.length === 0) {
+        //     await database.query("INSERT INTO commentLikes (commentID, post_id, id) VALUES (?,?,?)",[commentID,post_id,id]);
+        //     await database.query("UPDATE comments SET totalLike = totalLike + 1 WHERE commentID = ?",[commentID]);
+
+        // } else {
+        //     await database.query("DELETE FROM commentLikes WHERE commentID = ? AND post_id = ? AND id = ?",[commentID,post_id,id]);
+        //     await database.query("UPDATE comments SET totalLike = totalLike - 1 WHERE commentID = ?",[commentID]);
+          
+        // }
         rspo.status(200).send({test:"done"});
     } catch (error) {
         

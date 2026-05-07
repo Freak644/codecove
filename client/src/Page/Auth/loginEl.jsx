@@ -11,6 +11,7 @@ import { TbLockPassword } from "react-icons/tb";
 import { debouncerGlob } from "../../utils/debounceFun";
 export default function LoginCon({toggle}) {
     const pwdRef = useRef();
+    const isCalled = useRef(false);
     const {setTab} = FaceToggle();
     const [mgmtPass,setType] = useState({
         pwdType:"password",
@@ -62,7 +63,9 @@ export default function LoginCon({toggle}) {
     },[mgmtPass.passwordVal])
     const handleSubmit = async (evnt) => {
         evnt.preventDefault();
+        if (isCalled.current) return;
         toggleLoader(true)
+        isCalled.current = true
         let formData = new FormData(evnt.target);
         let {Email,Password} = Object.fromEntries(formData);
         let clientInfo = {
@@ -89,6 +92,7 @@ export default function LoginCon({toggle}) {
             toast.error(error.message)
         } finally{
             toggleLoader(false);
+            isCalled.current = false
         }
     }
     const loginWithGoogle = () => {
@@ -98,14 +102,12 @@ export default function LoginCon({toggle}) {
     const loginWithGithub = () => {
         window.location.href = `http://localhost:3222/auth/github`;
     }
-    const handleLogin = useMemo(()=> {
-        return debouncerGlob(handleSubmit, 500);
-    })
+    
     return(
         <div className="underTaker">
             <div className="mainLogDiv flex items-center justify-center h-full w-full">
                 <div className="formDiv">
-                    <form action="" onSubmit={handleLogin}>
+                    <form action="" onSubmit={handleSubmit}>
                          <LogoCom/>
                             <div className="inputDiv">
                                 <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="Email" required autoComplete="off"/>

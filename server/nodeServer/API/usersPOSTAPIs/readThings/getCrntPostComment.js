@@ -64,7 +64,7 @@ export const getComment = async (rkv, rspo) => {
                 c.comment,
                 c.totalLike,
                 c.isAccepted,
-
+                c.created_at,
                 u.username,
                 u.avatar,
 

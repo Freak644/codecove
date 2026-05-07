@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState } from "react"
+import {useEffect, useMemo, useRef, useState } from "react"
 import { univPostStore, UnivuUserInfo } from "../../../lib/basicUserinfo";
 import {Link, useLocation} from 'react-router-dom';
 import socket from "../../../utils/socket";
@@ -7,6 +7,7 @@ import { toast} from 'react-toastify';
 import axios from 'axios';
 
 import { BookmarkHeartIcon, BookmarkIcon, CommentIcon, DownloadIcon, ShareIcon, StarFilledIcon, StarIcon } from "../../../utils/SVG/SVG";
+import { debouncerGlob } from "../../../utils/debounceFun";
 
 export default function TODOList({crntPost_id}) {
     const toggleRef = useRef(null);
@@ -210,12 +211,18 @@ export default function TODOList({crntPost_id}) {
         }
     }
 
+    const starDebounce = useMemo(()=>{
+        return debouncerGlob(handleStar,500);
+    });
+    const saveDebouce = useMemo(()=> {
+        return debouncerGlob(handleSave);   
+    })
     return(
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
                 
              
-            <i onClick={handleStar}>
+            <i onClick={starDebounce}>
                 {isLiked ? <StarFilledIcon className={`svgicon`} /> : <StarIcon className={`svgicon`}/> }
             </i>
            
@@ -229,7 +236,7 @@ export default function TODOList({crntPost_id}) {
                     <span>{(canComment && likeCount) ? formatCount(totalComment) : ""}</span>
                 </Link>
             </div>
-            <div className={`TodoInner ${!canSave && "pointer-events-none"}`} onClick={()=>handleSave(post_id,canSave,isFollowing)} >
+            <div className={`TodoInner ${!canSave && "pointer-events-none"}`} onClick={()=>saveDebouce(post_id,canSave,isFollowing)} >
                 {isSaved ? <BookmarkHeartIcon className={`svgicon`}/> : <BookmarkIcon className={`svgicon`} />}
                 <span>{likeCount ? formatCount(totalSave) : ""}</span>
             </div>

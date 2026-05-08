@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { data } from "react-router-dom";
 import ExPostFeedMGMT from "./Virtualizer/VirtuosoContainer";
+import ExplorSkel from "./skelton";
 
 export default function BaseExplore() {
     const [isPadding, setPadding] = useState(true);
@@ -23,44 +24,47 @@ export default function BaseExplore() {
     const fetchPost = async () => {
         toggleLoader(true);
         try {
-            let rqst = await axios.get("/myServer/readPost/getPost?Limit=20");
+            let rqst = await axios.get("/myServer/readPost/getPostExp?Limit=30");
 
             setPosts(rqst.data.post);
-            setCursor(rqst.data.post);
+       
+            setCursor(rqst.data.cursorObj);
 
             if (!rqst.data.hasMore) {
                 setEnd(true)
             }
         } catch (error) {
             toast.error(error.response.data.err);
+        } finally {
+            toggleLoader(false)
         }
     }
 
     const fetchMorePost = async () => {
         if (isEnd) return;
         try {
-            let rqst = await fetch(`/myServer/readPost/getPost?Limit=20&cursorAt=${cursor.cursorAt}&cursorPost_sr=${cursor.cursorPost_sr}`);
-            let result = await rqst.json();
-            console.log(result)
-            if (result.err) {
-                throw new Error(result.err);
-            }
-            if (!result.hasMore) {
+            let rqst = await axios.get(`/myServer/readPost/getPostExp?Limit=20&cursorPost_sr=${cursor.cursorPost_sr}`);
+        
+            if (!rqst?.data.hasMore) {
                 setEnd(true);
             }
 
-            setPosts(prev=>[...prev, ...result.post]);
-            setCursor(data.cursorObj);
+            setPosts(prev=>[...prev, ...rqst.data.post]);
+            setCursor(rqst.data.cursorObj);
         } catch (error) {
-            toast.error(error.message);
+            toast.error(error.response.data.err);
         }
     }
 
+    useEffect(()=> {
+        console.table(posts)
+    },[posts])
     return(
         <div className={`underTaker  ${isPadding && "bg-linear-to-tl from-yellow-500/20 to-purple-500/20 via-pink-500/20 p-2.5"}`}>
             <div className="h-full rounded-lg p-2.5 bg-gray-950 w-full border-2 border-cyan-600/30">
+            
                 {
-                    posts.length === 0 ? <div className="miniLoader"/> : <ExPostFeedMGMT posts={posts} fetcher={fetchMorePost} isEnd={isEnd} />
+                    posts.length === 0 ? <ExplorSkel/> : <ExPostFeedMGMT posts={posts} fetcher={fetchMorePost} isEnd={isEnd} />
                 }
             </div>
         </div>

@@ -10,6 +10,7 @@ import {ReportPost,DeleteCommentAPI,reportCommentAPI,DeletePost} from '../../../
 import {GetPostForFeed, getPost} from '../../../API/usersPOSTAPIs/readThings/getPost.js';
 import { getComment } from '../../../API/usersPOSTAPIs/readThings/getCrntPostComment.js';
 import { Chartdata } from '../../../API/usersPOSTAPIs/readThings/getChartData.js';
+import { GetPostForExport } from '../../../API/usersPOSTAPIs/readThings/getPostExplore.js';
 
 
 
@@ -35,6 +36,7 @@ readPost.get("/getPost", ...commonStack, Auth, GetPostForFeed);
 readPost.get("/getComment", ...commonStack, Auth, getComment);
 readPost.get("/getImage", ...commonStack, Auth, getPost);
 readPost.get("/getChartData", ...commonStack, Auth, Chartdata);
+readPost.get("/getPostExp",...commonStack, Auth, GetPostForExport);
 
 
 export {writePost, readPost};   

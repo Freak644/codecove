@@ -7,7 +7,8 @@ export const GetPostForFeed = async (rkv,rspo) => {
     const Limit = parseInt(rkv?.query?.Limit, 10);
     const { id } = rkv.authData;
 
-    const limit = Number.isNaN(Limit) ? 10 : Limit;
+    let limit = Number.isNaN(Limit) ? 10 : Limit;
+    limit = limit > 15 ? 15 : limit;
     
     const cursorPost_sr = rkv.query.cursorPost_sr || null;
 

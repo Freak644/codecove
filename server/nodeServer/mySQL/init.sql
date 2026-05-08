@@ -15,8 +15,8 @@ USE echonexy_db;
 
 CREATE TABLE IF NOT EXISTS users (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-    username VARCHAR(50) NOT NULL UNIQUE CHECK (LENGTH(username) > 0),
-    email VARCHAR(100) NOT NULL UNIQUE CHECK (LENGTH(email) > 0),
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NULL,
     avatar VARCHAR(255) NOT NULL DEFAULT '/myServer/Images/Avtar/default.png',
     bio VARCHAR(100) DEFAULT 'Stay! Ahead, Follow the Revolution',

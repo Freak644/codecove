@@ -85,7 +85,14 @@ export const CreateUser = async (rkv, rspo) => {
     if (!/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])(?!.*\s).{6,}$/.test(password)) {
       return rspo.status(400).send({ err: "Password must be strong (6 chars, uppercase, number, symbol)" });
     }
-
+    let isUsername = await redis.sIsMember(`all:usernames`,username)  
+    let isEmail = await redis.sIsMember(`all:emails`,email);
+    if (isUsername) {
+      return rspo.status(302).send({ err: `${username} already has an account` });
+    }
+    if (isEmail) {
+      return rspo.status(302).send({ err: `${email} already has an account` });
+    }
 
     const [existing] = await database.query(
       "SELECT username,email FROM users WHERE username=? OR email=?",
@@ -116,7 +123,8 @@ export const CreateUser = async (rkv, rspo) => {
     }
 
     const hashPass = await bcrypt.hash(password, 10);
-
+    await redis.sAdd("all:usernames",username);
+    await redis.sAdd("all:emails",email)
     await database.query(
       "INSERT INTO users (id,username,email,password,avatar) VALUES (?,?,?,?,COALESCE(?, DEFAULT(avatar)))",
       [newUserID, username, email, hashPass, avatar]

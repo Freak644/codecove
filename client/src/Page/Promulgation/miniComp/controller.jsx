@@ -72,13 +72,13 @@ export default function UploadController() {
                 }
             });
             let postInfo = responce.data.postData;
-            console.log(postInfo.post_id)
+            // console.log(postInfo.post_id)
             setUnivPost({[postInfo.post_id]:postInfo});
             toast.success("New Moment Shared🎉");
             starMp3.play()
-            setEmpty();
+            // setEmpty();
             setProgress(0)
-            navi("/")
+            // navi("/")
         } catch (error) {
             console.log(error)
             setProgress(0)

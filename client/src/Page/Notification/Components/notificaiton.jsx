@@ -46,7 +46,7 @@ export default function NotificationMgmt({ data = [], cetogry }) {
                                 
                                 {/* Unread dot */}
                                 {!isRead && (
-                                    <span className="h-2.5 w-2.5 rounded-full bg-amber-400 mt-1"></span>
+                                    <span className="h-2.5 w-2.5 rounded-full bg-green-500 mt-1"></span>
                                 )}
 
                                 {/* Time */}

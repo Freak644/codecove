@@ -53,7 +53,7 @@ return (
         className="absolute mt-2 left-0 bg-skin-bg/80 backdrop-blur-lg 
                    border border-[text-skin-ptext]/20 
                    rounded-md shadow-lg p-1 
-                   min-w-[120px] z-50"
+                   min-w-30 z-50"
       >
         {themes.map((t) => (
           <button

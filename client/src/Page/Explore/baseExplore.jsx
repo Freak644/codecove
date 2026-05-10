@@ -17,7 +17,7 @@ export default function BaseExplore() {
 
     useEffect(()=> {
         setPadding(window.innerWidth > 800);
-        console.log("time")
+        //console.log("time")
         fetchPost();
     },[]);
 

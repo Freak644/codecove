@@ -367,10 +367,70 @@ CREATE TABLE IF NOT EXISTS notification (
   type VARCHAR(50) NOT NULL,
   entity_id CHAR(36) NOT NULL,
   entity_type VARCHAR(30) NOT NULL,
-  message TEXT,
   is_read BOOLEAN DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   INDEX idx_notification_feed (recipient_id, is_read, created_at DESC),
   FOREIGN KEY (recipient_id) REFERENCES users(id),
   FOREIGN KEY (actor_id) REFERENCES users(id)
 );
+
+CREATE TABLE tags (
+    tag_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    tag_name VARCHAR(50) UNIQUE
+);
+
+CREATE TABLE post_tags (
+    post_id CHAR(21),
+    tag_id BIGINT,
+
+    INDEX(post_id),
+    INDEX(tag_id)
+);
+
+/* MGMT Interactions by post tags */
+CREATE TABLE user_tag_interactions (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id CHAR(36) NOT NULL,
+    tag_id BIGINT NOT NULL,
+
+    likes_count INT DEFAULT 0,
+    comment_count INT DEFAULT 0,
+    save_count INT DEFAULT 0,
+    view_count INT DEFAULT 0,
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ON UPDATE CURRENT_TIMESTAMP,
+
+    UNIQUE(user_id, tag_id)
+);
+
+
+/* like and comment all other interaction data */
+CREATE TABLE interaction_events (
+    event_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id BIGINT NOT NULL,
+    post_id CHAR(21),
+
+    event_type VARCHAR(30),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    INDEX(user_id),
+    INDEX(post_id),
+    INDEX(event_type)
+);
+
+CREATE TABLE follow_sources (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    follower_id BIGINT NOT NULL,
+    following_id BIGINT NOT NULL,
+
+    source_post_id CHAR(21),
+    source_moment VARCHAR(50),
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+

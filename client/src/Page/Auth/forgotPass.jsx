@@ -72,7 +72,7 @@ export default function ForgotEl() {
     }
     const submitDebouce = useMemo(()=> {
         return debouncerGlob(handleSubmit);
-    })
+    },[])
     return(
         <div className="underTaker">
             <div className="formDiv">

@@ -12,7 +12,7 @@ import { MdReportProblem, MdDeleteForever } from "react-icons/md";
 import { debouncerGlob } from "../../../utils/debounceFun";
 export default function CommentsContainer({commentData,likeFun,delComment,acceptFun}) {
     let {username,inProcess,avatar,isPostOwner, isReported,commentID,isAccepted,post_moment,comment,post_id,isLiked,id,totalLike,created_at} = commentData;
-    const toggelBtn = useContext(btnContext);
+    const {setToggel} = useContext(btnContext);
 
     const flotRef = useRef({});
     const setCallback = (id)=> (el)=>{
@@ -43,7 +43,8 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
     }
 
     const handleLike = async (commentID,post_id,like) => {
-        if(toggelBtn) toggelBtn(true);
+        if(setToggel) setToggel(true);
+        console.log(commentID)
         if (!commentID || !post_id) return;
         let newLike = !like
         try {
@@ -65,8 +66,8 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
     }
 
     const likeBound = useMemo(()=>{
-        return debouncerGlob(handleLike,500);
-    })
+        return debouncerGlob(handleLike,300);
+    },[])
     // const secondLastRef = (node) => {
     //     if (observerRef.current) observerRef.current.disconnect();
 

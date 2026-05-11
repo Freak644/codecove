@@ -218,7 +218,7 @@ export default function CpassEL() {
     }
     const submitBounce = useMemo(()=> {
         return debouncerGlob(handleSubmit, 500)
-    })
+    },[])
     return(
         <div className="underTaker">
             <div className="picPass flex items-center justify-center">

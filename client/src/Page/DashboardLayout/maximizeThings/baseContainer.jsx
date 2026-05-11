@@ -6,8 +6,11 @@ const SheetMiddleWhare = lazy(()=> import("./slideMiddleWr"));
 import {createContext} from 'react';
 import { MdFullscreenExit, MdFullscreen } from "react-icons/md";
 export const btnContext = createContext();
-export default function MaximizeContainer() {
+export default function MaximizeContainer({pramPost}) {
     let {pID} = useParams();
+    if (!pID) {
+        pID = pramPost;
+    }
     let navi = useNavigate();
     let containerRef = useRef(null);
     const postData = univPostStore(stat=>stat.postsById[pID]);
@@ -49,7 +52,7 @@ export default function MaximizeContainer() {
                         </Suspense>
                     </div>
                    <div className={`${isFull ? "w-0!" : "flex-1"} transition-all duration-200 flex items-center justify-center h-full`}>
-                        <btnContext.Provider value={setToggel}>
+                        <btnContext.Provider value={{setToggel, paramPost:pID}}>
                             <Suspense fallback={null}>
                                 <SheetMiddleWhare/>
                             </Suspense>

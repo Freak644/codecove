@@ -213,10 +213,10 @@ export default function TODOList({crntPost_id}) {
 
     const starDebounce = useMemo(()=>{
         return debouncerGlob(handleStar,500);
-    });
+    },[]);
     const saveDebouce = useMemo(()=> {
         return debouncerGlob(handleSave);   
-    })
+    },[])
     return(
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">

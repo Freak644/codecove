@@ -164,7 +164,7 @@ export default function VerifyEl() {
 
     const handleAPIbounc = useMemo(()=> {
         return debouncerGlob(handleAPICall, 500)
-    })
+    },[])
     return(
         <div className="underTaker my-scroll">
             <div className="verifyDiv flex items-center justify-center h-full w-full">

@@ -103,11 +103,15 @@ export default function LoginCon({toggle}) {
         window.location.href = `http://localhost:3222/auth/github`;
     }
     
+    const LoginBounce = useMemo(()=>{
+        return debouncerGlob(handleSubmit,300);
+    },[])
+
     return(
         <div className="underTaker">
             <div className="mainLogDiv flex items-center justify-center h-full w-full">
                 <div className="formDiv">
-                    <form action="" onSubmit={handleSubmit}>
+                    <form action="" onSubmit={useMemo}>
                          <LogoCom/>
                             <div className="inputDiv">
                                 <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="Email" required autoComplete="off"/>

@@ -155,7 +155,7 @@ export default function UserNameEl({stoggle}) {
     }
     const submitBounce = useMemo(()=> {
         return debouncerGlob(handleSubmit, 500)
-    })
+    },[])
     return(
         <div className="underTaker">
             <div className="nameComDiv flex items-center justify-center">

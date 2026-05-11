@@ -21,14 +21,17 @@ let logicObj = {
 
 export default function CommentEl() {
     const [isEmoji,setEmoji] = useState(false);
-    const {pID} = useParams();
+    const toggelBtn = useContext(btnContext);    
+    let {pID} = useParams();
+    if (!pID) {
+        pID = useContext(paramPost);
+    }
     const isLoader = Loader(stat => stat.isTrue);
     const [offset,setOffset] = useState(0);
     const [commentData,setComment] = useState({
             commentIds: [],
             commentsById: {}
         });
-    const toggelBtn = useContext(btnContext);    
     const [isOver,setOver] = useState(false);
     const commentRef = useRef(null);
     let {setUnivPost} = univPostStore();
@@ -210,7 +213,7 @@ export default function CommentEl() {
 
     const bounceNewComment = useMemo(()=> {
         return debouncerGlob(handleSubmit);
-    })
+    },[])
     const handleApprove = (comment_id) => {
         setComment(prev => ({
             ...prev,

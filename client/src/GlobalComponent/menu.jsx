@@ -84,7 +84,7 @@ export default function MenuEL(params) {
 
     const debounceLogout = useMemo(()=>{
         return debouncerGlob(handleLogout)
-    })
+    },[])
 
     return(
         <>

@@ -37,6 +37,7 @@ export default function AnimateRoute({location}) {
                         <Route path='/Explore' element={<Suspense fallback={<ExplorSkel/>}>
                             <BaseExplore/>
                         </Suspense>} />
+                        
                         {/* <Route path='/Ache' element={<CreateAchievement/>} /> */}
                         <Route path='*' element={<Suspense fallback={null}>
                             <NotFound/>

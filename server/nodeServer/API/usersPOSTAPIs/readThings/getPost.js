@@ -130,6 +130,6 @@ export const getPost = async (rkv, rspo) => {
     } catch (error) {
         rspo.status(500).send({err:"Server side error"})
     } finally {
-        completeRequest(crntIP,crntAPI)
+        completeRequest(crntIP,crntAPI);
     }
 }

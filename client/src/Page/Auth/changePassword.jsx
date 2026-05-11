@@ -81,7 +81,7 @@ export default function ChangePassword({toggle}) {
 }
     const submitDebouce = useMemo(()=>{
         return debouncerGlob(handleSubmit, 500)
-    })
+    },[])
     return(
         <div className="flex thornPrincess items-center flex-col absolute z-50 top-0
                         bg-linear-to-br from-white/10 via-white/5 to-transparent

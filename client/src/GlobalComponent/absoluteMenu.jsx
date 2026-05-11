@@ -72,7 +72,7 @@ export default function AbsoluteMenu() {
 
     const debounceLogout = useMemo(()=>{
         return debouncerGlob(handleLogout)
-    })
+    },[])
 
     return(
         <div ref={mainRef} className="absoluteMenu no-copy z-99  absolute flex top-[9vh] h-[90vh] items-center justify-center flex-wrap

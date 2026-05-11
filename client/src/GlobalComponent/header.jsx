@@ -43,7 +43,7 @@ export default function Header() {
 
     const debounceLogout = useMemo(()=>{
         return debouncerGlob(handleLogout)
-    })
+    },[])
     return(
         <>
         {(Object.keys(userData).length !== 0) && <div className={`headerContainer no-copy h-[7dvh] cursor-pointer lg:hidden  w-full  rounded flex items-center justify-between

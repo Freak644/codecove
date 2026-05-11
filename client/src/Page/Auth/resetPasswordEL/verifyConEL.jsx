@@ -62,7 +62,7 @@ export default function VerifyCon({toggle}) {
 
     const verifyDebounce = useMemo(()=> {
         return debouncerGlob(handleSubmit, 500)
-    })
+    },[])
     return(
         <div className="underTaker">
             <div className="formDiv">

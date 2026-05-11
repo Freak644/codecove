@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS posts (
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_user_id (id),
   INDEX idx_feed_cursor (visibility, post_sr DESC),
-  INDEX idx_feed_moment (visibility, post_moment)
+  INDEX idx_moments (visibility, post_moment)
 );
 
 

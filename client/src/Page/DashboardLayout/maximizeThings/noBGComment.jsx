@@ -9,6 +9,7 @@ const PostsCon = lazy(()=> import("../postContainer"));
 
 export default function PostANDComment() {
     let {pID} = useParams();
+    
     let navi = useNavigate();
     const [crntPost,setCrntPost] = useState({});
     const [isFull,setFull] = useState(false);

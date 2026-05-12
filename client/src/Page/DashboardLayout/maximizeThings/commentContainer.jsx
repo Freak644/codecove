@@ -167,14 +167,16 @@ export default function CommentEl() {
 
         useEffect(()=>{
             const handleComments = (newData) => {
-                let {totalComment} = crntPostData;
+                if (crntPostData) {
+                    let {totalComment} = crntPostData;
+                    setUnivPost({
+                    [pID]:{
+                            totalComment: totalComment + 1
+                        }
+                    });
+                }
             
                 setComment(prev=>optimizeComment(prev,[newData]));
-            setUnivPost({
-                [pID]:{
-                    totalComment: totalComment + 1
-                }
-            })
             
             starAudio.currentTime = 0;
             starAudio.play();
@@ -275,7 +277,7 @@ export default function CommentEl() {
                       </div>
                     }
                 </div>
-                <div className="w-full h-1/10 absolute bottom-0">
+                <div className="w-full h-2/10 absolute bottom-0 border border-yellow-400">
                     <div className="enterComment w-full h-full relative p-2 flex items-center rounded-lg flex-row bg-gray-500/40 backdrop-blur-lg">
                         {
                             isEmoji && 
@@ -303,7 +305,7 @@ export default function CommentEl() {
                             </textarea>
                         </form>
                         <button
-                        onClick={handleSubmit}
+                        onClick={bounceNewComment}
                         className={`flex items-center justify-center w-18 p-1 cursor-pointer`}
                         
                         ><div className="h-full w-full  text-skin-ptext hover:text-skin-text"> <IoSend className="text-3xl ml-4"/>

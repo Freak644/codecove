@@ -57,47 +57,66 @@ export const getComment = async (rkv, rspo) => {
         let [commentrows] = await database.query(
             `
             SELECT
-                c.commentID,
-                c.comment_sr,
-                c.post_id,
-                c.id,
-                c.comment,
-                c.totalLike,
-                c.isAccepted,
-                c.created_at,
-                u.username,
-                u.avatar,
+            c.commentID,
+            c.comment_sr,
+            c.post_id,
+            c.id,
+            c.comment,
+            c.totalLike,
+            c.isAccepted,
+            c.created_at,
 
-                p.post_moment,
+            u.username,
+            u.avatar,
 
-                (p.id = ?) AS isPostOwner,
-                (cli.id IS NOT NULL) AS isLiked,
-                (cr.id IS NOT NULL) AS isReported
+            OU.username AS Ouser,
+            OU.avatar AS Oavatar,
 
-            FROM comments c
+            p.post_moment,
 
-            INNER JOIN users u
-                ON u.id = c.id
+            (p.id = ?) AS isPostOwner,
 
-            INNER JOIN posts p
-                ON p.post_id = c.post_id
-
-            LEFT JOIN commentLikes cli
-                ON cli.commentID = c.commentID
+            EXISTS(
+                SELECT 1
+                FROM commentLikes cli
+                WHERE cli.commentID = c.commentID
                 AND cli.id = ?
+            ) AS isLiked,
 
-            LEFT JOIN commentReports cr
-                ON cr.commentID = c.commentID
+            EXISTS(
+                SELECT 1
+                FROM commentReports cr
+                WHERE cr.commentID = c.commentID
                 AND cr.id = ?
+            ) AS isReported,
 
-            WHERE c.post_id = ?
-            AND c.isBlocked = 0
-            AND (? IS NULL OR c.comment_sr < ?)
+            EXISTS(
+                SELECT 1
+                FROM follows f
+                WHERE f.following_id = OU.id
+                AND f.follower_id = ?
+            ) AS isFollowing
 
-            ORDER BY c.comment_sr DESC
-            LIMIT ?
+        FROM comments c
+
+        INNER JOIN users u
+        ON u.id = c.id
+
+        INNER JOIN posts p
+        ON p.post_id = c.post_id
+
+        INNER JOIN users OU
+        ON p.id = OU.id
+
+        WHERE c.post_id = ?
+        AND c.isBlocked = 0
+        AND (? IS NULL OR c.comment_sr < ?)
+
+        ORDER BY c.comment_sr DESC
+        LIMIT ?
             `,
             [
+                id,
                 id,
                 id,
                 id,

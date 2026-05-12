@@ -44,10 +44,10 @@ export default function MaximizeContainer({pramPost}) {
                         X
                     </button>
                 </div>
-                <div ref={containerRef} className="commentAndImage h-9/10 w-5/6 rounded-lg p-2 flex items-center justify-center flex-wrap bg-black/80  md:bg-black/50 backdrop-blur-lg">
+                <div ref={containerRef} className="commentAndImage h-9/10 w-5/6 rounded-lg p-2 flex items-center justify-center flex-wrap bg-black/80  md:bg-gray-800/70 backdrop-blur-lg">
                     <div className="ImageCon flex-1  flex items-center justify-center h-full relative transition-all duration-200">
                         {isFull ? <MdFullscreenExit className={`absolute bottom-4 right-5 z-20 text-skin-ptext text-4xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>{setFull(prev=>!prev), setToggel(true)}} /> : <MdFullscreen className={`absolute bottom-4 right-5 z-20 text-skin-ptext text-4xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>{setFull(prev=>!prev), setToggel(true)}} />}
-                        <Suspense fallback={null}>
+                        <Suspense fallback={<div className="miniLoader" />}>
                             <ImageSlider imgArray={crntPost?.images_url || []} toggle={setToggel} />
                         </Suspense>
                     </div>

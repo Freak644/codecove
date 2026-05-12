@@ -1,91 +1,18 @@
-import { useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
-
-import LoginEL from "../Page/Auth/baseFIle";
-import Header from "../GlobalComponent/header";
-import MenuEL from "../GlobalComponent/menu";
-import LoaderEL from "../assets/animations/loadingBar";
-import CropperEL from "./cropperEL";
-import WindowHerder from "../GlobalComponent/windowHeader";
-import AbsoluteMenu from "../GlobalComponent/absoluteMenu";
-
-import AnimateRoute from "./Routes/AnimateRoute";
-import NoAnimRoutes from "./Routes/noAnimationRoute";
-
-import { Loader } from "../lib/loader";
-import { mngCrop, useThemeStore } from "../lib/toggleTheme";
-import { UnivuUserInfo } from "../lib/basicUserinfo";
-
-import socket from "../utils/socket";
-
-// 🔥 new hooks
-import useViewportFix from "../hooks/useViewportFix";
-import useSocketManager from "../hooks/useSocketManager";
-import useAuthCheck from "../hooks/useAuthCheck";
-import useRouteCheck from "../hooks/useRouteCheck";
-
-export default function MyApp() {
-  useViewportFix();
-
-  const { toggleTheme } = useThemeStore();
-  const currentTheme = localStorage.getItem("theme") || "dark-white";
-
-  const { isLogin, isAuth } = useAuthCheck(toggleTheme, currentTheme);
-
-  const { isTrue, toggleLoader } = Loader();
-
-  const location = useLocation();
-  const isChecking = useRouteCheck(location.pathname, toggleLoader);
-
-  const uID = UnivuUserInfo((stat) => stat.userInfo?.id);
-  useSocketManager(socket, uID);
-
-  const { fileURL } = mngCrop();
-  const [isCropping, setCropping] = useState(false);
-
-  useEffect(() => {
-    setCropping(fileURL?.length > 1);
-  }, [fileURL]);
-
-  const [windowHeader, setHeader] = useState(true);
-
-  useEffect(() => {
-    if (window.innerWidth > 1023) setHeader(true);
-    else setHeader(false);
-
-    const preventSelect = (e) => e.preventDefault();
-    document.addEventListener("selectstart", preventSelect);
-
-    return () => {
-      document.removeEventListener("selectstart", preventSelect);
-    };
-  }, []);
-
-  return (
-    <>
-      {isTrue && <LoaderEL />}
-
-      {windowHeader && !isLogin && !isChecking && <WindowHerder />}
-      {!isLogin && !isChecking && <Header />}
-      {!isLogin && !isChecking && <MenuEL />}
-
-      {isCropping && <CropperEL prevImg={fileURL} />}
-
-      <AbsoluteMenu />
-
-      {isLogin && !isAuth && !isChecking && (
-        <div className="loginContainer flex items-center content-center h-screen w-screen">
-          <LoginEL />
-        </div>
-      )}
-
-      {!isLogin || isChecking ? (
-        isChecking ? (
-          <NoAnimRoutes />
-        ) : (
-          <AnimateRoute location={location} />
-        )
-      ) : null}
-    </>
-  );
-}
+| Field        | Type         | Null | Key | Default           | Extra             |
++--------------+--------------+------+-----+-------------------+-------------------+
+| post_id      | char(36)     | NO   | PRI | uuid()            | DEFAULT_GENERATED |
+| post_sr      | bigint       | NO   | UNI | NULL              | auto_increment    |
+| id           | char(36)     | NO   | MUL | NULL              |                   |
+| images_url   | json         | NO   |     | NULL              |                   |
+| caption      | text         | YES  |     | NULL              |                   |
+| blockCat     | json         | NO   |     | NULL              |                   |
+| visibility   | tinyint(1)   | YES  | MUL | 1                 |                   |
+| totalLike    | bigint       | YES  |     | 0                 |                   |
+| totalComment | bigint       | YES  |     | 0                 |                   |
+| totalSave    | bigint       | YES  |     | 0                 |                   |
+| post_moment  | varchar(100) | NO   |     | NULL              |                   |
+| canComment   | tinyint(1)   | YES  |     | 1                 |                   |
+| likeCount    | tinyint(1)   | YES  |     | 1                 |                   |
+| canSave      | varchar(50)  | YES  |     | Everyone          |                   |
+| created_at   | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++--------------+--------------+------+-----+-------------------+-------------------+

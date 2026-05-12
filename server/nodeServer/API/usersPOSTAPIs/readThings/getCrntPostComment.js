@@ -73,9 +73,16 @@ export const getComment = async (rkv, rspo) => {
             OU.avatar AS Oavatar,
 
             p.post_moment,
+            p.totalLike AS postLike,
 
             (p.id = ?) AS isPostOwner,
 
+            EXISTS(
+                SELECT 1
+                FROM likes li
+                WHERE  li.post_id = p.post_id AND li.id = u.id
+            ) AS isLikePost,
+             
             EXISTS(
                 SELECT 1
                 FROM commentLikes cli
@@ -177,7 +184,10 @@ export const getComment = async (rkv, rspo) => {
                         : Boolean(comment.isLiked)
             };
         });
-
+         const setKey = `post:likes:set:${post_id}`;
+         const countKey = `post:likes:count:${post_id}`;
+         
+         console.log(postLikes, isPostLiked);
         
 
         const cursorObj = commentrows.length ? {

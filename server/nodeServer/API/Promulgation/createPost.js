@@ -42,7 +42,6 @@ export const CreatePost = async (rkv,rspo) => {
     let {id} = rkv.authData;
     let {Absuse, Link, Spam, Violence, canComment, canSave, caption, likeCount, visibility, postGroup} = rkv.body;
     let imgArray = [];
-
     try {
       if (fileArray.length === 0 ) return rspo.status(400).send({err:"No file Found"});
       fileArray.forEach(file => {
@@ -68,7 +67,6 @@ export const CreatePost = async (rkv,rspo) => {
 
       const normalized = {
         canComment: toBool(canComment),
-        canSave: toBool(canSave),
         likeCount: toBool(likeCount),
         visibility: toBool(visibility)
       };
@@ -127,7 +125,7 @@ export const CreatePost = async (rkv,rspo) => {
           normalized.visibility,
           normalized.canComment,
           normalized.likeCount,
-          normalized.canSave,
+          canSave,
           postGroup
         ]
       );

@@ -61,8 +61,10 @@ export default function LoginCon({toggle}) {
     useEffect(()=>{
         handleBlur();
     },[mgmtPass.passwordVal])
+
+
     const handleSubmit = async (evnt) => {
-        evnt.preventDefault();
+        console.log("here")
         if (isCalled.current) return;
         toggleLoader(true)
         isCalled.current = true
@@ -111,7 +113,7 @@ export default function LoginCon({toggle}) {
         <div className="underTaker">
             <div className="mainLogDiv flex items-center justify-center h-full w-full">
                 <div className="formDiv">
-                    <form action="" onSubmit={useMemo}>
+                    <form action="" onSubmit={(evnt)=>{evnt.preventDefault(); LoginBounce(evnt);}}>
                          <LogoCom/>
                             <div className="inputDiv">
                                 <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="Email" required autoComplete="off"/>

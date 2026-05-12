@@ -8,10 +8,9 @@ export const starPost = async (rkv,rspo) => {
    const crntAPI = rkv.originalUrl.split("?")[0];
    let {id} = rkv.authData;
    let {post_id} = rkv.body;
-   const redisKey = `post:likes:${post_id}`;
 
    try {
-    if (!post_id || !post_id.trim()) return rspo.status(401).send({err:"Invalid Post ID"});
+    if (!post_id || !post_id.trim()) return rspo.status(401).send({err:"Missing post id"});
     
     //Check Visibility and post ex;
     let [row] = await database.query("SELECT visibility FROM posts WHERE post_id = ?",[post_id]);
@@ -20,16 +19,23 @@ export const starPost = async (rkv,rspo) => {
     }
 
     //Redis Toggle
+    const setKey = `post:likes:set:${post_id}`;
+    const countKey = `post:likes:count:${post_id}`;
+    // checking isLikeForm Redis History 
+    const isLiked = await redis.sIsMember(setKey,id);
     let crntStatus;
 
-    const added = await redis.sAdd(redisKey, id);
 
-    if (added === 1) {
-        crntStatus = true;
-    } else {
-        await redis.sRem(redisKey, id);
+    if (isLiked) {
+        await redis.sRem(setKey,id);
+        await redis.decr(countKey);
         crntStatus = false;
+    } else {
+        await redis.sAdd(setKey,id);
+        await redis.incr(countKey);
+        crntStatus = true;
     }
+
 
  
    
@@ -96,7 +102,7 @@ export const likeComment = async (rkv,rspo) => {
         // }
         rspo.status(200).send({test:"done"});
     } catch (error) {
-        
+        console.log(error.message)
         rspo.status(500).send({err:"Server side error"});
     } finally {
         completeRequest(crntIP,crntAPI)
@@ -110,7 +116,7 @@ export const savePost = async (rkv,rspo) => {
     let {pst_id: post_id} = rkv.body;
     try {
         if (!post_id || post_id.length !== 21) return rspo.status(401).send("Validation Error");
-        let [rows] = await database.query("SELECT P.*, EXISTS (SELECT 1 FROM follows WHERE follower_id = ? AND following_id = p.id) AS isFollowing, EXISTS (SELECT 1 FROM savePost WHERE id = ? AND post_id = P.post_id) AS isSaved FROM posts P WHERE post_id = ?",[id, id, post_id])
+        let [rows] = await database.query("SELECT p.id, p.canSave, p.visibility, EXISTS (SELECT 1 FROM follows WHERE follower_id = ? AND following_id = p.id) AS isFollowing, EXISTS (SELECT 1 FROM savePost WHERE id = ? AND post_id = p.post_id) AS isSaved FROM posts p WHERE p.post_id = ?",[id, id, post_id])
         if (rows.length !== 1) return rspo.status(401).send({err:"Wrong Post id"});
         let {isFollowing,visibility,canSave, id: user_id, isSaved} = rows[0];
         if (!visibility && user_id !== id) return rspo.status(403).send({err:"This post is now private"});
@@ -130,7 +136,7 @@ export const savePost = async (rkv,rspo) => {
         
         rspo.json({pass:"Ok"})
     } catch (error) {
-        console.log(error.message)
+         console.log(error.message)
         rspo.status(500).send({err:"Server side error"});
     } finally {
         completeRequest(crntIP,crntAPI);

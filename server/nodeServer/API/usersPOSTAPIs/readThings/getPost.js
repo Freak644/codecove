@@ -54,29 +54,42 @@ export const GetPostForFeed = async (rkv,rspo) => {
         
         let hasMore = rows.length > limit;
         rows = rows.slice(0,limit);
-
+        
         const pipeline = redis.multi();
-
+        
         rows.forEach(row => {
-            const key = `post:likes:${row.post_id}`;
-            pipeline.sCard(key);
-          
-            pipeline.sIsMember(key, id);
+            const setKey = `post:likes:set:${row.post_id}`;
+            const countKey = `post:likes:count:${row.post_id}`;
+            pipeline.get(countKey)
+            
+            pipeline.sIsMember(setKey, id);
         });
-
+        
         const results = await pipeline.exec();
         let i = 0;
 
+        const hydratePipeline = redis.multi();
+        let needHydration = false;
         rows = rows.map(row => {
-            const totalLike = results[i++][1];
-            const isLiked = results[i++][1];
-            const hasRedisData = totalLike > 0 || isLiked === 1;
+           
+            const redisLikeCount = results[i++];
+            // console.log("here")
+            const RedisIsLiked = results[i++];
+            const countKey = `post:likes:count:${row.post_id}`;
+            if (redisLikeCount === null) {
+                needHydration = true;
+                hydratePipeline.set(countKey,row.totalLike)
+            }
             return {
                 ...row,
-                totalLike: totalLike > 0 ? totalLike : row.totalLike,
-                isLiked: hasRedisData ? Boolean(isLiked) : row.isLiked
+                totalLike: Number(redisLikeCount ?? row.totalLike),
+                isLiked: Boolean(RedisIsLiked)
             };
         });
+        if (needHydration) {
+            await hydratePipeline.exec();
+        }
+
 
         // rows = rows.map((row)=>{
         //     delete row.blockCat;
@@ -133,3 +146,4 @@ export const getPost = async (rkv, rspo) => {
         completeRequest(crntIP,crntAPI);
     }
 }
+

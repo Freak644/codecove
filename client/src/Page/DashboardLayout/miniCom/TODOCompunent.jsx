@@ -18,7 +18,7 @@ export default function TODOList({crntPost_id}) {
     const index = UnivuUserInfo(stat=>stat.index);
     const [isToggle,setToggle] = useState(false);
     let {setUnivPost} = univPostStore();
-    
+    console.log(isFollowing)
     
     const handelCount = ({likeStat}) => {
         setUnivPost({
@@ -135,7 +135,9 @@ export default function TODOList({crntPost_id}) {
 
     const handleStar = async () => {
         let likeStat = !isLiked;
+        console.log(post_id,likeStat)
         try {
+            if (!post_id) return;
             handelCount({likeStat})
             let rqst = await fetch("/myServer/writePost/addStar",{
                 method:"POST",
@@ -192,6 +194,7 @@ export default function TODOList({crntPost_id}) {
 
     const handleSave = async (pst_id,save,follow) =>{
         let newInfo = !isSaved
+        console.log(pst_id,save,follow)
         try {
             handleSaveStatus({newInfo})
           if (!save) throw new Error("Saving turned off by user");
@@ -211,9 +214,7 @@ export default function TODOList({crntPost_id}) {
         }
     }
 
-    const starDebounce = useMemo(()=>{
-        return debouncerGlob(handleStar,500);
-    },[]);
+    
     const saveDebouce = useMemo(()=> {
         return debouncerGlob(handleSave);   
     },[])
@@ -222,7 +223,7 @@ export default function TODOList({crntPost_id}) {
             <div name="" className="TodoInner">
                 
              
-            <i onClick={starDebounce}>
+            <i onClick={handleStar}>
                 {isLiked ? <StarFilledIcon className={`svgicon`} /> : <StarIcon className={`svgicon`}/> }
             </i>
            

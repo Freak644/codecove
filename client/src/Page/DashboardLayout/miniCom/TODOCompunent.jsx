@@ -18,7 +18,7 @@ export default function TODOList({crntPost_id}) {
     const index = UnivuUserInfo(stat=>stat.index);
     const [isToggle,setToggle] = useState(false);
     let {setUnivPost} = univPostStore();
-    console.log(isFollowing)
+    
     
     const handelCount = ({likeStat}) => {
         setUnivPost({

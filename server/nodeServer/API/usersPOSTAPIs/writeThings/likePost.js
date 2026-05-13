@@ -62,21 +62,26 @@ export const likeComment = async (rkv,rspo) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
     let {commentID,post_id} = rkv.body;
-    const redisKey = `comment:likes:${commentID}`;
     try {
         if (!post_id || !commentID || !post_id.trim() || !commentID.trim() || post_id.length !== 21) return rspo.status(401).send({err:"Something went wrong"});
         let [rows] = await database.query("SELECT visibility FROM posts WHERE post_id = ?",[post_id]);
         if (!rows[0].visibility) return rspo.status(422).send({err:"The post is private"});
         
+        //creating redis Keys
+        const commentSet = `post:commentLike:set:${commentID}`
+        const cLikeCount = `post:commentLike:like:${commentID}`
+        
+        const isLiked = await redis.sIsMember(commentID,id);
         let crntStatus;
 
-        const added = await redis.sAdd(redisKey,id);
-
-        if (added === 1) {
-            crntStatus = true;
+        if (isLiked) {
+            await redis.sRem(commentID,id);
+            await redis.decr(cLikeCount);
+            crntStatus = false
         } else {
-            await redis.sRem(redisKey,id);
-            crntStatus = false;
+            await redis.sAdd(commentID, id);
+            await redis.incr(cLikeCount);
+            crntStatus = true;
         }
         
         await commentLikeQue.add("commentLike-job",{

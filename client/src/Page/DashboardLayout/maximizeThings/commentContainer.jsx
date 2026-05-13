@@ -79,6 +79,7 @@ export default function CommentEl() {
                 throw new Error(result.err)
             }
             if (result.commentrows.length>0) {
+                console.log(result.commentrows)
                 setComment(prev=>optimizeComment(prev,result.commentrows));
             }
             setOffset(20)

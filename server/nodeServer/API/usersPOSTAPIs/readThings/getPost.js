@@ -72,13 +72,18 @@ export const GetPostForFeed = async (rkv,rspo) => {
         let needHydration = false;
         rows = rows.map(row => {
            
-            const redisLikeCount = results[i++];
+            let redisLikeCount = results[i++];
             // console.log("here")
-            const RedisIsLiked = results[i++];
+            let RedisIsLiked = results[i++];
+
+            const setKey = `post:likes:set:${row.post_id}`;
             const countKey = `post:likes:count:${row.post_id}`;
+            // console.log(redisLikeCount, RedisIsLiked)
             if (redisLikeCount === null) {
                 needHydration = true;
-                hydratePipeline.set(countKey,row.totalLike)
+                hydratePipeline.set(countKey,row.totalLike);
+                hydratePipeline.sAdd(setKey, id);
+                RedisIsLiked = row.isLiked;
             }
             return {
                 ...row,
@@ -116,7 +121,7 @@ export const getPost = async (rkv, rspo) => {
     let {post_id} = rkv.query;
     try {
         if (!post_id || post_id.length !== 21) return rspo.status(400).send({err:"Link is Broken"});
-        let [row] = await database.query(`SELECT p.post_id, p.post_sr, p.id, p.images_url, p.caption, p.visibility, p.totalLike, p.totalComment, p.totalSave, p.post_moment, p.canComment, p.likeCount, p.canSave,
+        let [row] = await database.query(`SELECT p.post_id, p.post_sr, p.id, p.images_url, p.caption, p.visibility, p.totalComment, p.totalSave, p.post_moment, p.canComment, p.likeCount, p.canSave,
                         u.username, u.avatar,
                         EXISTS (
                         SELECT 1 FROM follows 
@@ -127,17 +132,15 @@ export const getPost = async (rkv, rspo) => {
         if (row.length !== 1) return rspo.status(400).send({err:"Something went wrong"});
         let {visibility, user_id} = row[0];
         if (!visibility && id !== user_id) return rspo.status(401).send({err:"You did't have the access"});
-        const redisKey = `post:likes:${post_id}`;
+        
+        const setkey = `post:likes:set:${post_id}`;
+        const countKey = `post:likes:count:${post_id}`;
+        
+        row[0].totalLike = await redis.get(countKey);
+        row[0].isLiked = await redis.sIsMember(setkey);
 
-        let totalLikes = await redis.sCard(redisKey);
-        if (totalLikes === 0) {
-            totalLikes = row[0].totalLike;
-        }
-
-        const isLiked = await redis.sIsMember(redisKey, id);
-
-        row[0].totalLike = totalLikes;
-        row[0].isLiked = Boolean(isLiked);
+        
+        
         
         rspo.status(200).send({pass:row[0]})
     } catch (error) {

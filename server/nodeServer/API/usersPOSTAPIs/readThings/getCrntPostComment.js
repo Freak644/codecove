@@ -19,6 +19,9 @@ export const getComment = async (rkv, rspo) => {
         /* =========================
            CHECK POST ACCESS
         ========================== */
+        if (post_id.length !== 21) {
+            return rspo.status(401).send({err:"Your Like is broken"})
+        }
 
         const [rows] = await database.query(
             `SELECT 
@@ -56,7 +59,7 @@ export const getComment = async (rkv, rspo) => {
 
         let [commentrows] = await database.query(
             `
-            SELECT
+          SELECT
             c.commentID,
             c.comment_sr,
             c.post_id,
@@ -69,20 +72,6 @@ export const getComment = async (rkv, rspo) => {
             u.username,
             u.avatar,
 
-            OU.username AS Ouser,
-            OU.avatar AS Oavatar,
-
-            p.post_moment,
-            p.totalLike AS postLike,
-
-            (p.id = ?) AS isPostOwner,
-
-            EXISTS(
-                SELECT 1
-                FROM likes li
-                WHERE  li.post_id = p.post_id AND li.id = u.id
-            ) AS isLikePost,
-             
             EXISTS(
                 SELECT 1
                 FROM commentLikes cli
@@ -95,25 +84,12 @@ export const getComment = async (rkv, rspo) => {
                 FROM commentReports cr
                 WHERE cr.commentID = c.commentID
                 AND cr.id = ?
-            ) AS isReported,
-
-            EXISTS(
-                SELECT 1
-                FROM follows f
-                WHERE f.following_id = OU.id
-                AND f.follower_id = ?
-            ) AS isFollowing
+            ) AS isReported
 
         FROM comments c
 
         INNER JOIN users u
         ON u.id = c.id
-
-        INNER JOIN posts p
-        ON p.post_id = c.post_id
-
-        INNER JOIN users OU
-        ON p.id = OU.id
 
         WHERE c.post_id = ?
         AND c.isBlocked = 0
@@ -125,8 +101,6 @@ export const getComment = async (rkv, rspo) => {
             [
                 id,
                 id,
-                id,
-                id,
                 post_id,
                 cursorComment_sr,
                 cursorComment_sr,
@@ -134,6 +108,30 @@ export const getComment = async (rkv, rspo) => {
             ]
         );
 
+
+        const [postInfo] = await database.query(`SELECT 
+            p.post_moment, u.username AS Ouser, u.avatar AS Oavatar,
+            (p.id = ?) AS isPostOwner,
+            
+            EXISTS(
+                SELECT 1
+                FROM follows f
+                WHERE f.following_id = u.id AND f.follower_id = ?
+            ) AS isFollowing,
+
+            EXISTS(
+                SELECT 1
+                FROM savePost sp
+                WHERE sp.post_id = p.post_id AND sp.id = ?
+            ) AS isSaved
+             
+            FROM posts p
+            
+            INNER JOIN users u
+            ON u.id = p.id
+            WHERE p.post_id = ?`,[id,id,id,post_id])
+
+         
         /* =========================
            PAGINATION
         ========================== */
@@ -149,46 +147,53 @@ export const getComment = async (rkv, rspo) => {
         const pipeline = redis.multi();
 
         commentrows.forEach((row) => {
-            const key = `comment:likes:${row.commentID}`;
-
-            pipeline.sCard(key);
-            pipeline.sIsMember(key, id);
+            const commentSet = `post:commentLike:set:${row.commentID}`
+            const cLikeCount = `post:commentLike:like:${row.commentID}`
+            
+            pipeline.get(cLikeCount);
+            pipeline.sIsMember(commentSet, id);
         });
 
         const results = await pipeline.exec();
 
         /* =========================
-           MERGE REDIS DATA
+           Floating Data
         ========================== */
 
         let z = 0;
+        const hydratePipeline = redis.multi();
+        let needHydration = false;
 
         commentrows = commentrows.map((comment) => {
 
-            const totalLikeRedis = results[z++]?.[1];
-            const isLikedRedis = results[z++]?.[1];
+            let totalLikeRedis = results[z++];
+            let isLikedRedis = results[z++];
+
+            const commentSet = `post:commentLike:set:${comment.commentID}`
+            const cLikeCount = `post:commentLike:like:${comment.commentID}`
+            if (totalLikeRedis === null) {
+               needHydration = true;
+               hydratePipeline.set(cLikeCount,comment.totalLike);
+               hydratePipeline.sAdd(commentSet,id) ;
+               isLikedRedis = comment.isLiked;
+            }
 
             return {
                 ...comment,
-
-                totalLike:
-                    totalLikeRedis !== null &&
-                    totalLikeRedis !== undefined
-                        ? Number(totalLikeRedis)
-                        : comment.totalLike,
-
-                isLiked:
-                    isLikedRedis !== null &&
-                    isLikedRedis !== undefined
-                        ? Boolean(isLikedRedis)
-                        : Boolean(comment.isLiked)
+                totalLike: Number(totalLikeRedis ?? comment.totalLike),
+                isLiked: Boolean(isLikedRedis)
             };
         });
+        if (needHydration) {
+            await hydratePipeline.exec();
+        }
          const setKey = `post:likes:set:${post_id}`;
          const countKey = `post:likes:count:${post_id}`;
-         
-         console.log(postLikes, isPostLiked);
-        
+         const postLikes = await redis.get(countKey);
+         const isPostLiked = await redis.sIsMember(setKey,id);
+        //  console.log(isPostLiked)
+        //  commentrows.postLikes = postLikes;
+        //  commentrows.isPostLiked = isPostLiked;
 
         const cursorObj = commentrows.length ? {
                   cursorComment_sr:

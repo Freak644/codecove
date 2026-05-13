@@ -13,6 +13,7 @@ import { FaKeyboard } from "react-icons/fa";
 import {btnContext} from './baseContainer.jsx';
 import { IoSend } from "react-icons/io5";
 import { debouncerGlob } from "../../../utils/debounceFun.js";
+import TODOList from "../miniCom/TODOCompunent.jsx";
 
 let logicObj = {
     isFeching:true,
@@ -21,6 +22,7 @@ let logicObj = {
 
 export default function CommentEl() {
     const [isEmoji,setEmoji] = useState(false);
+    const [OwnerInfo,setOwnerInfo] = useState({})
     const toggelBtn = useContext(btnContext);    
     let {pID} = useParams();
     if (!pID) {
@@ -79,7 +81,8 @@ export default function CommentEl() {
                 throw new Error(result.err)
             }
             if (result.commentrows.length>0) {
-                console.log(result.commentrows)
+                console.log(result.OwnerInfo[0])
+                setOwnerInfo(result.OwnerInfo[0]);
                 setComment(prev=>optimizeComment(prev,result.commentrows));
             }
             setOffset(20)
@@ -104,6 +107,7 @@ export default function CommentEl() {
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
             // setComment(prev=>[...prev,...result.commentrows]);
+            
             setComment(prev=>optimizeComment(prev,result.commentrows));
             setOffset(prev=>prev+20)
             if (result.commentrows.length < 20) {
@@ -232,8 +236,13 @@ export default function CommentEl() {
          <div className="underTaker">
             {canComment ? <div 
              className={`h-full w-full mainInnerCC comment-sheet flex items-center flex-col p-1 touch-none`}>
-                
-                <div className="virtuoso mt-2 relative h-9/10 w-full flex items-start justify-start flex-wrap gap-4">
+                <div className="userInfoHeader w-full h-1/10 flex items-center flex-row gap-2.5
+                bg-gray-800 rounded-lg p-2.5">
+                    <img className="h-9 w-9 rounded-full" loading="lazy" src={OwnerInfo.Oavatar+"?size=36"} alt="" />
+                    <span className="text-skin-text">{OwnerInfo.Ouser}</span>
+                    <p className="text-blue-500">{OwnerInfo.isFollowing ? "Unfollow" : "Follow"}</p>
+                </div>
+                <div className="virtuoso mt-2 relative h-9/12 w-full flex items-start justify-start flex-wrap gap-4">
                     {
                        commentData?.commentIds?.length > 0 ?
                        <Virtuoso 
@@ -278,8 +287,11 @@ export default function CommentEl() {
                       </div>
                     }
                 </div>
-                <div className="w-full h-2/10 absolute bottom-0 border border-yellow-400">
-                    <div className="enterComment w-full h-full relative p-2 flex items-center rounded-lg flex-row bg-gray-500/40 backdrop-blur-lg">
+                <div className="w-full h-15/100 absolute bottom-0 border border-yellow-400 bg-gray-500/40 backdrop-blur-lg rounded-md">
+                    <div className="TodoList h-1/2 w-full">
+                        
+                    </div>
+                    <div className="enterComment w-full h-1/2 relative p-2 flex items-center rounded-lg flex-row ">
                         {
                             isEmoji && 
                             <Suspense fallback={null} >
@@ -297,11 +309,11 @@ export default function CommentEl() {
                             </Suspense>
                         }
                         
-                        <div className="absolute top-4 text-2xl cursor-pointer text-white" onClick={()=> {setEmoji(prev=>!prev), toggelBtn(true)}}>
+                        <div className="absolute top-2 text-2xl cursor-pointer text-white" onClick={()=> {setEmoji(prev=>!prev), toggelBtn(true)}}>
                              {isEmoji ? <FaKeyboard/> : <span >👻</span>}
                         </div>
                         <form action="" className="h-full w-9/10 flex items-center justify-center">
-                            <textarea ref={commentRef} onClick={()=>setEmoji(false)}  className="my-scroll bg-black/80 rounded-lg p-1 resize-none text-skin-ptext h-full border border-amber-50 pl-10 text-[16px]  placeholder:pl-2 placeholder:pt-2 w-full" 
+                            <textarea ref={commentRef} onClick={()=>setEmoji(false)}  className="my-scroll bg-black/80 rounded-lg p-1 resize-none text-skin-ptext h-full border border-amber-50 pl-10 text-[16px]  placeholder:pl-2 placeholder:pt-px w-full" 
                                 placeholder="Share your thought...">
                             </textarea>
                         </form>

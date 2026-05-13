@@ -91,6 +91,9 @@ export const getComment = async (rkv, rspo) => {
         INNER JOIN users u
         ON u.id = c.id
 
+        LEFT JOIN posts p
+        ON p.post_id = c.post_id
+
         WHERE c.post_id = ?
         AND c.isBlocked = 0
         AND (? IS NULL OR c.comment_sr < ?)
@@ -108,28 +111,33 @@ export const getComment = async (rkv, rspo) => {
             ]
         );
 
-
-        const [postInfo] = await database.query(`SELECT 
-            p.post_moment, u.username AS Ouser, u.avatar AS Oavatar,
-            (p.id = ?) AS isPostOwner,
+        let postInfo;
+        if (!cursorComment_sr) {
             
-            EXISTS(
-                SELECT 1
-                FROM follows f
-                WHERE f.following_id = u.id AND f.follower_id = ?
-            ) AS isFollowing,
+            const [userRow] = await database.query(`SELECT 
+                p.post_moment, u.username AS Ouser, u.avatar AS Oavatar,
+                (p.id = ?) AS isPostOwner,
+                
+                EXISTS(
+                    SELECT 1
+                    FROM follows f
+                    WHERE f.following_id = u.id AND f.follower_id = ?
+                ) AS isFollowing,
+    
+                EXISTS(
+                    SELECT 1
+                    FROM savePost sp
+                    WHERE sp.post_id = p.post_id AND sp.id = ?
+                ) AS isSaved
+                 
+                FROM posts p
+                
+                INNER JOIN users u
+                ON u.id = p.id
+                WHERE p.post_id = ?`,[id,id,id,post_id]);
 
-            EXISTS(
-                SELECT 1
-                FROM savePost sp
-                WHERE sp.post_id = p.post_id AND sp.id = ?
-            ) AS isSaved
-             
-            FROM posts p
-            
-            INNER JOIN users u
-            ON u.id = p.id
-            WHERE p.post_id = ?`,[id,id,id,post_id])
+            postInfo = userRow;
+        }
 
          
         /* =========================
@@ -191,9 +199,9 @@ export const getComment = async (rkv, rspo) => {
          const countKey = `post:likes:count:${post_id}`;
          const postLikes = await redis.get(countKey);
          const isPostLiked = await redis.sIsMember(setKey,id);
-        //  console.log(isPostLiked)
-        //  commentrows.postLikes = postLikes;
-        //  commentrows.isPostLiked = isPostLiked;
+        
+         postInfo.postLikes = postLikes;
+         postInfo.isPostLiked = isPostLiked;
 
         const cursorObj = commentrows.length ? {
                   cursorComment_sr:
@@ -205,7 +213,8 @@ export const getComment = async (rkv, rspo) => {
             pass: "Done",
             commentrows,
             hasMore,
-            cursorObj
+            cursorObj,
+            OwnerInfo: postInfo,
         });
 
     } catch (error) {

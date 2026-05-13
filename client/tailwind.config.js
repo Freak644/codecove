@@ -5,7 +5,7 @@ export default {
   darkMode: "class", // <-- important
   content: [
     "./index.html",
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{jsx}",
     //"./**/*.{js,jsx,ts,tsx}", // if you have shared components
   ],
  theme: {

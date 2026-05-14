@@ -287,7 +287,7 @@ export default function CommentEl() {
                       </div>
                     }
                 </div>
-                <div className="w-full h-15/100 absolute bottom-0 border border-yellow-400 bg-gray-500/40 backdrop-blur-lg rounded-md">
+                <div className="w-full h-15/100 absolute bottom-0 border border-yellow-400 bg-gray-700/50 backdrop-blur-lg rounded-md">
                     <div className="TodoList h-1/2 w-full">
                         
                     </div>
@@ -309,7 +309,7 @@ export default function CommentEl() {
                             </Suspense>
                         }
                         
-                        <div className="absolute top-2 text-2xl cursor-pointer text-white" onClick={()=> {setEmoji(prev=>!prev), toggelBtn(true)}}>
+                        <div className="absolute top-2  text-2xl cursor-pointer text-white" onClick={()=> {setEmoji(prev=>!prev), toggelBtn(true)}}>
                              {isEmoji ? <FaKeyboard/> : <span >👻</span>}
                         </div>
                         <form action="" className="h-full w-9/10 flex items-center justify-center">

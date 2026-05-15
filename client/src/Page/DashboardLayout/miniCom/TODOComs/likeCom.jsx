@@ -1,12 +1,119 @@
+import { useEffect, useMemo, useRef, useState } from "react";
 import { univPostStore } from "../../../../lib/basicUserinfo"
+import { StarFilledIcon } from "../../../../utils/SVG/SVG";
 import { RocketFire, RocketIcon } from "../../../../utils/SVG/TODOsvg";
-
+import {starAudio} from '../../../../utils/sound';
+import { debouncerGlob } from "../../../../utils/debounceFun";
 export function LikeCom({Data}) {
     let {setUnivPost} = univPostStore();
-    let {totalLike, isLiked, post_id} = Data;
+    const [postInfo,setInfo] = useState({});
+    const contanerRef = useRef(null);
+    let {totalLike, isLiked, post_id,likeCount} = postInfo;
+    
+    useEffect(()=>{
+        setInfo(Data);
+    },[Data])
+    useEffect(()=>{
+        console.log(postInfo)
+    },[postInfo])
+
+    const handelCount = ({likeStat}) => {
+        setUnivPost({
+            [post_id]:{
+                totalLike: likeStat ? totalLike + 1 : totalLike -1,
+                isLiked:likeStat
+            }
+        });
+        setInfo(prev=>({
+            ...prev,
+                isLiked:likeStat
+        }))
+        
+        if (likeStat) {
+            const element = contanerRef.current;
+
+                    if (element) {
+                        element.classList.add("starAnimActive");
+                    }
+                const timeout = setTimeout(() => {
+                    const element = contanerRef.current;
+
+                    if (element) {
+                        element.classList.remove("starAnimActive");
+                    }
+                }, 1000);
+        }
+
+        starAudio.currentTime = 0;
+        starAudio.play();
+  
+    }
+
+    const handleStar = async (post_id, isLiked) => {
+        let likeStat = !isLiked;
+        console.log(post_id,likeStat)
+        try {
+            if (!post_id) return;
+            handelCount({likeStat})
+            let rqst = await fetch("/myServer/writePost/addStar",{
+                method:"POST",
+                headers:{
+                    "Content-Type": "application/json"
+                },
+                body:JSON.stringify({post_id})
+            })
+            let result = await rqst.json();
+            if (result.err) {
+                throw new Error("Server side error");
+                
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const starDeboun = useMemo(()=> {
+        return debouncerGlob(handleStar);
+    },[])
+
+    function formatCount(value) {
+            if (value == null || isNaN(value)) return "0";
+
+            const abs = Math.abs(value);
+            const units = [
+                { limit: 1e9, suffix: "B" },
+                { limit: 1e6, suffix: "M" },
+                { limit: 1e3, suffix: "K" }
+            ];
+
+            for (const { limit, suffix } of units) {
+                if (abs >= limit) {
+                    // 👇 truncate instead of round
+                    const truncated = Math.floor((abs / limit) * 10) / 10;
+
+                    return (value < 0 ? "-" : "") +
+                        truncated.toString().replace(/\.0$/, "") +
+                        suffix;
+                }
+            }
+
+            return value.toString();
+        }
+    
     return(
-        <div className="underTaker">
-            {!isLiked ? <RocketIcon customClass={"svgicon"}/> : <RocketFire/>}
+        <div className="underTaker" ref={contanerRef} onClick={()=>starDeboun(post_id,isLiked)}>
+            {!isLiked ? <RocketIcon customClass={"svgicon"}/> : <StarFilledIcon className={"svgicon"}/>}
+                <span>{likeCount ? formatCount(totalLike) : ""}</span>
+            <div className="onHoverDiv">
+                <div className="underTaker  perspective-midrange transform-3d">
+                    <div className="svgHolderR">
+                        <RocketIcon customClass={"svgMoverR"}/>
+                    </div>
+                    <div className="starStarHolder">
+                        <StarFilledIcon className={"svgMover"} />
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

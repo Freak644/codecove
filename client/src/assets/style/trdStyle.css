@@ -12,3 +12,107 @@
 .roketFire:hover::after{
     opacity: 1;
 }
+
+.onHoverDiv {
+    display: none;
+}
+
+.starAnimActive {
+    position: absolute !important;
+
+    span {
+        display: none;
+    }
+    .onHoverDiv{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            gap: 8px;
+            transition: all .7s;
+  
+            padding-right: 5px;
+            top: -20px;
+            left: 5px;
+            height: 40px;
+            width: 60px;
+            background-color: var(--bg-color);
+            border-radius: 15px;
+            overflow: hidden;
+            
+
+            .svgHolderR {
+                position: absolute;
+                bottom: 10px;
+                left: 5px;
+                transform: rotate(20deg);
+                animation-timing-function: ease-in-out;
+        will-change: transform;
+                animation: rocketLoun .7s forwards;
+
+            }
+            .svgMoverR{
+                height: 15px;
+                width: 15px;
+                z-index: 1;
+            }
+
+            .starStarHolder {
+                position: absolute;
+                top: 5px; right: 0px;
+                animation-timing-function: ease-in-out;
+                will-change: transform;
+                animation-delay: .4s !important;
+                animation: starBounce .7s forwards;
+                z-index: 2;
+
+            }
+            .svgMover {
+                height: 13px; width: 13px;
+                color: var(--text-color);
+            }
+        }
+
+}
+
+
+@keyframes rocketLoun {
+
+    0% {
+        transform: translateX(-10px)
+                   translateY(10px)
+                   rotate(0deg)
+                   scale(1.5);
+    }
+
+    80%{
+        opacity: .7;
+    }
+    100% {
+        transform: translateX(50px)
+                   translateY(-15px)
+                   rotate(90deg)
+                   scale(1);
+        opacity: 0;
+    }
+}
+
+
+@keyframes starBounce {
+
+    0% {
+        transform: translateX(0px)
+                   translateY(0px)
+                   rotate(0deg)
+                   scale(1);
+    }
+
+   
+    100% {
+        transform: translateX(-45px)
+                   translateY(10px)
+                   rotateX(360deg)
+                   scale(2);
+        display: none;
+    }
+}

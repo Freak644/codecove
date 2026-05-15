@@ -19,18 +19,6 @@ export default function TODOList({crntPost_id}) {
     const index = UnivuUserInfo(stat=>stat.index);
     const [isToggle,setToggle] = useState(false);
     let {setUnivPost} = univPostStore();
-    
-    
-    const handelCount = ({likeStat}) => {
-        setUnivPost({
-            [post_id]:{
-                totalLike: likeStat ? totalLike + 1 : totalLike -1,
-                isLiked:likeStat
-            }
-        })
-        starAudio.currentTime = 0;
-        starAudio.play();
-    }
 
     const handleSaveStatus = ({newInfo}) => {
         setUnivPost({
@@ -134,28 +122,7 @@ export default function TODOList({crntPost_id}) {
         return ()=> document.removeEventListener("click", handleClick);
     },[])
 
-    const handleStar = async () => {
-        let likeStat = !isLiked;
-        console.log(post_id,likeStat)
-        try {
-            if (!post_id) return;
-            handelCount({likeStat})
-            let rqst = await fetch("/myServer/writePost/addStar",{
-                method:"POST",
-                headers:{
-                    "Content-Type": "application/json"
-                },
-                body:JSON.stringify({post_id})
-            })
-            let result = await rqst.json();
-            if (result.err) {
-                throw new Error("Server side error");
-                
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    
 
     const handleShare = async (post_id) => {
         let url = location.href+"post/"+post_id
@@ -223,11 +190,10 @@ export default function TODOList({crntPost_id}) {
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
                 
-                <div className="anmIcon">
-                    <LikeCom Data={crntPost} />
-                </div>
+                {postData && <div className="anmIcon">
+                    <LikeCom Data={postData} />
+                </div>}
                 
-                <span>{likeCount ? formatCount(totalLike) : ""}</span>
             </div>
             <div className={`TodoInner ${canComment ? "" : "cursor-none pointer-events-none"}`}> <Link className="flex items-center justify-center gap-1" to={`/post/${post_id}`}
                 state={{background:crntLocation}}

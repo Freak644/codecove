@@ -286,6 +286,8 @@ select{
       flex-direction: row;
       gap: 5px;
       cursor: pointer;
+      border-radius: 10px;
+      position: relative;
 
       &:hover{
         color: var(--text-color);

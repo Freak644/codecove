@@ -171,8 +171,32 @@ body{
             align-items: center;
             flex-direction: row;
             gap: 5px;
-            padding: 1px;
+            padding: 7px;
+            border-radius: 30px;
+            font-weight: 500;
+            perspective: 800px;
         }
+
+
+
+        .svgAnim{
+                transition: .4s;
+                height: 23px;
+                width: 23px;
+        }
+
+        a:hover .svgAnimR {
+            transform: rotate(200deg);
+            transition-duration: .7s;
+        }
+        a:hover .showAlt {
+            transform: rotateY(360deg);
+            transition-duration: .7s;
+        }
+        a:hover .jiggle {
+            animation: jiggle 1.4s;
+        }
+
         .secul{
             position: relative;
             ul{
@@ -191,6 +215,25 @@ body{
         opacity: 1;
     }
 }
+
+@keyframes jigglingBEll {
+    0%{
+        transform: translateX(4px);
+    }
+    5% {
+        transform: translateX(-2px);
+    }
+    10%{transform: translateX(4px);}
+    20%{transform: translateX(1px);}
+    30% {
+        transform: translateX(-2px);
+    }
+    50% {
+        transform: translateX(4px);
+    }
+}
+
+
 /* @media (max-width:426px) {
     .routeContainer{
         width: 100vw !important;

@@ -70,7 +70,7 @@ export default function WindowHerder() {
 
                     <div className="userThings flex gap-[1vw]">
                         <ReportIcon title="Report an issue" className={`border text-[30px] border-skin-ptext/30 p-1 rounded-lg cursor-pointer`}></ReportIcon>
-                        <GitHubIcon title="Source Code"  onClick={()=>window.open("https://github.com/Freak644","_blank")} className={`border border-skin-ptext/30  text-[30px] rounded-lg cursor-pointer`}/>
+                        <GitHubIcon title="Source Code"  onClick={()=>window.open("https://github.com/Freak644","_blank")} className={`border border-skin-ptext/30  text-[30px] flex items-center justify-center p-1.5 rounded-lg cursor-pointer`}/>
                         <NotificationBellIcon onClick={()=>toggleMiniTab("noti")} title="Notification" className={`border text-[30px] border-skin-ptext/30 p-1 rounded-lg cursor-pointer`}></NotificationBellIcon>
                         <div title={userData.username || "Loading"} className="h-9 w-9 overflow-hidden cursor-pointer border rounded-full flex items-center justify-center relative">
                             <img className="h-full" src={userData.avatar ? userData.avatar : "https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" />

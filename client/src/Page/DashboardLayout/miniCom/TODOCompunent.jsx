@@ -8,6 +8,7 @@ import axios from 'axios';
 
 import { BookmarkHeartIcon, BookmarkIcon, CommentIcon, DownloadIcon, ShareIcon, StarFilledIcon, StarIcon } from "../../../utils/SVG/SVG";
 import { debouncerGlob } from "../../../utils/debounceFun";
+import { LikeCom } from "./TODOComs/likeCom";
 
 export default function TODOList({crntPost_id}) {
     const toggleRef = useRef(null);
@@ -222,11 +223,9 @@ export default function TODOList({crntPost_id}) {
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
                 
-             
-            <i onClick={handleStar}>
-                {isLiked ? <StarFilledIcon className={`svgicon`} /> : <StarIcon className={`svgicon`}/> }
-            </i>
-           
+                <div className="anmIcon">
+                    <LikeCom Data={crntPost} />
+                </div>
                 
                 <span>{likeCount ? formatCount(totalLike) : ""}</span>
             </div>

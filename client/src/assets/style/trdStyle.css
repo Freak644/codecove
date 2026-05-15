@@ -1,0 +1,14 @@
+.roketFire::after{
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: orange;
+    opacity: 0;
+    transition: 0.3s;
+    position: absolute;
+    bottom: 1px;
+}
+
+.roketFire:hover::after{
+    opacity: 1;
+}

@@ -25,7 +25,8 @@ import useSocketManager from "../hooks/useSocket";
 import useAuthCheck from "../hooks/useAuthCheck";
 import useRouteCheck from "../hooks/useRouteCheck";
 
-import '../assets/style/paseTwo.css'
+import '../assets/style/paseTwo.css';
+import '../assets/style/trdStyle.css';
 import { AbsoluteMenuSkeleton, HeaderSkeleton, WindowHeaderSkeleton } from "../GlobalComponent/skel/windowSkeL";
 import MenuSkeleton from "../GlobalComponent/menuSkel";
 

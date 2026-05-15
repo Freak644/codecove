@@ -15,6 +15,7 @@ import { RiGitRepositoryCommitsFill } from "react-icons/ri";
 import { FaTools } from "react-icons/fa";
 import { UnivuUserInfo } from '../lib/basicUserinfo.js';
 import { debouncerGlob } from '../utils/debounceFun.js';
+import { ExploreIcon, HomeIcon, SearchIcon } from '../utils/SVG/menuSVG.jsx';
 export default function MenuEL(params) {
     let gradColor = getColor();
     const [currentTab,setTab] = useState('Home');
@@ -104,21 +105,21 @@ export default function MenuEL(params) {
                 {!miniMenu ? <> <ul className='topU flex items-start flex-col gap-3 sm:border-b-2 border-gray-400 my-scroll'>
                     <li>
                         <Link to="/">
-                        <MdHome/>
+                        <HomeIcon customStyle='svgAnim'/>
                         <span>Home</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="/Explore">
-                        <MdExplore/>
+                        <ExploreIcon customStyle='svgAnimR svgAnim'/>
                         <span className='flex items-center'>Explore</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="/Search">
-                        <MdSearch/>
+                        <SearchIcon customStyle='svgAnim showAlt'/>
                         <span>Search</span>
                         </Link>
                     </li>
@@ -139,7 +140,7 @@ export default function MenuEL(params) {
 
                     <li>
                         <Link to="/Notifications">
-                        <MdNotificationsActive/>
+                        <MdNotificationsActive className='jiggle'/>
                         <span>Alert</span>
                         </Link>
                     </li>

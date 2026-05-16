@@ -4,18 +4,19 @@ import { StarFilledIcon } from "../../../../utils/SVG/SVG";
 import { RocketFire, RocketIcon } from "../../../../utils/SVG/TODOsvg";
 import {starAudio} from '../../../../utils/sound';
 import { debouncerGlob } from "../../../../utils/debounceFun";
+import { formatCount } from "../../../../utils/formatCount";
 export function LikeCom({Data}) {
     let {setUnivPost} = univPostStore();
-    const [postInfo,setInfo] = useState({});
+    // const [postInfo,setInfo] = useState({});
     const contanerRef = useRef(null);
-    let {totalLike, isLiked, post_id,likeCount} = postInfo;
+    let {totalLike, isLiked, post_id,likeCount} = Data || {};
     
-    useEffect(()=>{
-        setInfo(Data);
-    },[Data])
-    useEffect(()=>{
-        console.log(postInfo)
-    },[postInfo])
+    // useEffect(()=>{
+    //     setInfo(Data);
+    // },[Data])
+    // useEffect(()=>{
+    //     console.log(postInfo)
+    // },[postInfo])
 
     const handelCount = ({likeStat}) => {
         setUnivPost({
@@ -24,10 +25,10 @@ export function LikeCom({Data}) {
                 isLiked:likeStat
             }
         });
-        setInfo(prev=>({
-            ...prev,
-                isLiked:likeStat
-        }))
+        // setInfo(prev=>({
+        //     ...prev,
+        //         isLiked:likeStat
+        // }))
         
         if (likeStat) {
             const element = contanerRef.current;
@@ -76,29 +77,6 @@ export function LikeCom({Data}) {
         return debouncerGlob(handleStar);
     },[])
 
-    function formatCount(value) {
-            if (value == null || isNaN(value)) return "0";
-
-            const abs = Math.abs(value);
-            const units = [
-                { limit: 1e9, suffix: "B" },
-                { limit: 1e6, suffix: "M" },
-                { limit: 1e3, suffix: "K" }
-            ];
-
-            for (const { limit, suffix } of units) {
-                if (abs >= limit) {
-                    // 👇 truncate instead of round
-                    const truncated = Math.floor((abs / limit) * 10) / 10;
-
-                    return (value < 0 ? "-" : "") +
-                        truncated.toString().replace(/\.0$/, "") +
-                        suffix;
-                }
-            }
-
-            return value.toString();
-        }
     
     return(
         <div className="underTaker" ref={contanerRef} onClick={()=>starDeboun(post_id,isLiked)}>

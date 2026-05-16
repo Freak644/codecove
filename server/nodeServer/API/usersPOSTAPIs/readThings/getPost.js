@@ -14,15 +14,15 @@ export const GetPostForFeed = async (rkv,rspo) => {
 
     try {
         let [rows] = await database.query(`SELECT 
-                                    p.post_id, p.post_sr, p.id, p.images_url, p.caption, p.visibility, p.totalLike, p.totalComment, p.totalSave, p.post_moment, p.canComment, p.likeCount, p.canSave,
+                                    p.post_id, p.post_sr, p.id, p.images_url, p.caption, p.visibility, p.totalLike, p.totalComment, p.totalDislike, p.totalSave, p.post_moment, p.canComment, p.likeCount, p.canSave,
                                     u.username,
                                     u.avatar,
 
                                     (f.follower_id IS NOT NULL) AS isFollowing,
                                     (li.id IS NOT NULL) AS isLiked,
                                     (sp.id IS NOT NULL) AS isSaved,
-                                    (pr.id IS NOT NULL) AS isReported
-
+                                    (pr.id IS NOT NULL) AS isReported,
+                                    (di.user_id IS NOT NULL) AS isDisliked
                                     FROM posts p
 
                                     INNER JOIN users u  
@@ -33,6 +33,9 @@ export const GetPostForFeed = async (rkv,rspo) => {
 
                                     LEFT JOIN likes li
                                     ON li.post_id = p.post_id AND li.id = ?
+
+                                    LEFT JOIN dislikes di
+                                    ON di.post_id = p.post_id AND di.user_id = ?
 
                                     LEFT JOIN savePost sp
                                     ON sp.post_id = p.post_id AND sp.id = ?
@@ -46,7 +49,7 @@ export const GetPostForFeed = async (rkv,rspo) => {
                                     ORDER BY p.post_sr DESC
                                     LIMIT ?;
             `,
-        [ id, id, id, id, cursorPost_sr, cursorPost_sr,limit + 1]) // what the hake from today(19-02-26) i will wirte my all query in column format
+        [ id, id, id, id, id, cursorPost_sr, cursorPost_sr,limit + 1]) // what the hake from today(19-02-26) i will wirte my all query in column format
         
         if (rows.length < 1) return rspo.status(404).send({err:"No posts",count:0});
         
@@ -85,11 +88,20 @@ export const GetPostForFeed = async (rkv,rspo) => {
                 hydratePipeline.sAdd(setKey, id);
                 RedisIsLiked = row.isLiked;
             }
-            return {
-                ...row,
-                totalLike: Number(redisLikeCount ?? row.totalLike),
-                isLiked: Boolean(RedisIsLiked)
-            };
+            if (row.likeCount) {
+                return {
+                    ...row,
+                    totalLike: Number(redisLikeCount ?? row.totalLike),
+                    isLiked: Boolean(RedisIsLiked)
+                };
+            } else {
+                return {
+                    ...row,
+                    totalLike: 0,
+                    totalComment: 0,
+                    isLiked: Boolean(RedisIsLiked)
+                };
+            }
         });
         if (needHydration) {
             await hydratePipeline.exec();

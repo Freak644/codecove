@@ -122,6 +122,7 @@ CREATE TABLE IF NOT EXISTS posts (
   visibility BOOLEAN DEFAULT 1,
   totalLike BIGINT DEFAULT 0,
   totalComment BIGINT DEFAULT 0,
+  totalDislike BIGINT DEFAULT 0,
   totalSave BIGINT DEFAULT 0,
   post_moment VARCHAR(100) NOT NULL,
   canComment BOOLEAN DEFAULT 1,
@@ -136,7 +137,7 @@ CREATE TABLE IF NOT EXISTS posts (
 
 
 CREATE TABLE IF NOT EXISTS likes (
-  like_id INT AUTO_INCREMENT PRIMARY KEY,
+  like_id BIGINT AUTO_INCREMENT PRIMARY KEY,
   id CHAR(36) NOT NULL,
   post_id CHAR(36) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -147,6 +148,17 @@ CREATE TABLE IF NOT EXISTS likes (
   INDEX idx_user_id (id)
 );
 
+CREATE TABLE IF NOT EXISTS dislikes (
+  disLikeId BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id CHAR(36) NOT NULL,
+  post_id CHAR(36) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(user_id, post_id),
+  FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_like (post_id, user_id),
+  INDEX idx_user_id (user_id)
+);
 /*
 ===================================
   🖼️ blocked bad words 
@@ -154,7 +166,7 @@ CREATE TABLE IF NOT EXISTS likes (
 */
 
 CREATE TABLE IF NOT EXISTS blocked_words (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
   word VARCHAR(255) NOT NULL,
   category VARCHAR(50) NOT NULL,
   INDEX idx_category (category)

@@ -9,13 +9,14 @@ import axios from 'axios';
 import { BookmarkHeartIcon, BookmarkIcon, CommentIcon, DownloadIcon, ShareIcon, StarFilledIcon, StarIcon } from "../../../utils/SVG/SVG";
 import { debouncerGlob } from "../../../utils/debounceFun";
 import { LikeCom } from "./TODOComs/likeCom";
+import DisLikeCom from "./TODOComs/disLike";
 
 export default function TODOList({crntPost_id}) {
     const toggleRef = useRef(null);
-    const [crntPost,setCrntPost] = useState({})
+    // const [crntPost,setCrntPost] = useState({})
     const postData = univPostStore(stat=>stat.postsById[crntPost_id]);
     const crntLocation = useLocation();
-    let {canSave, isFollowing,totalComment, isSaved,totalLike,isLiked,post_id,totalSave,likeCount,images_url, username,canComment} = crntPost;
+    let {canSave, isFollowing,totalComment, isSaved,totalLike,isLiked,post_id,totalSave,likeCount,images_url, username,canComment} = postData || {};
     const index = UnivuUserInfo(stat=>stat.index);
     const [isToggle,setToggle] = useState(false);
     let {setUnivPost} = univPostStore();
@@ -34,8 +35,7 @@ export default function TODOList({crntPost_id}) {
 
 
     useEffect(()=>{
-        if (Object.keys(postData || {}).length === 0) return;
-        setCrntPost(postData)
+        console.log(postData)
     },[postData])
 
 
@@ -195,6 +195,15 @@ export default function TODOList({crntPost_id}) {
                 </div>}
                 
             </div>
+
+            <div name="" className="TodoInner">
+                
+                {postData && <div className="anmIcon">
+                    <DisLikeCom Data={postData} />
+                </div>}
+                
+            </div>
+            
             <div className={`TodoInner ${canComment ? "" : "cursor-none pointer-events-none"}`}> <Link className="flex items-center justify-center gap-1" to={`/post/${post_id}`}
                 state={{background:crntLocation}}
             >
@@ -204,7 +213,7 @@ export default function TODOList({crntPost_id}) {
             </div>
             <div className={`TodoInner ${!canSave && "pointer-events-none"}`} onClick={()=>saveDebouce(post_id,canSave,isFollowing)} >
                 {isSaved ? <BookmarkHeartIcon className={`svgicon`}/> : <BookmarkIcon className={`svgicon`} />}
-                <span>{likeCount ? formatCount(totalSave) : ""}</span>
+                {/* <span>{likeCount ? formatCount(totalSave) : ""}</span> */}
             </div>
             <div ref={toggleRef} className="TodoInner relative">
                 <i onClick={()=>{

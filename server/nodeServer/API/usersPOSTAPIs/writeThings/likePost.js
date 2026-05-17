@@ -136,7 +136,7 @@ export const savePost = async (rkv,rspo) => {
             await database.query("UPDATE posts SET totalSave = totalSave + 1 WHERE post_id = ?",[post_id]);
         } else {
             await database.query("DELETE FROM savePost WHERE id = ? AND post_id = ?",[id,post_id]);
-            await database.query("UPDATE posts SET totalSave = totalSave - 1 WHERE post_id = ?",[post_id]);
+            await database.query("UPDATE posts SET totalSave = GREATEST(totalSave - 1,0) WHERE post_id = ?",[post_id]);
         }
         
         rspo.json({pass:"Ok"})

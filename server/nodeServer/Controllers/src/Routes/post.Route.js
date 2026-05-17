@@ -11,6 +11,7 @@ import {GetPostForFeed, getPost} from '../../../API/usersPOSTAPIs/readThings/get
 import { getComment } from '../../../API/usersPOSTAPIs/readThings/getCrntPostComment.js';
 import { Chartdata } from '../../../API/usersPOSTAPIs/readThings/getChartData.js';
 import { GetPostForExport } from '../../../API/usersPOSTAPIs/readThings/getPostExplore.js';
+import { disLike } from '../../../API/usersPOSTAPIs/writeThings/dislikeAPI.js';
 
 
 
@@ -25,6 +26,7 @@ writePost.post("/savePost",...commonStack, Auth, savePost);
 writePost.post("/addComment",...commonStack, Auth, CommentAPI);
 writePost.post("/reportComment", ...commonStack, Auth, reportCommentAPI);
 writePost.post("/reportPost", ...commonStack, Auth, ReportPost);
+writePost.post("/addDislike",...commonStack, Auth, disLike)
 writePost.delete("/deletePost", ...commonStack, Auth, DeletePost);
 writePost.delete("/deleteComment", ...commonStack, Auth, DeleteCommentAPI);
 

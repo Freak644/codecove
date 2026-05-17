@@ -52,7 +52,7 @@ export function LikeCom({Data}) {
 
     const handleStar = async (post_id, isLiked) => {
         let likeStat = !isLiked;
-        console.log(post_id,likeStat)
+        // console.log(post_id,likeStat)
         try {
             if (!post_id) return;
             handelCount({likeStat})

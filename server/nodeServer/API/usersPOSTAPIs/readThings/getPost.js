@@ -35,7 +35,7 @@ export const GetPostForFeed = async (rkv,rspo) => {
                                     ON li.post_id = p.post_id AND li.id = ?
 
                                     LEFT JOIN dislikes di
-                                    ON di.post_id = p.post_id AND di.user_id = ?
+                                    ON di.user_id = ? AND di.post_id = p.post_id
 
                                     LEFT JOIN savePost sp
                                     ON sp.post_id = p.post_id AND sp.id = ?

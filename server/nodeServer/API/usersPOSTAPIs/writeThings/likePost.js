@@ -13,10 +13,17 @@ export const starPost = async (rkv,rspo) => {
     if (!post_id || !post_id.trim()) return rspo.status(401).send({err:"Missing post id"});
     
     //Check Visibility and post ex;
-    let [row] = await database.query("SELECT visibility FROM posts WHERE post_id = ?",[post_id]);
-    if (row.length === 0 || !row[0].visibility) {
-        return rspo.status(422).send({err:" Private Post"});
+    let [row] = await database.query(`SELECT p.visibility,
+            (dl.user_id IS NOT NULL) AS isDisliked
+            FROM posts p LEFT JOIN dislikes dl
+            ON dl.user_id = ? AND dl.post_id = p.post_id
+            WHERE p.post_id = ?`,[id,post_id,post_id]);
+    if (row.length === 0) {
+        return rspo.status(422).send({err:"Somethinng went wrong"});
     }
+
+    let {visibility, isDisliked} = row[0];
+    if (!visibility) return rspo.status(401).send({err:"This Post is Private"});
 
     //Redis Toggle
     const setKey = `post:likes:set:${post_id}`;
@@ -25,11 +32,18 @@ export const starPost = async (rkv,rspo) => {
     const isLiked = await redis.sIsMember(setKey,id);
     let crntStatus;
 
+    // console.log(isLiked, isDisliked)
 
     if (isLiked) {
         await redis.sRem(setKey,id);
         await redis.decr(countKey);
         crntStatus = false;
+    } else if (isDisliked) {
+        await redis.sAdd(setKey,id);
+        await redis.incr(countKey);
+        await database.query("DELETE FROM dislikes WHERE user_id = ? AND post_id = ?",[id,post_id]);
+        await database.query("UPDATE posts SET totalDislike = GREATEST(totalDislike - 1,0) WHERE post_id = ?",[post_id]);
+        crntStatus = true;
     } else {
         await redis.sAdd(setKey,id);
         await redis.incr(countKey);
@@ -46,11 +60,11 @@ export const starPost = async (rkv,rspo) => {
     },{
         removeOnComplete: 100, // keep last 100
         removeOnFail: 50
-    })    
+    });    
 
     rspo.json({pass:"Ok"})
    } catch (error) {
-    console.log(error.message)
+    // console.log(error.message)
     rspo.status(500).send({err:"Server Side error"})
    } finally {
     completeRequest(crntIP, crntAPI);

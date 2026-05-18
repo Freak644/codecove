@@ -4,6 +4,7 @@ import { completeRequest } from "../../../Controllers/src/middleware/progressTra
 import redis from "../../../Controllers/src/config/redis.js";
 import { likeComment } from "./likePost.js";
 import { likeQueue } from "../../../Controllers/src/queue/myQue.js";
+import { clientCommandMessageReg } from "bullmq";
 
 export const disLike = async (rkv, rspo) => {
     const crntIP = rkv.userIp;
@@ -18,10 +19,17 @@ export const disLike = async (rkv, rspo) => {
                 (dl.user_id IS NOT NULL) AS isDisliked
                 FROM posts p
                 LEFT JOIN dislikes dl
-                ON dl.user_id = ? AND dl.post_id = ?
+                ON dl.user_id = ? AND dl.post_id = p.post_id
                 WHERE p.post_id = ?`,[id,post_id,post_id]);
-        let {visibility, isDisliked} = row;
-        if (visibility) return rspo.status(401).send({err:"This Post is Private"});
+        
+        if (row.length === 0) {
+            return rspo.status(422).send({err:"Somethinng went wrong"});
+        }
+
+        let {visibility, isDisliked} = row[0];
+        // console.log(isDisliked, row)
+        if (!visibility) return rspo.status(401).send({err:"This Post is Private"});
+
         const setKey = `post:likes:set:${post_id}`;
         const countKey = `post:likes:count:${post_id}`
         const isLiked = await redis.sIsMember(setKey,id);
@@ -51,9 +59,9 @@ export const disLike = async (rkv, rspo) => {
         }
 
 
-        rspo.json({pass:""});
+        rspo.json({pass:"ok"});
     } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
        rspo.status(500).send({err:"Server side error"}); 
     }finally {
         completeRequest(crntIP, crntAPI);

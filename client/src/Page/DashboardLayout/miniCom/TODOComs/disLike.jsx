@@ -16,7 +16,7 @@ export default function DisLikeCom({Data}) {
             setUnivPost({
                 [post_id]:{
                     totalLike: isLiked ? totalLike - 1 : totalLike,
-                    totalDislike: dislikeStat ? totalDislike + 1 : totalDislike - 1,
+                    totalDislike : dislikeStat ? totalDislike + 1 : totalDislike - 1,
                     isDisliked: dislikeStat,
                     isLiked: false
                 }

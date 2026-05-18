@@ -6,7 +6,7 @@ import { bullRedis } from '../queue/IOconnection.js';
 new Worker("likeQueue",
     async (job) => {
         const {post_id, user_id, crntStatus} = job.data;
-        console.log(post_id, crntStatus)
+        // console.log(post_id, crntStatus)
         if (crntStatus) {
             const [rspo] = await database.query("INSERT IGNORE INTO likes (post_id, id) VALUES (?, ?)",[post_id,user_id]);
 
@@ -28,7 +28,7 @@ new Worker("likeQueue",
 new Worker("commentLike",
     async (job) => {
     const {post_id, commentID, user_id, crntStatus} = job.data;
-    console.log(commentID, post_id, user_id, crntStatus)
+    // console.log(commentID, post_id, user_id, crntStatus)
     if (crntStatus) {
         const [rspo] = await database.query("INSERT IGNORE INTO commentLikes (commentID, post_id, id) VALUES (?, ?, ?)",[commentID, post_id, user_id]);
         if (rspo.affectedRows > 0) {

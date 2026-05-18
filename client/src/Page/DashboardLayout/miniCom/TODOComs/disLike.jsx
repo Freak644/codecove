@@ -1,8 +1,9 @@
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { univPostStore } from "../../../../lib/basicUserinfo"
 import { DislikeFill, DislikeOL } from "../../../../utils/SVG/TODOsvg";
 import { formatCount } from "../../../../utils/formatCount";
 import {toast} from "react-toastify"
+import { debouncerGlob } from "../../../../utils/debounceFun";
 
 export default function DisLikeCom({Data}) {
     let {setUnivPost} = univPostStore();
@@ -45,6 +46,9 @@ export default function DisLikeCom({Data}) {
         }
     }
 
+    const disLikeDebounce = useMemo(()=> {
+        return debouncerGlob(handleDisLike);
+    },[])
     return(
         <div className="underTaker gap-1" ref={contanerRef} onClick={()=>handleDisLike(post_id,isDisliked, isLiked)}>
             {isDisliked ? <DislikeFill customClass={"svgicon"}/> : <DislikeOL customClass={"svgicon"}/>}

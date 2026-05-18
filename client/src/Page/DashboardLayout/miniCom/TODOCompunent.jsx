@@ -10,33 +10,22 @@ import { BookmarkHeartIcon, BookmarkIcon, CommentIcon, DownloadIcon, ShareIcon, 
 import { debouncerGlob } from "../../../utils/debounceFun";
 import { LikeCom } from "./TODOComs/likeCom";
 import DisLikeCom from "./TODOComs/disLike";
+import SvCom from "./TODOComs/saveCom";
 
 export default function TODOList({crntPost_id}) {
     const toggleRef = useRef(null);
     // const [crntPost,setCrntPost] = useState({})
     const postData = univPostStore(stat=>stat.postsById[crntPost_id]);
     const crntLocation = useLocation();
-    let {canSave, isFollowing,totalComment, isSaved,totalLike,isLiked,post_id,totalSave,likeCount,images_url, username,canComment} = postData || {};
+    let {post_id,images_url, username,canComment, canSave, likeCount, totalComment} = postData || {};
     const index = UnivuUserInfo(stat=>stat.index);
     const [isToggle,setToggle] = useState(false);
-    let {setUnivPost} = univPostStore();
-
-    const handleSaveStatus = ({newInfo}) => {
-        setUnivPost({
-            [post_id]:{
-                totalSave: newInfo ? totalSave + 1 : totalSave - 1,
-                isSaved:newInfo
-            }
-        });
-        starAudio.currentTime = 0;
-        starAudio.play();
-    }
 
 
 
-    useEffect(()=>{
-        console.log(postData)
-    },[postData])
+    // useEffect(()=>{
+    //     console.log(postData)
+    // },[postData])
 
 
     // useEffect(()=>{
@@ -160,32 +149,7 @@ export default function TODOList({crntPost_id}) {
         );
     }
 
-    const handleSave = async (pst_id,save,follow) =>{
-        let newInfo = !isSaved
-        console.log(pst_id,save,follow)
-        try {
-            handleSaveStatus({newInfo})
-          if (!save) throw new Error("Saving turned off by user");
-          if (save !== "Everyone" && !follow) throw new Error("Saving is available only for follower");
-          if (pst_id.length !== 21) throw new Error("Post id is not valid");
-          
-            await axios.post("/myServer/writePost/savePost",
-            {pst_id}
-          )
-
-        } catch (error) {
-            if (error.response) {
-                toast.warning(error.response.data.err)
-            }else{
-                toast.error(error.message)
-            }
-        }
-    }
-
     
-    const saveDebouce = useMemo(()=> {
-        return debouncerGlob(handleSave);   
-    },[])
     return(
         <div className="crntTodo h-1/10 w-full flex items-center justify-around text-skin-ptext">
             <div name="" className="TodoInner">
@@ -211,8 +175,8 @@ export default function TODOList({crntPost_id}) {
                     <span>{(canComment && likeCount) ? formatCount(totalComment) : ""}</span>
                 </Link>
             </div>
-            <div className={`TodoInner ${!canSave && "pointer-events-none"}`} onClick={()=>saveDebouce(post_id,canSave,isFollowing)} >
-                {isSaved ? <BookmarkHeartIcon className={`svgicon`}/> : <BookmarkIcon className={`svgicon`} />}
+            <div className={`TodoInner ${!canSave && "pointer-events-none"}`}  >
+                {postData && <SvCom Data={postData} />}
                 {/* <span>{likeCount ? formatCount(totalSave) : ""}</span> */}
             </div>
             <div ref={toggleRef} className="TodoInner relative">

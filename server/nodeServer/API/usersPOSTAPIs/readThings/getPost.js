@@ -1,3 +1,4 @@
+import { clearConfig } from "isomorphic-dompurify";
 import { database } from "../../../Controllers/myConnectionFile.js";
 import redis from "../../../Controllers/src/config/redis.js";
 import { completeRequest } from "../../../Controllers/src/middleware/progressTracker.js";
@@ -73,6 +74,7 @@ export const GetPostForFeed = async (rkv,rspo) => {
 
         const hydratePipeline = redis.multi();
         let needHydration = false;
+        // console.log(rows)
         rows = rows.map(row => {
            
             let redisLikeCount = results[i++];
@@ -82,7 +84,8 @@ export const GetPostForFeed = async (rkv,rspo) => {
             const setKey = `post:likes:set:${row.post_id}`;
             const countKey = `post:likes:count:${row.post_id}`;
             // console.log(redisLikeCount, RedisIsLiked)
-            if (redisLikeCount === null) {
+            if (Number.isNaN(redisLikeCount) || redisLikeCount == 0) {
+                console.log("here post", row.caption, row.isLiked)
                 needHydration = true;
                 hydratePipeline.set(countKey,row.totalLike);
                 hydratePipeline.sAdd(setKey, id);

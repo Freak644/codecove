@@ -9,7 +9,7 @@ export function LikeCom({Data}) {
     let {setUnivPost} = univPostStore();
     // const [postInfo,setInfo] = useState({});
     const contanerRef = useRef(null);
-    let {totalLike, isLiked, post_id,likeCount} = Data || {};
+    let {totalLike, isLiked, post_id,likeCount, totalDislike, isDisliked} = Data || {};
     
     // useEffect(()=>{
     //     setInfo(Data);
@@ -22,6 +22,8 @@ export function LikeCom({Data}) {
         setUnivPost({
             [post_id]:{
                 totalLike: likeStat ? totalLike + 1 : totalLike -1,
+                totalDislike: isDisliked ? totalDislike - 1 : totalDislike,
+                isDisliked: false,
                 isLiked:likeStat
             }
         });
@@ -79,16 +81,18 @@ export function LikeCom({Data}) {
 
     
     return(
-        <div className="underTaker" ref={contanerRef} onClick={()=>starDeboun(post_id,isLiked)}>
-            {!isLiked ? <RocketIcon customClass={"svgicon"}/> : <StarFilledIcon className={"svgicon"}/>}
-                <span>{likeCount ? formatCount(totalLike) : ""}</span>
-            <div className="onHoverDiv">
-                <div className="underTaker  perspective-midrange transform-3d">
-                    <div className="svgHolderR">
-                        <RocketIcon customClass={"svgMoverR"}/>
-                    </div>
-                    <div className="starStarHolder">
-                        <StarFilledIcon className={"svgMover"} />
+        <div className="underTaker relative">
+             <div className="underTaker" ref={contanerRef} onClick={()=>starDeboun(post_id,isLiked)}>
+                {!isLiked ? <RocketIcon customClass={"svgicon"}/> : <StarFilledIcon className={"svgicon"}/>}
+                    <span>{likeCount ? formatCount(totalLike) : ""}</span>
+                <div className="onHoverDiv">
+                    <div className="underTaker  perspective-midrange transform-3d">
+                        <div className="svgHolderR">
+                            <RocketIcon customClass={"svgMoverR"}/>
+                        </div>
+                        <div className="starStarHolder">
+                            <StarFilledIcon className={"svgMover"} />
+                        </div>
                     </div>
                 </div>
             </div>

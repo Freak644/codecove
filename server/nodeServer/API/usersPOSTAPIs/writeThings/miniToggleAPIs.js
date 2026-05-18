@@ -6,7 +6,7 @@ export const miniToggleDy = async (rkv,rspo) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
 
-    let {setting,post_id} = rkv.body;
+    let {setting,post_id} = rkv.body || {};
     let validationArray = ["likeCount","canComment","visibility"];
     try {
         if (!setting.trim() || !post_id.trim()) return rspo.status(400).send({err:"Something went wrong ()"})

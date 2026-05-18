@@ -1,15 +1,16 @@
 import { useEffect } from "react";
-import { UnivuUserInfo } from "../../../lib/basicUserinfo"
+import { univPostStore, UnivuUserInfo } from "../../../lib/basicUserinfo"
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Loader } from "../../../lib/loader";
-import {MdReportProblem} from 'react-icons/md'
+import {MdCleaningServices, MdReportProblem} from 'react-icons/md'
 
 
 export default function MiniDropDown({postInfo,toggle}) {
     const userInfo = UnivuUserInfo(stat=>stat.userInfo);
     const {toggleLoader} = Loader();
     const isLoading = Loader(stat => stat.isTrue);
+    let {removePost} = univPostStore();
 
     const downloadAll = async () => {
         let imgLikeArray = postInfo?.images_url;
@@ -70,20 +71,25 @@ export default function MiniDropDown({postInfo,toggle}) {
 
     const handleDelete = async (post_id) => {
         if (isLoading) return;
+        console.log(post_id)
         try {
             toggleLoader(true)
             if (!post_id || post_id.length !== 21) {
                 throw new Error("Invalid Post_id");
                 
             }
-            await axios.delete("myServer/writePost/deletePost",{post_id},{
-                headers:{
-                    "Content-Type":"application/json"
-                }
-            })
-            toast.success("Reported")
+            // await axios.delete("myServer/writePost/deletePost",
+            //             {
+            //                 data: { post_id },
+            //                 headers: {
+            //                     "Content-Type": "application/json"
+            //                 }
+            //             }
+            //         );
+            location.reload()
+            toast.success("Deleted")
         } catch (error) {
-            toast.error(error.responce.data.err || error.message)
+            toast.error(error.responce?.data.err || error.message)
         } finally {
             toggleLoader(false)
         }

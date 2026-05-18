@@ -317,7 +317,7 @@ export const CreatePost = async (rkv,rspo) => {
     const fileArray = rkv.files
     let {id} = rkv.authData;
     if (fileArray.length == 0) return rspo.status(401).send({err:"no file found"});
-    let {Absuse, Link, Spam, Violence, canComment, canSave, caption, likeCount, visibility, postGroup} = rkv.body;
+    let {Absuse, Link, Spam, Violence, canComment, canSave, caption, likeCount, visibility, postGroup} = rkv.body || {};
     let imgArray = []
     fileArray.forEach(file => {
       imgArray.push(file.filename);

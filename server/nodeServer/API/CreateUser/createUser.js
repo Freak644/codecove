@@ -20,7 +20,7 @@ async function checkDuplicate(sqlData, username, email) {
 export const CreateUser = async (rkv, rspo) => {
   const crntIP = rkv.userIp;
   const crntAPI = rkv.originalUrl.split("?")[0];
-  const { email, password, username } = rkv.body;
+  const { email, password, username } = rkv.body || {};
   const file = rkv.file;
   let newUserID = uuidV4();
   const { dir, filePath } = getAvatarPath(newUserID);

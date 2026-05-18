@@ -1,10 +1,11 @@
+ import { clearConfig } from "isomorphic-dompurify";
 import { database } from "../../../Controllers/myConnectionFile.js";
 import { completeRequest } from "../../../Controllers/src/middleware/progressTracker.js";
 import {getIO} from '../../../myServer.js';
 export const ReportPost = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
-    let {post_id} = rkv.body;
+    let {post_id} = rkv.body || {};
     let {id} = rkv.authData;
     try {
         if (!post_id || post_id.length !== 21) return rspo.status(401).send({err:"Auth Error"});
@@ -29,14 +30,34 @@ export const ReportPost = async (rkv,rspo) => {
 
 
 export const DeletePost = async (rkv,rspo) => {
+    const crntIP = rkv.userIp;
+    const crntAPI = rkv.originalUrl.split("?")[0];
+    let {id} = rkv.authData;
+    let {post_id} = rkv.body || {};
+  
     
+    try {
+        if(!post_id || !post_id.trim()) return rspo.status(401).send({err:"Something went Wrong"});
+        let [rows] = await database.query("SELECT id as user_id FROM posts WHERE post_id = ?",[post_id]);
+        if (rows?.length === 0 ) return rspo.status(400).send({err:"Something went wrong"});
+        const isOwner = rows[0].user_id === id;
+        // console.log(isOwner)
+        if (!isOwner) return rspo.status(401).send({err:"You didn't have the Auth"});
+        await database.query("DELETE FROM posts WHERE post_id = ?",[post_id]);
+        rspo.status(200).send({pass:"Ok"});
+    } catch (error) {
+        console.log(error.message)
+        rspo.status(500).send({err:"Server side error"})
+    } finally {
+        completeRequest(crntIP, crntAPI);
+    }
 }
 
 export const reportCommentAPI = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
-    let {commentID,post_id} = rkv.body;
+    let {commentID,post_id} = rkv.body || {};
     try {
         if (!commentID.trim() || !post_id.trim()) return rspo.status(401).send({err:"Something went wrong"}); 
         let [rows] = await database.query("SELECT commentID FROM commentReports WHERE commentID = ? AND id = ? AND post_id = ?",
@@ -62,7 +83,7 @@ export const DeleteCommentAPI = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
-    let {commentID,post_id} = rkv.body;
+    let {commentID,post_id} = rkv.body || {};
     try {
         console.log(post_id)
         if (!post_id || !commentID || !commentID.trim() || !post_id.trim()) return rspo.status(401).send({err:"Something went wrong"});

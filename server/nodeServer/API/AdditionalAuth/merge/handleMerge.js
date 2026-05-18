@@ -86,7 +86,7 @@ export const VerifyMergeToken = async (rkv, rspo) => {
 export const verifyPassword = async (rkv, rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
-    let {password} = rkv.body;
+    let {password} = rkv.body || {};
     try {
         if (!password || !password.trim()) return rspo.status(400).send({err:"Something Went Wrong"});
         let token = rkv.cookies.myMergeData;

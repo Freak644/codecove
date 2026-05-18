@@ -4,7 +4,7 @@ import {getIO} from '../../myServer.js'
 export const followAPI = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
-    let {user_id} = rkv.body;
+    let {user_id} = rkv.body || {};
     let {id} = rkv.authData;
     try {
         if (user_id === id) return rspo.status(401).send({err:"U can't follow your self"});

@@ -10,7 +10,7 @@ export const disLike = async (rkv, rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
-    let {post_id} = rkv.body;
+    let {post_id} = rkv.body || {};
 
     try {
         if (!post_id || !post_id.trim()) return rspo.status(401).send({err:"Missing post id"});

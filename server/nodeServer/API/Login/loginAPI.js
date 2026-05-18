@@ -10,7 +10,7 @@ export const LoginAPI = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let token_id = nanoid(32);
-    let {Email,Password,clientInfo} = rkv.body;
+    let {Email,Password,clientInfo} = rkv.body || {};
     try {
         if (!Email?.trim() || !Password?.trim() || Object.keys(clientInfo).length !== 2) {
         return rspo.status(400).send({ err: "Please Provide proper information"})

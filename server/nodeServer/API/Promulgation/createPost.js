@@ -40,7 +40,7 @@ export const CreatePost = async (rkv,rspo) => {
     const upLoadLimit = pLimit(2);
     const fileArray = rkv.files;
     let {id} = rkv.authData;
-    let {Absuse, Link, Spam, Violence, canComment, canSave, caption, likeCount, visibility, postGroup} = rkv.body;
+    let {Absuse, Link, Spam, Violence, canComment, canSave, caption, likeCount, visibility, postGroup} = rkv.body || {};
     let imgArray = [];
     // console.log(canSave)
     try {

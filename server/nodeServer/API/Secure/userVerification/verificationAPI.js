@@ -6,7 +6,7 @@ import { completeRequest } from "../../../Controllers/src/middleware/progressTra
 const verification = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
-    let {Username,Email,token} = rkv.body;
+    let {Username,Email,token} = rkv.body || {};
     try {
         if (token.length !== 32) return rspo.status(401).send({err:"Invalid Token"});
         let [rows] = await database.query("SELECT * FROM validationToken WHERE token_id = ?",[token]);
@@ -32,7 +32,7 @@ const verification = async (rkv,rspo) => {
 const resetPassword = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
-    let {pass,conPass,token} = rkv.body;
+    let {pass,conPass,token} = rkv.body || {};
     let newToken_id = nanoid(32)
     try {
         if (token.length !== 32) return rspo.status(400).send({err:"Bad Request"});

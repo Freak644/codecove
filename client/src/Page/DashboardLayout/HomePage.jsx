@@ -11,7 +11,7 @@ const NotificaitonMini = lazy(()=>import("../Notification/Components/notificatio
 import axios from 'axios';
 import NotificationSkeleton from '../Notification/notiSkel';
 export default function HonePage() {
-  const [Posts,setPosts] = useState([])
+  const [Posts,setPosts] = useState([]);
 
   const [isEnd,setEnd] = useState(false)
   const userInfo = UnivuUserInfo(stat=>stat.userInfo);

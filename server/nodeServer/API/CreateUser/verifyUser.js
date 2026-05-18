@@ -7,7 +7,7 @@ import { emailQueue } from '../../Controllers/src/queue/myQue.js';
 export const SendEmailVerify = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
-    let {username,email} = rkv.body;
+    let {username,email} = rkv.body || {};
     try {
         if (!username || !username.trim() || !email || !email.trim()) return rspo.status(401).json({err:"Invalid Info"});
         
@@ -84,7 +84,7 @@ export const verifyEmail = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
 
-    let {username,email,inOTP} = rkv.body;
+    let {username,email,inOTP} = rkv.body || {};
     
    try {
     if (

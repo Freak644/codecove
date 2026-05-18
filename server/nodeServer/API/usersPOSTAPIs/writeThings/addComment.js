@@ -17,7 +17,7 @@ export const CommentAPI = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {id} = rkv.authData;
-    let {text,pID:post_id} = rkv.body;
+    let {text,pID:post_id} = rkv.body || {};
     let commentID = nanoid();
     try {
         if (!text || !post_id || !text.trim() || !post_id.trim()) return rspo.status(400).send({err:"Something went Wrong"});

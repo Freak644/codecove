@@ -4,7 +4,7 @@ import { database } from "../../../Controllers/myConnectionFile.js";
 
 export const acceptSolution = async (rkv,rspo) => {
     let {id} = rkv.authData;
-    let {commentID} = rkv.body;
+    let {commentID} = rkv.body || {};
     let token_id = nanoid(32);
     try {
         if (!commentID || !commentID.trim()) return rspo.status(401).send({err:"Unauthorize Request"});

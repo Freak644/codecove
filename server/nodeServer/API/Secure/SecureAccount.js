@@ -6,7 +6,7 @@ import { completeRequest } from "../../Controllers/src/middleware/progressTracke
 export const changePassSecure = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
-    let {basePass,token} = rkv.body;
+    let {basePass,token} = rkv.body || {};
     let rows
     let newToken_id = nanoid(32);
     try {

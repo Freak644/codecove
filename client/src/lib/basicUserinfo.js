@@ -33,8 +33,26 @@ export const univPostStore = create((set, get) => ({
   postSet: new Set(), // 🔥 O(1) lookup
   MAX_POSTS: 30,
 
+  removePost:(post_id) => 
+    set((stat) => {
+      const postsById = { ...stat.postsById };
+      let postOrder = [...stat.postOrder];
+      let postSet = new Set(stat.postSet);
+
+      postSet.delete(post_id);
+      delete postsById[post_id];
+      postOrder = postOrder.filter(post=>post.post_id !== post_id);
+
+      return {
+        postsById,
+        postOrder,
+        postSet
+      }
+    }),
+
   setUnivPost: (data = {}) =>
     set((state) => {
+      // console.log(data)
       if (!data || Object.keys(data).length === 0) return state;
 
       // 🧠 clone only once

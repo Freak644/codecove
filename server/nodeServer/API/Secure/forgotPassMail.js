@@ -11,9 +11,9 @@ export const forgotPass = async (rkv,rspo) => {
     const geo = geoip.lookup(miniIP);
     const parser = new UAParser(userAgent);
     const uAresult = parser.getResult();
-    let {Email,e_mail} = rkv.body;
+    let {Email,e_mail} = rkv.body || {};
     if (!Email) {
-        Email = rkv.body.email;
+        Email = rkv.body || {}.email;
     }
     try {
         if(!Email?.trim()) return rspo.status(401).send({err:"Field is requird"});

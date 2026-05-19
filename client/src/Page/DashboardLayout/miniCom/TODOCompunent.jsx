@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useRef, useState } from "react"
+import {lazy, Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { univPostStore, UnivuUserInfo } from "../../../lib/basicUserinfo";
 import {Link, useLocation} from 'react-router-dom';
 import socket from "../../../utils/socket";
@@ -8,9 +8,11 @@ import axios from 'axios';
 
 import { BookmarkHeartIcon, BookmarkIcon, CommentIcon, DownloadIcon, ShareIcon, StarFilledIcon, StarIcon } from "../../../utils/SVG/SVG";
 import { debouncerGlob } from "../../../utils/debounceFun";
-import { LikeCom } from "./TODOComs/likeCom";
-import DisLikeCom from "./TODOComs/disLike";
-import SvCom from "./TODOComs/saveCom";
+
+const LikeCom = lazy(()=> import('./TODOComs/likeCom'));
+const DisLikeCom = lazy(()=> import('./TODOComs/disLike'));
+const SvCom = lazy(()=> import('./TODOComs/saveCom'));
+
 
 export default function TODOList({crntPost_id}) {
     const toggleRef = useRef(null);
@@ -155,7 +157,9 @@ export default function TODOList({crntPost_id}) {
             <div name="" className="TodoInner">
                 
                 {postData && <div className="anmIcon">
-                    <LikeCom Data={postData} />
+                    <Suspense fallback={<div className="miniLoader"/>}>
+                        <LikeCom Data={postData} />
+                    </Suspense>
                 </div>}
                 
             </div>
@@ -163,7 +167,9 @@ export default function TODOList({crntPost_id}) {
             <div name="" className="TodoInner">
                 
                 {postData && <div className="anmIcon">
-                    <DisLikeCom Data={postData} />
+                    <Suspense fallback={<div className="miniLoader"/>}>
+                        <DisLikeCom Data={postData} />
+                    </Suspense>
                 </div>}
                 
             </div>
@@ -176,7 +182,9 @@ export default function TODOList({crntPost_id}) {
                 </Link>
             </div>
             <div className={`TodoInner ${!canSave && "pointer-events-none"}`}  >
-                {postData && <SvCom Data={postData} />}
+                {postData &&<Suspense fallback={<div className="miniLoader"/>}>
+                        <SvCom Data={postData} />
+                    </Suspense>}
                 {/* <span>{likeCount ? formatCount(totalSave) : ""}</span> */}
             </div>
             <div ref={toggleRef} className="TodoInner relative">

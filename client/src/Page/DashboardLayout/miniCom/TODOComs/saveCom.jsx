@@ -48,7 +48,7 @@ export default function SvCom({Data}) {
     },[]); 
 
     return(
-        <div onClick={()=>saveDebouce(post_id, canSave,isFollowing, totalSave)} className={`underTaker}`}>
+        <div onClick={()=>saveDebouce(post_id, canSave,isFollowing, totalSave)} className={`underTaker cursor-pointer`}>
             {isSaved ? <BookmarkHeartIcon className={`svgicon`}/> : <BookmarkIcon className={`svgicon`} />}
         </div>
     )

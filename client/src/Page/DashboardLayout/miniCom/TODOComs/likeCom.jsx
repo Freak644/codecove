@@ -5,7 +5,7 @@ import { RocketFire, RocketIcon } from "../../../../utils/SVG/TODOsvg";
 import {starAudio} from '../../../../utils/sound';
 import { debouncerGlob } from "../../../../utils/debounceFun";
 import { formatCount } from "../../../../utils/formatCount";
-export function LikeCom({Data}) {
+export default function LikeCom({Data}) {
     let {setUnivPost} = univPostStore();
     // const [postInfo,setInfo] = useState({});
     const contanerRef = useRef(null);
@@ -81,7 +81,7 @@ export function LikeCom({Data}) {
 
     
     return(
-        <div className="underTaker relative">
+        <div className="underTaker cursor-pointer relative">
              <div className="underTaker" ref={contanerRef} onClick={()=>starDeboun(post_id,isLiked)}>
                 {!isLiked ? <RocketIcon customClass={"svgicon"}/> : <StarFilledIcon className={"svgicon"}/>}
                     <span>{likeCount ? formatCount(totalLike) : ""}</span>

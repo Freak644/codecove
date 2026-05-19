@@ -14,6 +14,9 @@ import {btnContext} from './baseContainer.jsx';
 import { IoSend } from "react-icons/io5";
 import { debouncerGlob } from "../../../utils/debounceFun.js";
 import TODOList from "../miniCom/TODOCompunent.jsx";
+import  LikeCom  from "../miniCom/TODOComs/likeCom.jsx";
+import DisLikeCom from "../miniCom/TODOComs/disLike.jsx";
+import SvCom from "../miniCom/TODOComs/saveCom.jsx";
 
 let logicObj = {
     isFeching:true,
@@ -292,9 +295,13 @@ export default function CommentEl() {
                       </div>
                     }
                 </div>
-                <div className="w-full h-15/100 absolute bottom-0 border border-yellow-400 bg-gray-700/50 backdrop-blur-lg rounded-md">
-                    <div className="TodoList h-1/2 w-full">
-                        
+                <div className="w-full h-15/100 absolute bottom-0 shadow bg-gray-700/60 backdrop-blur-lg rounded-md">
+                    <div className="TodoList flex items-center justify-between text-skin-text h-1/2 w-full">
+                        {crntPostData && <> <div className="flex items-center gap-2.5">
+                            <LikeCom Data={crntPostData}/>
+                        <DisLikeCom Data={crntPostData} />
+                        </div>
+                        <p className="h-full w-10"><SvCom Data={crntPostData} /> </p> </>}
                     </div>
                     <div className="enterComment w-full h-1/2 relative p-2 flex items-center rounded-lg flex-row ">
                         {

@@ -1,6 +1,8 @@
+import { clearConfig } from "isomorphic-dompurify";
 import { database } from "../../../Controllers/myConnectionFile.js";
 import redis from "../../../Controllers/src/config/redis.js";
 import { completeRequest } from "../../../Controllers/src/middleware/progressTracker.js";
+import { sendTokenRequest } from "arctic/dist/request.js";
 
 export const getComment = async (rkv, rspo) => {
     const crntIP = rkv.userIp;
@@ -13,7 +15,7 @@ export const getComment = async (rkv, rspo) => {
     const limit = Number.isNaN(QLimit) ? 20 : QLimit;
 
     const cursorComment_sr = rkv.query.cursorComment_sr || null;
-
+    console.log(cursorComment_sr, limit)
     try {
 
         /* =========================
@@ -128,17 +130,22 @@ export const getComment = async (rkv, rspo) => {
                     SELECT 1
                     FROM savePost sp
                     WHERE sp.post_id = p.post_id AND sp.id = ?
-                ) AS isSaved
+                ) AS isSaved,
+
+                EXISTS(
+                    SELECT 1
+                    FROM dislikes dl
+                    WHERE dl.user_id = ? AND dl.post_id = p.post_id
+                ) AS isDisliked
                  
                 FROM posts p
                 
                 INNER JOIN users u
                 ON u.id = p.id
-                WHERE p.post_id = ?`,[id,id,id,post_id]);
+                WHERE p.post_id = ?`,[id,id,id,id,post_id]);
 
             postInfo = userRow;
         }
-
          
         /* =========================
            PAGINATION
@@ -182,26 +189,22 @@ export const getComment = async (rkv, rspo) => {
             if (totalLikeRedis === null) {
                needHydration = true;
                hydratePipeline.set(cLikeCount,comment.totalLike);
-               hydratePipeline.sAdd(commentSet,id) ;
+               if (comment.isLiked) {
+                    hydratePipeline.sAdd(commentSet,id) ;
+               }
                isLikedRedis = comment.isLiked;
+               totalLikeRedis = comment.totalLike;
             }
 
             return {
                 ...comment,
-                totalLike: Number(totalLikeRedis ?? comment.totalLike),
+                totalLike: Number(totalLikeRedis),
                 isLiked: Boolean(isLikedRedis)
             };
         });
         if (needHydration) {
             await hydratePipeline.exec();
         }
-         const setKey = `post:likes:set:${post_id}`;
-         const countKey = `post:likes:count:${post_id}`;
-         const postLikes = await redis.get(countKey);
-         const isPostLiked = await redis.sIsMember(setKey,id);
-        
-         postInfo.postLikes = postLikes;
-         postInfo.isPostLiked = isPostLiked;
 
         const cursorObj = commentrows.length ? {
                   cursorComment_sr:

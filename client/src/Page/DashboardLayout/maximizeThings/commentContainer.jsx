@@ -8,7 +8,7 @@ import {starAudio} from '../../../utils/sound.js'
 import CommentsContainer from "./comment";
 import { Virtuoso } from "react-virtuoso";
 import socket from "../../../utils/socket";
-import { m } from "framer-motion";
+import { calcGeneratorDuration, m } from "framer-motion";
 import { FaKeyboard } from "react-icons/fa";
 import {btnContext} from './baseContainer.jsx';
 import { IoSend } from "react-icons/io5";
@@ -29,7 +29,7 @@ export default function CommentEl() {
         pID = useContext(paramPost);
     }
     const isLoader = Loader(stat => stat.isTrue);
-    const [offset,setOffset] = useState(0);
+    const [cursor,setCursor] = useState({});
     const [commentData,setComment] = useState({
             commentIds: [],
             commentsById: {}
@@ -49,22 +49,26 @@ export default function CommentEl() {
         const newIds = [...prevState.commentIds];
         const newById = { ...prevState.commentsById };
 
+        const idsToAdd = [];
+
         for (const cmnt of newArray) {
             if (!newById[cmnt.commentID]) {
-            newIds.push(cmnt.commentID);
+                idsToAdd.push(cmnt.commentID);
             }
 
             newById[cmnt.commentID] = {
-            ...newById[cmnt.commentID],
-            ...cmnt
+                ...newById[cmnt.commentID],
+                ...cmnt
             };
         }
 
         return {
-            commentIds: newIds,
+            commentIds: [...idsToAdd, ...newIds],
             commentsById: newById
         };
     }
+
+    
     
     useEffect(()=>{
         console.log(commentData.commentIds.length)
@@ -74,18 +78,18 @@ export default function CommentEl() {
         if(isTrue) return;
         toggleLoader(true);
         try {
-            let rqst = await fetch(`/myServer/readPost/getComment?limit=20&offset=${offset}&post_id=${postID}`);
+            let rqst = await fetch(`/myServer/readPost/getComment?limit=20&&post_id=${postID}`);
             let result = await rqst.json();
             if (result.err) {
                 if (!result.isComment) setCanComnt(result.isComment)
                 throw new Error(result.err)
             }
-            if (result.commentrows.length>0) {
-                console.log(result.OwnerInfo[0])
+
+            
                 setOwnerInfo(result.OwnerInfo[0]);
+                setCursor(result.cursorObj)
                 setComment(prev=>optimizeComment(prev,result.commentrows));
-            }
-            setOffset(20)
+            
             if (!result.hasMore) {
                 setOver(true);
             }
@@ -103,13 +107,13 @@ export default function CommentEl() {
         if(isTrue) return;
         toggleLoader(true);
         try {
-            let rqst = await fetch(`/myServer/readPost/getComment?limit=20&offset=${offset}&post_id=${postID}`);
+            let rqst = await fetch(`/myServer/readPost/getComment?limit=20&cursorComment_sr=${cursor.cursorComment_sr}&post_id=${postID}`);
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
             // setComment(prev=>[...prev,...result.commentrows]);
-            
+            console.log(result.commentrows)
             setComment(prev=>optimizeComment(prev,result.commentrows));
-            setOffset(prev=>prev+20)
+            setCursor(result.cursorObj)
             if (result.commentrows.length < 20) {
                 setOver(true);
             }
@@ -172,6 +176,7 @@ export default function CommentEl() {
 
         useEffect(()=>{
             const handleComments = (newData) => {
+                
                 if (crntPostData) {
                     let {totalComment} = crntPostData;
                     setUnivPost({
@@ -197,7 +202,7 @@ export default function CommentEl() {
         setEmoji(false)
         let text = commentRef.current.value
         try {
-            if (text.length > 300) throw new Error("Comment is too big");
+            if (text.length > 400) throw new Error("Comment is too big only 400 L Allow");
             
             if(text.length<1) throw new Error("Text.length will be > 0");
             

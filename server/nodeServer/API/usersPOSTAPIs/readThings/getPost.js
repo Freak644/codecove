@@ -60,52 +60,52 @@ export const GetPostForFeed = async (rkv,rspo) => {
         rows = rows.slice(0,limit);
         
         const pipeline = redis.multi();
-        
+
         rows.forEach(row => {
             const setKey = `post:likes:set:${row.post_id}`;
             const countKey = `post:likes:count:${row.post_id}`;
-            pipeline.get(countKey)
-            
+
+            pipeline.get(countKey);
             pipeline.sIsMember(setKey, id);
         });
-        
+
         const results = await pipeline.exec();
+
         let i = 0;
 
         const hydratePipeline = redis.multi();
         let needHydration = false;
-        // console.log(rows)
+
         rows = rows.map(row => {
-           
+
             let redisLikeCount = results[i++];
-            // console.log("here")
-            let RedisIsLiked = results[i++];
+            let redisIsLiked = results[i++];
 
             const setKey = `post:likes:set:${row.post_id}`;
             const countKey = `post:likes:count:${row.post_id}`;
-            // console.log(redisLikeCount, RedisIsLiked)
-            if (Number.isNaN(redisLikeCount) || redisLikeCount == 0) {
-                console.log("here post", row.caption, row.isLiked)
+
+            // CACHE MISS
+            if (redisLikeCount === null) {
+
                 needHydration = true;
-                hydratePipeline.set(countKey,row.totalLike);
-                hydratePipeline.sAdd(setKey, id);
-                RedisIsLiked = row.isLiked;
+
+                hydratePipeline.set(countKey, row.totalLike);
+
+                if (row.isLiked) {
+                    hydratePipeline.sAdd(setKey, id);
+                }
+
+                redisLikeCount = row.totalLike;
+                redisIsLiked = row.isLiked;
             }
-            if (row.likeCount) {
-                return {
-                    ...row,
-                    totalLike: Number(redisLikeCount ?? row.totalLike),
-                    isLiked: Boolean(RedisIsLiked)
-                };
-            } else {
-                return {
-                    ...row,
-                    totalLike: 0,
-                    totalComment: 0,
-                    isLiked: Boolean(RedisIsLiked)
-                };
-            }
+
+            return {
+                ...row,
+                totalLike: Number(redisLikeCount),
+                isLiked: Boolean(redisIsLiked),
+            };
         });
+
         if (needHydration) {
             await hydratePipeline.exec();
         }

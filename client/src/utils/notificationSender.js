@@ -1,5 +1,5 @@
 export const notification = (body,tag,autoClose,focusLike) =>{
-    const alert = new Notification("EchoNexy",{
+    const alert = new Notification("EchoVain",{
         body,
         badge:"https://i.postimg.cc/L4kDbPrj/favicon.png",
         tag,

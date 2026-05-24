@@ -83,7 +83,7 @@ export default function AbsoluteMenu() {
                
                 <h2 className={`font-bold! text-3xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
                 bg-linear-to-tr ${getColor()}
-                bg-clip-text text-transparent`}>EchoNexy</h2>
+                bg-clip-text text-transparent`}>EchoVain</h2>
             </div>
             <div className="AbMenuDiv my-scroll w-full h-4/5 my-scroll 
             flex items-center flex-col text-md text-skin-text">

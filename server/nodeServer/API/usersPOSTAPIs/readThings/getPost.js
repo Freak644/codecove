@@ -148,11 +148,18 @@ export const getPost = async (rkv, rspo) => {
         let {visibility, user_id} = row[0];
         if (!visibility && id !== user_id) return rspo.status(401).send({err:"You did't have the access"});
         
-        const setkey = `post:likes:set:${post_id}`;
-        const countKey = `post:likes:count:${post_id}`;
-        
-        row[0].totalLike = await redis.get(countKey);
-        row[0].isLiked = await redis.sIsMember(setkey);
+        if (row[0].likeCount) {
+            const setkey = `post:likes:set:${post_id}`;
+            const countKey = `post:likes:count:${post_id}`;
+            
+            row[0].totalLike = await redis.get(countKey);
+            row[0].isLiked = await redis.sIsMember(setkey);
+        } else {
+            row[0].totalLike = 0;
+            row[0].totalComment = 0;
+        }
+
+
 
         
         

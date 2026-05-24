@@ -49,7 +49,7 @@ export const SendEmailVerify = async (rkv,rspo) => {
         
         await emailQueue.add("mail-job",{
             mail:email,
-            subject:"Welcome To EchoNexy🎉",
+            subject:"Welcome To EchoVain🎉",
             tempLate:"Wellcome",
             infoObj:{username,otp}
         },{

@@ -118,8 +118,8 @@ export default function TODOList({crntPost_id}) {
     const handleShare = async (post_id) => {
         let url = location.href+"post/"+post_id
         const shareData = {
-            title: "EchoNexy",
-            text: "Check this post on EchoNexy!",
+            title: "EchoVain",
+            text: "Check this post on EchoVain!",
             url
         };
 
@@ -143,7 +143,7 @@ export default function TODOList({crntPost_id}) {
 
     function showCustomShareModal(url) {
         const encodedURL = encodeURIComponent(url);
-        const text = encodeURIComponent("Check this post on EchoNexy!");
+        const text = encodeURIComponent("Check this post on EchoVain!");
 
         window.open(
             `https://wa.me/?text=${text}%20${encodedURL}`,

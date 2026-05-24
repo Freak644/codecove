@@ -19,7 +19,7 @@ async function sendTheMail(to, subject, templateName, templateData = {}) {
     const html = await renderTemplate(templateName, templateData);
 
     const info = await transporter.sendMail({
-      from: `"EchoNexy" <${process.env.MAIL_USER}>`,
+      from: `"EchoVain" <${process.env.MAIL_USER}>`,
       to,
       subject,
       html,

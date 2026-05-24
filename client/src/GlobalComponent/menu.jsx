@@ -99,7 +99,7 @@ export default function MenuEL(params) {
                                        
                 <h2 className={`font-extrabold! text-2xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
                 bg-linear-to-tr ${gradColor}
-                bg-clip-text text-transparent`}>EchoNexy</h2>
+                bg-clip-text text-transparent`}>EchoVain</h2>
             </div>
             <div className={`${miniMenu ? "miniMenu" : "menuContainer" } relative flex items-center flex-col gap-10 lg:text-[18px] sm:text-2xl text-skin-text`}>
                 {!miniMenu ? <> <ul className='topU flex items-start flex-col gap-3 sm:border-b-2 border-gray-400 my-scroll'>

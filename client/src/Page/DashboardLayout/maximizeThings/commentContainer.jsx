@@ -48,27 +48,30 @@ export default function CommentEl() {
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
     let  {isTrue,toggleLoader}  = Loader();
 
-    function optimizeComment(prevState, newArray) {
-        const newIds = [...prevState.commentIds];
-        const newById = { ...prevState.commentsById };
+        function optimizeComment(prevState, newArray, isPush) {
+            const newIds = [...prevState.commentIds];
+            const newById = { ...prevState.commentsById };
 
-        const idsToAdd = [];
+            const idsToAdd = [];
 
-        for (const cmnt of newArray) {
-            if (!newById[cmnt.commentID]) {
-                idsToAdd.push(cmnt.commentID);
+            for (const cmnt of newArray) {
+                if (!newById[cmnt.commentID]) {
+                    idsToAdd.push(cmnt.commentID);
+                }
+
+                newById[cmnt.commentID] = {
+                    ...newById[cmnt.commentID],
+                    ...cmnt
+                };
             }
 
-            newById[cmnt.commentID] = {
-                ...newById[cmnt.commentID],
-                ...cmnt
-            };
-        }
+            return {
+                commentIds: isPush
+                    ? [...idsToAdd, ...newIds]   // top
+                    : [...newIds, ...idsToAdd],  // bottom
 
-        return {
-            commentIds: [...idsToAdd, ...newIds],
-            commentsById: newById
-        };
+                commentsById: newById
+            };
     }
 
     
@@ -85,13 +88,13 @@ export default function CommentEl() {
             let result = await rqst.json();
             if (result.err) {
                 if (!result.isComment) setCanComnt(result.isComment)
-                throw new Error(result.err)
+                throw new Error(result.err);
             }
 
             
                 setOwnerInfo(result.OwnerInfo[0]);
                 setCursor(result.cursorObj)
-                setComment(prev=>optimizeComment(prev,result.commentrows));
+                setComment(prev=>optimizeComment(prev,result.commentrows,false));
             
             if (!result.hasMore) {
                 setOver(true);
@@ -115,7 +118,7 @@ export default function CommentEl() {
             if (result.err) throw new Error(result.err);
             // setComment(prev=>[...prev,...result.commentrows]);
             console.log(result.commentrows)
-            setComment(prev=>optimizeComment(prev,result.commentrows));
+            setComment(prev=>optimizeComment(prev,result.commentrows,false));
             setCursor(result.cursorObj)
             if (result.commentrows.length < 20) {
                 setOver(true);
@@ -189,7 +192,7 @@ export default function CommentEl() {
                     });
                 }
             
-                setComment(prev=>optimizeComment(prev,[newData]));
+                setComment(prev=>optimizeComment(prev,[newData],true));
             
             starAudio.currentTime = 0;
             starAudio.play();

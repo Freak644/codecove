@@ -14,11 +14,11 @@ export const GetPostForExport = async (rkv, rspo) => {
     try {
         let [rows] = await database.query(`SELECT
             p.post_id, p.post_sr, p.id AS user_id, p.images_url,
-            p.visibility FROM posts
+            p.visibility FROM posts p
             WHERE visibility = 1
             AND (? IS NULL OR post_sr < ?)
             
-            ORDER BY post_sr DESC LIMIT ?`, [cursorPost_sr, cursorPost_sr, limit + 1]);
+            ORDER BY p.post_sr DESC LIMIT ?`, [cursorPost_sr, cursorPost_sr, limit + 1]);
 
         if (rows.length < 1) return rspo.status(404).send({err:"No Posts"});
             

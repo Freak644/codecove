@@ -17,6 +17,7 @@ import TODOList from "../miniCom/TODOCompunent.jsx";
 import  LikeCom  from "../miniCom/TODOComs/likeCom.jsx";
 import DisLikeCom from "../miniCom/TODOComs/disLike.jsx";
 import SvCom from "../miniCom/TODOComs/saveCom.jsx";
+import CommentSkeleton from "./commentSkeL.jsx";
 
 let logicObj = {
     isFeching:true,
@@ -292,10 +293,9 @@ export default function CommentEl() {
                             )
                         }}
                         increaseViewportBy={400}
-                      /> : <div className="text-skin-ptext h-full w-full flex items-center justify-center">
-                         <div className="miniLoader"></div>
-                         <p>No Comment Yet</p>
-                      </div>
+                      /> : [...Array(10)].map((_,index)=> (
+                        <CommentSkeleton/>
+                      ))
                     }
                 </div>
                 <div className="w-full h-15/100 absolute bottom-0 shadow bg-gray-700/60 backdrop-blur-lg rounded-md">

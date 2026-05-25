@@ -29,6 +29,8 @@ import '../assets/style/paseTwo.css';
 import '../assets/style/trdStyle.css';
 import { AbsoluteMenuSkeleton, HeaderSkeleton, WindowHeaderSkeleton } from "../GlobalComponent/skel/windowSkeL";
 import MenuSkeleton from "../GlobalComponent/menuSkel";
+import LoginSkeleton from "../Page/Auth/loginSkel";
+import HomeSkeleton from "../Page/DashboardLayout/skeletonForHome";
 
 export default function MyApp() {
   useViewportFix();
@@ -86,14 +88,14 @@ export default function MyApp() {
 
       {isLogin && !isAuth && !isChecking && (
             <div className="loginContainer flex items-center content-center h-screen w-screen">
-                <Suspense fallback={<div className="miniLoader"/>}>
+                <Suspense fallback={<LoginSkeleton/>}>
                     <LoginEL />
                 </Suspense>
             </div>
         )}
 
       {(!isLogin || isChecking) && (
-        <Suspense fallback={<div className="miniLoader"/>}>
+        <Suspense fallback={<HomeSkeleton/>}>
             {isChecking ? <NoAnimRoutes /> : <AnimateRoute location={location} />}
         </Suspense>
       )}

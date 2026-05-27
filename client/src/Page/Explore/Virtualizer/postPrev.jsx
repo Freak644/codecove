@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react"
 import { useNavigation } from "react-router-dom"
 
-export default function PostPriview({post,i}) {
+export default function PostPriview({post}) {
     // const navi = useNavigation();
 
     const handleClick = (postId)=> {
-        console.log(postId)
+        console.log(postId, i)
     }
 
     return (

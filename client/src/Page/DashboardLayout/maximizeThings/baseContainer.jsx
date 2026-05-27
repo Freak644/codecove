@@ -37,8 +37,9 @@ export default function MaximizeContainer({pramPost}) {
 
     return(
             <div className="underTaker ">
-                <div className="closeBtn hidden md:flex items-center justify-center p-3 rounded-full text-2xl font-bold text-skin-ptext absolute top-5 right-2">
-                    <button className="cursor-pointer" 
+                <div className="closeBtn hidden md:flex items-center justify-center p-3 rounded-full text-[18px] font-bold absolute top-5 right-2">
+                    <button className="cursor-pointer hover:rotate-180 transition-all duration-300 text-red-600 hover:bg-gray-500/70 rounded-full
+                    h-9 w-9" 
                     
                     >
                         X

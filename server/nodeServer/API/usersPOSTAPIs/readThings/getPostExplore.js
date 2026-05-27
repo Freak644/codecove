@@ -22,7 +22,7 @@ export const GetPostForExport = async (rkv, rspo) => {
 
         if (rows.length < 1) return rspo.status(404).send({err:"No Posts"});
             
-        console.log(rows[0])
+        // console.log(rows[0])
         let hasMore = rows.length > limit;
         rows = rows.slice(0, limit);
 

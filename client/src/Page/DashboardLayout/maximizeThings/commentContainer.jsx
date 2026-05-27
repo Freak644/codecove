@@ -9,7 +9,7 @@ import CommentsContainer from "./comment";
 import { Virtuoso } from "react-virtuoso";
 import socket from "../../../utils/socket";
 import { calcGeneratorDuration, m } from "framer-motion";
-import { FaKeyboard } from "react-icons/fa";
+import { FaKeyboard, FaSmile } from "react-icons/fa";
 import {btnContext} from './baseContainer.jsx';
 import { IoSend } from "react-icons/io5";
 import { debouncerGlob } from "../../../utils/debounceFun.js";
@@ -28,6 +28,7 @@ export default function CommentEl() {
     const [isEmoji,setEmoji] = useState(false);
     const [OwnerInfo,setOwnerInfo] = useState({})
     const toggelBtn = useContext(btnContext);    
+    const toggleMe = toggelBtn.setToggel;
     let {pID} = useParams();
     if (!pID) {
         pID = useContext(paramPost);
@@ -294,7 +295,9 @@ export default function CommentEl() {
                         }}
                         increaseViewportBy={400}
                       /> : [...Array(10)].map((_,index)=> (
-                        <CommentSkeleton/>
+                        <div className="p-px w-full" key={index}>
+                            <CommentSkeleton/>
+                        </div>
                       ))
                     }
                 </div>
@@ -304,7 +307,7 @@ export default function CommentEl() {
                             <LikeCom Data={crntPostData}/>
                         <DisLikeCom Data={crntPostData} />
                         </div>
-                        <p className="h-full w-10"><SvCom Data={crntPostData} /> </p> </>}
+                        <div className="h-full w-10"><SvCom Data={crntPostData} /> </div> </>}
                     </div>
                     <div className="enterComment w-full h-1/2 relative p-2 flex items-center rounded-lg flex-row ">
                         {
@@ -324,8 +327,8 @@ export default function CommentEl() {
                             </Suspense>
                         }
                         
-                        <div className="absolute top-2  text-2xl cursor-pointer text-white" onClick={()=> {setEmoji(prev=>!prev), toggelBtn(true)}}>
-                             {isEmoji ? <FaKeyboard/> : <span >👻</span>}
+                        <div className="absolute top-4 left-4  text-[20px] flex items-center justify-center cursor-pointer text-white" onClick={()=> {setEmoji(prev=>!prev), toggleMe(true)}}>
+                             {isEmoji ? <FaKeyboard/> : <FaSmile/>}
                         </div>
                         <form action="" className="h-full w-9/10 flex items-center justify-center">
                             <textarea ref={commentRef} onClick={()=>setEmoji(false)}  className="my-scroll bg-black/80 rounded-lg p-1 resize-none text-skin-ptext h-full border border-amber-50 pl-10 text-[16px]  placeholder:pl-2 placeholder:pt-px w-full" 

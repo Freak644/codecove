@@ -4,6 +4,7 @@ import PageTransition from '../../assets/animations/framerMotion';
 import HomeSkeleton from '../../Page/DashboardLayout/skeletonForHome';
 import POSTSkeloten from '../../Page/DashboardLayout/skeleton/noBGSkeleton';
 import ExplorSkel from '../../Page/Explore/skelton';
+import BaseSuggestion from '../../Page/Explore/suggestionWML/baseSuggestion';
 const HomePage = lazy(() => import('../../Page/DashboardLayout/HomePage'));
 const BaseCreate = lazy(() => import('../../Page/Promulgation/baseCreateCom'));
 const MainLapCom = lazy(() => import('../../Page/userProfile/mainLap'));
@@ -25,18 +26,27 @@ export default function AnimateRoute({location}) {
                         <Route path='/' element={<Suspense fallback={<HomeSkeleton/>}>
                             <HomePage/>
                         </Suspense>} />
+
                         <Route path='/Commit' element={<Suspense fallback={null}>
                             <BaseCreate/>
                         </Suspense>} />
+
                         <Route path='/Lab/:username' element={<Suspense fallback={null}>
                             <MainLapCom/>
                         </Suspense>} />
+
                         <Route path='/post/:pID' element={<Suspense fallback={<POSTSkeloten/>}>
                             <PostANDComment/>
                         </Suspense>} />
+
                         <Route path='/Explore' element={<Suspense fallback={<ExplorSkel/>}>
                             <BaseExplore/>
                         </Suspense>} />
+
+                        <Route path='/suggestion/:post_id' element={<Suspense fallback={<HomeSkeleton/>}>
+                            <BaseSuggestion/>
+                        </Suspense>} />
+
                         
                         {/* <Route path='/Ache' element={<CreateAchievement/>} /> */}
                         <Route path='*' element={<Suspense fallback={null}>

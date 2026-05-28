@@ -106,7 +106,7 @@ export default function HonePage() {
   }
     return (
       <div className="underTaker no-copy">
-        <div className="leftHome h-full w-full flex-1 lg:flex-2 flex items-center justify-center flex-wrap my-scroll">
+        <div className="leftHome h-full w-full flex-1 lg:flex-2 flex items-center justify-center flex-wrap">
           <Suspense fallback={<>
 
              <div className="activst w-full flex justify-center items-center gap-2.5">
@@ -167,10 +167,10 @@ export default function HonePage() {
               crntTab.noti ? "noti" : "none"
             } >
               {crntTab.noti && <Suspense fallback={<NotificationSkeleton/>}>
-                  <NotificaitonMini/>
+                    <NotificaitonMini/>
                 </Suspense>}
               {crntTab.news && <Suspense fallback={null}>
-                 <NewsComp/>
+                  <NewsComp/>
                 </Suspense>}
               {crntTab.charts && <Suspense fallback={null}>
                     <ChartsEL/>

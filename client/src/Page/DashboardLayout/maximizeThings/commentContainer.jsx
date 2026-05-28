@@ -28,7 +28,8 @@ export default function CommentEl() {
     const [isEmoji,setEmoji] = useState(false);
     const [OwnerInfo,setOwnerInfo] = useState({})
     const toggelBtn = useContext(btnContext);    
-    const toggleMe = toggelBtn.setToggel;
+    const [noComments,toggleNoCommetn] = useState(false);
+    const toggleMe = toggelBtn?.setToggel || ((arg) => console.log(arg));
     let {pID} = useParams();
     if (!pID) {
         pID = useContext(paramPost);
@@ -48,9 +49,9 @@ export default function CommentEl() {
 
 
     const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
-    let  {isTrue,toggleLoader}  = Loader();
+    let  {toggleLoader}  = Loader();
 
-        function optimizeComment(prevState, newArray, isPush) {
+    function optimizeComment(prevState, newArray, isPush) {
             const newIds = [...prevState.commentIds];
             const newById = { ...prevState.commentsById };
 
@@ -66,6 +67,8 @@ export default function CommentEl() {
                     ...cmnt
                 };
             }
+
+
 
             return {
                 commentIds: isPush
@@ -83,7 +86,6 @@ export default function CommentEl() {
     },[commentData])
     const getComments = async (postID) => {
         if (isOver) return;
-        if(isTrue) return;
         toggleLoader(true);
         try {
             let rqst = await fetch(`/myServer/readPost/getComment?limit=20&&post_id=${postID}`);
@@ -96,6 +98,7 @@ export default function CommentEl() {
             
                 setOwnerInfo(result.OwnerInfo[0]);
                 setCursor(result.cursorObj)
+                if (result.commentrows.length === 0) toggleNoCommetn(true);
                 setComment(prev=>optimizeComment(prev,result.commentrows,false));
             
             if (!result.hasMore) {
@@ -112,7 +115,7 @@ export default function CommentEl() {
             isFeching:true
         }
         if (isOver) return;
-        if(isTrue) return;
+        if(isLoader) return;
         toggleLoader(true);
         try {
             let rqst = await fetch(`/myServer/readPost/getComment?limit=20&cursorComment_sr=${cursor.cursorComment_sr}&post_id=${postID}`);
@@ -134,6 +137,7 @@ export default function CommentEl() {
     
     useEffect(()=>{
         if (commentData?.commentIds?.length > 1) return;
+        // console.log("here");
         getComments(pID)
     },[pID]);
 
@@ -251,13 +255,13 @@ export default function CommentEl() {
              className={`h-full w-full mainInnerCC comment-sheet flex items-center flex-col p-1 touch-none`}>
                 <div className="userInfoHeader w-full h-1/10 flex items-center flex-row gap-2.5
                 bg-gray-800 rounded-lg p-2.5">
-                    <img className="h-9 w-9 rounded-full" loading="lazy" src={OwnerInfo.Oavatar+"?size=36"} alt="" />
+                    <img className="h-9 w-9 rounded-full bg-gray-600" loading="lazy" src={OwnerInfo.Oavatar+"?size=36"} alt="DP" />
                     <span className="text-skin-text">{OwnerInfo.Ouser}</span>
                     <p className="text-blue-500">{OwnerInfo.isFollowing ? "Unfollow" : "Follow"}</p>
                 </div>
                 <div className="virtuoso mt-2 relative h-9/12 w-full flex items-start justify-start flex-wrap gap-4">
                     {
-                       commentData?.commentIds?.length > 0 ?
+                       (commentData.commentIds.length !== 0 || noComments) ?
                        <Virtuoso 
                         style={{
                             height:"100%",

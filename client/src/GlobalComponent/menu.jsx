@@ -89,7 +89,7 @@ export default function MenuEL(params) {
 
     return(
         <>
-        {Object.keys(userInfo).length < 0 ? <MenuSkeleton/> : <div className="menuDiv no-copy transition-all duration-700 relative left-0 sm:border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
+        {Object.keys(userInfo).length < 0 ? <MenuSkeleton/> : <div className="menuDiv backdrop-blur-lg bg-skin-bg/20 no-copy transition-all duration-700 relative left-0 sm:border-r  h-[91vh] border-gray-400 lg:h-[93.5vh] w-[13vw]
         flex items-center flex-col gap-5
          z-20
         "> <p id='secBtn' onClick={()=>setHidden(prev=>!prev)} className="h-8 w-8 flex logotxt items-center justify-center text-2xl cursor-pointer border-skin-ptext/30 border rounded-full absolute top-3 -right-2"><IoMdMenu className='text-skin-ptext'/></p>

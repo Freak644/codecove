@@ -14,14 +14,14 @@ const NotFound = lazy(() => import('../../GlobalComponent/404NotFound'));
 const MaximizeContainer = lazy(()=> import("../../Page/DashboardLayout/maximizeThings/baseContainer"))
 //import CreateAchievement from '../../Admin/createAcheivement';
 export default function AnimateRoute({location}) {
-    const noAnimetArray = ['/']
     const background = location.state?.background;
-    let shoultAnimate = !background && !noAnimetArray.includes(location.pathname);
+
+    const shouldAnimate = location.pathname.startsWith("/Lab");
     
     return(
         <>
          <div className='routeContainer'>
-                  <PageTransition location={background || location} key={(background || location).pathname} shouldAnimat={shoultAnimate} >
+                  <PageTransition location={background || location} key={(background || location).pathname} shouldAnimat={shouldAnimate} >
                     <Routes location={background || location}>
                         <Route path='/' element={<Suspense fallback={<HomeSkeleton/>}>
                             <HomePage/>

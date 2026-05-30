@@ -116,3 +116,9 @@
         display: none;
     }
 }
+
+.cstm-Bg {
+    background-color: rgba(7, 7, 27, 0.7);
+    border-radius: 16px;
+    border: 1px solid rgba(0, 255, 255, 0.236);
+}

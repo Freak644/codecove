@@ -1,11 +1,14 @@
 import { lazy, Suspense } from "react";
 import { useParams } from "react-router-dom";
 import { univPostStore } from "../../../lib/basicUserinfo";
+import { CogIcon } from "../../../utils/SVG/menuSVG";
+import FeedController from "./UX/homeController";
 const FeedBuilder = lazy(()=> import("./Build/virtuosContainer"));
 const Controller = lazy(()=> import("./UX/homeController"));
 export default function BaseSuggestion () {
     const {post_id} = useParams();
     const postData = univPostStore(stat=>stat.postsById[post_id]);
+    
     return(
         <div className="underTaker no-copy">
             <div className="leftHome h-full w-full flex items-center justify-center flex-wrap">
@@ -25,8 +28,18 @@ export default function BaseSuggestion () {
                 </Suspense>
             </div>
 
-            <div className="righSuggestion h-full w-110 border-cyan-500/25 rounded-md border absolute right-0 z-20">
+            <div className="righSuggestion p-2.5 bg-blue-950/40 backdrop-blur-3xl h-full w-110 border-cyan-500/25 rounded-md border absolute right-0 z-20">
+                <div className="h-1/10 w-full flex items-center justify-between ">
+                    <div className="flex items-start p-1 flex-col gap-2">
+                        <h3 className="font-bold text-base text-skin-text">Suggestion Control Panel</h3>
+                        <p className="text-skin-ptext/70 text-sm">View and manage your current suggestions</p>
+                    </div>
+                    <button className="border mr-2.5 border-gray-500/60 rounded-md cursor-pointer p-1">
+                        <CogIcon customStyle="text-skin-text text-2xl hover:rotate-90 transition-all duration-300"/>
+                    </button>
+                </div>
 
+                <FeedController/>
             </div>
         </div>
     )

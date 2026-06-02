@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { useParams } from "react-router-dom";
-import { univPostStore } from "../../../lib/basicUserinfo";
+import { univPostStore, UnivuUserInfo } from "../../../lib/basicUserinfo";
 import { CogIcon } from "../../../utils/SVG/menuSVG";
 import FeedController from "./UX/homeController";
 const FeedBuilder = lazy(()=> import("./Build/virtuosContainer"));
@@ -8,10 +8,10 @@ const Controller = lazy(()=> import("./UX/homeController"));
 export default function BaseSuggestion () {
     const {post_id} = useParams();
     const postData = univPostStore(stat=>stat.postsById[post_id]);
-    
+    const userInfo = UnivuUserInfo(stat=> stat.userInfo);
     return(
         <div className="underTaker no-copy">
-            <div className="leftHome h-full w-full flex items-center justify-center flex-wrap">
+            <div className="leftHome h-full w-full flex-1 lg:flex-2  flex items-center justify-center flex-wrap">
                 <Suspense fallback={
                     [...Array(5)].map((_,i)=> (
                         <div key={i} className="flex items-start flex-col gap-2">
@@ -28,7 +28,26 @@ export default function BaseSuggestion () {
                 </Suspense>
             </div>
 
-            <div className="righSuggestion p-2.5 bg-blue-950/40 backdrop-blur-3xl h-full w-110 border-cyan-500/25 rounded-md border absolute right-0 z-20">
+            <div className="rightHome flex-1 h-full p-2 bg-linear-to-br
+                from-gray-800/10 via-transparent to-transparent border border-cyan-500/10 
+                hover:bg-size-[200%_200%] gap-2.5 relative rounded-lg
+                shadow-[0_0_10px_rgba(0,255,255,0.1)] backdrop-blur-md">
+                     <div className="h-1/10 w-full p-3 flex items-center justify-start flex-row gap-2.5 text-skin-text overflow-hidden">
+                        <div className="h-10 w-10 border rounded-full flex items-center justify-center overflow-hidden">
+                        <img src={Object.keys(userInfo).length > 0 ? userInfo.avatar+"?size=48" : null} alt="" />  
+                        </div>            
+                        <p>{userInfo.username || "username"}</p>
+                        <div
+                        className='ml-5 mainSwitchBtn flex items-center outline-0 border-0 text-blue-600 font-bold text-[14px]
+                        cursor-pointer hover:text-blue-400 relative'>Switch
+                        </div>
+                    </div>
+            </div>
+
+            <div className="righSuggestion p-2.5 bg-blue-950/40 backdrop-blur-3xl h-full w-110 border-cyan-500/25 rounded-md border absolute -right-108 hover:right-0 transition-all duration-700 z-20">
+                <div className="underTaker absolute! top-0 text-skin-text bg-gray-600/50 z-1">
+                    👾 ML Model is Under Development.
+                </div>
                 <div className="h-1/10 w-full flex items-center justify-between ">
                     <div className="flex items-start p-1 flex-col gap-2">
                         <h3 className="font-bold text-base text-skin-text">Suggestion Control Panel</h3>

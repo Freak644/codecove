@@ -1,16 +1,47 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { univPostStore, UnivuUserInfo } from "../../../lib/basicUserinfo";
 import { CogIcon } from "../../../utils/SVG/menuSVG";
 import FeedController from "./UX/homeController";
+import { Loader } from "../../../lib/loader";
+import { toast } from "react-toastify";
+import { useScroll } from "framer-motion";
 const FeedBuilder = lazy(()=> import("./Build/virtuosContainer"));
 const Controller = lazy(()=> import("./UX/homeController"));
 export default function BaseSuggestion () {
     const {post_id} = useParams();
-    const postData = univPostStore(stat=>stat.postsById[post_id]);
+    let {toggleLoader} = Loader();
+
+    const [postData, setData] = useState([]);
+    const [userSuggestion, setSuggestion] = useState([]);
+    
+    const fetchData = async (post_id) => {
+        toggleLoader(true);
+
+        try {
+            let jsonData = await fetch(`/myServer/readPost/getImage?post_id=${post_id}`);
+            let postData = await jsonData.json();
+            console.log(postData.pass);
+            if (postData.err) {
+                throw new Error(postData.err);
+            }
+            setData([postData.pass])
+        } catch (error) {
+            toast.error(error.message);
+        } finally {
+            toggleLoader(false)
+        }
+    };
+
+    useEffect(()=> {
+        if (postData.length > 0) return;
+
+        fetchData(post_id);
+    },[post_id])
+
     const userInfo = UnivuUserInfo(stat=> stat.userInfo);
     return(
-        <div className="underTaker no-copy">
+        <div className="underTaker no-copy ">
             <div className="leftHome h-full w-full flex-1 lg:flex-2  flex items-center justify-center flex-wrap">
                 <Suspense fallback={
                     [...Array(5)].map((_,i)=> (
@@ -29,10 +60,10 @@ export default function BaseSuggestion () {
             </div>
 
             <div className="rightHome flex-1 h-full p-2 bg-linear-to-br
-                from-gray-800/10 via-transparent to-transparent border border-cyan-500/10 
+                from-gray-800/10 via-transparent to-transparent 
                 hover:bg-size-[200%_200%] gap-2.5 relative rounded-lg
-                shadow-[0_0_10px_rgba(0,255,255,0.1)] backdrop-blur-md">
-                     <div className="h-1/10 w-full p-3 flex items-center justify-start flex-row gap-2.5 text-skin-text overflow-hidden">
+                backdrop-blur-md">
+                     <div className="h-20 w-full p-3 flex items-center justify-start flex-row gap-2.5 text-skin-text overflow-hidden">
                         <div className="h-10 w-10 border rounded-full flex items-center justify-center overflow-hidden">
                         <img src={Object.keys(userInfo).length > 0 ? userInfo.avatar+"?size=48" : null} alt="" />  
                         </div>            
@@ -42,9 +73,12 @@ export default function BaseSuggestion () {
                         cursor-pointer hover:text-blue-400 relative'>Switch
                         </div>
                     </div>
+
+
+
             </div>
 
-            <div className="righSuggestion p-2.5 bg-blue-950/40 backdrop-blur-3xl h-full w-110 border-cyan-500/25 rounded-md border absolute -right-108 hover:right-0 transition-all duration-700 z-20">
+            <div className="righSuggestion p-2.5 bg-blue-950/40 backdrop-blur-3xl h-full w-110 border-cyan-500/25 rounded-md border fixed -right-108 hover:right-0 transition-all duration-700 z-20">
                 <div className="underTaker absolute! top-0 text-skin-text bg-gray-600/50 z-1">
                     👾 ML Model is Under Development.
                 </div>

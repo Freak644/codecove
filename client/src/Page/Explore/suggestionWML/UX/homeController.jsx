@@ -27,7 +27,7 @@ export default function FeedController ({feedData}) {
     ]
 
     return(
-        <div className="underTaker h-9/10! text-skin-text p-1.5 flex-wrap my-scroll ">
+        <div className="underTaker h-9/10! text-skin-text p-1.5 flex-wrap my-scroll">
             <div className="h-20 w-full border border-cyan-500/25 bg-indigo-950/50
             rounded-lg p-2.5 flex items-center flex-row">
                 <div className="h-9 flex items-center justify-center w-9 bg-blue-800 rounded-full">

@@ -6,6 +6,7 @@ import FeedController from "./UX/homeController";
 import { Loader } from "../../../lib/loader";
 import { toast } from "react-toastify";
 import { useScroll } from "framer-motion";
+import axios from "axios";
 const FeedBuilder = lazy(()=> import("./Build/virtuosContainer"));
 const Controller = lazy(()=> import("./UX/homeController"));
 export default function BaseSuggestion () {
@@ -33,11 +34,23 @@ export default function BaseSuggestion () {
         }
     };
 
+    const findFriend = async () => {
+        
+        try {
+            let rqst = await axios("/myServer/readUser/findFriends");
+            // console.log(usersRow);
+            setSuggestion(rqst?.data?.usersRow);
+        } catch (error) {
+            toast.error(error?.response?.data.err || error.message);
+        }
+    }
+
     useEffect(()=> {
         if (postData.length > 0) return;
 
         fetchData(post_id);
-    },[post_id])
+        findFriend();
+    },[post_id]);
 
     const userInfo = UnivuUserInfo(stat=> stat.userInfo);
     return(

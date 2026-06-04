@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';;
 import { database } from '../../Controllers/myConnectionFile.js';
 import { Decrypt } from '../../utils/Encryption.js';
 import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
-import { CrntUser } from '../getUsers/getCurrentUserdata.js';
+import { CrntUser } from '../getUsers/userInfo/getCurrentUserdata.js';
 const revokedToken = async (session_id) => {
      await database.execute(
             "UPDATE user_sessions SET revoked=? WHERE session_id=?",

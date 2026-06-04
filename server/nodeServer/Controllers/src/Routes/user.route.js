@@ -6,7 +6,7 @@ import {loggedMeOut} from '../../../API/Login/userSession.js';
 import {ActivityInfo} from '../../../API/Login/getSessionInfo.js'
 import {changePassSecure} from '../../../API/Secure/SecureAccount.js';
 import {verification,resetPassword} from '../../../API/Secure/userVerification/verificationAPI.js';
-import {CrntUser} from '../../../API/getUsers/getCurrentUserdata.js';
+// import {CrntUser} from '../../../API/getUsers/getCurrentUserdata.js';
 import {Auth} from '../../../API/Login/tokenChecker.js';
 import {getUserinfo} from '../../../API/getUsers/prifileAPIs.js';
 import {followAPI} from '../../../API/editProfileAPIs/followUnfollow.js';
@@ -14,7 +14,9 @@ import {changeBio, changeDP} from '../../../API/editProfileAPIs/userInfoApis.js'
 import { upload } from '../middleware/upload.js';
 import {CreateUser} from '../../../API/CreateUser/createUser.js'
 import { MergeRequestData } from '../../../API/getUsers/mergeRequestData.js';
-import { findUsers } from '../../../API/getUsers/getUserforSerarch.js';
+import { findUsers } from '../../../API/getUsers/userInfo/getUserforSerarch.js';
+import { FindFriends } from '../../../API/getUsers/userInfo/findFriends.js';
+
 
 
 //absolute User Routes there path will look like /user/apiPath
@@ -36,6 +38,7 @@ userRoutes.get("/searchUsers",...commonStack, Auth,findUsers);
 const readRoutes = Router();
 
 readRoutes.get("/getUserInfo",...commonStack,Auth,getUserinfo);
+readRoutes.get("/findFriends", ...commonStack, Auth, FindFriends)
 
 //profileUserRoute for writeProfile Info full will be look like /writeUser/apiPath
 

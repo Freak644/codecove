@@ -1,7 +1,7 @@
 import { use } from 'react';
 import {Link} from 'react-router-dom';
 export default function ShowUser({data, history}) {
-    console.log(data)
+    // console.log(data)
     const afterFind = (userData)=> {
        
         const newHistory = [...history, userData];

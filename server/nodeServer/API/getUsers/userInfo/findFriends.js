@@ -7,7 +7,7 @@ export const FindFriends = async (rkv, rspo) => {
     let {id} = rkv.authData;
 
     try {
-        let [rows] = await database.query(`SELECT u.username, u.avatar, u.follower_count, u.following_count, u.bio,
+        let [rows] = await database.query(`SELECT u.id as user_id, u.username, u.avatar, u.follower_count, u.following_count, u.bio,
             EXISTS (
                 SELECT 1 FROM follows
                 WHERE follower_id = ?

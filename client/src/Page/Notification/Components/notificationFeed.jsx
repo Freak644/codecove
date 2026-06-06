@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { toggleSlider } from "../../../lib/tabToggle"
 import { notification } from "../../../utils/notificationSender";
 import NotificationMgmt from "./notificaiton";
-import { RiNotification2Fill, RiPictureInPictureExitFill } from "react-icons/ri";
+import { CogIcon, CommentSvg, FileSvg, FollowSvg, FsquareSvg } from "../../../utils/SVG/menuSVG";
 
 export default function NotificaitonMini() {
     const {toggleMiniTab} = toggleSlider();
@@ -16,10 +16,10 @@ export default function NotificaitonMini() {
         notification("Test 2/.3","Testing",true,"http://localhost:3221/post/kBO61tMtRgdpofmEHqmd4")
     }
     return(
-        <div className="underTaker no-copy flex-wrap bg-skin-text/1 rounded-lg backdrop-blur-lg shadow-lg overflow-hidden">
+        <div className="underTaker no-copy flex-wrap bg-blue-950/30 rounded-lg backdrop-blur-lg shadow-lg overflow-hidden">
     
                 {/* Header */}
-                <div className="NotificationHeader h-2/14 w-full flex items-start flex-wrap gap-3 text-skin-text justify-center px-4 py-3 border-b border-gray-400/20">
+                <div className="NotificationHeader h-3/17 w-full flex items-start flex-wrap gap-2.5 text-skin-text justify-center px-4 py-3 border-b border-gray-400/20">
                     
                     {/* Top Row */}
                     <div className="flex justify-end items-center gap-3 w-full">
@@ -27,51 +27,48 @@ export default function NotificaitonMini() {
                         {/* Notification Icon */}
                         <p 
                             onClick={showTestNotification} 
-                            className="text-lg flex gap-2 text-skin-text/80 items-center cursor-pointer hover:text-skin-text transition"
+                            className="text-lg flex gap-2 text-skin-text/90 items-center cursor-pointer hover:text-skin-ptext transition"
                         > 
-                            <RiNotification2Fill/> 
+                            Notification
                         </p>
 
                         {/* Mark as Read */}
-                        <p className="text-sm text-blue-400 cursor-pointer hover:text-blue-500 ml-auto transition">
-                            Mark as read
+                        <p className="text-sm text-purple-600 font-bold cursor-pointer hover:text-blue-500 ml-auto transition">
+                            Mark all as read 
                         </p>
 
                         {/* Exit Button */}
-                        <RiPictureInPictureExitFill 
-                            onClick={()=>toggleMiniTab("charts")} 
-                            className="p-1.5 rounded-lg text-2xl border border-gray-400/30 cursor-pointer hover:bg-gray-400/10 transition"
-                        />
+                        <CogIcon customStyle="cursor-pointer hover:rotate-90 transition-all duration-300" />
                     </div>
 
                     {/* Tabs */}
-                    <div className="flex gap-4 w-full justify-start mt-2 text-sm font-medium">
+                    <div className="flex gap-5 notificaitonHeaderTab bg-blue-950/40 border-gray-500/40 w-full justify-start mt-2 text-sm font-medium border rounded-lg p-2">
                         <p 
                             onClick={()=>setTab("All")} 
-                            className={`cursor-pointer hover:text-skin-text transition ${notiTab === "All" ? "activeNoti" : "text-skin-text/60"}`}
+                            className={`${notiTab === "All" && "activeNoti"}`}
                         >
-                            All
+                            <FsquareSvg customStyle="text-lg"/> All
                         </p>
 
                         <p 
                             onClick={()=>setTab("Update")} 
-                            className={`cursor-pointer hover:text-skin-text transition ${notiTab === "Update" ? "activeNoti" : "text-skin-text/60"}`}
+                            className={`${notiTab === "Update" && "activeNoti"}`}
                         >
-                            Update
+                            <FileSvg customStyle="text-md"/> Post
                         </p>
 
                         <p 
                             onClick={()=>setTab("Sys")} 
-                            className={`cursor-pointer hover:text-skin-text transition ${notiTab === "Sys" ? "activeNoti" : "text-skin-text/60"}`}
+                            className={`${notiTab === "Sys" && "activeNoti"}`}
                         >
-                            System
+                            <CommentSvg customStyle="text-md absolute left-0" /> <span className="translate-x-2">Commnet</span>
                         </p>
 
                         <p 
                             onClick={()=>setTab("Read")} 
-                            className={`cursor-pointer hover:text-skin-text transition ${notiTab === "Read" ? "activeNoti" : "text-skin-text/60"}`}
+                            className={`${notiTab === "Read" && "activeNoti"}`}
                         >
-                            Read
+                           <FollowSvg customStyle="text-lg"/> Follow
                         </p>
                     </div>
                 </div>

@@ -15,11 +15,11 @@
     --post-container: linear-gradient(145deg,#12081d,#0a0412);
 }
 [data-theme='dark-white']{
-    --bg-color: #0f1115;
+    --bg-color: #040b18;
     --text-color: white;
     --p-text-color:whitesmoke;
     --login-txt-color:white;
-    --post-container: linear-gradient(145deg,#12081d,#0a0412);
+    --post-container: linear-gradient(145deg,#130720,#10081b);
 }
 *{
     box-sizing: border-box;

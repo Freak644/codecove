@@ -275,7 +275,7 @@ select{
 
 .singlePost{
   background: var(--post-container) ;
-  border: 1px solid rgba(255, 255, 0, 0.08);
+  border: 1px solid rgba(123, 0, 255, 0.468);
   box-shadow: inset 0 0 5px 2px rgba(105, 105, 105, 0.19);
   clip-path: polygon(0 9%, 62% 9%, 65% 7%, 65% 0, 100% 0, 100% 100%, 0 100%);
   .crntTodo{
@@ -581,9 +581,28 @@ select{
   }
 }
 
+.notificaitonHeaderTab>p {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  gap: 6px;
+  transition: all .2s ease-in-out;
+  color: var(--text-color);
+  font-size: smaller;
+  width: 70px; height: 30px;
+  border-radius: 8px;
+  &:hover {
+    color: rgb(0, 34, 255) !important;
+  }
+}
+
 .activeNoti{
-   color: var(--text-color) !important;
-   box-shadow: 0 2px 25px rgb(200,200,200,0.2);
+   border: 1px solid rgba(128, 128, 128, 0.575);
+   background: #2500aa79;
+   color: rgb(136, 0, 255) !important;
+  font-weight: bold;
 }
 
 .floatingPart{

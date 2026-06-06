@@ -62,9 +62,9 @@ export default function BaseSuggestion () {
                 </Suspense>
             </div>
 
-            <div className="rightHome flex-1 h-full p-2 bg-linear-to-br
+            <div className="rightHome flex-1 h-full p-2.5 bg-linear-to-br
                 from-gray-800/10 via-transparent to-transparent 
-                hover:bg-size-[200%_200%] gap-2.5 relative rounded-lg
+                hover:bg-size-[200%_200%] gap-2.5 relative rounded-lg 
                 backdrop-blur-md">
                     
                 <FindFriends/>

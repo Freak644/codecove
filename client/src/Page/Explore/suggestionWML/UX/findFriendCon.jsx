@@ -79,7 +79,7 @@ export default function FindFriends () {
                                 <img src={uInfo.avatar+"?size=48"} alt=""  className="h-10 w-10 rounded-full border border-yellow-300"/>
                                 <p  className='text-skin-ptest hover:text-skin-text hover:underline underline-offset-1'>{uInfo.username}</p>
                             </Link>
-                            <p className={``}>{uInfo.isFollowing ? "Following" : 
+                            <p className={`-translate-x-2`}>{uInfo.isFollowing ? "Following" : 
                                 <button onClick={()=> handleFollow(uInfo.user_id)}  className={`cursor-pointer outline-2 tracking-wide outline-gray-600/50" : "tracking-wide hover:tracking-wider hover:font-bold bg-linear-to-r from-purple-500 via-blue-500 to-purple-600 p-1 bg-size-[200%_200%] hover:bg-position-[100%_150%] transition-all duration-700 ease-in-out outline-none border-none pl-2 pr-2 rounded-lg text-skin-text `}>Follow</button>}</p>
                         </div>
                     ))}

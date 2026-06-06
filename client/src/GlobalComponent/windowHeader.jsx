@@ -56,22 +56,22 @@ export default function WindowHerder() {
                 `}/>
                    
                     <div className=" cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">
-                        <GhotIcon className="m-1 border-r"/>
-                        <TringleIcon className='text-[18px] mb-1'/>
+                        <GhotIcon className="m-1 border-r pr-1 border-skin-ptext/30"/>
+                        <TringleIcon className='text-[18px] mb-1 p-0.5'/>
                     </div>
                 </form>
 
                 <div className="secminiMenuDiv text-2xl flex items-center flex-row gap-[1vw] ">
-                    <div className="createPost flex items-center justify-center ml-2.5 border-2 border-skin-ptext/40 rounded-lg
+                    <div className="createPost flex items-center justify-center ml-1.5 border-2 border-skin-ptext/30 rounded-lg
                     cursor-pointer ">
-                        <CommitIcon className="border-r m-1" />
-                        <TringleIcon className='text-[18px] mb-1'/>
+                        <CommitIcon className="border-r m-1 pr-1 border-skin-ptext/30" />
+                        <TringleIcon className='text-[18px] mb-1 p-0.5'/>
                     </div>
 
                     <div className="userThings flex gap-[1vw]">
-                        <ReportIcon title="Report an issue" className={`border text-[30px] border-skin-ptext/30 p-1 rounded-lg cursor-pointer`}></ReportIcon>
-                        <GitHubIcon title="Source Code"  onClick={()=>window.open("https://github.com/Freak644","_blank")} className={`border border-skin-ptext/30  text-[30px] flex items-center justify-center p-1.5 rounded-lg cursor-pointer`}/>
-                        <NotificationBellIcon onClick={()=>toggleMiniTab("noti")} title="Notification" className={`border text-[30px] border-skin-ptext/30 p-1 rounded-lg cursor-pointer`}></NotificationBellIcon>
+                        <ReportIcon title="Report an issue" className={`border svgOnWH border-skin-ptext/30 rounded-lg`}></ReportIcon>
+
+                        <NotificationBellIcon onClick={()=>toggleMiniTab("noti")} title="Notification" className={`border svgOnWH border-skin-ptext/30 rounded-lg`}></NotificationBellIcon>
                         <div title={userData.username || "Loading"} className="h-9 w-9 overflow-hidden cursor-pointer border rounded-full flex items-center justify-center relative">
                             <img className="h-full" src={userData.avatar ? userData.avatar : "https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" />
                         </div>

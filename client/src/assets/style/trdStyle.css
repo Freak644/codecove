@@ -128,3 +128,19 @@
     padding: 4px;
     cursor: pointer;
 }
+
+.customNotiContainer {
+    border: 1px solid rgba(0, 255, 255, 0.236);
+    height: 80px; width: 100%;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.endictDot {
+    height: 9px; width: 9px;
+    border-radius: 50%;
+    background: greenyellow;
+}

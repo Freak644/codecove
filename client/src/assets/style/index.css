@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-    --color-skin-bg: rgb(230, 230, 230);
-    --color-skin-text: #000000;
-    --color-skin-ptext:#363636;
-    --color-skin-login:rgb(0,0,0);
+    --color-skin-bg: #040b18;
+    --color-skin-text: rgb(0, 255, 0);
+    --color-skin-ptext: rgb(79,255,79);
+    --color-skin-login: rgb(0,0,0);
 }
 
 html[data-theme="dark-yellow"] {

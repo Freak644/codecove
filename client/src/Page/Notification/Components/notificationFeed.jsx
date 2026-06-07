@@ -74,7 +74,7 @@ export default function NotificaitonMini() {
                 </div>
 
                 {/* Content */}
-                <div className="h-12/14 w-full my-scroll pt-4 px-2">
+                <div className="h-12/14 w-full">
                     <NotificationMgmt/>
                 </div>
 

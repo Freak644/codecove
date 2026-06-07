@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 :root {
-    --bg-color: rgb(21, 21, 43);
-    --text-color: #ffffff;
-    --p-text-color:#dbdbdb;
-    --login-txt-color:black;
-    --post-container: linear-gradient(145deg, #ffffff, #dde1ff);
+    --bg-color: #040b18;
+    --text-color: rgb(0, 255, 0);
+    --p-text-color:rgb(79, 255, 79);
+    --login-txt-color:white;
+    --post-container: linear-gradient(145deg,#130720,#10081b);
 
 }
 [data-theme='dark-yellow']{

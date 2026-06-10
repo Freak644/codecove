@@ -1,0 +1,23 @@
+import { ClickSvg, FollowSvgL, RightArrowL } from "../../../utils/SVG/menuSVG";
+
+export default function FollowNoti ({crntData}) {
+    
+    return(
+          <div className="customNotiContainer text-skin-text">
+              <div className="NotiIcons">
+                 {crntData.isRead && <div className="endictDot" />}
+                  <div className={`svgHolderNI ${crntData.isRead ? "bg-purple-800" : "bg-amber-400"}`}>
+                      <FollowSvgL customStyle="text-lg" />
+                  </div>
+              </div>
+              <div className="NotiTextdiv">
+                  <p>{"Ethan Hunt"} started following you</p>
+                  <p className="timeLine">3m ago</p>
+              </div>
+              <div className="imgOrGo h-7 rounded-full flex items-center justify-center bg-indigo-950
+              hover:bg-gray-500 hover:text-black duration-200">
+                  <RightArrowL />
+              </div>
+          </div>
+        )
+}

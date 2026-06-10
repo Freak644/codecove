@@ -182,6 +182,10 @@
             color: var(--color-skin-ptext);
         }
     }
+    
+    .timeLine {
+        color: color-mix(in srgb, var(--color-skin-ptext) 45%, transparent);
+    }
 }
 
 .imgOrGo {

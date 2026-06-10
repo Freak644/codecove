@@ -599,9 +599,9 @@ select{
 }
 
 .activeNoti{
-   border: 1px solid rgba(128, 128, 128, 0.575);
-   background: #2500aa79;
-   color: rgb(136, 0, 255) !important;
+   border: 1px solid rgba(174, 0, 255, 0.329);
+   background: #2d177c79;
+   color: rgb(195, 0, 255) !important;
   font-weight: bold;
 }
 

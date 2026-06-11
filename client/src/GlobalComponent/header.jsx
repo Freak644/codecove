@@ -5,15 +5,9 @@ import { useLocation } from "react-router-dom";
 import {toggleABMenu} from '../lib/toggleTheme';
 import {getColor} from '../utils/getGradnt'
 import { GradientSVG } from "../utils/getSVG";
-import { FaLaptopCode, FaGithubSquare } from "react-icons/fa";
-import { IoMenu } from "react-icons/io5";
-import { LiaGhostSolid } from "react-icons/lia";
-import { IoMdArrowDropdown, IoMdSettings } from "react-icons/io";
-import { MdReportGmailerrorred } from "react-icons/md";
-import { TbMessageChatbotFilled } from "react-icons/tb";
-import { ImProfile } from "react-icons/im";
-import { RiLogoutCircleRLine } from "react-icons/ri";
 import { debouncerGlob } from "../utils/debounceFun";
+import { CodeBlockI, CogIcon, CommentSvg } from "../utils/SVG/menuSVG";
+import { GhotIcon, ReportIcon, TringleIcon, UserLogOUtSvg, UserSvg } from "../utils/SVG/SVG";
 export default function Header() {
     const [isToggle,setToggle] = useState(false)
     const [userData,setdata] = useState({});
@@ -52,30 +46,30 @@ export default function Header() {
                 <div className="firstHalf lg:hidden w-1/2 flex items-center pl-3 gap-2">
                 <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 w-10 menuBTN flex items-center justify-center text-3xl border-gray-500 border rounded-lg"><IoMenu/></div>
                         <GradientSVG id={"abMenui"} />
-                        <FaLaptopCode style={{fill: "url(#abMenui)"}} className="text-3xl " />
+                        <CodeBlockI style={{fill: "url(#abMenui)"}} customStyle="text-3xl " />
                                        
                         <p className={`text-2xl bg-size-[200%_200%]
                             bg-linear-to-tl ${gradColor}
-                            bg-clip-text text-transparent font-bold`}>EchoVain</p>
+                            bg-clip-text text-transparent font-bold`}>EchoVain's</p>
                 </div>
 
                 <div className="middleWhr lg:hidden relative flex items-center flex-row">
-                    <FaLaptopCode style={{fill: "url(#abMenui"}} className="absolute left-1.5 text-2xl"/>
+                    <CodeBlockI style={{fill: "url(#abMenui"}} customStyle="absolute left-1.5 text-2xl"/>
                     <input type="text" name="searchBox1" placeholder="Type to serch" />
                 </div>
                 {/* <ThemeButton/> */}
                 <div className="scondHalf   w-1/3 flex items-center justify-around text-2xl">
                     <div className=" cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">
-                        <LiaGhostSolid className="m-1 border-r" />
-                        <IoMdArrowDropdown className=' text-[18px]' />
+                        <GhotIcon className="m-1 border-r" />
+                        <TringleIcon className=' text-[18px]' />
                   </div>
                     <div className=" cursor-pointer miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">
-                        <FaGithubSquare title="Source Code" className="m-1 pr-1 border-r"/>
-                        <MdReportGmailerrorred title="Report an issue" className=" m-0.5"/>
+                        {/* <FaGithubSquare title="Source Code" className="m-1 pr-1 border-r"/> */}
+                        <ReportIcon title="Report an issue" className=" m-0.5"/>
                     </div>
                   
                     <div className=" cursor-pointer p-1 miniMenuDiv m-2 text-2xl border-2 border-skin-ptext/30 rounded-lg flex items-center justify-center">
-                        <TbMessageChatbotFilled/>
+                        <CommentSvg/>
                     </div>
                 </div>
                 <div className="userMenu relative flex items-center lg:hidden text-skin-text!">
@@ -87,10 +81,10 @@ export default function Header() {
                     z-50 backdrop-blur-md bg-skin-bg/50 
                     ">
                         <ul>
-                            <li><ImProfile/> Profile</li>
+                            <li><UserSvg/> Profile</li>
                             <li><ThemeButton/></li>
-                            <li><IoMdSettings/> Setting</li>
-                            <li onClick={debounceLogout}><RiLogoutCircleRLine/> Logout</li>
+                            <li><CogIcon/> Setting</li>
+                            <li onClick={debounceLogout}><UserLogOUtSvg/> Logout</li>
                         </ul>
                     </div>
                     }

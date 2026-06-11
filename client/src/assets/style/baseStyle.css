@@ -2,7 +2,7 @@
 :root {
     --bg-color: #040b18;
     --text-color: rgb(0, 255, 0);
-    --p-text-color:rgb(79, 255, 79);
+    --p-text-color:rgba(79, 255, 79, 0.623);
     --login-txt-color:white;
     --post-container: linear-gradient(145deg,#130720,#10081b);
 
@@ -10,14 +10,14 @@
 [data-theme='dark-yellow']{
     --bg-color: #110411;
     --text-color: #fff700;
-    --p-text-color:#fbff7d;
+    --p-text-color:#fbff7db6;
     --login-txt-color:white;
     --post-container: linear-gradient(145deg,#12081d,#0a0412);
 }
 [data-theme='dark-white']{
     --bg-color: #040b18;
     --text-color: white;
-    --p-text-color:whitesmoke;
+    --p-text-color:rgba(255, 255, 255, 0.5);
     --login-txt-color:white;
     --post-container: linear-gradient(145deg,#130720,#10081b);
 }
@@ -146,8 +146,14 @@ body{
     
 }
 .menuDiv{
+
+    #secBtn {
+        opacity: 0;
+        transition: .3s;
+    }
+
     ul{
-        padding: 10px;
+        padding: 8px;
         transition: all .3s ease;
         li{
             transition: all .3s ease-out;
@@ -214,7 +220,12 @@ body{
     ul:hover li:hover{
         opacity: 1;
     }
+    &:hover #secBtn {
+        opacity: .9;
+    }
 }
+
+
 
 @keyframes jigglingBEll {
     0%{
@@ -803,7 +814,7 @@ form>h1>span{
     }
 }
 .routeContainer{
-    height:93.5dvh; width: 87vw;
+    height:93.5dvh; width: 84vw;
     display: flex;
     align-items: center;
     justify-content: center;

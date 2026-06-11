@@ -7,7 +7,7 @@
     "client": "cd client && npm run dev"
   },
   "devDependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^10.0.3"
   },
   "dependencies": {
     "bad-words": "^4.0.0"

@@ -43,3 +43,26 @@ export const RightArrowL = ({customStyle = ""}) => (
 export const FollowSvgL = ({customStyle = ""}) => (
     <svg stroke="currentColor" fill="none" strokeWidth="2" className={customStyle} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
 )
+
+export const MeneHI = ({customStyle = ""}) => (
+    <svg stroke="currentColor" fill="currentColor" strokeWidth="0" className={customStyle} viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M17.59 18 19 16.59 14.42 12 19 7.41 17.59 6l-6 6z"></path><path d="m11 18 1.41-1.41L7.83 12l4.58-4.59L11 6l-6 6z"></path></svg>
+)
+
+export const CodeBlockI = ({customStyle = "", style = {}}) => (
+    <svg style={style} stroke="currentColor" fill="currentColor" strokeWidth="0" className={customStyle} viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+        <path d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zm-40 728H184V184h656v656z" />
+
+  {/* Arrow */}
+  <path  d="M321.1 679.1l192-161c3.8-3.2 3.8-9.1 0-12.3l-192-160.9A7.95 7.95 0 0 0 308 351v62.7c0 2.4 1 4.6 2.9 6.1L420.7 512l-109.8 92.2a8.1 8.1 0 0 0-2.9 6.1V673c0 6.8 7.9 10.5 13.1 6.1z" />
+
+  {/* Blinking cursor */}
+  <rect
+    className="cursorIL"
+    x="520"
+    y="620"
+    width="190"
+    height="60"
+    rx="8"
+  />
+  </svg>
+)

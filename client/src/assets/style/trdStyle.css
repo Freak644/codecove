@@ -199,3 +199,13 @@
         width: auto;
     }
 }
+
+.cursorIL {
+  animation: blick 1s infinite;
+}
+
+@keyframes blick {
+    50% {
+    opacity: 0;
+  }
+}

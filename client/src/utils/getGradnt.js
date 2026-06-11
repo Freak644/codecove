@@ -14,15 +14,27 @@ const getGradientColors = () => {
   const crntTheme = useThemeStore(state => state.theme);
 
   switch (crntTheme) {
-    case "dark-white":
-      return ["#eab308", "#ec4899", "#fb923c"]; // yellow → pink → orange
+  case "dark-white":
+    return [
+      "#ffffff", // white
+      "#60a5fa", // soft blue
+      "#c084fc", // soft purple
+    ];
 
-    case "dark-yellow":
-      return ["#a855f7", "#eab308", "#2563eb"]; // purple → yellow → blue
+  case "dark-yellow":
+    return [
+      "#fff700", // theme yellow
+      "#f59e0b", // amber
+      "#ff7b00", // orange
+    ];
 
-    default:
-      return ["#d946ef", "#fb7185", "#a855f7"]; // fuchsia → rose → purple
-  }
+  default:
+    return [
+      "#00ff00", // neon green
+      "#22c55e", // emerald
+      "#06b6d4", // cyan
+    ];
+}
 };
 
 export {getColor, getGradientColors}

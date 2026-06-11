@@ -6,8 +6,9 @@ import {getColor} from '../utils/getGradnt';
 import { toggleSlider } from "../lib/tabToggle";
 import SearchEl from "../Page/SearchELs/searchEl";
 import { GradientSVG } from "../utils/getSVG";
-import {FaLaptopCode} from 'react-icons/fa'
+
 import { CommitIcon, GhotIcon, GitHubIcon, MenuIcon, ReportIcon, TringleIcon, NotificationBellIcon } from "../utils/SVG/SVG";
+import { CodeBlockI } from "../utils/SVG/menuSVG";
 
 export default function WindowHerder() {
     let location = useLocation();
@@ -45,7 +46,7 @@ export default function WindowHerder() {
             <div className="leftHeader text-4xl flex flex-1 gap-4 pl-5">
                 <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 menuBTN cursor-pointer w-10 flex logotxt items-center justify-center text-3xl border-skin-ptext/30 border rounded-full"><MenuIcon className="text-skin-ptext"/></div>
                 <GradientSVG id={"winHeader"} />
-                <FaLaptopCode style={{fill: "url(#winHeader)"}}/>
+                <CodeBlockI style={{fill: "url(#winHeader)"}}/>
                 <span className="text-skin-ptext text-[15px]  flex items-center">{pathName}</span>
             </div>
             

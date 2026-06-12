@@ -1,10 +1,8 @@
 import axios from "axios";
 import { useMemo, useState } from "react";
 import {toast} from 'react-toastify';
-import {FcGoogle} from 'react-icons/fc'
-import { VscGithub } from "react-icons/vsc";
-import { TbLockPassword } from "react-icons/tb";
 import { debouncerGlob } from "../../../utils/debounceFun";
+import { GitHubIcon, GoogleSvg, UserShield } from "../../../utils/SVG/SVG";
 
 export default function Password({pramsData}) {
     const [iscalling, setCalling] = useState(false);
@@ -45,7 +43,7 @@ export default function Password({pramsData}) {
                     <div className="h-14 w-14 rounded-full overflow-hidden flex items-center justify-center relative">
                     <img src={(pramsData.provider_name && !pramsData.accountAv.startsWith("Images")) ? pramsData.avatar : pramsData.accountAv}  className="h-full w-full object-cover"/>
                    
-                    {pramsData.data?.provider_name == "Google" ? <FcGoogle className="absolute left-1 bottom-1 text-sm" /> : <VscGithub className="absolute left-1 bottom-1 text-sm" />}
+                    {pramsData.data?.provider_name == "Google" ? <GoogleSvg className="absolute left-1 bottom-1 text-sm" /> : <GitHubIcon className="absolute left-1 bottom-1 text-sm" />}
                     </div>
 
                     {/* Connector Line */}
@@ -81,7 +79,7 @@ export default function Password({pramsData}) {
                     <form action="" onSubmit={verfiyPwd}>
                         <div className="inputDiv">
                             <input type="password" name="password" id="pwd"  required/>
-                            <label htmlFor="pwd"> <TbLockPassword/> <span>Password</span> </label>
+                            <label htmlFor="pwd"> <UserShield/> <span>Password</span> </label>
                         </div>
                         <div className="inputDiv twobtnInput">
                             <button disabled={iscalling} type="submit" className="btn bigBtn">

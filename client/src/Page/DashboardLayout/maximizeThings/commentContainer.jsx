@@ -9,15 +9,14 @@ import CommentsContainer from "./comment";
 import { Virtuoso } from "react-virtuoso";
 import socket from "../../../utils/socket";
 import { calcGeneratorDuration, m } from "framer-motion";
-import { FaKeyboard, FaSmile } from "react-icons/fa";
 import {btnContext} from './baseContainer.jsx';
-import { IoSend } from "react-icons/io5";
 import { debouncerGlob } from "../../../utils/debounceFun.js";
 import TODOList from "../miniCom/TODOCompunent.jsx";
 import  LikeCom  from "../miniCom/TODOComs/likeCom.jsx";
 import DisLikeCom from "../miniCom/TODOComs/disLike.jsx";
 import SvCom from "../miniCom/TODOComs/saveCom.jsx";
 import CommentSkeleton from "./commentSkeL.jsx";
+import { KeyBoardSvg, PuchiSvg, SendSvg } from "../../../utils/SVG/menuSVG.jsx";
 
 let logicObj = {
     isFeching:true,
@@ -332,7 +331,7 @@ export default function CommentEl() {
                         }
                         
                         <div className="absolute top-4 left-4  text-[20px] flex items-center justify-center cursor-pointer text-white" onClick={()=> {setEmoji(prev=>!prev), toggleMe(true)}}>
-                             {isEmoji ? <FaKeyboard/> : <FaSmile/>}
+                             {isEmoji ? <KeyBoardSvg/> : <PuchiSvg/>}
                         </div>
                         <form action="" className="h-full w-9/10 flex items-center justify-center">
                             <textarea ref={commentRef} onClick={()=>setEmoji(false)}  className="my-scroll bg-black/80 rounded-lg p-1 resize-none text-skin-ptext h-full border border-amber-50 pl-10 text-[16px]  placeholder:pl-2 placeholder:pt-px w-full" 
@@ -343,7 +342,7 @@ export default function CommentEl() {
                         onClick={bounceNewComment}
                         className={`flex items-center justify-center w-18 p-1 cursor-pointer`}
                         
-                        ><div className="h-full w-full  text-skin-ptext hover:text-skin-text"> <IoSend className="text-3xl ml-4"/>
+                        ><div className="h-full w-full  text-skin-ptext hover:text-skin-text"> <SendSvg className="text-3xl ml-4"/>
                         </div></button>
                     </div>
                 </div>

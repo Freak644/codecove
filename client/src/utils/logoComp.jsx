@@ -1,14 +1,14 @@
 import {getColor} from './getGradnt';
-import {FaLaptopCode} from 'react-icons/fa'
 import { GradientSVG } from './getSVG';
+import { CodeBlockI } from './SVG/menuSVG';
 export default function LogoCom({CustomclassName}) {
     let gradColor = getColor();
     return(
         <div className={`Logotxt flex items-center flex-col w-30 ${CustomclassName || ""}`}>
             <GradientSVG id={"grad"}/>
-            <FaLaptopCode
+            <CodeBlockI
             style={{fill:"url(#grad)"}}
-             className={`text-5xl `}
+             customStyle={`text-5xl `}
             />
          
             <div className="nameHoler gap-1 flex items-center flex-row">

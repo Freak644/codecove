@@ -1,8 +1,6 @@
 import {Link, useNavigation} from 'react-router-dom';
-import { AiOutlineHome } from "react-icons/ai"
-import { FaWpexplorer } from "react-icons/fa6";
-import { RiGitRepositoryCommitsLine } from "react-icons/ri";
-import { MdOutlineNotificationsNone } from "react-icons/md";
+import { ExploreIcon, HomeIcon } from '../utils/SVG/menuSVG';
+import { CommitIcon, NotificationBellIcon } from '../utils/SVG/SVG';
 export default function MiniMenu({avatar, crntTab, username}) {
     
   
@@ -11,13 +9,13 @@ export default function MiniMenu({avatar, crntTab, username}) {
       
         switch (Tab) {
             case "Home":
-                return <AiOutlineHome className='dyicon'/>;
+                return <HomeIcon customStyle='dyicon'/>;
             case "Explore":
-                return <FaWpexplorer className='dyicon' />;
+                return <ExploreIcon customStyle='dyicon' />;
             case "Commit":
-                return <RiGitRepositoryCommitsLine className='dyicon' />;
+                return <CommitIcon className='dyicon' />;
             case "Notification":
-                return <MdOutlineNotificationsNone className='dyicon' />;
+                return <NotificationBellIcon className='dyicon' />;
             case "Lab":
                 return <img
                             className='h-9 rounded-full w-9'
@@ -37,7 +35,7 @@ export default function MiniMenu({avatar, crntTab, username}) {
             <li className={crntTab === "Home" ? "activeLi" : ""}>
                 <Link to={"/"}>
                     <span>
-                        <AiOutlineHome className='icon'/>
+                        <HomeIcon customStyle='icon'/>
                     </span>
                 </Link>
             </li>
@@ -45,7 +43,7 @@ export default function MiniMenu({avatar, crntTab, username}) {
             <li className={crntTab === "Explore" ? "activeLi" : ""}>
                 <Link to={"/Explore"} >
                     <span>
-                        <FaWpexplorer className='icon' />
+                        <ExploreIcon customStyle='icon' />
                     </span>
                 </Link>
             </li>
@@ -53,7 +51,7 @@ export default function MiniMenu({avatar, crntTab, username}) {
             <li className={crntTab === "Commit" ? "activeLi" : ""}>
                 <Link to={"/Commit"}>
                     <span>
-                        <RiGitRepositoryCommitsLine className='icon' />
+                        <CommitIcon className='icon' />
                     </span>
                 </Link>
             </li>
@@ -61,7 +59,7 @@ export default function MiniMenu({avatar, crntTab, username}) {
             <li className={crntTab === "Notification" ? "activeLi" : ""}>
                 <Link to={"/Notifications"}>
                     <span>
-                        <MdOutlineNotificationsNone className='icon' />
+                        <NotificationBellIcon className='icon' />
                     </span>
                 </Link>
             </li>

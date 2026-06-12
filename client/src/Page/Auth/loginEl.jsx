@@ -3,13 +3,10 @@ import FaceToggle from "../../lib/tabToggle";
 import { toast } from "react-toastify";
 import { Loader} from "../../lib/loader";
 import LogoCom from "../../utils/logoComp";
-import {FcGoogle} from 'react-icons/fc'
-import { VscGithub } from "react-icons/vsc";
 import bat from '../../assets/Images/bat.gif';
-import {FaUserShield, FaRegEye, FaRegEyeSlash } from 'react-icons/fa'
-import { TbLockPassword } from "react-icons/tb";
 import { debouncerGlob } from "../../utils/debounceFun";
 import { GitHubIcon, GoogleSvg, UserFI, UserShield } from "../../utils/SVG/SVG";
+import { EyeOpn, EyeSl } from "../../utils/SVG/menuSVG";
 export default function LoginCon({toggle}) {
     const pwdRef = useRef();
     const isCalled = useRef(false);
@@ -126,7 +123,7 @@ export default function LoginCon({toggle}) {
                                     passwordVal:evnt.target.value
                                 }))} value={mgmtPass.passwordVal} ref={pwdRef} onBlur={(evnt)=>handleBlur(evnt.target)} type={mgmtPass.pwdType} name="Password" id="Paswrd" required/>
                                 <label htmlFor="Paswrd"><UserShield /> <span>Password</span></label>
-                                {mgmtPass.pwdType === "password" ? <FaRegEye onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" /> : <FaRegEyeSlash onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" />}
+                                {mgmtPass.pwdType === "password" ? <EyeOpn onClick={togglePassword} customStyle="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" /> : <EyeSl onClick={togglePassword} customStyle="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" />}
                                 <div className="suggestionDiv absolute right-0 cursor-pointer -bottom-5 text-purple-500 text-[12px] hover:text-blue-500
                                 hover:underline" onClick={()=>setTab("left")}>
                                     Forgot Password ?

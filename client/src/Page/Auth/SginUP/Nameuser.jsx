@@ -4,10 +4,9 @@ import {toast} from 'react-toastify'
 import verifyZu from "../../../lib/verifyZu";
 import { Loader } from "../../../lib/loader";
 import LogoCom from "../../../utils/logoComp";
-import { MdAlternateEmail } from "react-icons/md";
-import { FaRegUser } from "react-icons/fa";
-import { IoCheckboxSharp } from "react-icons/io5";
 import { debouncerGlob } from "../../../utils/debounceFun";
+import { UserFI } from "../../../utils/SVG/SVG";
+import { AltMail, CheckSQ } from "../../../utils/SVG/menuSVG";
 export default function UserNameEl({stoggle}) {
     const {setTab} = FaceToggle();
     const {setMail,setTUsername,setVTab,emailStatus,email,Tusername} = verifyZu();
@@ -176,8 +175,8 @@ export default function UserNameEl({stoggle}) {
                                 onBlur={(evnt)=>handleBlur(evnt.target)}
                                     onChange={(evnt)=>setUsername(evnt.target.value)}
                                 id="UserName" autoComplete="off" name="username" value={username} required/>
-                                <label htmlFor="UserName"><FaRegUser/> <span>Username</span> </label>
-                                <IoCheckboxSharp id="checkbox" className="absolute right-0 top-2 transition-all duration-700 text-green-500"></IoCheckboxSharp>
+                                <label htmlFor="UserName"><UserFI/> <span>Username</span> </label>
+                                <CheckSQ id="checkbox" className="absolute right-0 top-2 transition-all duration-700 text-green-500"></CheckSQ>
                              <div className="suggestionDiv absolute flex items-center justify-center -bottom-3.5 gap-1.5">
                                 {cache?.map((value,index)=>(
                                     <p onClick={()=>{setUsername(value),setCache([])}} className=" rounded-2xl md:text-[11px] " key={index}>{value}</p>
@@ -187,7 +186,7 @@ export default function UserNameEl({stoggle}) {
                             
                         <div className="inputDiv">
                             <input type="text" onBlur={(evnt)=>handleBlur(evnt.target)} id="email" name="email" required autoComplete="nn" />
-                            <label htmlFor="email"><MdAlternateEmail/> <span>Email</span></label>
+                            <label htmlFor="email"><AltMail/> <span>Email</span></label>
                         </div>
                         <div className="inputDiv">
                             <button type="button" className="text-btn" onClick={()=>setTab("front")} >Already have Account?</button>

@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import verifyZu from "../../lib/verifyZu";
 import FaceToggle from "../../lib/tabToggle";
 import LogoCom from "../../utils/logoComp";
-import { FaRegEye } from "react-icons/fa";
 import { debouncerGlob } from "../../utils/debounceFun";
 
 export default function ChangePassword({toggle}) {
@@ -92,7 +91,7 @@ export default function ChangePassword({toggle}) {
                         <LogoCom/>
                         <button className="text-2xl text-red-600 absolute top-0 right-0 font-bold cursor-pointer" onClick={()=>toggle(false)} type="button">X</button>
                         <div className="inputDiv">
-                            <FaRegEye onClick={(evnt)=>togglePassword(evnt.target)} className="absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer"></FaRegEye>
+                            <EyeOpn onClick={(evnt)=>togglePassword(evnt.target)} className="absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer"></EyeOpn>
                             <input value={mgmtPassword.basePass} onChange={(evnt)=>setPassword(prev=>({
                                 ...prev,
                                 basePass:evnt.target.value
@@ -100,7 +99,7 @@ export default function ChangePassword({toggle}) {
                             <label htmlFor="basePassType">Password</label>
                         </div>
                         <div className="inputDiv">
-                            <FaRegEye onClick={(evnt)=>togglePassword(evnt.target)} className="absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer"></FaRegEye>
+                            <EyeOpn onClick={(evnt)=>togglePassword(evnt.target)} className="absolute text-gray-500 right-3 top-3 transition-all duration-300 cursor-pointer"></EyeOpn>
                             <input value={mgmtPassword.confPass} onChange={(evnt)=>setPassword(prev=>({
                                 ...prev,
                                 confPass:evnt.target.value

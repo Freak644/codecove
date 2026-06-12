@@ -5,12 +5,10 @@ import {Link} from "react-router-dom"
 import {useContext} from 'react';
 import {btnContext} from './baseContainer';
 import CommentSkeleton from "./commentSkeL";
-import { GiAchievement } from "react-icons/gi";
-import { FaHeartbeat, FaRegHeart } from "react-icons/fa";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { MdReportProblem, MdDeleteForever } from "react-icons/md";
 import { debouncerGlob } from "../../../utils/debounceFun";
-import { AchievementsI, ThreeDot } from "../../../utils/SVG/menuSVG";
+import { AchievementsI, DeleteForever, HeartBeat, ThreeDot } from "../../../utils/SVG/menuSVG";
+import { ReportIcon } from "../../../utils/SVG/SVG";
+import { HeartOL } from "../../../utils/SVG/TODOsvg";
 export default function CommentsContainer({commentData,likeFun,delComment,acceptFun}) {
     let {username,inProcess,avatar,isPostOwner, isReported,commentID,isAccepted,post_moment,comment,post_id,isLiked,id,totalLike,created_at} = commentData;
     const {setToggel} = useContext(btnContext) || {};
@@ -187,16 +185,16 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
                                 <ThreeDot className="text-gray-500 cursor-pointer" onClick={()=>setFloting({float:true,clickID:commentID})} />
                                 <div className={`flex absolute right-0 transition-all duration-300 ${(isFloating.float && isFloating.clickID === commentID) ? "top-0! opacity-100" : "-top-5 opacity-0 pointer-events-none "} p-1 rounded-md bg-blue-500/20 backdrop-blur-md`}>
                                     <ul>
-                                        <li className="border-b m-1 text-gray-500"><MdReportProblem onClick={()=>{
+                                        <li className="border-b m-1 text-gray-500"><ReportIcon onClick={()=>{
                                             if (isReported) return;
                                             reportComment(commentID,post_id);
                                         }} className="cursor-pointer"/>{isReported ? "Reported" : "Report"}</li>
-                                        {(uID === id || isPostOwner) ? <li className="border-b m-1 text-red-500"><MdDeleteForever onClick={()=>deleteComment(commentID,post_id)} className="cursor-pointer"/>Delete</li> : ""}
-                                        {(isPostOwner && post_moment === "Bugs" && !isAccepted) ? <li onClick={()=>acceptSolution(commentID)} className="border-b m-1 text-nowrap cursor-pointer text-green-400"><GiAchievement />Accepte</li> : ""}
+                                        {(uID === id || isPostOwner) ? <li className="border-b m-1 text-red-500"><DeleteForever onClick={()=>deleteComment(commentID,post_id)} className="cursor-pointer"/>Delete</li> : ""}
+                                        {(isPostOwner && post_moment === "Bugs" && !isAccepted) ? <li onClick={()=>acceptSolution(commentID)} className="border-b m-1 text-nowrap cursor-pointer text-green-400"><AchievementsI />Accepte</li> : ""}
                                     </ul>
                                 </div>
                             </div>
-                            {isLiked ? <FaHeartbeat onClick={()=>likeBound(commentID,post_id,isLiked)} className="text-rose-500 cursor-pointer"/> : <FaRegHeart onClick={()=>handleLike(commentID,post_id,isLiked)} className="cursor-pointer text-gray-500"/>}
+                            {isLiked ? <HeartBeat onClick={()=>likeBound(commentID,post_id,isLiked)} className="text-rose-500 cursor-pointer"/> : <HeartOL onClick={()=>handleLike(commentID,post_id,isLiked)} className="cursor-pointer text-gray-500"/>}
                             
                         </div>
                     </div>

@@ -4,15 +4,10 @@ import { Link } from "react-router-dom";
 import {getColor} from '../utils/getGradnt';
 import ExploreEL from "../utils/ExploreCom";
 import ThemeButton from "../components/toggleButton";
-import { FaLaptopCode, FaTools, FaSave, FaGithubSquare, FaUserMd } from "react-icons/fa";
 import { GradientSVG } from "../utils/getSVG";
-import { MdDashboard, MdExplore, MdOutlineSettingsSuggest} from "react-icons/md";
-import { FaFileCirclePlus } from "react-icons/fa6";
-import { FiActivity } from "react-icons/fi";
-import { GrAchievement } from "react-icons/gr";
-import { RiUserCommunityFill } from "react-icons/ri";
-import { AiOutlineIssuesClose } from "react-icons/ai";
 import { debouncerGlob } from "../utils/debounceFun";
+import { AchievementsI, ActivityI, CodeBlockI, DvTool, ExploreIcon, FsquareSvg, SettingOt } from "../utils/SVG/menuSVG";
+import { BookmarkHeartIcon, CommitIcon, GitHubIcon, ReportIcon, UserLogOUtSvg } from "../utils/SVG/SVG";
 
 export default function AbsoluteMenu() {
     let mainRef = useRef();
@@ -79,7 +74,7 @@ export default function AbsoluteMenu() {
         p-4 -left-87.5 opacity-0 transition-all duration-500 bg-blue-800/5 backdrop-blur-lg w-3xs">
              <div className="Logotxt sticky top-0 flex items-center mt-3.5! flex-col w-30">
                 <GradientSVG id={"abMenui"} />
-                <FaLaptopCode style={{fill: "url(#abMenui)"}} className="text-5xl " />
+                <CodeBlockI style={{fill: "url(#abMenui)"}} className="text-5xl " />
                
                 <h2 className={`font-bold! text-3xl transition-all duration-500 ease-in-out bg-size-[200%_200%]
                 bg-linear-to-tr ${getColor()}
@@ -90,68 +85,68 @@ export default function AbsoluteMenu() {
                 <ul className="w-full p-4 flex items-start justify-center flex-wrap gap-2">
                     <li>
                         <Link to="/DashBord">
-                        <MdDashboard/>
+                        <FsquareSvg/>
                         <span>Dashbord</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="/Commit">
-                        <FaFileCirclePlus/>
+                        <CommitIcon/>
                         <span>Commit</span>
                         </Link>
                     </li>
 
                     <li className="justify-start! flex-wrap">
-                        <MdExplore onClick={()=>setDD(prev=>!prev)}/>
+                        <ExploreIcon onClick={()=>setDD(prev=>!prev)}/>
                         <span onClick={()=>setDD(prev=>!prev)} className='flex items-center cursor-pointer'>Explore {isDD?"^": ">"}</span>
                         {isDD && <ExploreEL/>}
                     </li>
 
                     <li>
                         <Link to="" title="Profile" >
-                            <FaLaptopCode/>
+                            <CodeBlockI/>
                             <span>My Lab</span>
                         </Link>
                     </li>
                     <li>
                         <Link to="" title="Login Activity" >
-                            <FiActivity/>
+                            <ActivityI/>
                             <span>Your Sessions</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="" title="Account">
-                            <FaLaptopCode/>
+                            <CodeBlockI/>
                             <span>Mgmt Account</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="" title="Dev Tools">
-                            <FaTools/>
+                            <DvTool/>
                             <span>Tools</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="" title="">
-                            <FaSave />
+                            <BookmarkHeartIcon />
                             <span>Saved</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="" title="Achievements">
-                            <GrAchievement/>
+                            <AchievementsI/>
                             <span>Achievements</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="" title="">
-                            <MdOutlineSettingsSuggest />
+                            <SettingOt />
                             <span>Setting</span>
                         </Link>
                     </li>
@@ -159,7 +154,7 @@ export default function AbsoluteMenu() {
 
                     <li>
                         <Link to="" title="">
-                            <RiUserCommunityFill/>
+                            <CommitIcon/>
                             <span>Communities</span>
                         </Link>
                     </li>
@@ -170,19 +165,19 @@ export default function AbsoluteMenu() {
 
                     <li>
                         <Link to="" title="Source Code">
-                            <FaGithubSquare/>
+                            <GitHubIcon/>
                             <span>Source Code</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="" title="Repor a Issue">
-                            <AiOutlineIssuesClose/>
+                            <ReportIcon/>
                             <span>Issue</span>
                         </Link>
                     </li>
                     <li onClick={debounceLogout}>
-                            <FaUserMd/>
+                            <UserLogOUtSvg/>
                             <span>Logout</span>
                     </li>
                 </ul>

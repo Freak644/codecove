@@ -10,6 +10,7 @@ import { FaHeartbeat, FaRegHeart } from "react-icons/fa";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdReportProblem, MdDeleteForever } from "react-icons/md";
 import { debouncerGlob } from "../../../utils/debounceFun";
+import { AchievementsI, ThreeDot } from "../../../utils/SVG/menuSVG";
 export default function CommentsContainer({commentData,likeFun,delComment,acceptFun}) {
     let {username,inProcess,avatar,isPostOwner, isReported,commentID,isAccepted,post_moment,comment,post_id,isLiked,id,totalLike,created_at} = commentData;
     const {setToggel} = useContext(btnContext) || {};
@@ -176,14 +177,14 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
                             <div className="flex flex-col gap-1">
                                 <Link className="flex items-center gap-1.5" to={`/Lab/${username}`}>
                                     <span className="font-semibold">{username}</span>
-                                    {isAccepted ? <GiAchievement title="Comment accept by Post Owner" className="text-green-400"/> : ""}
+                                    {isAccepted ? <AchievementsI title="Comment accept by Post Owner" className="text-green-400"/> : ""}
                                 </Link>
                                 <p className="text-wrap wrap-break-words pointer-events-none text-skin-ptext">{comment}</p>
                             </div>
                         </div>
                         <div className="likeCommentd flex items-center flex-col gap-1 w-[7%] text-md">
                             <div className="relative" ref={setCallback(commentID)}>
-                                <BsThreeDotsVertical className="text-gray-500 cursor-pointer" onClick={()=>setFloting({float:true,clickID:commentID})} />
+                                <ThreeDot className="text-gray-500 cursor-pointer" onClick={()=>setFloting({float:true,clickID:commentID})} />
                                 <div className={`flex absolute right-0 transition-all duration-300 ${(isFloating.float && isFloating.clickID === commentID) ? "top-0! opacity-100" : "-top-5 opacity-0 pointer-events-none "} p-1 rounded-md bg-blue-500/20 backdrop-blur-md`}>
                                     <ul>
                                         <li className="border-b m-1 text-gray-500"><MdReportProblem onClick={()=>{

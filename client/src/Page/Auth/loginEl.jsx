@@ -9,6 +9,7 @@ import bat from '../../assets/Images/bat.gif';
 import {FaUserShield, FaRegEye, FaRegEyeSlash } from 'react-icons/fa'
 import { TbLockPassword } from "react-icons/tb";
 import { debouncerGlob } from "../../utils/debounceFun";
+import { GitHubIcon, GoogleSvg, UserFI, UserShield } from "../../utils/SVG/SVG";
 export default function LoginCon({toggle}) {
     const pwdRef = useRef();
     const isCalled = useRef(false);
@@ -117,14 +118,14 @@ export default function LoginCon({toggle}) {
                          <LogoCom/>
                             <div className="inputDiv">
                                 <input onBlur={(evnt)=>handleBlur(evnt.target)} type="text" name="Email" id="Email" required autoComplete="off"/>
-                                <label htmlFor="Email"><FaUserShield /><span>Username</span></label>
+                                <label htmlFor="Email"><UserFI /><span>Username</span></label>
                             </div>
                             <div className="inputDiv mb-8">
                                 <input onChange={(evnt)=>setType(prev=>({
                                     ...prev,
                                     passwordVal:evnt.target.value
                                 }))} value={mgmtPass.passwordVal} ref={pwdRef} onBlur={(evnt)=>handleBlur(evnt.target)} type={mgmtPass.pwdType} name="Password" id="Paswrd" required/>
-                                <label htmlFor="Paswrd"><TbLockPassword /> <span>Password</span></label>
+                                <label htmlFor="Paswrd"><UserShield /> <span>Password</span></label>
                                 {mgmtPass.pwdType === "password" ? <FaRegEye onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" /> : <FaRegEyeSlash onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" />}
                                 <div className="suggestionDiv absolute right-0 cursor-pointer -bottom-5 text-purple-500 text-[12px] hover:text-blue-500
                                 hover:underline" onClick={()=>setTab("left")}>
@@ -140,8 +141,8 @@ export default function LoginCon({toggle}) {
                                 <p className="opacity-50 text-sm text-gray-300"><span className="font-bold">___________</span> OR <span className="font-bold">___________</span></p>
                                 <div className="iconHelper flex items-center flex-row p-1
                                 ">
-                                    <button disabled={isTrue} onClick={loginWithGithub} title="Continue With GigHub" className="flex items-center justify-center text-nowrap">Continue With <VscGithub className=" -top-px relative"/> </button>
-                                    <button disabled={isTrue} onClick={loginWithGoogle} title="Continue With Google" className="flex items-center justify-center text-nowrap">Continue With <FcGoogle/> </button>
+                                    <button disabled={isTrue} onClick={loginWithGithub} title="Continue With GigHub" className="flex items-center justify-center text-nowrap">Continue With <GitHubIcon className=" -top-px relative"/> </button>
+                                    <button disabled={isTrue} onClick={loginWithGoogle} title="Continue With Google" className="flex items-center justify-center text-nowrap">Continue With <GoogleSvg/> </button>
                                 </div>
                             </div>
                     </form>

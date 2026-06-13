@@ -46,7 +46,7 @@ const writeRoutes = Router();
 
 writeRoutes.post("/follow",...commonStack,Auth,followAPI);
 writeRoutes.patch("/changeBio",...commonStack,Auth,changeBio);
-writeRoutes.patch("/changeDP",...commonStack,Auth,changeDP);
+writeRoutes.put("/changeDP",...commonStack,Auth,upload.single("file"),changeDP);
 
 
 export {userRoutes, readRoutes,writeRoutes};

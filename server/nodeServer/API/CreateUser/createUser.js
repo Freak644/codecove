@@ -22,6 +22,7 @@ export const CreateUser = async (rkv, rspo) => {
   const crntAPI = rkv.originalUrl.split("?")[0];
   let { email, password, username } = rkv.body || {};
   const file = rkv.file;
+
   let newUserID = uuidV4();
   const { dir, filePath } = getAvatarPath(newUserID);
   //if (!file) return rspo.status(400).send({ err: "Please upload an Avtar" });
@@ -109,7 +110,7 @@ export const CreateUser = async (rkv, rspo) => {
     if (!fs.existsSync(dir)) {
       await fs.promises.mkdir(dir, { recursive: true });
     }
-
+  
     let avatar = null;
 
     if (file) {
@@ -139,7 +140,7 @@ export const CreateUser = async (rkv, rspo) => {
 
     //await database.query("INSERT INTO userActivety_for_achievements (user_id) VALUE (?)",[uid]);
     await database.query("INSERT INTO roles (user_id, permoter_id) VALUES (?,?);",[newUserID,"System"]);
-
+   
   } catch (error) {
     // anything fails after saving, delete the file
     console.log(error.message)

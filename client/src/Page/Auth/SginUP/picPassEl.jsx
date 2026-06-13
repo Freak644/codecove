@@ -15,7 +15,8 @@ export default function CpassEL() {
     })
     const {setTab} = FaceToggle();
     // const [prevImage,setPrevImg] = useState(null);
-    const {finalIMG,setURL} = mngCrop();
+    const finalIMG = mngCrop(stat=> stat.finalIMG);
+    const {setURL} = mngCrop();
     const {toggleMiniTab} = toggleMini();
     const {isTrue,toggleLoader} = Loader();
     const {Tusername,email,emailStatus,setEstatus} = verifyZu();
@@ -44,6 +45,7 @@ export default function CpassEL() {
     }
     useEffect(()=>{
         if (finalIMG) {
+            console.log(finalIMG);
             setimg(prev=>({
                 ...prev,
                 file:finalIMG,
@@ -168,7 +170,7 @@ export default function CpassEL() {
         // ✅ Passed all checks
         return true;
         }
-    const handleSubmit = async (evnt) => {
+    const handleSubmit = async (evnt,imgHere) => {
         evnt.preventDefault();
         toggleLoader(true)
         if (!email?.trim() || !Tusername?.trim()) {
@@ -187,7 +189,7 @@ export default function CpassEL() {
         formData.delete("files")
         formData.append("email", email);
         formData.append("username", Tusername);
-        formData.append("avatar",myImage.file); 
+        formData.append("avatar",imgHere); 
 
         // formData.forEach((value, key) => {
         //     console.log(`${key}:`, value);
@@ -218,13 +220,13 @@ export default function CpassEL() {
         }
     }
     const submitBounce = useMemo(()=> {
-        return debouncerGlob(handleSubmit, 500)
+        return debouncerGlob(handleSubmit, 500);
     },[])
     return(
         <div className="underTaker">
             <div className="picPass flex items-center justify-center">
                 <div className="formDiv">
-                    <form action="" onSubmit={(evtn)=>{evtn.preventDefault(); submitBounce(evtn)}}>
+                    <form action="" onSubmit={(evtn)=>{evtn.preventDefault(); submitBounce(evtn,finalIMG)}}>
                         <LogoCom/>
                         <div className="inputDiv flex-col! h-20!  items-center!">
                             <input type="file" onChange={(evnt)=>handleImg(evnt)} style={{display:"none"}} id="files" name="files" accept="image/*" multiple={false} />

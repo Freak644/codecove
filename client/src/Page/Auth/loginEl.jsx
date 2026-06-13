@@ -62,7 +62,7 @@ export default function LoginCon({toggle}) {
 
 
     const handleSubmit = async (evnt) => {
-        console.log("here")
+    
         if (isCalled.current) return;
         toggleLoader(true)
         isCalled.current = true
@@ -72,6 +72,7 @@ export default function LoginCon({toggle}) {
             userAgent: navigator.userAgent,
             timeZone : Intl.DateTimeFormat().resolvedOptions().timeZone || "Unknown",
         }
+        
         try {
             if(!Email?.trim() || !Password?.trim()) throw new Error("Fields are required");
             let rkv = await fetch("/myServer/auth/login",{

@@ -64,7 +64,7 @@ const createCropedIMG = async () => {
         if (!blob) return;
 
         const croppedFile = new File([blob], "avatar.webp", { type: "image/webp" });
-        //console.log(croppedFile);
+        console.log(croppedFile);
         setIMG(croppedFile);
         setURL(null); 
         setPorc(false);

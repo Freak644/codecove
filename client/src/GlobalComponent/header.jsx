@@ -7,7 +7,7 @@ import {getColor} from '../utils/getGradnt'
 import { GradientSVG } from "../utils/getSVG";
 import { debouncerGlob } from "../utils/debounceFun";
 import { CodeBlockI, CogIcon, CommentSvg } from "../utils/SVG/menuSVG";
-import { GhotIcon, ReportIcon, TringleIcon, UserLogOUtSvg, UserSvg } from "../utils/SVG/SVG";
+import { GhotIcon, MenuIcon, ReportIcon, TringleIcon, UserLogOUtSvg, UserSvg } from "../utils/SVG/SVG";
 export default function Header() {
     const [isToggle,setToggle] = useState(false)
     const [userData,setdata] = useState({});
@@ -44,7 +44,7 @@ export default function Header() {
                 bg-blue-800/10 backdrop-blur-lg 
                 bg-size-[200%_200%]  hover:text-skin-text transition-all duration-700 ease-in-out text-skin-text border-b border-gray-500 z-20`}>
                 <div className="firstHalf lg:hidden w-1/2 flex items-center pl-3 gap-2">
-                <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 w-10 menuBTN flex items-center justify-center text-3xl border-gray-500 border rounded-lg"><IoMenu/></div>
+                <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 w-10 menuBTN flex items-center justify-center text-3xl border-gray-500 border rounded-lg"><MenuIcon/></div>
                         <GradientSVG id={"abMenui"} />
                         <CodeBlockI style={{fill: "url(#abMenui)"}} customStyle="text-3xl " />
                                        

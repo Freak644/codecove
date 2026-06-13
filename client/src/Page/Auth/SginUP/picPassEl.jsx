@@ -5,9 +5,9 @@ import { Loader } from "../../../lib/loader";
 import verifyZu from "../../../lib/verifyZu";
 import { toast } from "react-toastify";
 import LogoCom from "../../../utils/logoComp";
-import { MdImageSearch, MdPassword } from "react-icons/md";
-import {FaEye, FaEyeSlash} from 'react-icons/fa'
 import { debouncerGlob } from "../../../utils/debounceFun";
+import { ImageSearch, UserShield } from "../../../utils/SVG/SVG";
+import { EyeOpn, EyeSl } from "../../../utils/SVG/menuSVG";
 export default function CpassEL() {
     const [myImage,setimg] = useState({
         file:null,
@@ -72,6 +72,7 @@ export default function CpassEL() {
 
     const handleChange = evnt=>{
         const val = evnt.target.value;
+        // console.log(val);
         setPassword(prev=>({
             ...prev,
             password:val
@@ -170,17 +171,17 @@ export default function CpassEL() {
     const handleSubmit = async (evnt) => {
         evnt.preventDefault();
         toggleLoader(true)
-        if (!email?.trim() || !Tusername?.trim() || !password.password?.trim()) {
-           return toast.info("Please provide proper information");
+        if (!email?.trim() || !Tusername?.trim()) {
+            return toast.info("Please provide proper information");
         }
         if (!/^[A-Za-z0-9][A-Za-z0-9._%+-]*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
             return toast.info("Email is currepted")
         }
-        let pwdStatus = validatePassword(password.password)
-        if(!pwdStatus) return;
-
+        
         let formData = new FormData(evnt.target)
-
+        let {password} = Object.fromEntries(formData);
+        let pwdStatus = validatePassword(password)
+        if(!pwdStatus) return;
         // let {files} = Object.fromEntries(formData)
         // console.log(files,myImage.file)
         formData.delete("files")
@@ -223,19 +224,19 @@ export default function CpassEL() {
         <div className="underTaker">
             <div className="picPass flex items-center justify-center">
                 <div className="formDiv">
-                    <form action="" onSubmit={submitBounce}>
+                    <form action="" onSubmit={(evtn)=>{evtn.preventDefault(); submitBounce(evtn)}}>
                         <LogoCom/>
                         <div className="inputDiv flex-col! h-20!  items-center!">
                             <input type="file" onChange={(evnt)=>handleImg(evnt)} style={{display:"none"}} id="files" name="files" accept="image/*" multiple={false} />
-                            <label className="left-[35%]! top-13! cursor-pointer!" htmlFor="files"><MdImageSearch className=" text-blue-500"/> Avatar</label>
+                            <label className="left-[35%]! top-13! cursor-pointer!" htmlFor="files"><ImageSearch className=" text-blue-500"/> Avatar</label>
                             <div onClick={()=> document.getElementById("files").click()}  className="imgDiv flex items-center justify-center h-13 w-13 rounded-full">
                                 <img src={myImage.fileUrl || "https://i.postimg.cc/jS1mc6X5/katana_Girl_Black_white.jpg"} className="h-12 w-12 rounded-full object-cover" alt="DP" />
                             </div>
                         </div>
                         <div className="inputDiv">
                             <input type={password.type} name="password" id="password" onBlur={(evnt)=>handleBlur(evnt.target)} value={password.password} onChange={handleChange} />
-                            <label htmlFor="password"><MdPassword/> <span>Password</span></label>
-                            {password.type === "password" ? <FaEye onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" /> : <FaRegEyeSlash onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" />}
+                            <label htmlFor="password"><UserShield/> <span>Password</span></label>
+                            {password.type === "password" ? <EyeSl onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" /> : <EyeOpn onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" />}
                             <div className="suggestionDiv absolute flex items-center justify-between -bottom-3.5 gap-1.5">
                                 {
                                     [1,2,3].map(bar=>{

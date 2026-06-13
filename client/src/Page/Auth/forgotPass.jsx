@@ -76,7 +76,7 @@ export default function ForgotEl() {
     return(
         <div className="underTaker">
             <div className="formDiv">
-                <form action="" onSubmit={submitDebouce}>
+                <form action="" onSubmit={(e)=>{e.preventDefault(); submitDebouce}}>
                     <LogoCom/>
 
                         <div className="inputDiv">

@@ -20,7 +20,7 @@ async function checkDuplicate(sqlData, username, email) {
 export const CreateUser = async (rkv, rspo) => {
   const crntIP = rkv.userIp;
   const crntAPI = rkv.originalUrl.split("?")[0];
-  const { email, password, username } = rkv.body || {};
+  let { email, password, username } = rkv.body || {};
   const file = rkv.file;
   let newUserID = uuidV4();
   const { dir, filePath } = getAvatarPath(newUserID);
@@ -85,6 +85,7 @@ export const CreateUser = async (rkv, rspo) => {
     if (!/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])(?!.*\s).{6,}$/.test(password)) {
       return rspo.status(400).send({ err: "Password must be strong (6 chars, uppercase, number, symbol)" });
     }
+    username = String(username).toLowerCase();
     let isUsername = await redis.sIsMember(`all:usernames`,username)  
     let isEmail = await redis.sIsMember(`all:emails`,email);
     if (isUsername) {

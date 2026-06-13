@@ -4,7 +4,7 @@ let msg="Too many Request Slow down";
 
 const usernameCheckLimiter = rateLimit({
   windowMs: 10 * 1000, // 10s
-  max: 5,
+  max: 50,
   message: { error: "Too many checks, slow down" }
 });
 

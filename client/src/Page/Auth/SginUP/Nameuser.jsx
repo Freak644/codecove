@@ -68,7 +68,7 @@ export default function UserNameEl({stoggle}) {
                 // setDeVal(username);
                 checkUsername()
             }
-        }, 500);
+        }, 800);
         return ()=> clearTimeout(handler);
     },[username]);
     const checkUsername = async () => {
@@ -159,7 +159,7 @@ export default function UserNameEl({stoggle}) {
         <div className="underTaker">
             <div className="nameComDiv flex items-center justify-center">
                 <div className="formDiv">
-                    <form action="" onSubmit={submitBounce}>
+                    <form action="" onSubmit={(evtn)=>{evtn.preventDefault(); submitBounce(evtn)}}>
                         <LogoCom/>
                         {/* <h1 className="flex items-center justify-center text-red-600 font-bold">Stay 
                             <span>

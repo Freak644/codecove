@@ -3,7 +3,7 @@ import { univPostStore, UnivuUserInfo } from "../../../lib/basicUserinfo"
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Loader } from "../../../lib/loader";
-import {MdCleaningServices, MdReportProblem} from 'react-icons/md'
+import { ReportIcon } from "../../../utils/SVG/SVG";
 
 
 export default function MiniDropDown({postInfo,toggle}) {
@@ -99,7 +99,7 @@ export default function MiniDropDown({postInfo,toggle}) {
     return(
         <div className="miniDropHome h-auto w-55 flex bg-skin-bg/20 backdrop-blur-lg items-center justify-center flex-wrap absolute top-full right-0">
             <ul>
-                <li onClick={()=>handleReport(postInfo.post_id)} className="text-red-500 font-bold"><MdReportProblem/> Report</li>
+                <li onClick={()=>handleReport(postInfo.post_id)} className="text-red-500 font-bold"><ReportIcon/> Report</li>
                 {postInfo.username !== userInfo.username && <li className={`${postInfo?.isFollowing ? "text-red-500" : "text-green-500"} font-bold `}>{postInfo?.isFollowing ? "Following" : "Follow"}</li>}
                 <li onClick={downloadAll}> Download</li>
                 {postInfo.username === userInfo.username && <>

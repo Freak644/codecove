@@ -124,7 +124,7 @@ export default function LoginCon({toggle}) {
                                     passwordVal:evnt.target.value
                                 }))} value={mgmtPass.passwordVal} ref={pwdRef} onBlur={(evnt)=>handleBlur(evnt.target)} type={mgmtPass.pwdType} name="Password" id="Paswrd" required/>
                                 <label htmlFor="Paswrd"><UserShield /> <span>Password</span></label>
-                                {mgmtPass.pwdType === "password" ? <EyeOpn onClick={togglePassword} customStyle="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" /> : <EyeSl onClick={togglePassword} customStyle="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" />}
+                                {mgmtPass.pwdType === "password" ? <EyeOpn onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" /> : <EyeSl onClick={togglePassword} className="absolute text-gray-500 hover:text-skin-text right-3 top-3 transition-all duration-300 cursor-pointer" />}
                                 <div className="suggestionDiv absolute right-0 cursor-pointer -bottom-5 text-purple-500 text-[12px] hover:text-blue-500
                                 hover:underline" onClick={()=>setTab("left")}>
                                     Forgot Password ?

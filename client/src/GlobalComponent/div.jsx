@@ -17,21 +17,21 @@ export default function tempNewof () {
                 {!miniMenu ? <> <ul className='topU flex items-start flex-col gap-3 sm:border-b-2 border-gray-400 my-scroll'>
                     <li>
                         <Link to="/">
-                        <HomeIcon customStyle='svgAnim'/>
+                        <HomeIcon className='svgAnim'/>
                         <span>Home</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="/Explore">
-                        <ExploreIcon customStyle='svgAnimR svgAnim'/>
+                        <ExploreIcon className='svgAnimR svgAnim'/>
                         <span className='flex items-center'>Explore</span>
                         </Link>
                     </li>
 
                     <li>
                         <Link to="/Search">
-                        <SearchIcon customStyle='svgAnim showAlt'/>
+                        <SearchIcon className='svgAnim showAlt'/>
                         <span>Search</span>
                         </Link>
                     </li>

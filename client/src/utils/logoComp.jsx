@@ -8,7 +8,7 @@ export default function LogoCom({CustomclassName}) {
             <GradientSVG id={"grad"}/>
             <CodeBlockI
             style={{fill:"url(#grad)"}}
-             customStyle={`text-5xl `}
+             className={`text-5xl `}
             />
          
             <div className="nameHoler gap-1 flex items-center flex-row">

@@ -83,12 +83,12 @@ export default function LikeCom({Data}) {
     return(
         <div className="underTaker cursor-pointer relative">
              <div className="underTaker" ref={contanerRef} onClick={()=>starDeboun(post_id,isLiked)}>
-                {!isLiked ? <RocketIcon customClass={"svgicon"}/> : <StarFilledIcon className={"svgicon"}/>}
+                {!isLiked ? <RocketIcon className={"svgicon"}/> : <StarFilledIcon className={"svgicon"}/>}
                     <span>{likeCount ? formatCount(totalLike) : ""}</span>
                 <div className="onHoverDiv">
                     <div className="underTaker  perspective-midrange transform-3d">
                         <div className="svgHolderR">
-                            <RocketIcon customClass={"svgMoverR"}/>
+                            <RocketIcon className={"svgMoverR"}/>
                         </div>
                         <div className="starStarHolder">
                             <StarFilledIcon className={"svgMover"} />

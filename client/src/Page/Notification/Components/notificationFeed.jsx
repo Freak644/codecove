@@ -38,7 +38,7 @@ export default function NotificaitonMini() {
                         </p>
 
                         {/* Exit Button */}
-                        <CogIcon customStyle="cursor-pointer hover:rotate-90 transition-all duration-300" />
+                        <CogIcon className="cursor-pointer hover:rotate-90 transition-all duration-300" />
                     </div>
 
                     {/* Tabs */}
@@ -47,28 +47,28 @@ export default function NotificaitonMini() {
                             onClick={()=>setTab("All")} 
                             className={`${notiTab === "All" && "activeNoti"}`}
                         >
-                            <FsquareSvg customStyle="text-lg"/> All
+                            <FsquareSvg className="text-lg"/> All
                         </p>
 
                         <p 
                             onClick={()=>setTab("Update")} 
                             className={`${notiTab === "Update" && "activeNoti"}`}
                         >
-                            <FileSvg customStyle="text-md"/> Post
+                            <FileSvg className="text-md"/> Post
                         </p>
 
                         <p 
                             onClick={()=>setTab("Sys")} 
                             className={`${notiTab === "Sys" && "activeNoti"}`}
                         >
-                            <CommentSvg customStyle="text-md absolute left-0" /> <span className="translate-x-2">Commnet</span>
+                            <CommentSvg className="text-md absolute left-0" /> <span className="translate-x-2">Commnet</span>
                         </p>
 
                         <p 
                             onClick={()=>setTab("Read")} 
                             className={`${notiTab === "Read" && "activeNoti"}`}
                         >
-                           <FollowSvgL customStyle="text-lg"/> Follow
+                           <FollowSvgL className="text-lg"/> Follow
                         </p>
                     </div>
                 </div>

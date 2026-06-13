@@ -6,8 +6,6 @@ import {Loader} from '../../../lib/loader'
 import MainAchievments from "./abElement";
 import socket from "../../../utils/socket";
 import { mngCrop } from "../../../lib/toggleTheme";
-import {FaEdit} from 'react-icons/fa';
-import { IoMdCloseCircle } from "react-icons/io";
 export default function MyProfile({validation}) {
     const [isEditing,setEdit] = useState(false);
     const [crntData,setData] = useState({});
@@ -216,7 +214,7 @@ export default function MyProfile({validation}) {
                             {isEditing ? <textarea name="" value={tempBio} onChange={(evnt)=>setBio(evnt.target.value)} className="resize-none my-scroll pl-1.5 text-lg h-30 w-full text-skin-text" id="BioCap"></textarea> : crntData?.bio}
                             {isEditing && <i onClick={()=>{setEdit(prev=>!prev),submitBio()}} className={`ml-2 bx bxs-save cursor-pointer`}></i>}
                     </p>
-                    {isEditing && <IoMdCloseCircle onClick={()=>setEdit(false)} className="cursor-pointer ml-2 text-2xl text-skin-text"></IoMdCloseCircle>}
+                    {isEditing && <span onClick={()=>setEdit(false)} className="cursor-pointer ml-2 text-2xl text-skin-text">x</span>}
 
                     <div className="followFollowing h-1/12 w-3/5 flex items-center flex-row gap-4 relative">
                         {crntData?.id !== uID  && <><i className='bx bxs-info-circle text-2xl activaterIcon cursor-help  text-gray-600'></i>

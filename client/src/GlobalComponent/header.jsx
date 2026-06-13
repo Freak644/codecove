@@ -46,7 +46,7 @@ export default function Header() {
                 <div className="firstHalf lg:hidden w-1/2 flex items-center pl-3 gap-2">
                 <div onClick={()=>toggleMenu(!isMenuToggling)} className="h-10 w-10 menuBTN flex items-center justify-center text-3xl border-gray-500 border rounded-lg"><MenuIcon/></div>
                         <GradientSVG id={"abMenui"} />
-                        <CodeBlockI style={{fill: "url(#abMenui)"}} customStyle="text-3xl " />
+                        <CodeBlockI style={{fill: "url(#abMenui)"}} className="text-3xl " />
                                        
                         <p className={`text-2xl bg-size-[200%_200%]
                             bg-linear-to-tl ${gradColor}
@@ -54,7 +54,7 @@ export default function Header() {
                 </div>
 
                 <div className="middleWhr lg:hidden relative flex items-center flex-row">
-                    <CodeBlockI style={{fill: "url(#abMenui"}} customStyle="absolute left-1.5 text-2xl"/>
+                    <CodeBlockI style={{fill: "url(#abMenui"}} className="absolute left-1.5 text-2xl"/>
                     <input type="text" name="searchBox1" placeholder="Type to serch" />
                 </div>
                 {/* <ThemeButton/> */}

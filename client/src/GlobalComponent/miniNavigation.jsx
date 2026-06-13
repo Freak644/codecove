@@ -9,9 +9,9 @@ export default function MiniMenu({avatar, crntTab, username}) {
       
         switch (Tab) {
             case "Home":
-                return <HomeIcon customStyle='dyicon'/>;
+                return <HomeIcon className='dyicon'/>;
             case "Explore":
-                return <ExploreIcon customStyle='dyicon' />;
+                return <ExploreIcon className='dyicon' />;
             case "Commit":
                 return <CommitIcon className='dyicon' />;
             case "Notification":
@@ -35,7 +35,7 @@ export default function MiniMenu({avatar, crntTab, username}) {
             <li className={crntTab === "Home" ? "activeLi" : ""}>
                 <Link to={"/"}>
                     <span>
-                        <HomeIcon customStyle='icon'/>
+                        <HomeIcon className='icon'/>
                     </span>
                 </Link>
             </li>
@@ -43,7 +43,7 @@ export default function MiniMenu({avatar, crntTab, username}) {
             <li className={crntTab === "Explore" ? "activeLi" : ""}>
                 <Link to={"/Explore"} >
                     <span>
-                        <ExploreIcon customStyle='icon' />
+                        <ExploreIcon className='icon' />
                     </span>
                 </Link>
             </li>

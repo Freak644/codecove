@@ -7,7 +7,7 @@ export default function LikesNoti ({crntData}) {
             <div className="NotiIcons">
                 {!crntData.isRead && <div className="endictDot" />}
                 <div className={`svgHolderNI ${crntData.isRead ? "bg-orange-600" : "bg-indigo-600"}`}>
-                    <FileOL customStyle="" />
+                    <FileOL className="" />
                 </div>
             </div>
             <div className="NotiTextdiv">

@@ -81,7 +81,7 @@ export default function BaseSuggestion () {
                         <p className="text-skin-ptext/70 text-sm">View and manage your current suggestions</p>
                     </div>
                     <button className="border mr-2.5 border-gray-500/60 rounded-md cursor-pointer p-1">
-                        <CogIcon customStyle="text-skin-text text-2xl hover:rotate-90 transition-all duration-300"/>
+                        <CogIcon className="text-skin-text text-2xl hover:rotate-90 transition-all duration-300"/>
                     </button>
                 </div>
 

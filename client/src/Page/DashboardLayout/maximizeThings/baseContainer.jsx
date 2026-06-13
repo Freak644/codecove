@@ -4,7 +4,7 @@ const ImageSlider = lazy(()=> import("../../Promulgation/sliderCom"))
 import { univPostStore } from "../../../lib/basicUserinfo";
 const SheetMiddleWhare = lazy(()=> import("./slideMiddleWr"));
 import {createContext} from 'react';
-import { MdFullscreenExit, MdFullscreen } from "react-icons/md";
+import { ZoomSvg } from "../../../utils/SVG/OLDS";
 export const btnContext = createContext();
 export default function MaximizeContainer({pramPost}) {
     let {pID} = useParams();
@@ -24,7 +24,7 @@ export default function MaximizeContainer({pramPost}) {
 
     useEffect(()=>{
         const handleClick = evnt=>{
-            console.log(evnt.target)
+            // console.log(evnt.target)
             const el = containerRef.current;
             if (el && !el.contains(evnt.target) && !toggleBtn) {
                 navi(-1);
@@ -47,7 +47,7 @@ export default function MaximizeContainer({pramPost}) {
                 </div>
                 <div ref={containerRef} className="commentAndImage h-9/10 w-5/6 rounded-lg p-2 flex items-center justify-center flex-wrap bg-black/80  md:bg-gray-800/70 backdrop-blur-lg">
                     <div className="ImageCon flex-1  flex items-center justify-center h-full relative transition-all duration-200">
-                        {isFull ? <MdFullscreenExit className={`absolute bottom-4 right-5 z-20 text-skin-ptext text-4xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>{setFull(prev=>!prev), setToggel(true)}} /> : <MdFullscreen className={`absolute bottom-4 right-5 z-20 text-skin-ptext text-4xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>{setFull(prev=>!prev), setToggel(true)}} />}
+                        {isFull ? <MdFullscreenExit className={`absolute bottom-4 right-5 z-20 text-skin-ptext text-4xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>{setFull(prev=>!prev), setToggel(true)}} /> : <ZoomSvg className={`absolute bottom-4 right-5 z-20 text-skin-ptext text-4xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>{setFull(prev=>!prev), setToggel(true)}} />}
                         <Suspense fallback={<div className="miniLoader" />}>
                             <ImageSlider imgArray={crntPost?.images_url || []} toggle={setToggel} />
                         </Suspense>

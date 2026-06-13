@@ -7,13 +7,7 @@ import { toggleABMenu } from '../lib/toggleTheme';
 import {getColor} from '../utils/getGradnt.js';
 import MiniMenu from './miniNavigation.jsx';
 const MeneUI = lazy(()=> import("./windowMenuNavi.jsx"));
-import { IoMdMenu } from "react-icons/io";
-import { FaLaptopCode } from 'react-icons/fa';
-import { GradientSVG } from '../utils/getSVG.jsx';
-import { MdHome, MdExplore, MdSearch, MdNotificationsActive, MdAppSettingsAlt, MdSettings, MdBarChart, MdReportProblem, MdLogout } from "react-icons/md";
-import { HiChatAlt2 } from "react-icons/hi";
-import { RiGitRepositoryCommitsFill } from "react-icons/ri";
-import { FaTools } from "react-icons/fa";
+
 import { UnivuUserInfo } from '../lib/basicUserinfo.js';
 import { debouncerGlob } from '../utils/debounceFun.js';
 import { ExploreIcon, HomeIcon, SearchIcon } from '../utils/SVG/menuSVG.jsx';

@@ -7,7 +7,7 @@ import {btnContext} from './baseContainer';
 import CommentSkeleton from "./commentSkeL";
 import { debouncerGlob } from "../../../utils/debounceFun";
 import { AchievementsI, DeleteForever, HeartBeat, ThreeDot } from "../../../utils/SVG/menuSVG";
-import { ReportIcon } from "../../../utils/SVG/SVG";
+import { ReportIcon } from "../../../utils/SVG/OLDS";
 import { HeartOL } from "../../../utils/SVG/TODOsvg";
 export default function CommentsContainer({commentData,likeFun,delComment,acceptFun}) {
     let {username,inProcess,avatar,isPostOwner, isReported,commentID,isAccepted,post_moment,comment,post_id,isLiked,id,totalLike,created_at} = commentData;

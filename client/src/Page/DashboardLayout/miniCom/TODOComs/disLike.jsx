@@ -51,7 +51,7 @@ export default function DisLikeCom({Data}) {
     },[])
     return(
         <div className="underTaker cursor-pointer gap-1" ref={contanerRef} onClick={()=>handleDisLike(post_id,isDisliked, isLiked)}>
-            {isDisliked ? <DislikeFill customClass={"svgicon"}/> : <DislikeOL customClass={"svgicon"}/>}
+            {isDisliked ? <DislikeFill className={"svgicon"}/> : <DislikeOL className={"svgicon"}/>}
             <span>{likeCount ? formatCount(totalDislike) : ''}</span>
         </div>
     )

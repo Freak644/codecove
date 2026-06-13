@@ -2,10 +2,11 @@ import { toast } from "react-toastify";
 import { Loader } from "../../../lib/loader";
 import LogoCom from "../../../utils/logoComp";
 import {useNavigate, useParams} from 'react-router-dom';
-import { FaRegUser } from "react-icons/fa";
-import { MdAlternateEmail } from "react-icons/md";
+
 import { useMemo } from "react";
 import { debouncerGlob } from "../../../utils/debounceFun";
+import { UserSvg } from "../../../utils/SVG/SVG";
+import { AltMail } from "../../../utils/SVG/menuSVG";
 
 export default function VerifyCon({toggle}) {
     let {isLoader,toggleLoader} = Loader();
@@ -72,13 +73,13 @@ export default function VerifyCon({toggle}) {
                             <input type="text"
                             onBlur={(evnt)=>handleBlur(evnt.target)}
                             id="Username" autoComplete="off" name="Username" required/>
-                            <label htmlFor="Username"><FaRegUser/> <span>Username</span></label>
+                            <label htmlFor="Username"><UserSvg/> <span>Username</span></label>
                             <i id="checkbox" className="bx bxs-check-circle absolute right-0 top-2 transition-all duration-700 "></i>
                         </div>
                         
                     <div className="inputDiv">
                         <input type="text" onBlur={(evnt)=>handleBlur(evnt.target)} id="Email" name="Email" required />
-                        <label htmlFor="Email"><MdAlternateEmail/> <span>Email</span></label>
+                        <label htmlFor="Email"><AltMail/> <span>Email</span></label>
                     </div>
                     <div className="inputDiv">
                         <button type="button" className="text-btn" onClick={()=>navi('/')} >Go to Home</button>

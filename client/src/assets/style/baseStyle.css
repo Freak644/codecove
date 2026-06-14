@@ -1,4 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@font-face {
+  font-family: "Saira";
+  src: url("/fonts/Saira-500.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
 :root {
     --bg-color: #040b18;
     --text-color: rgb(0, 255, 0);
@@ -820,7 +825,7 @@ form>h1>span{
     justify-content: center;
     flex-wrap: wrap;
     position: absolute;
-    left: 13vw;
+    left: 16vw;
     padding: 2px;
     top: 50px;
     z-index: 10 !important;

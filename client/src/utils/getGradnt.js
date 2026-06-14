@@ -25,7 +25,7 @@ const getGradientColors = () => {
     return [
       "#fff700", // theme yellow
       "#f59e0b", // amber
-      "#ff7b00", // orange
+      "#ff7bff", // orange
     ];
 
   default:

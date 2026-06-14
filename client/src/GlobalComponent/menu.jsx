@@ -67,8 +67,8 @@ export default function MenuEL(params) {
 
     return(
         <div className="menuDiv backdrop-blur-lg bg-skin-bg/30 no-copy
-        duration-500 relative left-0 sm:border-r h-[91vh] border-gray-400
-        lg:h-[93vh] w-[16vw] flex items-center flex-col gap-2 z-20">
+        duration-500 relative left-2 sm:border h-[91vh] border-gray-600/15
+        lg:h-[93vh] w-[17vw] flex items-center flex-col gap-2 z-20">
             <Suspense fallback={<MenuSkeleton/>} >
                 <MeneUI />
             </Suspense>

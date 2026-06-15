@@ -163,6 +163,7 @@ body{
         display: flex;
         align-items: center;
         flex-direction: column;
+        gap: 4px;
         padding-left: 5px;
         padding-right: 8px;
         transition: .3s ease;
@@ -252,9 +253,9 @@ body{
     }
 
     .activeLiContainer {
-        border-left: 2px solid rgb(111, 0, 255) !important;
+        border-left: 3px solid rgb(111, 0, 255) !important;
         border: 1px solid rgba(0, 255, 255, 0.188);
-        background: linear-gradient(90deg, rgba(58, 0, 130, 0.2), rgba(58, 0, 130, 0.67),rgba(91, 0, 171, 0.889));
+        background: linear-gradient(90deg, rgba(58, 0, 130, 0.2), rgba(58, 0, 130, 0.722),rgba(91, 0, 171, 0.889));
         .svgAnim {
             background-color: rgb(75, 0, 167);
         }
@@ -871,7 +872,7 @@ form>h1>span{
     justify-content: center;
     flex-wrap: wrap;
     position: absolute;
-    left: 17.3vw;
+    left: calc(17vw + 2px);
     padding: 2px;
     top: 50px;
     z-index: 10 !important;

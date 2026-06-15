@@ -6,7 +6,7 @@ export default function FollowNoti ({crntData}) {
           <div className="customNotiContainer text-skin-text">
               <div className="NotiIcons">
                  {crntData.isRead && <div className="endictDot" />}
-                  <div className={`svgHolderNI ${crntData.isRead ? "bg-purple-800" : "bg-amber-400"}`}>
+                  <div className={`svgHolderNI text-white ${crntData.isRead ? "bg-purple-800" : "bg-amber-400"}`}>
                       <FollowSvgL className="text-lg" />
                   </div>
               </div>

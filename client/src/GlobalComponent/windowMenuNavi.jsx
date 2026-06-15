@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
-import { CodeBlockI, ExploreIcon, HomeIcon, MeneHI } from "../utils/SVG/menuSVG";
+import { CodeBlockI, ExploreIcon, FileSvg, HomeIcon, MeneHI } from "../utils/SVG/menuSVG";
 import { GradientSVG } from "../utils/getSVG";
 import { Link, useLocation } from "react-router-dom";
 import React from "react";
 import { toggleABMenu } from "../lib/toggleTheme";
-import { CodeBlock, FireSvg } from "../utils/SVG/TODOsvg";
+import { Calnder, CodeBlock, FireSvg } from "../utils/SVG/TODOsvg";
 import MenuLICon from "./miniCom/liContainer";
 
 export default function WindowsMenu () {
@@ -13,32 +13,38 @@ export default function WindowsMenu () {
     const crntLocation = useLocation();
     let {toggleMenu} = toggleABMenu();
 
-    const liArray = [
+    const discoverLiArray = [
         {
             expPath:"Explore",
             pTxt:"Discover people & projects",
-            svgCom:<ExploreIcon className="svgAnim svgAnimR" />
+            svgCom:ExploreIcon,
+            svgClass:"svgAnim svgAnimR"
         },
         {
             expPath:"Trending",
             pTxt:"What's hot in dev",
-            svgCom:<FireSvg className="svgAnim" />
+            svgCom:FireSvg
         },
         {
             expPath:"Projects",
             pTxt:"Open Source & side projects",
-            svgCom:<CodeBlock className="svgAnim"/>
+            svgCom:CodeBlock
         },
-        // {
-        //     expPath:"Articles",
-        //     pTxt:"Read & share knowledge"
-        // },
-        // {
-        //     expPath:"Events",
-        //     pTxt:"Meetups & hackathons"
-        // }
-    ]
+        {
+            expPath:"Articles",
+            pTxt:"Read & share knowledge",
+            svgCom:FileSvg
+        },
+        {
+            expPath:"Events",
+            pTxt:"Meetups & hackathons",
+            svgCom:Calnder
+        }
+    ];
 
+    const connectLiArray = [
+        
+    ]
     useEffect(()=>{
             toggleMenu(false)
             let crntRoute = crntLocation.pathname.split("/")
@@ -76,6 +82,7 @@ export default function WindowsMenu () {
                     <GradientSVG id={"menu"} />
                     <CodeBlockI className="h-8 w-10" style={{fill: "url(#menu)"}}  />
                 </div>
+                
                 <div className="textMD text-skin-text mt-2">
                     <p>EchoVain's</p>
                     <p className="text-skin-ptext text-[8px]">Code. Connect. Create.</p>
@@ -95,14 +102,22 @@ export default function WindowsMenu () {
             </div>
 
             <div className="containerBigbos h-3/10 w-full">
-                <p className="text-[11px] h-1/10 font-bold text-purple-800">DISCOVER</p>
+                <p className="text-[11px] h-1/10 font-bold text-indigo-500 p-2">DISCOVER</p>
                 <ul className="h-9/10!">
                     {
-                        liArray.map((info,index) => (
-                            <MenuLICon crntTab={crntTab} crntLiInfo={info} />
+                        discoverLiArray.map((info,index) => (
+                            <MenuLICon key={index} crntTab={crntTab} crntLiInfo={info} />
                         ))
                     }
+                    <div className="border-b w-full h-px border-gray-500/15"/>
                 </ul>
+            </div>
+
+            <div className="containerBigbos h-3/10 w-full">
+                    <p className="text-[11px] h-1/10 font-bold text-sky-500 pl-2">CONNECT</p>
+                    <ul className="h-9/10">
+                        
+                    </ul>
             </div>
         </>
     )

@@ -6,7 +6,7 @@ export default function CommentNoti ({crntData}) {
             <div className="customNotiContainer text-skin-text">
                 <div className="NotiIcons">
                     {crntData.isRead && <div className="endictDot" />}
-                    <div className={`svgHolderNI ${crntData.isRead ? "bg-green-600" : "bg-rose-600"}`}>
+                    <div className={`svgHolderNI text-white ${crntData.isRead ? "bg-green-600" : "bg-rose-600"}`}>
                         <CommentSvg className="text-lg" />
                     </div>
                 </div>

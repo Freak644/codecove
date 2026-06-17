@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { toggleSlider } from "../../../lib/tabToggle"
 import { notification } from "../../../utils/notificationSender";
 import NotificationMgmt from "./notificaiton";
-import { CogIcon, CommentSvg, FileSvg, FollowSvgL, FsquareSvg } from "../../../utils/SVG/menuSVG";
+import { AltMail, CogIcon, CommentSvg, FileSvg, FollowSvgL, FsquareSvg } from "../../../utils/SVG/menuSVG";
 
 export default function NotificaitonMini() {
     const {toggleMiniTab} = toggleSlider();
@@ -61,7 +61,7 @@ export default function NotificaitonMini() {
                             onClick={()=>setTab("Sys")} 
                             className={`${notiTab === "Sys" && "activeNoti"}`}
                         >
-                            <CommentSvg className="text-md absolute left-0" /> <span className="translate-x-2">Commnet</span>
+                            <AltMail className="text-md absolute left-0" /> <span className="">Mentions</span>
                         </p>
 
                         <p 

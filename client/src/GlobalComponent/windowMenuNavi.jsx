@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
-import { CodeBlockI, ExploreIcon, FileSvg, HomeIcon, MeneHI } from "../utils/SVG/menuSVG";
+import { AltMail, CodeBlockI, ExploreIcon, FileSvg, HomeIcon, MeneHI } from "../utils/SVG/menuSVG";
 import { GradientSVG } from "../utils/getSVG";
 import { Link, useLocation } from "react-router-dom";
 import React from "react";
 import { toggleABMenu } from "../lib/toggleTheme";
-import { Calnder, CodeBlock, FireSvg } from "../utils/SVG/TODOsvg";
+import { Calnder, ChatIcon, CodeBlock, dbLsmUser, dbLuser, FireSvg } from "../utils/SVG/TODOsvg";
 import MenuLICon from "./miniCom/liContainer";
+import { NotificationBellIcon } from "../utils/SVG/SVG";
 
 export default function WindowsMenu () {
     const [crntTab, setTab] = useState('Home');
@@ -18,12 +19,14 @@ export default function WindowsMenu () {
             expPath:"Explore",
             pTxt:"Discover people & projects",
             svgCom:ExploreIcon,
-            svgClass:"svgAnim svgAnimR"
+            svgClass:"svgAnim svgAnimR",
+            isDot:true
         },
         {
             expPath:"Trending",
             pTxt:"What's hot in dev",
-            svgCom:FireSvg
+            svgCom:FireSvg,
+            isDot:true
         },
         {
             expPath:"Projects",
@@ -43,7 +46,42 @@ export default function WindowsMenu () {
     ];
 
     const connectLiArray = [
-        
+        {
+            expPath:"Network",
+            pTxt:"Find & connect developers",
+            svgCom:dbLuser
+        },
+        {
+            expPath:"Communities",
+            pTxt:"Join dev communmities",
+            svgCom:dbLsmUser
+        },
+        {
+            expPath:"Developers",
+            pTxt:"Discover developers",
+            svgCom:CodeBlock
+        },
+        {
+            expPath:"Mesages",
+            pTxt:"Chats & conversations",
+            svgCom:ChatIcon,
+            count:"10+"
+        }
+    ]
+
+    const notificationsLiArray = [
+        {
+            expPath:"Notification",
+            pTxt:"Activity & updates",
+            svgCom:NotificationBellIcon,
+            count:5
+        },
+        {
+            expPath:"Mentions",
+            pTxt:"Replies & mentions",
+            svgCom:AltMail,
+            count:1
+        }
     ]
     useEffect(()=>{
             toggleMenu(false)
@@ -113,10 +151,27 @@ export default function WindowsMenu () {
                 </ul>
             </div>
 
-            <div className="containerBigbos h-3/10 w-full">
+            <div className="containerBigbos h-3/12 w-full">
                     <p className="text-[11px] h-1/10 font-bold text-sky-500 pl-2">CONNECT</p>
-                    <ul className="h-9/10">
-                        
+                    <ul className="h-9/10!">
+                        {
+                            connectLiArray.map((info,index) => (
+                                <MenuLICon key={index} crntTab={crntTab} crntLiInfo={info} />
+                            ))
+                        }
+                        <div className="border-b w-full h-px border-gray-500/15"/>
+                    </ul>
+            </div>
+
+            <div className="containerBigbos h-2/13  w-full">
+                    <p className="text-[11px] h-1/10 font-bold text-green-500 pl-2">NOTIFICATIONS</p>
+                    <ul className="h-9/10!">
+                        {
+                            notificationsLiArray.map((info,index) => (
+                                <MenuLICon key={index} crntTab={crntTab} crntLiInfo={info} />
+                            ))
+                        }
+                        <div className="border-b w-full h-px border-gray-500/15"/>
                     </ul>
             </div>
         </>

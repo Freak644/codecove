@@ -8,7 +8,7 @@ import { Calnder, ChatIcon, CodeBlock, dbLsmUser, dbLuser, FireSvg } from "../ut
 import MenuLICon from "./miniCom/liContainer";
 import { NotificationBellIcon } from "../utils/SVG/SVG";
 
-export default function WindowsMenu () {
+export default function WindowsMenu ({userInfo}) {
     const [crntTab, setTab] = useState('Home');
     const [isHidden, setHidden] = useState(false);
     const crntLocation = useLocation();
@@ -163,9 +163,9 @@ export default function WindowsMenu () {
                     </ul>
             </div>
 
-            <div className="containerBigbos h-2/13  w-full">
+            <div className="containerBigbos h-2/14 w-full">
                     <p className="text-[11px] h-1/10 font-bold text-green-500 pl-2">NOTIFICATIONS</p>
-                    <ul className="h-9/10!">
+                    <ul className="h-9/10! mt-0.5">
                         {
                             notificationsLiArray.map((info,index) => (
                                 <MenuLICon key={index} crntTab={crntTab} crntLiInfo={info} />
@@ -173,6 +173,39 @@ export default function WindowsMenu () {
                         }
                         <div className="border-b w-full h-px border-gray-500/15"/>
                     </ul>
+            </div>
+
+            <div className="containerBigbos bg-indigo-600/10 rounded-lg h-1/11 w-full border border-cyan-500/10
+            flex items-center justify-center gap-1.5">
+                    <div className="imgDiv h-14 w-14 relative">
+                        <img src={userInfo.avatar+"?size=56"} className="h-full w-ful rounded-full" alt="" />
+                        <div className="greenDot bg-green-700 h-2 w-2 bottom-1 right-1 absolute rounded-full"/>
+                    </div>
+                    <div className="w-3/4 text-skin-text text-[10px] h-full 
+                    flex items-center flex-row gap-1">
+                        <div className="flex-1 gap-1! flex items-start h-full flex-col">
+                            <p>John Deo</p>
+                            <p className="text-skin-ptext/70">@loser_3221</p>
+                            <p className="text-skin-ptext/70">Developer</p>
+                        </div>
+                        <div className="flex-2 h-full flex items-center flex-col gap-0.5">
+                            <div className="h-1/2 flex w-full">
+                                <p className="flex-1 flex items-center flex-col h-full">
+                                    1.2k <span className="text-skin-ptext/70">Followers</span>
+                                </p>
+                                <p className="flex-1 flex items-center flex-col h-full">
+                                    50 <span className="text-skin-ptext/70">Following</span>
+                                </p>
+                            </div>
+                            <button className="w-full h-6 bg-sky-800/10 rounded-lg border
+                            border-gray-500/30 shadow cursor-pointer">View Profile</button>
+                        </div>
+                    </div>
+            </div>
+
+            <div className="containerBigbos border-t-indigo-600 border-l-indigo-600 border-sky-500/35
+            rounded-lg mt-1 h-1/19 border-2 w-full flex items-center justify-center text-indigo-600">
+                + Create post
             </div>
         </>
     )

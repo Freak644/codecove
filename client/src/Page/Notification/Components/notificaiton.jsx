@@ -1,10 +1,19 @@
 import CommentNoti from "./prebuildCmnt";
+import MentionNoti from "./prebuildMention";
 import LikesNoti from "./preBuildNoti";
 import FollowNoti from "./prebuilFollow";
 
 export default function NotificationMgmt({ data = [], cetogry }) {
 
     const tempData = [
+        {
+            isRead:false,
+            type:"Mention"
+        },
+        {
+            isRead:true,
+            type:"Mention"
+        },
         {
             isRead: true,
             type: "Like"
@@ -51,6 +60,7 @@ export default function NotificationMgmt({ data = [], cetogry }) {
         Like: LikesNoti,
         Comment: CommentNoti,
         Follow: FollowNoti,
+        Mention:MentionNoti
 };
 
 return (

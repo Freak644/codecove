@@ -31,7 +31,7 @@ export default function MiniMenu({avatar, crntTab, username}) {
 
 
     return(
-        <ul className="flex w-full!   justify-between">
+        <ul className="">
             <li className={crntTab === "Home" ? "activeLi" : ""}>
                 <Link to={"/"}>
                     <span>

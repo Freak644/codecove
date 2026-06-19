@@ -127,29 +127,47 @@ body{
 
     .menuDiv{
         width: 50px;
-        .Logotxt{
-            width: auto;
-            h2{
+        left: 1px;
+        .textMD {
+            display: none;
+        }
+        
+
+        .containerBigbos {
+            p {
                 display: none;
             }
-        }
-        .menuContainer{
-            .topU li{
-                span{
+            ul {
+                height: 100% !important;
+                padding: 0px !important;
+
+                li {
+                    justify-content: center !important;
+                    .menuTxtDiv, .dotdot {
+                        display: none ;
+                    }
+                }
+
+                .border-b {
                     display: none;
                 }
             }
-            .secul li ul{
-                font-size: medium;
-                
-            }
-            .secul>li>span{
-                display: none;
+
+            .activeLiContainer {
+                border: none;
+                border-left: none !important;
+                background: transparent;
+
+                .svgAnim {
+                    height: 26px !important;
+                    width: 26px !important;
+                }
             }
         }
     }
     
 }
+
 .menuDiv{
     border-radius: 10px;
 
@@ -787,7 +805,7 @@ form>h1>span{
         }
     }
      .menuDiv{
-        height: 55px;
+        height: 60px;
         width: 100%;
         flex-direction: row !important;
         position: absolute;
@@ -797,17 +815,6 @@ form>h1>span{
         ul{
             padding: 0px;
         }
-
-        .menuContainer{
-            height: 100%;
-            width: 100dvw;
-            flex-direction: row;
-            background: rgba(10, 0, 10, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 5px 5px;
-          
-        } 
         .Logotxt,.secul{
             display: none;
         }

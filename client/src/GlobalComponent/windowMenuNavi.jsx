@@ -8,7 +8,7 @@ import { Calnder, ChatIcon, CodeBlock, dbLsmUser, dbLuser, FireSvg } from "../ut
 import MenuLICon from "./miniCom/liContainer";
 import { NotificationBellIcon } from "../utils/SVG/SVG";
 
-export default function WindowsMenu ({userInfo}) {
+export default function WindowsMenu ({userInfo, miniMenu}) {
     const [crntTab, setTab] = useState('Home');
     const [isHidden, setHidden] = useState(false);
     const crntLocation = useLocation();
@@ -127,13 +127,13 @@ export default function WindowsMenu ({userInfo}) {
                 </div>
             </div>
 
-            <div className="containerBigBos h-[6%] w-full
+            <div className="containerBigbos h-[6%] w-full
             text-skin-text">
                 <ul>
                     <li className={crntTab === "Home" ? "activeLiContainer" : ""}>
                         <Link to="/">
                             <HomeIcon className="svgAnim"/>
-                                <span>Home</span>
+                                <p>Home</p>
                         </Link>
                     </li>
                 </ul>
@@ -141,7 +141,7 @@ export default function WindowsMenu ({userInfo}) {
 
             <div className="containerBigbos h-3/10 w-full">
                 <p className="text-[11px] h-1/10 font-bold text-indigo-500 p-2">DISCOVER</p>
-                <ul className="h-9/10!">
+                <ul className="h-9/10">
                     {
                         discoverLiArray.map((info,index) => (
                             <MenuLICon key={index} crntTab={crntTab} crntLiInfo={info} />
@@ -153,7 +153,7 @@ export default function WindowsMenu ({userInfo}) {
 
             <div className="containerBigbos h-3/12 w-full">
                     <p className="text-[11px] h-1/10 font-bold text-sky-500 pl-2">CONNECT</p>
-                    <ul className="h-9/10!">
+                    <ul className="h-9/10">
                         {
                             connectLiArray.map((info,index) => (
                                 <MenuLICon key={index} crntTab={crntTab} crntLiInfo={info} />

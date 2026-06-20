@@ -26,12 +26,13 @@ export const LoginAPI = async (rkv,rspo) => {
                 return rspo.status(401).send({ err: "Please check your username"})
             }
         }
+        const pepper = process.env.pepper_sec
         let {password,username,email,id,acStatus,avatar} = isUser[0];
         if (acStatus !== 1) return rspo.status(401).send({err:"Your account Block"});
         if (!password) {
             return rspo.status(404).send({err:"You have an OAuth service account"});
         }
-        let isPassMatch = await bcrypt.compare(Password,password);
+        let isPassMatch = await bcrypt.compare(Password + pepper ,password);
         if (!isPassMatch) {
             return rspo.status(401).send({ err: "Check your Password"})
         }

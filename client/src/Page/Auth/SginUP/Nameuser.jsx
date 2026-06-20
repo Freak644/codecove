@@ -9,7 +9,7 @@ import { UserFI } from "../../../utils/SVG/SVG";
 import { AltMail, CheckSQ } from "../../../utils/SVG/menuSVG";
 export default function UserNameEl({stoggle}) {
     const {setTab} = FaceToggle();
-    const {setMail,setTUsername,setVTab,emailStatus,email,Tusername} = verifyZu();
+    const {setMail,setTUsername,setVTab,emailStatus,email,Tusername, fname, setFname} = verifyZu();
     const {isTrue,toggleLoader} = Loader();
     const [username,setUsername] = useState("");
     // const [debounceVal,setDeVal] = useState("");
@@ -119,7 +119,7 @@ export default function UserNameEl({stoggle}) {
             return toggleMiniTab("pass")
         }
         let formData = new FormData(evnt.target);
-        let {username, email} = Object.fromEntries(formData);
+        let {username, email, name} = Object.fromEntries(formData);
         try {
             if (username.length<6) {
              throw new Error("username.len>6")
@@ -139,8 +139,9 @@ export default function UserNameEl({stoggle}) {
             })
             let result = await request.json();
             if (result.pass) {
-                setMail(email)
-                setTUsername(username)
+                setMail(email);
+                setTUsername(username);
+                setFname(name)
                 toast.success("OTP! Sent")
                 setVTab(true)
             }else{
@@ -170,6 +171,10 @@ export default function UserNameEl({stoggle}) {
                                 <span>Hidden, Yet Heard</span>
                             </span>
                             </h1> */}
+                            <div className="inputDiv">
+                                <input type="text" onBlur={(evnt)=>handleBlur(evnt.target)} id="name" name="name" required autoComplete="nn" />
+                                <label htmlFor="name"><UserFI/> <span>FullName</span></label>
+                            </div>
                             <div ref={divRef} className="inputDiv">
                                 <input type="text"
                                 onBlur={(evnt)=>handleBlur(evnt.target)}

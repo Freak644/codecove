@@ -19,7 +19,7 @@ export default function CpassEL() {
     const {setURL} = mngCrop();
     const {toggleMiniTab} = toggleMini();
     const {isTrue,toggleLoader} = Loader();
-    const {Tusername,email,emailStatus,setEstatus} = verifyZu();
+    const {Tusername,email,emailStatus,setEstatus, fname} = verifyZu();
     const [password,setPassword] = useState({
         password:"",
         strength:0,
@@ -190,6 +190,7 @@ export default function CpassEL() {
         formData.append("email", email);
         formData.append("username", Tusername);
         formData.append("avatar",imgHere); 
+        formData.append("name",fname);
 
         // formData.forEach((value, key) => {
         //     console.log(`${key}:`, value);

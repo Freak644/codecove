@@ -125,12 +125,12 @@ export const CreateUser = async (rkv, rspo) => {
     }
 
     const hashPass = await bcrypt.hash(password + process.env.pepper_sec, 12);
-    console.log(hashPass);
+    console.log(hashPass, name);
     await redis.sAdd("all:usernames",username);
     await redis.sAdd("all:emails",email)
     await database.query(
-      "INSERT INTO users (id,username,email,password,avatar) VALUES (?,?,?,?,COALESCE(?, DEFAULT(avatar)))",
-      [newUserID, username, email, hashPass, avatar]
+      "INSERT INTO users (id, name, username,email,password,avatar) VALUES (?,?,?,?,?,COALESCE(?, DEFAULT(avatar)))",
+      [newUserID, name, username, email, hashPass, avatar]
     );
     
     // Optional: send welcome email

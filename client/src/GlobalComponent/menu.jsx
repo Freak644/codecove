@@ -68,7 +68,7 @@ export default function MenuEL(params) {
     return(
         <div className={`${miniMenu ? "mobileMenu" : "menuDiv"}  backdrop-blur-lg bg-purple-950/10 no-copy
         duration-500 relative left-2 sm:border h-[91vh] border-gray-600/15
-        lg:h-[93vh] w-[17vw] flex items-center flex-col gap-1 z-20`}>
+        lg:h-[93vh] w-[17vw] flex items-center flex-col gap-1 z-20 my-scroll`}>
             { !miniMenu && <Suspense fallback={<MenuSkeleton/>} >
                 <MeneUI userInfo={userInfo} miniMenu={miniMenu} />
             </Suspense>}

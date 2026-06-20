@@ -112,7 +112,7 @@ export default function WindowsMenu ({userInfo, miniMenu}) {
     return(
         <>
             <p id="secBtn" onClick={()=> {setHidden(prev=>!prev)}} className="h-8 w-8 flex logotxt items-center justify-center text-2xl cursor-pointer
-            border-skin-ptext/30 border rounded-full absolute top-3 -right-2">
+            border-skin-ptext/30 border absolute rounded-full top-3 -right-2">
                 <MeneHI className={`text-skin-ptext ${isHidden && "rotate-180"}`}/>
             </p>
             <div className="topIconDiv h-[6%]  flex items-center justify-start w-full gap-1.5">
@@ -139,7 +139,7 @@ export default function WindowsMenu ({userInfo, miniMenu}) {
                 </ul>
             </div>
 
-            <div className="containerBigbos h-3/10 w-full">
+            <div className="containerBigbos h-4/10 w-full">
                 <p className="text-[11px] h-1/10 font-bold text-indigo-500 p-2">DISCOVER</p>
                 <ul className="h-9/10">
                     {
@@ -151,7 +151,7 @@ export default function WindowsMenu ({userInfo, miniMenu}) {
                 </ul>
             </div>
 
-            <div className="containerBigbos h-3/12 w-full">
+            <div className="containerBigbos h-3/11 w-full">
                     <p className="text-[11px] h-1/10 font-bold text-sky-500 pl-2">CONNECT</p>
                     <ul className="h-9/10">
                         {

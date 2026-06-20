@@ -1,5 +1,4 @@
 import {database} from '../../Controllers/myConnectionFile.js';
-import jwt from 'jsonwebtoken';
 import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
 import redis from '../../Controllers/src/config/redis.js';
 import crypto from 'crypto';

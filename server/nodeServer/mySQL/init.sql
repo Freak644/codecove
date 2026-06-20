@@ -15,6 +15,7 @@ USE echonexy_db;
 
 CREATE TABLE IF NOT EXISTS users (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    name VARCHAR(50) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NULL,
@@ -159,116 +160,6 @@ CREATE TABLE IF NOT EXISTS dislikes (
   INDEX idx_like (post_id, user_id),
   INDEX idx_user_id (user_id)
 );
-/*
-===================================
-  🖼️ blocked bad words 
-===================================
-*/
-
-CREATE TABLE IF NOT EXISTS blocked_words (
-  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  word VARCHAR(255) NOT NULL,
-  category VARCHAR(50) NOT NULL,
-  INDEX idx_category (category)
-);
-
-/*
-===================================
-  🖼️ words data 
-===================================
-*/
-
-
-INSERT INTO blocked_words (word, category) VALUES
-('idiot', 'Abuse'),
-('stupid', 'Abuse'),
-('dumb', 'Abuse'),
-('fool', 'Abuse'),
-('trash', 'Abuse'),
-('loser', 'Abuse'),
-('moron', 'Abuse'),
-('nonsense', 'Abuse'),
-('ugly', 'Abuse'),
-('pig', 'Abuse'),
-('clown', 'Abuse'),
-('jerk', 'Abuse'),
-('shut up', 'Abuse'),
-('nasty', 'Abuse'),
-('pathetic', 'Abuse'),
-('weak', 'Abuse'),
-('useless', 'Abuse'),
-('worthless', 'Abuse'),
-('bastard', 'Abuse'),
-('disgusting', 'Abuse'),
-('hate', 'Abuse'),
-('hateful', 'Abuse');
-
-INSERT INTO blocked_words (word, category) VALUES
-('kill', 'Violence'),
-('murder', 'Violence'),
-('attack', 'Violence'),
-('shoot', 'Violence'),
-('stab', 'Violence'),
-('blood', 'Violence'),
-('knife', 'Violence'),
-('gun', 'Violence'),
-('explode', 'Violence'),
-('bomb', 'Violence'),
-('terror', 'Violence'),
-('fight', 'Violence'),
-('beat', 'Violence'),
-('hurt', 'Violence'),
-('burn', 'Violence'),
-('torture', 'Violence'),
-('rape', 'Violence'),
-('hang', 'Violence'),
-('strangle', 'Violence'),
-('assault', 'Violence'),
-('dead', 'Violence'),
-('death', 'Violence');
-
-INSERT INTO blocked_words (word, category) VALUES
-('free money', 'Spam'),
-('discount here', 'Spam'),
-('click here', 'Spam'),
-('earn cash', 'Spam'),
-('crypto scam', 'Spam'),
-('win prize', 'Spam'),
-('lottery win', 'Spam'),
-('investment scam', 'Spam'),
-('buy now', 'Spam'),
-('limited offer', 'Spam'),
-('act fast', 'Spam'),
-('subscribe now', 'Spam'),
-('followers cheap', 'Spam'),
-('views cheap', 'Spam'),
-('fake followers', 'Spam'),
-('giveaway scam', 'Spam'),
-('promo code spam', 'Spam'),
-('adult webcam', 'Spam'),
-('xxx', 'Spam'),
-('porn', 'Spam'),
-('nsfw', 'Spam');
-
-INSERT INTO blocked_words (word, category) VALUES
-('http', 'Link'),
-('https', 'Link'),
-('www', 'Link'),
-('dot com', 'Link'),
-('.com', 'Link'),
-('.net', 'Link'),
-('.org', 'Link'),
-('.io', 'Link'),
-('.link', 'Link'),
-('redirect', 'Link'),
-('url', 'Link'),
-('click link', 'Link'),
-('visit site', 'Link'),
-('open link', 'Link'),
-('shortlink', 'Link'),
-('bit.ly', 'Link'),
-('tinyurl', 'Link'),
-('go to this link', 'Link');
 
 /*
 =========================

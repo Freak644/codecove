@@ -18,6 +18,7 @@ export const GetPostForFeed = async (rkv,rspo) => {
                                     p.post_id, p.post_sr, p.id, p.images_url, p.caption, p.visibility, p.totalLike, p.totalComment, p.totalDislike, p.totalSave, p.post_moment, p.canComment, p.likeCount, p.canSave,
                                     u.username,
                                     u.avatar,
+                                    u.name as ownerName,
 
                                     (f.follower_id IS NOT NULL) AS isFollowing,
                                     (li.id IS NOT NULL) AS isLiked,

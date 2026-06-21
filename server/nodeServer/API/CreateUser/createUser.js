@@ -125,7 +125,7 @@ export const CreateUser = async (rkv, rspo) => {
     }
 
     const hashPass = await bcrypt.hash(password + process.env.pepper_sec, 12);
-    console.log(hashPass, name);
+    // console.log(hashPass, name);
     await redis.sAdd("all:usernames",username);
     await redis.sAdd("all:emails",email)
     await database.query(

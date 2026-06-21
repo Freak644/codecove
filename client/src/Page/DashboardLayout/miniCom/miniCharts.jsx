@@ -42,6 +42,7 @@ export default function ChartsEL() {
                 tempArray.push({title:"null",likes:0})
                 tempObje_count--;
             }
+            console.log(data.data[0]);
             let donatArray = [
                 {
                     label:"Likes",

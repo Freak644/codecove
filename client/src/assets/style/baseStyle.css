@@ -295,9 +295,9 @@ body{
     .activeLiContainer {
         border-left: 3px solid rgb(111, 0, 255) !important;
         border: 1px solid rgba(0, 255, 255, 0.188);
-        background: linear-gradient(90deg, rgba(58, 0, 130, 0.2), rgba(58, 0, 130, 0.722),rgba(91, 0, 171, 0.889));
+        background: linear-gradient(90deg, rgba(59, 0, 130, 0.223), rgba(68, 0, 151, 0.733),rgb(92, 0, 205));
         .svgAnim {
-            background-color: rgb(75, 0, 167);
+            background-color: rgb(83, 0, 185);
         }
     }
 

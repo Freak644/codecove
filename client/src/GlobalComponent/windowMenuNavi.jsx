@@ -115,7 +115,7 @@ export default function WindowsMenu ({userInfo, miniMenu}) {
             border-skin-ptext/30 border absolute rounded-full top-3 -right-2">
                 <MeneHI className={`text-skin-ptext ${isHidden && "rotate-180"}`}/>
             </p>
-            <div className="topIconDiv h-[6%]  flex items-center justify-start w-full gap-1.5">
+            <div className="topIconDiv h-[6%]  flex items-center justify-start w-full">
                 <div className="Logotxt ml-1.5">
                     <GradientSVG id={"menu"} />
                     <CodeBlockI className="h-8 w-10" style={{fill: "url(#menu)"}}  />
@@ -126,86 +126,89 @@ export default function WindowsMenu ({userInfo, miniMenu}) {
                     <p className="text-skin-ptext text-[8px]">Code. Connect. Create.</p>
                 </div>
             </div>
+            
+            <div className="h-full w-full border flex items-center flex-col gap-3">
+                
+                <div className="containerBigbos h-10 w-full
+                text-skin-text">
+                    <ul>
+                        <li className={crntTab === "Home" ? "activeLiContainer" : ""}>
+                            <Link to="/">
+                                <HomeIcon className="svgAnim"/>
+                                    <p>Home</p>
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
 
-            <div className="containerBigbos h-[6%] w-full
-            text-skin-text">
-                <ul>
-                    <li className={crntTab === "Home" ? "activeLiContainer" : ""}>
-                        <Link to="/">
-                            <HomeIcon className="svgAnim"/>
-                                <p>Home</p>
-                        </Link>
-                    </li>
-                </ul>
-            </div>
-
-            <div className="containerBigbos h-4/10 w-full">
-                <p className="text-[11px] h-1/10 font-bold text-indigo-500 p-2">DISCOVER</p>
-                <ul className="h-9/10">
-                    {
-                        discoverLiArray.map((info,index) => (
-                            <MenuLICon key={index} crntTab={crntTab} crntLiInfo={info} />
-                        ))
-                    }
-                    <div className="border-b w-full h-px border-gray-500/15"/>
-                </ul>
-            </div>
-
-            <div className="containerBigbos h-3/11 w-full">
-                    <p className="text-[11px] h-1/10 font-bold text-sky-500 pl-2">CONNECT</p>
+                <div className="containerBigbos h-60 w-full">
+                    <p className="text-[11px] h-1/10 font-bold text-indigo-500 p-2">DISCOVER</p>
                     <ul className="h-9/10">
                         {
-                            connectLiArray.map((info,index) => (
+                            discoverLiArray.map((info,index) => (
                                 <MenuLICon key={index} crntTab={crntTab} crntLiInfo={info} />
                             ))
                         }
                         <div className="border-b w-full h-px border-gray-500/15"/>
                     </ul>
-            </div>
+                </div>
 
-            <div className="containerBigbos h-2/14 w-full">
-                    <p className="text-[11px] h-1/10 font-bold text-green-500 pl-2">NOTIFICATIONS</p>
-                    <ul className="h-9/10! mt-0.5">
-                        {
-                            notificationsLiArray.map((info,index) => (
-                                <MenuLICon key={index} crntTab={crntTab} crntLiInfo={info} />
-                            ))
-                        }
-                        <div className="border-b w-full h-px border-gray-500/15"/>
-                    </ul>
-            </div>
+                <div className="containerBigbos h-49 w-full">
+                        <p className="text-[11px] h-1/10 font-bold text-sky-500 pl-2">CONNECT</p>
+                        <ul className="h-9/10">
+                            {
+                                connectLiArray.map((info,index) => (
+                                    <MenuLICon key={index} crntTab={crntTab} crntLiInfo={info} />
+                                ))
+                            }
+                            <div className="border-b w-full h-px border-gray-500/15"/>
+                        </ul>
+                </div>
 
-            <div className="containerBigbos bg-indigo-600/10 rounded-lg h-1/11 w-full border border-cyan-500/10
-            flex items-center justify-center gap-1.5">
-                    <div className="imgDiv h-14 w-14 relative">
-                        <img src={userInfo.avatar+"?size=56"} className="h-full w-ful rounded-full" alt="" />
-                        <div className="greenDot bg-green-700 h-2 w-2 bottom-1 right-1 absolute rounded-full"/>
-                    </div>
-                    <div className="w-3/4 text-skin-text text-[10px] h-full 
-                    flex items-center flex-row gap-1">
-                        <div className="flex-1 gap-1! flex items-start h-full flex-col">
-                            <p>John Deo</p>
-                            <p className="text-skin-ptext/70">@loser_3221</p>
-                            <p className="text-skin-ptext/70">Developer</p>
+                <div className="containerBigbos h-23 w-full">
+                        <p className="text-[11px] h-1/10 font-bold text-green-500 pl-2">NOTIFICATIONS</p>
+                        <ul className="h-9/10! mt-0.5">
+                            {
+                                notificationsLiArray.map((info,index) => (
+                                    <MenuLICon key={index} crntTab={crntTab} crntLiInfo={info} />
+                                ))
+                            }
+                            <div className="border-b w-full h-px border-gray-500/15"/>
+                        </ul>
+                </div>
+
+                <div className="containerBigbos bg-indigo-600/10 rounded-lg h-1/11 w-full border border-cyan-500/10
+                flex items-center justify-center gap-1.5">
+                        <div className="imgDiv h-14 w-14 relative">
+                            <img src={userInfo.avatar+"?size=56"} className="h-full w-ful rounded-full" alt="" />
+                            <div className="greenDot bg-green-700 h-2 w-2 bottom-1 right-1 absolute rounded-full"/>
                         </div>
-                        <div className="flex-2 h-full flex items-center flex-col gap-0.5">
-                            <div className="h-1/2 flex w-full">
-                                <p className="flex-1 flex items-center flex-col h-full">
-                                    1.2k <span className="text-skin-ptext/70">Followers</span>
-                                </p>
-                                <p className="flex-1 flex items-center flex-col h-full">
-                                    50 <span className="text-skin-ptext/70">Following</span>
-                                </p>
+                        <div className="w-3/4 text-skin-text text-[10px] h-full 
+                        flex items-center flex-row gap-1">
+                            <div className="flex-1 gap-1! flex items-start h-full flex-col">
+                                <p>John Deo</p>
+                                <p className="text-skin-ptext/70">@loser_3221</p>
+                                <p className="text-skin-ptext/70">Developer</p>
                             </div>
-                            <button className="w-full h-6 bg-sky-800/10 rounded-lg border
-                            border-gray-500/30 shadow cursor-pointer">View Profile</button>
+                            <div className="flex-2 h-full flex items-center flex-col gap-0.5">
+                                <div className="h-1/2 flex w-full">
+                                    <p className="flex-1 flex items-center flex-col h-full">
+                                        1.2k <span className="text-skin-ptext/70">Followers</span>
+                                    </p>
+                                    <p className="flex-1 flex items-center flex-col h-full">
+                                        50 <span className="text-skin-ptext/70">Following</span>
+                                    </p>
+                                </div>
+                                <button className="w-full h-6 bg-sky-800/10 rounded-lg border
+                                border-gray-500/30 shadow cursor-pointer">View Profile</button>
+                            </div>
                         </div>
-                    </div>
-            </div>
+                </div>
 
-            <div className="containerBigbos border-t-indigo-600 border-l-indigo-600 border-sky-500/35
-            rounded-lg mt-1 h-1/19 border-2 w-full flex items-center justify-center text-indigo-600">
-                + Create post
+                <div className="containerBigbos border-t-indigo-600 border-l-indigo-600 border-sky-500/35
+                rounded-lg mt-1 h-1/19 border-2 w-full flex items-center justify-center text-indigo-600">
+                    + Create post
+                </div>
             </div>
         </>
     )

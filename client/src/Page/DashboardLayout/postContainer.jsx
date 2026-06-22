@@ -1,6 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import ImageSlider from "../Promulgation/sliderCom"
-const Caption = lazy(()=> import("./miniCom/captionCom"));
 import TODOList from "./miniCom/TODOCompunent";
 const MiniDropDown = lazy(()=> import("./miniCom/threedotDropDown"));
 import { univPostStore } from "../../lib/basicUserinfo";
@@ -79,7 +78,7 @@ export default function PostsCon({posts}) {
                         </div>
 
                         <div className="captionDiv w-full h-auto">
-                                <div className="whitespace-per-wrap cursor-text"
+                                <div className="whitespace-per-wrap cursor-text text-sm! tracking-wider"
                                 dangerouslySetInnerHTML={{__html:caption}}
                                 />
                         </div>

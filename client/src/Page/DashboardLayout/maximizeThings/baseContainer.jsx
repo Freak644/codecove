@@ -4,7 +4,8 @@ const ImageSlider = lazy(()=> import("../../Promulgation/sliderCom"))
 import { univPostStore } from "../../../lib/basicUserinfo";
 const SheetMiddleWhare = lazy(()=> import("./slideMiddleWr"));
 import {createContext} from 'react';
-import { ZoomSvg } from "../../../utils/SVG/OLDS";
+import { ZoomSvg } from "../../../utils/SVG/SVG";
+import axios from "axios";
 export const btnContext = createContext();
 export default function MaximizeContainer({pramPost}) {
     let {pID} = useParams();
@@ -13,14 +14,32 @@ export default function MaximizeContainer({pramPost}) {
     }
     let navi = useNavigate();
     let containerRef = useRef(null);
-    const postData = univPostStore(stat=>stat.postsById[pID]);
     const [crntPost,setCrntPost] = useState({});
+    let {postsById, setUnivPost} = univPostStore();
     const [isFull,setFull] = useState(false);
     const [toggleBtn,setToggel] = useState(false); 
     
     useEffect(()=>{
-        setCrntPost(postData)
-    },[postData]);
+        getPostInfo(pID);
+    },[pID]);
+
+    const getPostInfo = async (pID) => {
+        if (!pID || !pID.trim()) return;
+        try {
+            let responce = await axios(`/myServer/readPost/getImage?post_id=${pID}`);
+            setCrntPost(responce?.data.pass);
+            if (!Object.keys(postsById).includes(pID)) {
+                // console.log("here");
+                setUnivPost(responce?.data.pass)
+            }
+        } catch (error) {
+            if (error.response) {
+                toast.warning(error.response.data.err);
+            }else{
+                toast.error(error.message);
+            }
+        }
+    }
 
     useEffect(()=>{
         const handleClick = evnt=>{
@@ -38,7 +57,7 @@ export default function MaximizeContainer({pramPost}) {
     return(
             <div className="underTaker ">
                 <div className="closeBtn hidden md:flex items-center justify-center p-3 rounded-full text-[18px] font-bold absolute top-5 right-2">
-                    <button className="cursor-pointer hover:rotate-180 transition-all duration-300 text-red-600 hover:bg-gray-500/70 rounded-full
+                    <button className="cursor-pointer hover:rotate-180 transition-all duration-300 text-red-600 hover:bg-gray-500/40 rounded-full
                     h-9 w-9" 
                     
                     >

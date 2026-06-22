@@ -73,6 +73,7 @@ export const getComment = async (rkv, rspo) => {
 
             u.username,
             u.avatar,
+            u.name as ownerName,
 
             EXISTS(
                 SELECT 1
@@ -118,6 +119,7 @@ export const getComment = async (rkv, rspo) => {
             
             const [userRow] = await database.query(`SELECT 
                 p.post_moment, u.username AS Ouser, u.avatar AS Oavatar,
+                u.name as ownerName,
                 (p.id = ?) AS isPostOwner,
                 
                 EXISTS(

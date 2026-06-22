@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useRef, useState, useContext, useMemo } from "react"
+import React, { Suspense, useEffect, useRef, useState, useContext, useMemo, lazy } from "react"
 import { useParams } from "react-router-dom";
 const EmojiPicker = React.lazy(()=>import("emoji-picker-react"));
 import {toast} from 'react-toastify'
@@ -16,6 +16,7 @@ import  LikeCom  from "../miniCom/TODOComs/likeCom.jsx";
 import DisLikeCom from "../miniCom/TODOComs/disLike.jsx";
 import SvCom from "../miniCom/TODOComs/saveCom.jsx";
 import CommentSkeleton from "./commentSkeL.jsx";
+const PostOwnerEl = lazy(()=>import("../POinfo.jsx"));
 import { KeyBoardSvg, PuchiSvg, SendSvg } from "../../../utils/SVG/menuSVG.jsx";
 
 let logicObj = {
@@ -96,6 +97,7 @@ export default function CommentEl() {
 
             
                 setOwnerInfo(result.OwnerInfo[0]);
+                // console.log(result.OwnerInfo[0]);
                 setCursor(result.cursorObj)
                 if (result.commentrows.length === 0) toggleNoCommetn(true);
                 setComment(prev=>optimizeComment(prev,result.commentrows,false));
@@ -121,7 +123,6 @@ export default function CommentEl() {
             let result = await rqst.json();
             if (result.err) throw new Error(result.err);
             // setComment(prev=>[...prev,...result.commentrows]);
-            console.log(result.commentrows)
             setComment(prev=>optimizeComment(prev,result.commentrows,false));
             setCursor(result.cursorObj)
             if (result.commentrows.length < 20) {
@@ -253,10 +254,8 @@ export default function CommentEl() {
             {canComment ? <div 
              className={`h-full w-full mainInnerCC comment-sheet flex items-center flex-col p-1 touch-none`}>
                 <div className="userInfoHeader w-full h-1/10 flex items-center flex-row gap-2.5
-                bg-gray-800 rounded-lg p-2.5">
-                    <img className="h-9 w-9 rounded-full bg-gray-600" loading="lazy" src={OwnerInfo.Oavatar+"?size=36"} alt="DP" />
-                    <span className="text-skin-text">{OwnerInfo.Ouser}</span>
-                    <p className="text-blue-500">{OwnerInfo.isFollowing ? "Unfollow" : "Follow"}</p>
+                bg-violet-600/10 rounded-lg p-2.5">
+                    <PostOwnerEl userInfo={{avatar:OwnerInfo.Oavatar,post_moment:OwnerInfo.post_moment, username:OwnerInfo.Ouser, ownerName:OwnerInfo.ownerName, isFollowing: OwnerInfo.isFollowing}}/>
                 </div>
                 <div className="virtuoso mt-2 relative h-9/12 w-full flex items-start justify-start flex-wrap gap-4">
                     {

@@ -139,6 +139,7 @@ export const getPost = async (rkv, rspo) => {
         if (!post_id || post_id.length !== 21) return rspo.status(400).send({err:"Link is Broken"});
         let [row] = await database.query(`SELECT p.post_id, p.post_sr, p.id, p.images_url, p.caption, p.visibility, p.totalComment, p.totalSave, p.post_moment, p.canComment, p.likeCount, p.canSave,
                         u.username, u.avatar,
+                        u.name as ownerName,
                         EXISTS (
                         SELECT 1 FROM follows 
                         WHERE follower_id = ?

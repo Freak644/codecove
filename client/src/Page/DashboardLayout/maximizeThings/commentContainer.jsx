@@ -18,6 +18,7 @@ import SvCom from "../miniCom/TODOComs/saveCom.jsx";
 import CommentSkeleton from "./commentSkeL.jsx";
 const PostOwnerEl = lazy(()=>import("../POinfo.jsx"));
 import { KeyBoardSvg, PuchiSvg, SendSvg } from "../../../utils/SVG/menuSVG.jsx";
+import { SmileEmoji } from "../../../utils/SVG/TODOsvg.jsx";
 
 let logicObj = {
     isFeching:true,
@@ -44,11 +45,11 @@ export default function CommentEl() {
     const commentRef = useRef(null);
     let {setUnivPost} = univPostStore();
     const crntPostData = univPostStore(stat=>stat.postsById[pID]);
-
+    
     const [canComment,setCanComnt] = useState(true);
 
 
-    const uID = UnivuUserInfo(stat=>stat.userInfo?.id);
+    const {id:uID, avatar} = UnivuUserInfo(stat=>stat.userInfo);
     let  {toggleLoader}  = Loader();
 
     function optimizeComment(prevState, newArray, isPush) {
@@ -80,10 +81,6 @@ export default function CommentEl() {
     }
 
     
-    
-    useEffect(()=>{
-        console.log(commentData.commentIds.length)
-    },[commentData])
     const getComments = async (postID) => {
         if (isOver) return;
         toggleLoader(true);
@@ -97,7 +94,7 @@ export default function CommentEl() {
 
             
                 setOwnerInfo(result.OwnerInfo[0]);
-                // console.log(result.OwnerInfo[0]);
+                console.log(result.OwnerInfo[0]);
                 setCursor(result.cursorObj)
                 if (result.commentrows.length === 0) toggleNoCommetn(true);
                 setComment(prev=>optimizeComment(prev,result.commentrows,false));
@@ -254,7 +251,7 @@ export default function CommentEl() {
             {canComment ? <div 
              className={`h-full w-full mainInnerCC comment-sheet flex items-center flex-col p-1 touch-none`}>
                 <div className="userInfoHeader w-full h-1/10 flex items-center flex-row gap-2.5
-                bg-violet-600/10 rounded-lg p-2.5">
+                bg-violet-900/5 backdrop-blur-lg rounded-lg p-2.5 border border-amber-200/5">
                     <PostOwnerEl userInfo={{avatar:OwnerInfo.Oavatar,post_moment:OwnerInfo.post_moment, username:OwnerInfo.Ouser, ownerName:OwnerInfo.ownerName, isFollowing: OwnerInfo.isFollowing}}/>
                 </div>
                 <div className="virtuoso mt-2 relative h-9/12 w-full flex items-start justify-start flex-wrap gap-4">
@@ -303,15 +300,15 @@ export default function CommentEl() {
                       ))
                     }
                 </div>
-                <div className="w-full h-15/100 absolute bottom-0 shadow bg-gray-700/60 backdrop-blur-lg rounded-md">
-                    <div className="TodoList flex items-center justify-between text-skin-text h-1/2 w-full">
+                <div className="w-full h-15/100 absolute bottom-0 shadow rounded-md">
+                    <div className="TodoList flex items-center justify-between text-skin-text h-1/2 bg-violet-900/5 backdrop-blur-lg w-9/10 ml-[5%] rounded-lg border border-amber-200/5">
                         {crntPostData && <> <div className="flex items-center gap-2.5">
                             <LikeCom Data={crntPostData}/>
                         <DisLikeCom Data={crntPostData} />
                         </div>
                         <div className="h-full w-10"><SvCom Data={crntPostData} /> </div> </>}
                     </div>
-                    <div className="enterComment w-full h-1/2 relative p-2 flex items-center rounded-lg flex-row ">
+                    <div className="enterComment w-full h-1/2 relative p-2 flex items-center rounded-lg flex-row gap-2.5">
                         {
                             isEmoji && 
                             <Suspense fallback={null} >
@@ -329,17 +326,21 @@ export default function CommentEl() {
                             </Suspense>
                         }
                         
-                        <div className="absolute top-4 left-4  text-[20px] flex items-center justify-center cursor-pointer text-white" onClick={()=> {setEmoji(prev=>!prev), toggleMe(true)}}>
-                             {isEmoji ? <KeyBoardSvg/> : <PuchiSvg/>}
+                        <div className="absolute top-4 right-23.5  text-[20px] flex items-center justify-center cursor-pointer text-white" onClick={()=> {setEmoji(prev=>!prev), toggleMe(true)}}>
+                             {isEmoji ? <KeyBoardSvg/> : <SmileEmoji/>}
                         </div>
-                        <form action="" className="h-full w-9/10 flex items-center justify-center">
-                            <textarea ref={commentRef} onClick={()=>setEmoji(false)}  className="my-scroll bg-black/80 rounded-lg p-1 resize-none text-skin-ptext h-full border border-amber-50 pl-10 text-[16px]  placeholder:pl-2 placeholder:pt-px w-full" 
+                        <div className="avtDiv rounded-full h-10 w-10">
+                            <img src={avatar+"?size=40"} className="rounded-full" alt="" />
+                        </div>
+                        <form action="" className="h-full w-8/10 flex items-center justify-center">
+                            <textarea autoCorrect="off" spellCheck={false} ref={commentRef} onClick={()=>setEmoji(false)}  className="my-scroll bg-black/80 rounded-lg p-2 resize-none text-skin-ptext h-full border border-violet-700/50  text-sm  placeholder:pt-px w-full placeholder:text-sm!" 
                                 placeholder="Share your thought...">
                             </textarea>
                         </form>
                         <button
                         onClick={bounceNewComment}
-                        className={`flex items-center justify-center w-18 p-1 cursor-pointer`}
+                        className={`flex items-center justify-center w-18 rounded-md border border-blue-800/50
+                    cursor-pointer hover:text-white hover:scale-95 duration-300 bg-indigo-900/50`}
                         
                         ><div className="h-full w-full  text-skin-ptext hover:text-skin-text"> <SendSvg className="text-3xl ml-4"/>
                         </div></button>

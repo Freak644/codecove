@@ -172,6 +172,7 @@ CREATE TABLE IF NOT EXISTS comments (
   post_id CHAR(36) NOT NULL,
   id CHAR(36) NOT NULL,
   comment TEXT NOT NULL,
+  warnCategory VARCHAR(20) DEFAULT NULL,
   totalLike BIGINT DEFAULT 0,
   report_count INT DEFAULT 0,
   isAccepted BOOLEAN DEFAULT 0,

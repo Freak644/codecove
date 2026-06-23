@@ -4,7 +4,7 @@ const ImageSlider = lazy(()=> import("../../Promulgation/sliderCom"))
 import { univPostStore } from "../../../lib/basicUserinfo";
 const SheetMiddleWhare = lazy(()=> import("./slideMiddleWr"));
 import {createContext} from 'react';
-import { ZoomSvg } from "../../../utils/SVG/SVG";
+import { ZoomOutSvg, ZoomSvg } from "../../../utils/SVG/SVG";
 import axios from "axios";
 export const btnContext = createContext();
 export default function MaximizeContainer({pramPost}) {
@@ -30,7 +30,7 @@ export default function MaximizeContainer({pramPost}) {
             setCrntPost(responce?.data.pass);
             if (!Object.keys(postsById).includes(pID)) {
                 // console.log("here");
-                setUnivPost(responce?.data.pass)
+                setUnivPost({[pID]:responce?.data.pass})
             }
         } catch (error) {
             if (error.response) {
@@ -64,9 +64,9 @@ export default function MaximizeContainer({pramPost}) {
                         X
                     </button>
                 </div>
-                <div ref={containerRef} className="commentAndImage h-9/10 w-5/6 rounded-lg p-2 flex items-center justify-center flex-wrap bg-black/80  md:bg-gray-800/70 backdrop-blur-lg">
+                <div ref={containerRef} className="commentAndImage h-9/10 w-5/6 rounded-lg p-2 flex items-center justify-center flex-wrap bg-gray-800/80  md:bg-gray-800/80 backdrop-blur-2xl">
                     <div className="ImageCon flex-1  flex items-center justify-center h-full relative transition-all duration-200">
-                        {isFull ? <MdFullscreenExit className={`absolute bottom-4 right-5 z-20 text-skin-ptext text-4xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>{setFull(prev=>!prev), setToggel(true)}} /> : <ZoomSvg className={`absolute bottom-4 right-5 z-20 text-skin-ptext text-4xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>{setFull(prev=>!prev), setToggel(true)}} />}
+                        {isFull ? <ZoomOutSvg className={`absolute bottom-4 right-5 z-20 text-skin-ptext text-4xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>{setFull(prev=>!prev), setToggel(true)}} /> : <ZoomSvg className={`absolute bottom-4 right-5 z-20 text-skin-ptext text-4xl bg-black p-2 cursor-pointer rounded-full`} onClick={()=>{setFull(prev=>!prev), setToggel(true)}} />}
                         <Suspense fallback={<div className="miniLoader" />}>
                             <ImageSlider imgArray={crntPost?.images_url || []} toggle={setToggel} />
                         </Suspense>

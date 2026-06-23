@@ -17,8 +17,10 @@ const RAW_WORDS = [
     { word: "worthless", category: "Abuse", severity: 2 },
     { word: "bastard", category: "Abuse", severity: 2 },
     { word: "disgusting", category: "Abuse", severity: 2 },
-
+    {word: "Fuck", category: "Abuse", severity: 5},
+    
     // Violence
+    { word: "kill", category: "violence", severity: 1 },
     { word: "murder", category: "Violence", severity: 4 },
     { word: "shoot", category: "Violence", severity: 3 },
     { word: "stab", category: "Violence", severity: 3 },
@@ -66,13 +68,17 @@ const RAW_WORDS = [
     { word: "go to this link", category: "Link", severity: 2 }
 ];
 
-const BLOCKED_WORDS = RAW_WORDS.map(item => ({
-    ...item,
-    regex: new RegExp(
-        `\\b${item.word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`,
-        "gi"
-    )
-}));
+const BLOCKED_WORDS = RAW_WORDS.map(item => {
+    const escaped = item.word
+        .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+        .split("")
+        .join("[\\W_]*");
+
+    return {
+        ...item,
+        regex: new RegExp(`\\b${escaped}\\b`, "gi")
+    };
+});
 
 export const moderateContent = (text) => {
     const result = {

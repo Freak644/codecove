@@ -271,7 +271,7 @@ export default function CommentEl() {
                             const cmnt = commentData.commentsById[comment_id];
                             return (
                                 <div className="h-full w-full flex justify-center">
-                                    <CommentsContainer commentData={cmnt} likeFun={handleLikes} delComment={handleDelete} acceptFun={handleApprove} />
+                                    <CommentsContainer commentData={cmnt} crntPost={OwnerInfo} likeFun={handleLikes} delComment={handleDelete} acceptFun={handleApprove} />
                                 </div>
                             )
                         }}
@@ -329,8 +329,9 @@ export default function CommentEl() {
                         <div className="absolute top-4 right-23.5  text-[20px] flex items-center justify-center cursor-pointer text-white" onClick={()=> {setEmoji(prev=>!prev), toggleMe(true)}}>
                              {isEmoji ? <KeyBoardSvg/> : <SmileEmoji/>}
                         </div>
-                        <div className="avtDiv rounded-full h-10 w-10">
+                        <div className="avtDiv rounded-full h-10 w-10 relative">
                             <img src={avatar+"?size=40"} className="rounded-full" alt="" />
+                            <div className="h-2.5 w-2.5 bg-green-600 absolute right-0.5 bottom-px rounded-full"/>
                         </div>
                         <form action="" className="h-full w-8/10 flex items-center justify-center">
                             <textarea autoCorrect="off" spellCheck={false} ref={commentRef} onClick={()=>setEmoji(false)}  className="my-scroll bg-black/80 rounded-lg p-2 resize-none text-skin-ptext h-full border border-violet-700/50  text-sm  placeholder:pt-px w-full placeholder:text-sm!" 
@@ -339,10 +340,10 @@ export default function CommentEl() {
                         </form>
                         <button
                         onClick={bounceNewComment}
-                        className={`flex items-center justify-center w-18 rounded-md border border-blue-800/50
+                        className={`flex items-center justify-center w-15 rounded-md border border-blue-800/50
                     cursor-pointer hover:text-white hover:scale-95 duration-300 bg-indigo-900/50`}
                         
-                        ><div className="h-full w-full  text-skin-ptext hover:text-skin-text"> <SendSvg className="text-3xl ml-4"/>
+                        ><div className="h-full w-full  text-skin-ptext hover:text-skin-text"> <SendSvg className="text-3xl ml-4.5"/>
                         </div></button>
                     </div>
                 </div>

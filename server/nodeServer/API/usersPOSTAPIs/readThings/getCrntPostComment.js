@@ -62,14 +62,7 @@ export const getComment = async (rkv, rspo) => {
         let [commentrows] = await database.query(
             `
           SELECT
-            c.commentID,
-            c.comment_sr,
-            c.post_id,
-            c.id,
-            c.comment,
-            c.totalLike,
-            c.isAccepted,
-            c.created_at,
+            c.*,
 
             u.username,
             u.avatar,

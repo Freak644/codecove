@@ -260,3 +260,26 @@
         }
     }
 }
+
+.cmtTdLi {
+    display: flex;
+    position: absolute;
+    right: 0px;
+    transition: all .3s ease-in-out;
+    width: 100px;
+
+    ul {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 4px;
+        cursor: pointer;
+        li {
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+    }
+}

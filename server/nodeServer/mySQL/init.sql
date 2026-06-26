@@ -173,6 +173,8 @@ CREATE TABLE IF NOT EXISTS comments (
   id CHAR(36) NOT NULL,
   comment TEXT NOT NULL,
   warnCategory VARCHAR(20) DEFAULT NULL,
+  isPinned BOOLEAN DEFAULT 0,
+  score INT DEFAULT NOT NULL DEFAULT 0,
   totalLike BIGINT DEFAULT 0,
   report_count INT DEFAULT 0,
   isAccepted BOOLEAN DEFAULT 0,

@@ -22,3 +22,22 @@ export const miniToggleDy = async (rkv,rspo) => {
     }
 }
 
+export const CommentPinned = async (rkv, rspo) => {
+    const crntIp = rkv.userIp;
+    const crntAPI = rkv.originalUrl.split("?")[0];
+    const {commentID} = rkv.query;
+    let {id} = rkv.authData;
+
+    try {
+        if (!commentID || !commentID.trim()) return rspo.status(401).send({err:"Something went wrong"});
+        let [crntComment] = await database.query("SELECT id as user_id, isPinned, score FROM comments WHERE commentID = ?", [commentID]);
+        if(crntComment.length === 0) return rspo.status(401).send({err:"Something went Wrong"});
+        let {user_id, score, isPinned} = crntComment[0];
+        console.log(user_id === id); 
+        rspo.status(200).send({pass:"Till now"});
+    } catch (error) {
+        rspo.status(500).send({err:"Server side error"});
+    } finally {
+        completeRequest(crntIp, crntAPI);
+    }
+}

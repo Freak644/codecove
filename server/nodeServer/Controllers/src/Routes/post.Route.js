@@ -3,7 +3,7 @@ import {commonStack} from '../middleware/common.js';
 import {Auth} from '../../../API/Login/tokenChecker.js';
 import {diskUpload} from '../middleware/diskMulter.js';
 import {CreatePost} from '../../../API/Promulgation/createPost.js';
-import {miniToggleDy} from '../../../API/usersPOSTAPIs/writeThings/miniToggleAPIs.js'
+import {CommentPinned, miniToggleDy} from '../../../API/usersPOSTAPIs/writeThings/miniToggleAPIs.js'
 import {starPost, likeComment, savePost} from '../../../API/usersPOSTAPIs/writeThings/likePost.js'
 import {CommentAPI} from '../../../API/usersPOSTAPIs/writeThings/addComment.js';
 import {ReportPost,DeleteCommentAPI,reportCommentAPI,DeletePost} from '../../../API/usersPOSTAPIs/writeThings/reportAndDelete.js'
@@ -29,6 +29,7 @@ writePost.post("/reportPost", ...commonStack, Auth, ReportPost);
 writePost.post("/addDislike",...commonStack, Auth, disLike)
 writePost.delete("/deletePost", ...commonStack, Auth, DeletePost);
 writePost.delete("/deleteComment", ...commonStack, Auth, DeleteCommentAPI);
+writePost.patch("/pinMe", ...commonStack, Auth, CommentPinned)
 
 
 //readPost API full path will be look like /readPost/apiName

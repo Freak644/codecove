@@ -9,10 +9,11 @@ import { debouncerGlob } from "../../../utils/debounceFun";
 import { AchievementsI, DeleteForever, HeartBeat, ThreeDot } from "../../../utils/SVG/menuSVG";
 import { ReportIcon } from "../../../utils/SVG/SVG";
 import { HeartOL } from "../../../utils/SVG/TODOsvg";
-export default function CommentsContainer({commentData,likeFun,delComment,acceptFun}) {
-    let {username,inProcess,avatar,isPostOwner, isReported,commentID,isAccepted,post_moment,comment,post_id,isLiked,id,totalLike,created_at} = commentData;
+export default function CommentsContainer({commentData, crntPost,likeFun,delComment,acceptFun}) {
+    let {username, post_id,inProcess,avatar, isReported,commentID,isAccepted,comment,isLiked,id,totalLike,created_at} = commentData;
+    let {post_moment, isPostOwner} = crntPost;
+    console.log(post_id);
     const {setToggel} = useContext(btnContext) || {};
-
     const flotRef = useRef({});
     const setCallback = (id)=> (el)=>{
         flotRef.current[id]=el;
@@ -27,6 +28,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
     const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
     const timeAgoIntl = (dateString) => {
+        
         const diff = (new Date(dateString) - new Date()) / 1000;
 
         if (Math.abs(diff) < 60)
@@ -42,7 +44,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
     }
 
     const handleLike = async (commentID,post_id,like) => {
-        if(setToggel) setToggel(true);
+
         console.log(commentID)
         if (!commentID || !post_id) return;
         let newLike = !like
@@ -87,7 +89,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
 
 
     const reportComment = async (comment_id,post_id) => {
-        if(toggelBtn) toggelBtn(true);
+       console.log(comment_id, post_id);
         try {
             let rqst = await fetch("/myServer/writePost/reportComment",{
                 method:"POST",
@@ -106,7 +108,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
     }
 
     const deleteComment = async (comment_id,post_id) => {
-        if(toggelBtn) toggelBtn(true);
+       
         try {
             if (!comment_id.trim() || !post_id.trim()) throw new Error("Invalid info");
             delComment({commentID:comment_id,post_id})
@@ -126,7 +128,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
     }
 
     const acceptSolution = async (comment_id) => {
-        if(toggelBtn) toggelBtn(true);
+
         try {
             if (!comment_id || !comment_id.trim()) throw new Error("Invalid Info");
             acceptFun(comment_id)
@@ -161,7 +163,7 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
     
     return(
             <>{ inProcess ? <CommentSkeleton/> :
-                <div key={commentID} className="h-auto mt-2.5 w-full text-skin-text flex items-center flex-col pointer-events-auto">
+                <div key={commentID} className="h-auto border-b border-gray-500/20 mt-2.5 w-full text-skin-text flex items-center flex-col pointer-events-auto">
                     <div className="layerOne flex items-center justify-start w-full h-auto">
                         <div className="userAndComment text-sm flex items-start gap-2 w-[93%] p-2">
                             <Link className="flex items-start" to={`/Lab/${username}`}>
@@ -183,13 +185,13 @@ export default function CommentsContainer({commentData,likeFun,delComment,accept
                         <div className="likeCommentd flex items-center flex-col gap-1 w-[7%] text-md">
                             <div className="relative" ref={setCallback(commentID)}>
                                 <ThreeDot className="text-gray-500 cursor-pointer" onClick={()=>setFloting({float:true,clickID:commentID})} />
-                                <div className={`flex absolute right-0 transition-all duration-300 ${(isFloating.float && isFloating.clickID === commentID) ? "top-0! opacity-100" : "-top-5 opacity-0 pointer-events-none "} p-1 rounded-md bg-blue-500/20 backdrop-blur-md`}>
+                                <div className={`cmtTdLi ${(isFloating.float && isFloating.clickID === commentID) ? "top-0! opacity-100" : "-top-5 opacity-0 pointer-events-none "} p-1 rounded-md bg-purple-500/20 backdrop-blur-md`}>
                                     <ul>
-                                        <li className="border-b m-1 text-gray-500"><ReportIcon onClick={()=>{
+                                        <li onClick={()=>{
                                             if (isReported) return;
                                             reportComment(commentID,post_id);
-                                        }} className="cursor-pointer"/>{isReported ? "Reported" : "Report"}</li>
-                                        {(uID === id || isPostOwner) ? <li className="border-b m-1 text-red-500"><DeleteForever onClick={()=>deleteComment(commentID,post_id)} className="cursor-pointer"/>Delete</li> : ""}
+                                        }}  className="border-b m-1 text-gray-500"><ReportIcon className="cursor-pointer"/>{isReported ? "Reported" : "Report"}</li>
+                                        {(uID === id || isPostOwner) ? <li onClick={()=>deleteComment(commentID,post_id)} className="border-b m-1 text-red-500 text-nowrap"><DeleteForever  className="cursor-pointer"/>Delete</li> : ""}
                                         {(isPostOwner && post_moment === "Bugs" && !isAccepted) ? <li onClick={()=>acceptSolution(commentID)} className="border-b m-1 text-nowrap cursor-pointer text-green-400"><AchievementsI />Accepte</li> : ""}
                                     </ul>
                                 </div>

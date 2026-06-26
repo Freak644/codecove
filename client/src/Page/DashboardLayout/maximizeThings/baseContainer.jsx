@@ -6,6 +6,7 @@ const SheetMiddleWhare = lazy(()=> import("./slideMiddleWr"));
 import {createContext} from 'react';
 import { ZoomOutSvg, ZoomSvg } from "../../../utils/SVG/SVG";
 import axios from "axios";
+import { toast } from "react-toastify";
 export const btnContext = createContext();
 export default function MaximizeContainer({pramPost}) {
     let {pID} = useParams();
@@ -57,7 +58,7 @@ export default function MaximizeContainer({pramPost}) {
     return(
             <div className="underTaker ">
                 <div className="closeBtn hidden md:flex items-center justify-center p-3 rounded-full text-[18px] font-bold absolute top-5 right-2">
-                    <button className="cursor-pointer hover:rotate-180 transition-all duration-300 text-red-600 hover:bg-gray-500/40 rounded-full
+                    <button className="cursor-pointer hover:rotate-180 transition-all duration-300 text-red-600 hover:bg-gray-800/70 rounded-full
                     h-9 w-9" 
                     
                     >

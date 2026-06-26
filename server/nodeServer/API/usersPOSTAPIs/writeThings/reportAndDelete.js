@@ -8,6 +8,7 @@ export const ReportPost = async (rkv,rspo) => {
     let {post_id} = rkv.body || {};
     let {id} = rkv.authData;
     try {
+
         if (!post_id || post_id.length !== 21) return rspo.status(401).send({err:"Auth Error"});
         let [rows] = await database.query("SELECT p.visibility, p.id AS user_id, EXISTS(SELECT 1 FROM postReports WHERE id = ? AND post_id = p.post_id) AS isReported FROM posts p WHERE post_id = ?",
             [id,post_id]

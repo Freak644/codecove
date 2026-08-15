@@ -32,8 +32,7 @@ export default function PostsCon({posts}) {
 
         document.addEventListener("click",handleClick);
         return ()=> document.removeEventListener("click",handleClick)
-    },[isDropDown])
-
+    },[isDropDown]);
 
     return(
         

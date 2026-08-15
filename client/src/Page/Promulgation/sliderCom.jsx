@@ -140,7 +140,7 @@ export default function ImageSlider({ imgArray, setArray,toggle, postInfo }) {
 
                 if (swipe < -swipeConstHold) nextImg();
                 else if (swipe > swipeConstHold) prevImg();
-         k     }}
+                   }}
             >
               {/* Floating start animation  */}
               {Object.keys(postInfo || {}).length === 3 && <FloationStart post_id={postInfo?.post_id} like={postInfo?.isLiked} totalLike={postInfo?.totalLike}/>}

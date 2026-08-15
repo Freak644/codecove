@@ -94,7 +94,7 @@ export const getComment = async (rkv, rspo) => {
         AND c.isBlocked = 0
         AND (? IS NULL OR c.comment_sr < ?)
 
-        ORDER BY c.comment_sr DESC
+        ORDER BY c.score DESC c.comment_sr DESC
         LIMIT ?
             `,
             [

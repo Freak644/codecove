@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS comments (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  INDEX idx_comment_cursor (post_id, isBlocked, comment_sr)
+  INDEX idx_comment_cursor (post_id, isBlocked, score, comment_sr)
 );
 
 CREATE TABLE IF NOT EXISTS commentLikes (

@@ -117,7 +117,7 @@ export default function WindowHerder() {
 
                         <NotificationBellIcon onClick={()=>toggleMiniTab("noti")} title="Notification" className={`border svgOnWH border-skin-ptext/30 rounded-lg`}></NotificationBellIcon>
                         <div title={userData.username || "Loading"} className="h-9 w-9 overflow-hidden cursor-pointer border rounded-full flex items-center justify-center relative">
-                            <img onDoubleClick={()=>handleLogoutGlobal()} className="h-full" src={userData.avatar ? userData.avatar : "https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" />
+                            <img onDoubleClick={()=>handleLogoutGlobal()} className="h-full" src={userData.avatar ? userData.avatar+"?size=36" : "https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" />
                         </div>
                     </div>
                 </div>

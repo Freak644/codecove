@@ -15,7 +15,7 @@ import { $generateNodesFromDOM } from "@lexical/html";
 import DOMPurify from "dompurify";
 import { usePostStore } from "../../../lib/basicUserinfo";
 
-const LIMIT = 300;
+const LIMIT = 1000;
 
 /* ---------------- CONFIG ---------------- */
 
@@ -24,9 +24,6 @@ const editorConfig = {
   theme: {
     text: {
       bold: "font-bold",
-      italic: "italic",
-      underline: "underline",
-      strikethrough: "line-through",
     },
   },
   onError(error) {

@@ -55,7 +55,7 @@ export default function PostsCon({posts}) {
                     <div className="singlePost text-skin-text rounded-xl w-full flex items-center flex-col gap-2 p-4">
                         <div className="ownerInfo h-12 flex items-center justify-center gap-2.5 w-full">
                             <div className="imgDiv rounded-full h-10 w-10 ">
-                                <img src={avatar} className="rounded-full" alt="DP" />
+                                <img src={avatar+"?size=40"} className="rounded-full" alt="DP" />
                             </div>
                             <Link to={"/Lab/"+username} className="nameCat w-4/6 text-sm font-medium gap-1 flex items-start flex-col">
                                 <p className="tracking-wide hover:underline underline-offset-1">{ownerName}</p>

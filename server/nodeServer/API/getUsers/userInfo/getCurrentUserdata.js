@@ -6,7 +6,7 @@ export const CrntUser = async (id) => {
 
     try {
         let [userinfo] = await database.execute(
-           "SELECT avatar,username,email,id,bio FROM users WHERE id=? LIMIT 1",
+           "SELECT avatar, name, username,email,id,bio FROM users WHERE id=? LIMIT 1",
         [id]
     )
         if (userinfo.length === 0) return {err:"Invalid user"};

@@ -12,7 +12,7 @@ export const UnivuUserInfo = create((set)=>({
 }));
 
 
-export const usePostStore = create((set) => ({ // this stor is use when user is cretin a post 
+export const usePostStore = create((set) => ({ // this stor is use when user is creting a post (Local)
   postOBJ: {},
 
   setEmpty:()=> set({postOBJ:{}}),
@@ -27,7 +27,7 @@ export const usePostStore = create((set) => ({ // this stor is use when user is 
 }));
 
 
-export const univPostStore = create((set, get) => ({
+export const univPostStore = create((set, get) => ({ //this stor is use when create post index (Local)
   postsById: {},
   postOrder: [],
   postSet: new Set(), // 🔥 O(1) lookup

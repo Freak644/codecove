@@ -8,11 +8,11 @@ import CommentSkeleton from "./commentSkeL";
 import { debouncerGlob } from "../../../utils/debounceFun";
 import { AchievementsI, DeleteForever, HeartBeat, ThreeDot } from "../../../utils/SVG/menuSVG";
 import { ReportIcon } from "../../../utils/SVG/SVG";
-import { HeartOL } from "../../../utils/SVG/TODOsvg";
+import { HeartOL, PinSvg } from "../../../utils/SVG/TODOsvg";
 export default function CommentsContainer({commentData, crntPost,likeFun,delComment,acceptFun}) {
-    let {username, post_id,inProcess,avatar, isReported,commentID,isAccepted,comment,isLiked,id,totalLike,created_at} = commentData;
+    let {username, isPinned, post_id,inProcess,avatar, isReported, commentID, isAccepted, comment,isLiked,id,totalLike,created_at} = commentData;
     let {post_moment, isPostOwner} = crntPost;
-    console.log(post_id);
+    console.log(isLiked);
     const {setToggel} = useContext(btnContext) || {};
     const flotRef = useRef({});
     const setCallback = (id)=> (el)=>{
@@ -192,11 +192,18 @@ export default function CommentsContainer({commentData, crntPost,likeFun,delComm
                                             reportComment(commentID,post_id);
                                         }}  className="border-b m-1 text-gray-500"><ReportIcon className="cursor-pointer"/>{isReported ? "Reported" : "Report"}</li>
                                         {(uID === id || isPostOwner) ? <li onClick={()=>deleteComment(commentID,post_id)} className="border-b m-1 text-red-500 text-nowrap"><DeleteForever  className="cursor-pointer"/>Delete</li> : ""}
+                                        {isPostOwner ? <>{ isPinned ? <li className="border-b m-1 text-red-500 text-nowrap"></li> : <li className="border-b m-1 text-gray-500 text-nowrap"><PinSvg/> Pin</li>}</> : ""}
                                         {(isPostOwner && post_moment === "Bugs" && !isAccepted) ? <li onClick={()=>acceptSolution(commentID)} className="border-b m-1 text-nowrap cursor-pointer text-green-400"><AchievementsI />Accepte</li> : ""}
                                     </ul>
                                 </div>
                             </div>
-                            {isLiked ? <HeartBeat onClick={()=>likeBound(commentID,post_id,isLiked)} className="text-rose-500 cursor-pointer"/> : <HeartOL onClick={()=>handleLike(commentID,post_id,isLiked)} className="cursor-pointer text-gray-500"/>}
+                            {isLiked ? <HeartBeat onClick={()=>{
+                                setToggel(true);
+                                 likeBound(commentID,post_id,isLiked)}
+                                } className="text-rose-500 cursor-pointer"/> : <HeartOL onClick={()=>{
+                                    setToggel(true);
+                                    likeBound(commentID,post_id,isLiked)}
+                                } className="cursor-pointer text-gray-500"/>}
                             
                         </div>
                     </div>

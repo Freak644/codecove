@@ -94,7 +94,7 @@ export default function CommentEl() {
 
             
                 setOwnerInfo(result.OwnerInfo[0]);
-                console.log(result.OwnerInfo[0]);
+                console.log(result.commentrows);
                 setCursor(result.cursorObj)
                 if (result.commentrows.length === 0) toggleNoCommetn(true);
                 setComment(prev=>optimizeComment(prev,result.commentrows,false));

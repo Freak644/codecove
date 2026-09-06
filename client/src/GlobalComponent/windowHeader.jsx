@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom"
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom"
 import { UnivuUserInfo } from "../lib/basicUserinfo";
 import { toggleABMenu } from "../lib/toggleTheme";
 import {getColor} from '../utils/getGradnt';
@@ -7,21 +7,32 @@ import { toggleSlider } from "../lib/tabToggle";
 import SearchEl from "../Page/SearchELs/searchEl";
 import { GradientSVG } from "../utils/getSVG";
 
-import { CommitIcon, GhotIcon, GitHubIcon, MenuIcon, ReportIcon, TringleIcon, NotificationBellIcon } from "../utils/SVG/SVG";
-import { CodeBlockI } from "../utils/SVG/menuSVG";
+import { CommitIcon, GhotIcon, GitHubIcon, MenuIcon, ReportIcon, TringleIcon, NotificationBellIcon, UserSvg, UserLogOUtSvg, CommentIcon } from "../utils/SVG/SVG";
+import { CodeBlockI, CogIcon } from "../utils/SVG/menuSVG";
+import ThemeButton from "../components/toggleButton";
+import { handleLogoutGlobal } from "../hooks/useLogout";
+import { CodeBlock, PlusCircle } from "../utils/SVG/TODOsvg";
 
 export default function WindowHerder() {
     let location = useLocation();
     let [pathName,setPath] = useState("");
     let [userData,setData] = useState({});
+    let [toggleMiniOp, setMiniOp] = useState({
+        isPost:false,
+        isPriv:false
+    });
+ 
     const isMenuToggling = toggleABMenu(state => state.isMenuToggling);
     const toggleMenu = toggleABMenu(state => state.toggleMenu);
     let {userInfo} = UnivuUserInfo();
     let gradColor = getColor();
     const {toggleMiniTab} = toggleSlider();
+    const postToggleRef = useRef(null);
+    const privToggleRef = useRef(null);
     useEffect(()=>{
         setData(userInfo)
-    },[userInfo])
+    },[userInfo]);
+
     useEffect(()=>{
         switch (location.pathname) {
             case "/":
@@ -32,7 +43,29 @@ export default function WindowHerder() {
                 setPath(path[1])
                 break;
         }
-    },[location.pathname])
+    },[location.pathname]);
+
+    useState(()=>{
+        if (toggleMiniOp.isPost) return;
+
+        const handleClick = (evnt)=> {
+            console.log("i am listning ");
+            const el = postToggleRef.current;
+            if (el && !el.contains(evnt.target)) {
+                setMiniOp(prev =>({
+                    ...prev,
+                    isPost:false
+                }));
+                document.removeEventListener("click", handleClick);
+            }
+        }
+
+        document.addEventListener("click", handleClick);
+
+        return ()=> document.removeEventListener("click", handleClick);
+    },[toggleMiniOp.isPost])
+
+
 
 
     return(
@@ -63,10 +96,20 @@ export default function WindowHerder() {
                 </form>
 
                 <div className="secminiMenuDiv text-2xl flex items-center flex-row gap-[1vw] ">
-                    <div className="createPost flex items-center justify-center ml-1.5 border-2 border-skin-ptext/30 rounded-lg
+                    <div ref={postToggleRef} className="createPost flex items-center justify-center ml-1.5 border-2 border-skin-ptext/30 rounded-lg
                     cursor-pointer ">
-                        <CommitIcon className="border-r m-1 pr-1 border-skin-ptext/30" />
-                        <TringleIcon className='text-[18px] mb-1 p-0.5'/>
+                        <Link className="flex items-center" to={`/Create/new_post`} state={{background:location}} ><PlusCircle className="border-r m-1 font-bold pr-1 border-skin-ptext/30" /></Link>
+                        <div onClick={()=>setMiniOp(prev=>({
+                            ...prev,
+                            isPost:true,
+                        }))}><TringleIcon className='text-[18px] mb-1 p-0.5'/></div>
+
+                        <div className={`absolute miniToggleMenu h-15 w-18 bg-black/80  rounded-md ${toggleMiniOp.isPost ? "translate-y-7 opacity-100" : "translate-y-0 opacity-0 pointer-events-none"}`}>
+                            <ul>
+                                <li><Link className="flex items-center" to={`/Create/new_post`} state={{background:location}} ><CommitIcon/> Post</Link></li>
+                                <li><Link className="flex items-center" to={`/Create/new_post`} ><CodeBlock /> Project</Link></li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div className="userThings flex gap-[1vw]">
@@ -74,7 +117,7 @@ export default function WindowHerder() {
 
                         <NotificationBellIcon onClick={()=>toggleMiniTab("noti")} title="Notification" className={`border svgOnWH border-skin-ptext/30 rounded-lg`}></NotificationBellIcon>
                         <div title={userData.username || "Loading"} className="h-9 w-9 overflow-hidden cursor-pointer border rounded-full flex items-center justify-center relative">
-                            <img className="h-full" src={userData.avatar ? userData.avatar : "https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" />
+                            <img onDoubleClick={()=>handleLogoutGlobal()} className="h-full" src={userData.avatar ? userData.avatar : "https://i.postimg.cc/7ZTJzX5X/icon.png"} alt="" />
                         </div>
                     </div>
                 </div>

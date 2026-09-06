@@ -8,6 +8,7 @@ import { GradientSVG } from "../utils/getSVG";
 import { debouncerGlob } from "../utils/debounceFun";
 import { AchievementsI, ActivityI, CodeBlockI, DvTool, ExploreIcon, FsquareSvg, SettingOt } from "../utils/SVG/menuSVG";
 import { BookmarkHeartIcon, CommitIcon, GitHubIcon, ReportIcon, UserLogOUtSvg } from "../utils/SVG/SVG";
+import { handleLogoutGlobal } from "../hooks/useLogout";
 
 export default function AbsoluteMenu() {
     let mainRef = useRef();
@@ -26,18 +27,7 @@ export default function AbsoluteMenu() {
     }, [isMenuToggling]);
 
     const handleLogout = async () => {
-        let rqst = await fetch("/myServer/user/Logout",{
-            headers:{
-                "Content-Type":"application/json"
-            },
-            method:"POST",
-        })
-        let result = await rqst.json();
-        console.log(result)
-        if (result.pass) {
-           location.reload()
-            navi('/')            
-        }
+        await handleLogoutGlobal()
     }
 
     useEffect(() => {

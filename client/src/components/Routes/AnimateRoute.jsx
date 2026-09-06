@@ -5,6 +5,7 @@ import HomeSkeleton from '../../Page/DashboardLayout/skeletonForHome';
 import POSTSkeloten from '../../Page/DashboardLayout/skeleton/noBGSkeleton';
 import ExplorSkel from '../../Page/Explore/skelton';
 import BaseSuggestion from '../../Page/Explore/suggestionWML/baseSuggestion';
+import CreatePostContainer from '../../Page/Promulgation/mainCreateCom';
 const HomePage = lazy(() => import('../../Page/DashboardLayout/HomePage'));
 const BaseCreate = lazy(() => import('../../Page/Promulgation/baseCreateCom'));
 const MainLapCom = lazy(() => import('../../Page/userProfile/mainLap'));
@@ -27,9 +28,9 @@ export default function AnimateRoute({location}) {
                             <HomePage/>
                         </Suspense>} />
 
-                        <Route path='/Commit' element={<Suspense fallback={null}>
+                        {/* <Route path='/Commit' element={<Suspense fallback={null}>
                             <BaseCreate/>
-                        </Suspense>} />
+                        </Suspense>} /> */}
 
                         <Route path='/Lab/:username' element={<Suspense fallback={null}>
                             <MainLapCom/>
@@ -60,6 +61,9 @@ export default function AnimateRoute({location}) {
                     <Routes >
                         <Route path='/post/:pID' element={<Suspense fallback={<POSTSkeloten/>}>
                             <MaximizeContainer/>
+                        </Suspense>} />
+                        <Route path='/Create/:pID' element={<Suspense fallback={<POSTSkeloten/>}>
+                            <CreatePostContainer/>
                         </Suspense>} />
                     </Routes>
                 </div>

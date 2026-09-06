@@ -283,3 +283,36 @@
         }
     }
 }
+
+.miniToggleMenu{
+    display: flex;
+    transition: all .3s ease-in-out;
+    font-size: 12px;
+    overflow: hidden;
+    ul {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 4px;
+
+        li {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            height: 50%;
+            padding-left: 10px;
+            &:hover {
+                background-color: rgba(172, 172, 172, 0.278);
+            }
+           
+            border-bottom: 1px solid gray;
+        }
+    }
+}
+
+.insetShadow {
+    border: 1px solid rgba(158, 68, 255, 0.252);
+    box-shadow: inset 0 0 5px 2px rgba(230, 230, 230, 0.179);
+}

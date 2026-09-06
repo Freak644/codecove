@@ -26,8 +26,8 @@ export default function TODOList({crntPost_id}) {
 
 
     // useEffect(()=>{
-    //     console.log(postData)
-    // },[postData])
+    //     console.log(crntLocation);
+    // },[])
 
 
     // useEffect(()=>{

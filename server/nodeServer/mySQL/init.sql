@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS comments (
   comment TEXT NOT NULL,
   warnCategory VARCHAR(20) DEFAULT NULL,
   isPinned BOOLEAN DEFAULT 0,
-  score INT DEFAULT NOT NULL DEFAULT 0,
+  score INT NOT NULL DEFAULT 0,
   totalLike BIGINT DEFAULT 0,
   report_count INT DEFAULT 0,
   isAccepted BOOLEAN DEFAULT 0,
@@ -182,7 +182,8 @@ CREATE TABLE IF NOT EXISTS comments (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
   FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  INDEX idx_comment_cursor (post_id, isBlocked, score, comment_sr)
+  INDEX idx_comment_cursor (post_id, isBlocked, score, comment_sr),
+  INDEX idx_comment_isPinned (isPinned)
 );
 
 CREATE TABLE IF NOT EXISTS commentLikes (

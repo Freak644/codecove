@@ -1,5 +1,6 @@
 import ThemeButton from "../components/toggleButton";
 import React, { useEffect, useMemo, useState } from 'react'
+import { handleLogoutGlobal } from "../hooks/useLogout";
 import { UnivuUserInfo } from "../lib/basicUserinfo";
 import { useLocation } from "react-router-dom";
 import {toggleABMenu} from '../lib/toggleTheme';
@@ -22,17 +23,7 @@ export default function Header() {
     },[userInfo])
 
     const handleLogout = async () => {
-        let rqst = await fetch("/myServer/Logout",{
-            headers:{
-                "Content-Type":"application/json"
-            },
-            method:"POST"
-        })
-        let result = await rqst.json();
-        console.log(result)
-        if (result.pass) {
-            location.reload();
-        }
+        await handleLogoutGlobal();
     }
 
     const debounceLogout = useMemo(()=>{

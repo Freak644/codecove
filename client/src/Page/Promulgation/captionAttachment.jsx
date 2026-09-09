@@ -3,6 +3,7 @@ import { UnivuUserInfo } from "../../lib/basicUserinfo"
 import { useNavigate } from "react-router-dom";
 import { TringleIcon } from "../../utils/SVG/SVG";
 import { PublicGlob } from "../../utils/SVG/TODOsvg";
+import CaptionComponent from "./Caption";
 
 export default function CaptionAttachment ({postData, setPostData}) {
     const userInfo = UnivuUserInfo(stat => stat.userInfo);
@@ -31,7 +32,7 @@ export default function CaptionAttachment ({postData, setPostData}) {
                 </div>
 
                 <div className="captionDiv border border-gray-800 w-full rounded-lg h-8/10">
-                    
+                    <CaptionComponent UName={userInfo.name} />
                 </div>
             </div>
 

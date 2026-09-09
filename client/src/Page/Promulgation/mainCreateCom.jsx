@@ -33,7 +33,7 @@ export default function CreatePostContainer () {
     },[containerRef])
 
     return(
-        <div ref={containerRef} className="h-9/10 p-2.5 w-9/10 insetShadow rounded-lg bg-gray-950/95 flex items-center flex-col">
+        <div ref={containerRef} className="h-9/10 p-2.5 w-9/10 insetShadow rounded-xl bg-gray-950/95 flex items-center flex-col">
             <div className="topHeading w-full h-1/10 p-2 flex items-center text-4xl flex-row gap-2.5">
                 <CreateIcon className="text-violet-500"/>
                 <div className="flex items-start flex-col text-skin-text">

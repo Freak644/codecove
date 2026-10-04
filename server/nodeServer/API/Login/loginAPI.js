@@ -11,6 +11,7 @@ export const LoginAPI = async (rkv,rspo) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     let token_id = nanoid(32);
     let {Email,Password,clientInfo} = rkv.body || {};
+    console.log("here");
     try {
         if (!Email?.trim() || !Password?.trim() || Object.keys(clientInfo).length !== 2) {
         return rspo.status(400).send({ err: "Please Provide proper information"})
@@ -39,52 +40,54 @@ export const LoginAPI = async (rkv,rspo) => {
         let [rows] = await database.query("SELECT ip FROM user_sessions WHERE id = ? ORDER BY created_at DESC LIMIT 1",[id])
         const loginTime = new Date();
         const formattedTime = loginTime.toLocaleString('en-US', {
-        timeZone: clientInfo.timeZone,   
-        weekday: 'short',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true
+            timeZone: clientInfo.timeZone,   
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
         });
         let {session_id,platform,city,country,region,device_type,ip} = await SaveThisSession(rkv,id)
-
+        
         await database.query("INSERT INTO validationToken (token_id, id, session_id, username, email) VALUES (?,?,?,?,?);"
             ,[token_id,id,session_id,username,email]
         )
-
+        
         let activity_url = `http://localhost:3221/checkInfo/${token_id}`
         
-        if (rows[0]?.ip !== crntIP) {
-            await emailQueue.add("mail-job",{
-                mail:email,
-                subject:"New Login Detected 🧐",
-                tempLate:"Login",
-                infoObj:{platform,city,ip,country,region,device_type,username,login_time:formattedTime,activity_url,img_url:`http://localhost:3222${avatar}`}
-            },{
-                attempts: 3,
-                backoff: {
-                type: "exponential",
-                delay: 5000
-                },
-                removeOnComplete: 100,
-                removeOnFail: 50
-            })
-        }
         
-            let authToken = jwt.sign({id,session_id},process.env.jwt_sec,{expiresIn:"1d"});
-            let encryptedToken = await Encrypt(authToken);
-            
-            rspo.cookie("myAuthToken",encryptedToken,{
-                httpOnly:true,
-                secure:true,
-                sameSite:"strict",
-                maxAge: 24 * 60 * 60 *1000 //  1day
-            })
-            rspo.status(200).send({ pass: "Login",authToken:isUser[0].username,session_id})
-       
+        let authToken = jwt.sign({id,session_id},process.env.jwt_sec,{expiresIn:"1d"});
+        
+        let encryptedToken = await Encrypt(authToken);
+        console.log("here");
+        
+        if (rows[0]?.ip !== crntIP) {
+                await emailQueue.add("mail-job",{
+                        mail:email,
+                        subject:"New Login Detected 🧐",
+                        tempLate:"Login",
+                        infoObj:{platform,city,ip,country,region,device_type,username,login_time:formattedTime,activity_url,img_url:`http://localhost:3222${avatar}`}
+                    },{
+                            attempts: 3,
+                            backoff: {
+                                type: "exponential",
+                                delay: 5000
+                                },
+                                removeOnComplete: 100,
+                                removeOnFail: 50
+                            })
+        }
+        rspo.cookie("myAuthToken",encryptedToken,{
+            httpOnly:true,
+            secure:true,
+            sameSite:"strict",
+            maxAge: 24 * 60 * 60 *1000 //  1day
+        })
+        rspo.status(200).send({ pass: "Login",authToken:isUser[0].username,session_id})
+        
     } catch (error) {
         console.log(error.message)
         rspo.clearCookie("myAuthToken");

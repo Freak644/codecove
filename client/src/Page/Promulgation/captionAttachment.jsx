@@ -17,7 +17,7 @@ export default function CaptionAttachment ({postData, setPostData}) {
     },[userInfo])
     return(
         <div className="underTaker p-2.5! flex-col!">
-            <div className="postUserInfo p-2.5 h-4/10 border border-amber-50 w-full flex items-center flex-col gap-2.5">
+            <div className="postUserInfo p-2.5 h-4/10  w-full flex items-center flex-col gap-2.5">
                 <div className="h-2/10 w-full flex items-center flex-row p-2.5 gap-2.5 relative">
                     <img onClick={()=>handleNameClick(userInfo.username)} className="h-10 rounded-full" src={userInfo.avatar+"?size=40"} alt="" />
                     <div onClick={()=>handleNameClick(userInfo.username)} className="userName cursor-pointer hover:opacity-80 text-skin-text flex items-start flex-col">

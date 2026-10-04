@@ -9,8 +9,8 @@ const transporter = nodemailer.createTransport({
   port:465,
   secure:true,
   auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
+    user: process.env.mail_user,
+    pass: process.env.mail_pass,
   },
 });
 
@@ -18,6 +18,7 @@ async function sendTheMail(to, subject, templateName, templateData = {}) {
   try {
     const html = await renderTemplate(templateName, templateData);
 
+    
     const info = await transporter.sendMail({
       from: `"EchoVain" <${process.env.MAIL_USER}>`,
       to,

@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const Encrypt = async (plainText) => {
-    const key = Buffer.from(process.env.encryption_Key,"hex"); 
+    
+    const key = Buffer.from(process.env.encryption_key,"hex"); 
     const iv = crypto.randomBytes(12); 
 
     const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
@@ -19,7 +20,7 @@ const Encrypt = async (plainText) => {
 const Decrypt = async (token) => {
     const [ivHex, encryptedHex, tagHex] = token.split(":");
 
-    const key = Buffer.from(process.env.encryption_Key,"hex");
+    const key = Buffer.from(process.env.encryption_key,"hex");
     const iv = Buffer.from(ivHex, "hex");
     const encrypted = Buffer.from(encryptedHex, "hex");
     const tag = Buffer.from(tagHex, "hex");

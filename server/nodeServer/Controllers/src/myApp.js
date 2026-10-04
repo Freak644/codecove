@@ -9,7 +9,7 @@ import { readRoutes, userRoutes, writeRoutes } from './Routes/user.route.js';
 import { authRoute } from './Routes/auth.Route.js';
 import { readPost, writePost } from './Routes/post.Route.js';
 import emailRoute from './Routes/email.Route.js';
-import { imgRoutes } from './Routes/Image.route.js';
+import { imgRoutes } from './Routes/image.route.js';
 
 
 

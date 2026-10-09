@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { TringleIcon } from "../../utils/SVG/SVG";
 import { PublicGlob } from "../../utils/SVG/TODOsvg";
 import CaptionComponent from "./Caption";
+import ContentAdder from "./contentAdder";
 
 export default function CaptionAttachment ({postData, setPostData}) {
     const userInfo = UnivuUserInfo(stat => stat.userInfo);
@@ -36,8 +37,8 @@ export default function CaptionAttachment ({postData, setPostData}) {
                 </div>
             </div>
 
-            <div className="h-6/10 w-full flex items-center flex-col">
-                
+            <div className="h-6/10 border w-full flex items-center flex-col">
+                <ContentAdder/>
             </div>
         </div>
     )

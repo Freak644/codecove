@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { CreateIcon } from "../../utils/SVG/TODOsvg";
 import CaptionAttachment from "./captionAttachment";
+import ContentAdder from "./contentAdder";
 
 export default function CreatePostContainer () {
     // const [postSechma, setSechma] = useState({
@@ -43,13 +44,14 @@ export default function CreatePostContainer () {
             </div>
 
             <div className="triplH h-9/10 w-full flex items-center flex-row gap-2.5 p-2.5">
-                <div className="flex-2 border border-gray-800 rounded-lg h-full">
+                <div className="flex-2 border border-gray-800 bg-violet-950/10 rounded-lg h-full">
                     <CaptionAttachment />
+                  
                 </div>
-                <div className="flex-1 bg-gray-500/10 border border-gray-800 rounded-lg h-full">
+                <div className="flex-1 bg-violet-950/10 border border-gray-800 rounded-lg h-full">
 
                 </div>
-                <div className="flex-1 bg-gray-500/10 border border-gray-800 rounded-lg h-full">
+                <div className="flex-1 bg-violet-950/10 border border-gray-800 rounded-lg h-full">
 
                 </div>
             </div>

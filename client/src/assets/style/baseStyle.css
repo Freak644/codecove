@@ -405,15 +405,15 @@ body{
     border-radius: 16px
 }
 .my-scroll-visible::-webkit-scrollbar-track{
-    background: rgba(10, 0, 0, 0.3);
+    background: rgba(10, 0, 0, 0.1);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
 }
 
 .my-scroll-visible::-webkit-scrollbar-thumb{
-    background-color: #374151;  /* SLATE-600 */
+    background-color: #37415158;  /* SLATE-600 */
     border-radius: 16px;
-    border: 1px solid white;
+    border: 1px solid rgba(128, 128, 128, 0.516);
     transition: background-color .4s ease;
 }
 
@@ -895,7 +895,7 @@ form>h1>span{
     }
 }
 .routeContainer{
-    height:93.5dvh; width: 83vw;
+    height:93.5dvh; width: 84vw;
     display: flex;
     align-items: center;
     justify-content: center;

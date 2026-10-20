@@ -5,6 +5,8 @@ import { TringleIcon } from "../../utils/SVG/SVG";
 import { PublicGlob } from "../../utils/SVG/TODOsvg";
 import CaptionComponent from "./Caption";
 import ContentAdder from "./contentAdder";
+import AddTag from "./addTag";
+import Promulgation from "./promulgation";
 
 export default function CaptionAttachment ({postData, setPostData}) {
     const userInfo = UnivuUserInfo(stat => stat.userInfo);
@@ -37,9 +39,15 @@ export default function CaptionAttachment ({postData, setPostData}) {
                 </div>
             </div>
 
-            <div className="h-6/10 border w-full flex items-center flex-col">
+            <div className="h-[52%] border rounded-lg border-gray-900 w-full flex items-center flex-col gap-2.5">
                 <ContentAdder/>
+                <AddTag/>
             </div>
+
+            <div className="h-[8%] bg-violet-950/5 border rounded-lg w-full border-gray-900">
+                <Promulgation/>
+            </div>
+            
         </div>
     )
 }

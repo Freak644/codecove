@@ -106,7 +106,7 @@ export default function HonePage() {
   }
     return (
       <div className="underTaker no-copy">
-        <div className="leftHome h-full w-full flex-1 lg:flex-2 flex items-center justify-center flex-wrap">
+        <div className="leftHome h-full w-full flex-1 lg:flex-7 flex items-center justify-center flex-wrap">
           <Suspense fallback={<>
 
              <div className="activst w-full flex justify-center items-center gap-2.5">
@@ -139,7 +139,7 @@ export default function HonePage() {
           </Suspense>
         </div>
 
-        <div className="rightHome flex-1 h-full p-2 bg-linear-to-br
+        <div className="rightHome flex-3 h-full p-2 bg-linear-to-br
                 from-blue-800/10 via-transparent to-transparent border border-cyan-500/20 
                 hover:bg-size-[200%_200%] gap-2.5 relative rounded-lg
                 shadow-[0_0_10px_rgba(0,255,255,0.1)] backdrop-blur-md">

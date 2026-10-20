@@ -181,7 +181,7 @@ export default function WindowsMenu ({userInfo, miniMenu}) {
                 flex items-center justify-center gap-1.5">
                         <div className="imgDiv h-14 w-14 relative">
                             <img src={userInfo.avatar+"?size=56"} className="h-full w-ful rounded-full" alt="" />
-                            <div className="greenDot bg-green-700 h-2 w-2 bottom-1 right-1 absolute rounded-full"/>
+                            <div className="greenDot bg-green-500 h-2 w-2 bottom-1 right-1 absolute rounded-full"/>
                         </div>
                         <div className="w-3/4 text-skin-text text-[10px] h-full 
                         flex items-center flex-row gap-1">

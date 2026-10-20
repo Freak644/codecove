@@ -1,0 +1,43 @@
+.biloti-widget {
+    box-sizing: border-box;
+    display: block;
+    flex: 0 0 auto;
+    line-height: 0;
+    overflow: visible;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    touch-action: none;
+}
+
+.biloti-widget--anchored {
+    position: relative;
+    cursor: default;
+}
+
+.biloti-widget--floating {
+    position: fixed;
+    isolation: isolate;
+}
+
+.biloti-widget--draggable {
+    cursor: grab;
+}
+
+.biloti-widget--dragging {
+    cursor: grabbing;
+}
+
+.biloti-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    /* Behavior remains responsive, but the pet uses a lower animation frame rate
+       in code only if this preference is explicitly added in a future iteration. */
+}

@@ -11,7 +11,7 @@ export default function MenuLICon ({crntLiInfo, crntTab}) {
                     <p>{pTxt}</p>
                 </div>
                 {isDot && <div className="dotdot"/>}
-                {count !== null && <div className={`countDot ${expPath === "Notification" || expPath === "Mentions" ? "bg-green-500/70" : ""} ${expPath === "Mesages" ? "bg-indigo-600" : ""}`}>
+                {count !== null && <div className={`countDot ${expPath === "Notification" || expPath === "Mentions" ? "bg-green-600" : ""} ${expPath === "Mesages" ? "bg-indigo-600/90" : ""}`}>
                     {count}    
                 </div>}
             </Link>

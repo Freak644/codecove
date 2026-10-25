@@ -2,21 +2,11 @@ import { useEffect, useRef, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { CreateIcon } from "../../utils/SVG/TODOsvg";
 import CaptionAttachment from "./captionAttachment";
-import ContentAdder from "./contentAdder";
 import PostSetting from "./postSetting";
 import PostPreview from "./postPreview";
 
 export default function CreatePostContainer () {
-    // const [postSechma, setSechma] = useState({
-    //     visibiLity:"",
-    //     commentFilterLevel:1,
-    //     images_url:[],
-    //     caption:"",
-    //     post_moment:"",
-    //     canComment:true,
-    //     whoCanSave:"",
-    //     showLikeCommentCount:true
-    // });
+
 
     const containerRef = useRef(null);
     const navi = useNavigate();
@@ -24,7 +14,8 @@ export default function CreatePostContainer () {
     useEffect(()=>{
         const handleClick = (evnt)=> {
             const el = containerRef.current;
-            if (el && !el.contains(evnt.target)) {
+        
+            if (el && !el.contains(evnt.target) && !evnt.target.closest(".dybtn")) {
                 console.log("i am Listing");
                 navi(-1);
             }

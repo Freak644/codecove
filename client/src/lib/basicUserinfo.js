@@ -12,18 +12,51 @@ export const UnivuUserInfo = create((set)=>({
 }));
 
 
-export const usePostStore = create((set) => ({ // this stor is use when user is creting a post (Local)
-  postOBJ: {},
+export const usePostStore = create((set) => ({ //! this stor is use when user is creting a post (Local)
+  postOBJ: {
+    canComment:true,
+    images_url:[],
+    canSave:true,
+    ownerName:"User",
+    post_id:"random",
+    username:"user",
+    avatar:"",
+    post_moment:"Not Selected",
+    likeCount:true,
+    isLiked:false,
+    visibility:true,
+    totalLike:999,
+    isFollowing:true
+  },
 
-  setEmpty:()=> set({postOBJ:{}}),
+  setEmpty:()=> set({postOBJ:{
+    canComment:true,
+    images_url:[
+      
+    ],
+    canSave:true,
+    ownerName:"User",
+    post_id:"jackal3221",
+    username:"user",
+    avatar:"",
+    post_moment:"Not Selected",
+    likeCount:true,
+    isLiked:false,
+    visibility:true,
+    totalLike:999,
+    isFollowing:true
+  }}),
 
-  setPostOBJ: (data = []) =>
-    set((state) => ({
-      postOBJ: {
-        ...state.postOBJ,
-        ...data,  
-      },
-    })),
+  setPostOBJ: (data = {}) =>
+    set((state) => {
+
+      return {
+        postOBJ: {
+          ...state.postOBJ,
+          ...data,
+        },
+      };
+    }),
 }));
 
 

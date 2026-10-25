@@ -1,23 +1,30 @@
 import { Suspense, useState, lazy } from "react"
 import { HashtagIcon, SmileEmoji } from "../../utils/SVG/TODOsvg";
 import { AltMail } from "../../utils/SVG/menuSVG";
+import { usePostStore } from "../../lib/basicUserinfo";
 const EmojiPicker = lazy(()=>import("emoji-picker-react"));
 
-const LIMIT = 1000
+const LIMIT = 500
 
 export default function CaptionComponent ({captionStr, UName}) {
-    const [caption, setCaption] = useState(captionStr || "");
+    //?const [caption, setCaption] = useState(captionStr || "");
+    const caption = usePostStore(stat=> stat.postOBJ.caption || "");
+    const {setPostOBJ} = usePostStore();
+    const setCaption =  (capTxt) => {
+        setPostOBJ({caption:capTxt});
+    }
     const [isEmoji, setEmoji] = useState(false);
     return(
         <div className="underTaker flex-col p-0!">
             <textarea onClick={()=>setEmoji(false)} name="caption" placeholder={`What's on your mind, ${UName.split(" ")[0]}?`} id="caption"
-            className="w-full h-full text-sm p-2 rounded-lg text-white" value={caption} onChange={(evnt) => setCaption(evnt.target.value)}></textarea>
+            className="w-full h-full text-sm p-2 pb-3 rounded-lg text-white" value={caption} onChange={(evnt) => setCaption(evnt.target.value)}></textarea>
 
             <SmileEmoji onClick={()=>setEmoji(prev=>!prev)} className="absolute cursor-pointer bg-black/40  text-gray-500 text-xl left-2.5 bottom-2.5" />
-            <AltMail  className="absolute cursor-pointer bg-black/40  text-gray-500 text-xl right-12 bottom-2.5 "/>
-            <HashtagIcon  className="absolute cursor-pointer bg-black/40  text-gray-500 text-xl right-5 bottom-2.5 "/>
+            <p className="absolute pointer-events-none text-skin-ptext text-sm bottom-2.5 right-1"> Markdown supported ✨</p>
+            {/* <AltMail  className="absolute cursor-pointer bg-black/40  text-gray-500 text-xl right-12 bottom-2.5 "/>
+            <HashtagIcon  className="absolute cursor-pointer bg-black/40  text-gray-500 text-xl right-5 bottom-2.5 "/> */}
 
-            <div className={`${caption.length > 1000 ? "text-red-500 font-bold" :" text-gray-500"} absolute bottom-10 text-sm right-1.5 bg-black hover:opacity-20`}>
+            <div className={`${caption.length > LIMIT ? "text-red-500 font-bold" :" text-gray-500"} absolute bottom-10 text-sm right-1.5 bg-black hover:opacity-20`}>
                 {caption.length}/{LIMIT}
             </div>
             {

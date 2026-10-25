@@ -85,7 +85,7 @@ export default function PostsCon({posts}) {
                         <p className="w-full  text-indigo-600 hover:underline underline-offset-1">#Code #React #AI</p>
 
                         <div className="imgContainer w-full flex items-center h-100 relative">
-                                        <ImageSlider imgArray={images_url} postInfo={{post_id,isLiked, totalLike}} />
+                            <ImageSlider imgArray={images_url} postInfo={{post_id,isLiked, totalLike}} />
                         </div>
 
                         <div className="flex items-center flex-row w-full p-0.5 bg-skin-bg/10 backdrop-blur-lg rounded-lg border border-gray-500/10" >

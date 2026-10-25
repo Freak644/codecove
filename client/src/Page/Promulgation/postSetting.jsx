@@ -12,7 +12,7 @@ export default function PostSetting () {
             <div className="headingDiv">
                 <SettingOt className="text-lg"/> Post Settings
             </div>
-            <div className="h-[65%] border-b border-b-gray-700/20  bg-sky-950/5 p-2.5 flex w-full items-center flex-col">
+            <div className="h-[65%] bg-blue-950/10 rounded-lg border border-gray-900 p-2.5 flex w-full items-center flex-col">
                 <div className="topDiv w-full flex-1">
                     <p className="w-full">Who can see this ?</p>
                     <ul>
@@ -47,34 +47,14 @@ export default function PostSetting () {
                                 <p className="spanBox">Programmers Joke and relatable moments</p>
                             </div>
                         </li>
-                        <li>
+                        {/* <li>
                             <PollIcon/>
                             <div className="textHolder">
                                 <p>Mini Blog</p>
                                 <p className="spanBox"> Short form content</p>
                             </div>
-                        </li>
-                        <li>
-                            <FileSvg/>
-                            <div className="textHolder">
-                                <p>Article</p>
-                                <p className="spanBox">Long form content</p>
-                            </div>
-                        </li>
-                        <li>
-                            <CodeBlockI/>
-                            <div className="textHolder">
-                                <p>Project</p>
-                                <p className="spanBox">Showcase your work</p>
-                            </div>
-                        </li>
-                        <li>
-                            <BugIcon/>
-                            <div className="textHolder">
-                                <p>Bug Hunt</p>
-                                <p className="spanBox">Find bugs, share fixes </p>
-                            </div>
-                        </li>
+                        </li> */}
+
                         <li>
                             <CommitIcon/>
                             <div className="textHolder">
@@ -84,12 +64,39 @@ export default function PostSetting () {
                         </li>
 
                         <li>
+                            <CodeBlockI/>
+                            <div className="textHolder">
+                                <p>Project</p>
+                                <p className="spanBox">Showcase your work</p>
+                            </div>
+                        </li>
+                        
+                        <li>
+                            <BugIcon/>
+                            <div className="textHolder">
+                                <p>Bug Hunt</p>
+                                <p className="spanBox">Find bugs, share fixes </p>
+                            </div>
+                        </li>
+
+                        <li>
+                            <FileSvg/>
+                            <div className="textHolder">
+                                <p>Article</p>
+                                <p className="spanBox">Long form content</p>
+                            </div>
+                        </li>
+                        
+                        
+                        
+
+                        {/* <li>
                             <CommitIcon/>
                             <div className="textHolder">
                                 <p>WIP Showcase</p>
                                 <p className="spanBox">Share work in progress</p>
                             </div>
-                        </li>
+                        </li> */}
                         
                     </ul>
                 </div>

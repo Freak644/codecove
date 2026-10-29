@@ -12,6 +12,7 @@ import { getComment } from '../../../API/usersPOSTAPIs/readThings/getCrntPostCom
 import { Chartdata } from '../../../API/usersPOSTAPIs/readThings/getChartData.js';
 import { GetPostForExport } from '../../../API/usersPOSTAPIs/readThings/getPostExplore.js';
 import { disLike } from '../../../API/usersPOSTAPIs/writeThings/dislikeAPI.js';
+import { AddTag } from '../../../API/usersPOSTAPIs/writeThings/addTag.js';
 
 
 
@@ -29,7 +30,8 @@ writePost.post("/reportPost", ...commonStack, Auth, ReportPost);
 writePost.post("/addDislike",...commonStack, Auth, disLike)
 writePost.delete("/deletePost", ...commonStack, Auth, DeletePost);
 writePost.delete("/deleteComment", ...commonStack, Auth, DeleteCommentAPI);
-writePost.patch("/pinMe", ...commonStack, Auth, CommentPinned)
+writePost.patch("/pinMe", ...commonStack, Auth, CommentPinned);
+writePost.post("/handleTag", ...commonStack, Auth, AddTag);
 
 
 //readPost API full path will be look like /readPost/apiName

@@ -3,7 +3,7 @@
 import { database } from "../../../Controllers/myConnectionFile.js";
 
 export const CrntUser = async (id) => {
-
+    
     try {
         let [userinfo] = await database.execute(
            "SELECT avatar, name, username,email,id,bio FROM users WHERE id=? LIMIT 1",

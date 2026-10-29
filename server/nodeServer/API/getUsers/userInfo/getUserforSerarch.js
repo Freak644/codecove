@@ -6,7 +6,7 @@ export const findUsers = async (rkv, rspo) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {username} = rkv.query;
     let {id} = rkv.authData;
-    console.log(id)
+    
     try {
         if (!username || username.length<4) return rspo.status(403).send({err:"Username is too short"});
         if (!/^[a-z0-9_]+$/.test(username)) return rspo.status(400).json({err:"Username can only contain lowercase letters, numbers, and underscore (_)"});

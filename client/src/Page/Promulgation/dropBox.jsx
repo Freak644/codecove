@@ -83,7 +83,7 @@ return (
       initial={{ scale: 0.95, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       whileHover={{ scale: 1.02 }}
-      className={` flex flex-col rounded-2xl w-full max-w-xl cursor-pointer text-center transition-all duration-300 p-1
+      className={` flex flex-col rounded-2xl w-full max-w-xl cursor-pointer text-center transition-all duration-300
         ${
           isDragActive
             ? "border-cyan-400/80 shadow-[0_0_25px_-8px_rgba(6,182,212,0.6)]"
@@ -95,7 +95,7 @@ return (
       <motion.div
         animate={{ y: isDragActive ? -6 : 0 }}
         transition={{ type: "spring", stiffness: 200 }}
-        className="flex flex-col items-center gap-3"
+        className="flex flex-col items-center"
       >
         <div className='flex items-center justify-start w-full font-bold'><ImageIcon className="h-2.5 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]" /> Image</div>
         <p className="text-gray-300 text-[10px] font-bold flex items-center justify-start w-26">

@@ -282,34 +282,44 @@ CREATE TABLE IF NOT EXISTS notification (
 );
 
 CREATE TABLE tags (
-    tag_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    tag_name VARCHAR(50) UNIQUE
+    tag_id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    tag_name VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE post_tags (
-    post_id CHAR(21),
-    tag_id BIGINT,
+    post_id CHAR(21) NOT NULL,
+    tag_id BIGINT UNSIGNED NOT NULL,
 
-    INDEX(post_id),
-    INDEX(tag_id)
+    PRIMARY KEY (post_id, tag_id),
+    INDEX idx_post_tags_tag (tag_id, post_id),
+
+    FOREIGN KEY (tag_id) REFERENCES tags(tag_id) ON DELETE CASCADE
 );
 
 /* MGMT Interactions by post tags */
 CREATE TABLE user_tag_interactions (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-
     user_id CHAR(36) NOT NULL,
-    tag_id BIGINT NOT NULL,
+    tag_id BIGINT UNSIGNED NOT NULL,
 
-    likes_count INT DEFAULT 0,
-    comment_count INT DEFAULT 0,
-    save_count INT DEFAULT 0,
-    view_count INT DEFAULT 0,
+    likes_count INT UNSIGNED NOT NULL DEFAULT 0,
+    comment_count INT UNSIGNED NOT NULL DEFAULT 0,
+    save_count INT UNSIGNED NOT NULL DEFAULT 0,
+    view_count INT UNSIGNED NOT NULL DEFAULT 0,
 
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    ON UPDATE CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL
+        DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
 
-    UNIQUE(user_id, tag_id)
+    PRIMARY KEY (user_id, tag_id),
+
+    INDEX idx_tag_interactions_ranking (
+        user_id,
+        likes_count,
+        save_count
+    ),
+
+    FOREIGN KEY (tag_id) REFERENCES tags(tag_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
 );
 
 

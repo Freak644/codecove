@@ -20,6 +20,7 @@ export const usePostStore = create((set) => ({ //! this stor is use when user is
     ownerName:"User",
     post_id:"random",
     username:"user",
+    tags:[],
     avatar:"",
     post_moment:"Not Selected",
     likeCount:true,

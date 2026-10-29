@@ -23,7 +23,7 @@ new Worker("likeQueue",
     },{connection: bullRedis, concurrency: 5}
 );
 
- //commentLikeWorker
+ //* commentLikeWorker
 
 new Worker("commentLike",
     async (job) => {

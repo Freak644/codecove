@@ -22,17 +22,18 @@ function getSuggestion(username,takenList) {
 export const getUsers = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
-   let {username} = rkv.query;
-   username = username.trim().toLowerCase();
+    let {username} = rkv.query;
+    username = username?.trim().toLowerCase();
     try {
         if (username.length<4) return rspo.status(403).send({err:"Username is too short"})
-        const isTaken = await redis.sIsMember("all:usernames",username);
+            const isTaken = await redis.sIsMember("all:usernames",username);
         if (!isTaken) {
-            return rspo.status(201).send({avalable:true,suggestion:[]});
+            return rspo.status(200).send({avalable:true,suggestion:[]});
         }
-        let [isrow] = await database.query('SELECT username FROM USERS WHERE username=?',[username]);
+       
+        let [isrow] = await database.query('SELECT username FROM users WHERE username=?',[username]);
         if (isrow.length===0) {
-             await redis.sRem("all:usernames", username);
+            await redis.sRem("all:usernames", username);
             return rspo.status(201).send({avalable:true,suggestion:[]});
         }
 

@@ -10,7 +10,8 @@ const revokedToken = async (session_id) => {
         )
 }
 export const Auth = async (rkv,rspo,next) => {
-
+    const crntIp = rkv.userIp;
+    const crntAPI = rkv.originalUrl.split("?")[0];
     try {
         let token = rkv.cookies.myAuthToken;
         if(!token) {
@@ -21,23 +22,27 @@ export const Auth = async (rkv,rspo,next) => {
         let decodedTime = Math.floor(Date.now()/1000);
         let {session_id,id} = tokenData;
         if (tokenData.exp<decodedTime) {
-            await revokedToken(session_id)
-            return rspo.status(501).send({err: "Your Auth token is expire please relode the page"});
+            await revokedToken(session_id);
+            completeRequest(crntIp,crntAPI);
+            return rspo.status(501).send({err: "Your Auth token is expired"});
         }
         let [rows] = await database.execute("SELECT revoked FROM user_sessions WHERE id=? AND session_id=?",
                 [id,session_id]
         )
         if (rows.length === 0) {
+            completeRequest(crntIp,crntAPI);
             return rspo.status(404).send({err:"Token is removed or Invalid"})
         }
         let revoked = Number(rows[0].revoked)
         if(revoked===1) {
-            return rspo.status(401).send({err:"Token rovoked"})
+            completeRequest(crntIp,crntAPI);
+            return rspo.status(401).send({err:"Token rovoked"});
         }
         rkv.authData = tokenData;
         next();
     } catch (error) {
-        rspo.status(500).send({err:"server side error"})
+        completeRequest(crntIp,crntAPI);
+        rspo.status(500).send({err:"server side error"});
     }
 }
 

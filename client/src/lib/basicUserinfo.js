@@ -26,7 +26,7 @@ export const usePostStore = create((set) => ({ //! this stor is use when user is
     likeCount:true,
     isLiked:false,
     visibility:true,
-    totalLike:999,
+    totalLike:1,
     isFollowing:true
   },
 

@@ -4,6 +4,8 @@
 ===================================
 */
 
+DROP DATABASE IF EXISTS echonexy_db;
+
 CREATE DATABASE IF NOT EXISTS echonexy_db;
 USE echonexy_db;
 
@@ -289,7 +291,7 @@ CREATE TABLE tags (
 CREATE TABLE post_tags (
     post_id CHAR(21) NOT NULL,
     tag_id BIGINT UNSIGNED NOT NULL,
-
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (post_id, tag_id),
     INDEX idx_post_tags_tag (tag_id, post_id),
 
@@ -319,7 +321,7 @@ CREATE TABLE user_tag_interactions (
     ),
 
     FOREIGN KEY (tag_id) REFERENCES tags(tag_id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 

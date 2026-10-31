@@ -1,9 +1,7 @@
+import { usePostStore } from "../../lib/basicUserinfo"
+
 export default function AddTag () {
-    const tempTags = [
-        {"tag":"Node"},
-        {"tag":"MYsql"},
-        {"tag": "Python"}
-    ]
+    const tempTags = usePostStore(stat=> stat.postOBJ.tags) || [];
     return(
         <div className="h-4/10 rounded-lg gap-2 w-full relative">
             <div className="absolute text-skin-ptext right-2.5 top-1.5">

@@ -745,7 +745,7 @@ form>h1>span{
     animation-direction: alternate-reverse;
 }
 .miniLoader::before{
-    border-color: red transparent transparent;
+    border-color: rgb(157, 0, 255) transparent transparent;
 }
 @keyframes miniLoader {
     100%{transform: rotate(1turn);}

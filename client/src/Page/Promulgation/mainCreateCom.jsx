@@ -15,7 +15,7 @@ export default function CreatePostContainer () {
         const handleClick = (evnt)=> {
             const el = containerRef.current;
         
-            if (el && !el.contains(evnt.target) && !evnt.target.closest(".dybtn")) {
+            if (el && !el.contains(evnt.target) && !evnt.target.closest(".dybtn") && !evnt.target.closest(".tags")) {
                 console.log("i am Listing");
                 navi(-1);
             }

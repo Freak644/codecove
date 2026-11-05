@@ -85,10 +85,10 @@ export default function ContentAdder () {
                 </div>
             </div>
 
-            <div className="imgMGmtContainer flex items-start flex-row h-4/10 w-full border my-scroll my-scroll-visible border-gray-900 rounded-lg">
+            <div className="imgMGmtContainer flex items-start flex-row h-4/10 w-full border my-scroll border-gray-900 rounded-lg">
                 {
                     image_url.length !== 0 ? image_url.map((imgFile,index)=>(
-                        <div key={index} className="attachmentHolder relative h-18 w-auto ">
+                        <div key={index} className="attachmentHolder relative h-full w-auto ">
                             <div className="imgInfoPrev">
                                 <img className="dybtn" src={imgFile.preview} title={imgFile.file.name} alt="" />
                                     <button className="dybtn" onClick={()=>replaceFile(index)}><PenCileIcon className="dybtn"/></button>

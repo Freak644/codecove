@@ -446,16 +446,19 @@ textarea::-webkit-scrollbar {
 
 .imgMGmtContainer {
     color: var(--text-color);
-
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    padding: 6px;
     .imgInfoPrev {
         width: auto;
         height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: start;
-        padding: 8px;
-        gap: 10px;
+       
+        
+        
         overflow: hidden;
+        position: relative;
         img {
             height: 50px; width: auto;
             z-index: 2;
@@ -465,7 +468,7 @@ textarea::-webkit-scrollbar {
 
         button {
             position: absolute;
-            
+            cursor: pointer;
             transform: scale(.5);
             opacity: 0;
             transition: all .3s ease-in-out;
@@ -490,8 +493,8 @@ textarea::-webkit-scrollbar {
     height: 20px;
     width: 20px;
     border-radius: 50%;
-    top: 5px; right: 0px;
-    transform: translateX(-10px) translateY(10px);
+    top: 0px; right: 0px;
+    transform: translateX(-12px) translateY(12px);
     cursor: pointer;
 
     svg {
@@ -502,11 +505,7 @@ textarea::-webkit-scrollbar {
 .imgInfoPrev button:nth-child(2) {
     height: 50px; width: 50px;
     position: absolute;
-    left: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+    left: 30px; top: 0px;
     transform: translateX(-10px) translateY(10px);
   
     border-radius: 50%;
@@ -518,14 +517,14 @@ textarea::-webkit-scrollbar {
 .imgInfoPrev:hover {
     img {
         corner-top-right-shape: scoop;
-        border-top-right-radius: 20px;
-        opacity: .5;
+        border-top-right-radius: 25px;
+        opacity: .7;
     }
 
     button:nth-child(3) {
         z-index: 3 !important;
         opacity: 1;
-        transform: translateX(0px) translateY(0px);
+        transform: translateX(5px) translateY(-3px);
     }
 
     button:nth-child(2) {

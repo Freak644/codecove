@@ -24,10 +24,12 @@ export const googleCallBackHandler = async (rkv, rspo) => {
     const idToken = tokens.data.id_token;
     const payload = JSON.parse(Buffer.from(idToken.split(".")[1], "base64").toString());
 
+    
     let authData = {
       provider: "Google",
       providerAccount_id: payload.sub,
       email: payload.email,
+      name:payload.name,
       avatar: payload.picture,
       expires_at: payload.exp,
       accessToken: tokens.data.access_token

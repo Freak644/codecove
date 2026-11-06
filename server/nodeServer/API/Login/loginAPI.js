@@ -56,7 +56,7 @@ export const LoginAPI = async (rkv,rspo) => {
             ,[token_id,id,session_id,username,email]
         )
         
-        let activity_url = `http://localhost:3221/checkInfo/${token_id}`
+        let activity_url = `${process.env.FRONTEND_URL}/checkInfo/${token_id}`
         
         
         let authToken = jwt.sign({id,session_id},process.env.jwt_sec,{expiresIn:"1d"});

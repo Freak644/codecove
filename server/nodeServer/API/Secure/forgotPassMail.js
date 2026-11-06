@@ -66,7 +66,7 @@ export const forgotPass = async (rkv,rspo) => {
             region:geo?.region,
             country:geo?.country,
             attempt_time:formattedTime,
-            security_url:`http://localhost:3221/resetPassword/${token_id}`
+            security_url:`${process.env.FRONTEND_URL}/resetPassword/${token_id}`
         }
         await database.query("INSERT INTO validationToken (token_id, id, session_id, username, email) VALUES (?,?,?,?,?);"
             ,[token_id,id,"",username,email]

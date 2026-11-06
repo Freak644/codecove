@@ -14,7 +14,7 @@ const NewOAuthAc = async (tokenData) => {
     let OAuth_id = nanoid(25);
     let uuid = uuid4();
     let {provider, providerAccount_id, email, avatar,
-        accessToken, user_id, username, accountAv, iat, exp} = tokenData;
+        accessToken, user_id, username, accountAv, iat, exp, name} = tokenData;
       
      
         try {
@@ -59,7 +59,7 @@ const NewOAuthAc = async (tokenData) => {
                     // ✅ clean API path
                     avatar = `/myServer/avatar/${uuid}`;
                     }
-                await database.query(`INSERT INTO users (id, username, email, avatar) VALUES (?, ?, ?, ?);`,[uuid, username, email, avatar || accountAv,]);
+                await database.query(`INSERT INTO users (id, username, email, avatar, name) VALUES (?, ?, ?, ?, ?);`,[uuid, username, email, avatar || accountAv, name]);
                 await database.query("INSERT INTO roles (user_id) VALUES (?)",[uuid])
                 await database.query(`INSERT INTO oauth_accounts 
                     (id, user_id, provider_name, provider_account_id, provider_email, access_token) 
@@ -79,6 +79,7 @@ const OAuthLogin = async (rkv ,userInfo) => {
     let {id,user_id} = userInfo;
     try {
         let {session_id} = await SaveThisSession(rkv, user_id);
+        console.log(session_id);
         let authData = jwt.sign({id:user_id,OAuth_id:id,session_id},process.env.jwt_sec,{expiresIn: "1d"});
         let encryptedToken = await Encrypt(authData);
         return encryptedToken

@@ -28,15 +28,17 @@ export default defineConfig({
 // }
 //   })
 //   ,
-  server: {
+server: {
+    host: "0.0.0.0",
     port: 3221,
+    strictPort: true,
     proxy: {
-      "/myServer": {
-        target: "http://127.0.0.1:3222",
-        changeOrigin: true,
-        ws:true,
-        rewrite: (path) => path.replace(/^\/myServer/, ""),
-      },
+        "/myServer": {
+            target: "http://127.0.0.1:3222",
+            changeOrigin: true,
+            ws: true,
+            rewrite: (path) => path.replace(/^\/myServer/, ""),
+        },
     },
-  },
+},
 });

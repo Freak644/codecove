@@ -74,7 +74,7 @@ export default function MergeType({pramsData}) {
                 </button>
 
                 <button onClick={()=>{
-                            window.location.href = "http://localhost:3221/"
+                            window.location.href = "http://localhost:8080/"
                         }} className="w-full py-2.5 px-4 border border-gray-300 hover:border-blue-600 hover:text-blue-600 cursor-pointer text-gray-700 font-medium rounded-lg transition">
                         Go To Login
                 </button>

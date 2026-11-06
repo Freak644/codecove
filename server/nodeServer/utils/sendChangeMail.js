@@ -30,7 +30,7 @@ export const sendChangePassMail = async (rkv,email,newToken_id,username) => {
             region:geo?.region,
             country:geo?.country,
             time:formattedTime,
-            activity_url:`http://localhost:3221/resetPassword/${newToken_id}`
+            activity_url:`${process.env.FRONTEND_URL}/resetPassword/${newToken_id}`
         }
         await emailQueue("mail-job",{
             mail:email,

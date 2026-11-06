@@ -21,6 +21,8 @@ export const Auth = async (rkv,rspo,next) => {
         let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec);
         let decodedTime = Math.floor(Date.now()/1000);
         let {session_id,id} = tokenData;
+        // console.log(session_id);
+        // console.log(tokenData.exp<decodedTime);
         if (tokenData.exp<decodedTime) {
             await revokedToken(session_id);
             completeRequest(crntIp,crntAPI);
@@ -29,11 +31,12 @@ export const Auth = async (rkv,rspo,next) => {
         let [rows] = await database.execute("SELECT revoked FROM user_sessions WHERE id=? AND session_id=?",
                 [id,session_id]
         )
+        
         if (rows.length === 0) {
             completeRequest(crntIp,crntAPI);
             return rspo.status(404).send({err:"Token is removed or Invalid"})
         }
-        let revoked = Number(rows[0].revoked)
+        let revoked = Number(rows[0].revoked);
         if(revoked===1) {
             completeRequest(crntIp,crntAPI);
             return rspo.status(401).send({err:"Token rovoked"});
@@ -47,7 +50,7 @@ export const Auth = async (rkv,rspo,next) => {
 }
 
 export const checkAuth = async (rkv,rspo) => {
-    const ip = rkv.userIp.replace(/^::ffff:/,"") || "0.0.0.0";
+    // const ip = rkv.userIp.replace(/^::ffff:/,"") || "0.0.0.0";
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let token = rkv.cookies.myAuthToken;
@@ -68,9 +71,9 @@ export const checkAuth = async (rkv,rspo) => {
         if (rows.length === 0) {
             return rspo.status(404).send({loggedIn:true})
         }
-
+        // console.log(rows, ip, );
         let revoked = Number(rows[0].revoked);
-        if (revoked === 1 || rows[0].ip !== ip) {
+        if (revoked === 1 ) {
             await revokedToken(session_id)
             throw new Error("token Revoked");
         }

@@ -48,6 +48,7 @@ export const githubCallBackHandler = async (rkv, rspo) => {
             providerAccount_id: userInfo.id.toString(),
             email:primaryEmail,
             avatar: userInfo.avatar_url,
+            name:userInfo.name,
             accessToken,
             username:userInfo.login
         }

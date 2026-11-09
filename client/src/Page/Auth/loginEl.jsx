@@ -7,6 +7,7 @@ import bat from '../../assets/Images/bat.gif';
 import { debouncerGlob } from "../../utils/debounceFun";
 import { GitHubIcon, GoogleSvg, UserFI, UserShield } from "../../utils/SVG/SVG";
 import { EyeOpn, EyeSl } from "../../utils/SVG/menuSVG";
+
 export default function LoginCon({toggle}) {
     const pwdRef = useRef();
     const isCalled = useRef(false);
@@ -131,7 +132,7 @@ export default function LoginCon({toggle}) {
                                 </div>
                             </div>
                             <div className="inputDiv twobtnInput ">
-                                <button disabled={isTrue} type="submit" className="btn bigBtn relative h-9 ">{isTrue ? <img src={bat} className="bat" alt="" /> : "Log in"}</button>
+                               <button disabled={isTrue} type="submit" className="btn bigBtn relative h-9 ">{isTrue ? <img src={bat} className="bat" alt="" /> : "Log in"}</button>
                                 <button onClick={()=>setTab("right")} type="button" className="text-btn ">Create an Account</button>
                             </div>
                             
@@ -139,8 +140,8 @@ export default function LoginCon({toggle}) {
                                 <p className="opacity-50 text-sm text-gray-300"><span className="font-bold">___________</span> OR <span className="font-bold">___________</span></p>
                                 <div className="iconHelper flex items-center flex-row p-1
                                 ">
-                                    <button disabled={isTrue} onClick={loginWithGithub} title="Continue With GigHub" className="flex items-center justify-center text-nowrap">Continue With <GitHubIcon className=" -top-px relative"/> </button>
-                                    <button disabled={isTrue} onClick={loginWithGoogle} title="Continue With Google" className="flex items-center justify-center text-nowrap">Continue With <GoogleSvg/> </button>
+                                    <button type="button" disabled={isTrue} onClick={loginWithGithub} title="Continue With GigHub" className="flex items-center justify-center text-nowrap">Continue With <GitHubIcon className=" -top-px relative"/> </button>
+                                    <button type="button" disabled={isTrue} onClick={loginWithGoogle} title="Continue With Google" className="flex items-center justify-center text-nowrap">Continue With <GoogleSvg/> </button>
                                 </div>
                             </div>
                     </form>

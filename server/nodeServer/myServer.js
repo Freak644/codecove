@@ -25,6 +25,6 @@ export function getIO() {
 
 initSockets(io);
 
-myServer.listen(process.env.SERVER_PORT, ()=> {
+myServer.listen(process.env.SERVER_PORT,"127.0.0.1", ()=> {
     console.log(chalk.bgGreenBright.yellow.bold(`Server running on ${PORT}`));
 })

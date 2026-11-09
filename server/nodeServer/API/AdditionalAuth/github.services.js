@@ -20,38 +20,47 @@ export const githubCallBackHandler = async (rkv, rspo) => {
         const token = await envGithub.validateAuthorizationCode(code);
         let accessToken = token.data.access_token;
 
-        const userRspo = await fetch("https://api.github.com/user",{
-            headers:{
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
+        const userHeaders = {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2026-03-10"
+        };
+
+        const [userRspo, emailRspo] = await Promise.all([
+            fetch("https://api.github.com/user", {
+                headers: userHeaders
+            }),
+            fetch("https://api.github.com/user/emails", {
+                headers: userHeaders
+            })
+        ]);
+
+        if (!userRspo.ok || !emailRspo.ok) {
+            throw new Error("Failed to retrieve GitHub account information");
+        }
 
         const userInfo = await userRspo.json();
-        
-        const emailRspo = await fetch("https://api.github.com/user/emails", {
-            headers:{
-                Authorization: `Bearer ${accessToken}`
-            }
-        });
-
         const emailInfo = await emailRspo.json();
-        const primaryEmail = emailInfo.find(el=>el.primary)?.email;
+
+        const primaryEmail = emailInfo.find(
+            el => el.primary && el.verified
+        )?.email;
+
         if (!primaryEmail) {
             return rspo.redirect(
                 `${process.env.FRONTEND_URL}/?err=No_Email`
-            )
+            );
         }
 
-
-        let authData = {
-            provider:"Github",
-            providerAccount_id: userInfo.id.toString(),
-            email:primaryEmail,
+        const authData = {
+            provider: "Github",
+            providerAccount_id: String(userInfo.id),
+            email: primaryEmail,
             avatar: userInfo.avatar_url,
-            name:userInfo.name,
+            name: userInfo.name?.trim() || userInfo.login,
             accessToken,
-            username:userInfo.login
-        }
+            username: userInfo.login
+        };
         
         
         const OAuthInfo = await handleOAuthLogin(authData);

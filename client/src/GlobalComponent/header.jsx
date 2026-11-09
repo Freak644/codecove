@@ -41,7 +41,7 @@ export default function Header() {
                                        
                         <p className={`text-2xl bg-size-[200%_200%]
                             bg-linear-to-tl ${gradColor}
-                            bg-clip-text text-transparent font-bold`}>EchoVain's</p>
+                            bg-clip-text text-transparent font-bold`}>EchoNexy's</p>
                 </div>
 
                 <div className="middleWhr lg:hidden relative flex items-center flex-row">

@@ -122,7 +122,7 @@ export default function WindowsMenu ({userInfo, miniMenu}) {
                 </div>
                 
                 <div className="textMD text-skin-text mt-2">
-                    <p>EchoVain's</p>
+                    <p>EchoNexy's</p>
                     <p className="text-skin-ptext text-[8px]">Code. Connect. Create.</p>
                 </div>
             </div>

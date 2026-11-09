@@ -29,9 +29,14 @@ export default defineConfig({
 //   })
 //   ,
 server: {
-    host: "0.0.0.0",
+    host: "172.17.0.1",
     port: 3221,
     strictPort: true,
+
+    allowedHosts: [
+        "warchilds.online",
+        "www.warchilds.online"
+    ],
     proxy: {
         "/myServer": {
             target: "http://127.0.0.1:3222",

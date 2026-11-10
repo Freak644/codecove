@@ -1,50 +1,152 @@
 
-import { useEffect, useState } from "react";
-import Turnstile from "./Turntile";
+import { useEffect, useState, useRef } from "react";
+import { Turnstile } from '@marsidev/react-turnstile';
 // import Turnstile from "./Turnstile";
 
 export default function SecurityGate({ children }) {
-    const [token, setToken] = useState("");
+    // const [token, setToken] = useState("");
+    const [isVerifying, setIsVerifying] = useState(false);
     const [verified, setVerified] = useState(false);
+    const [checkingSession, setCheckingSession] = useState(true);
     const [error, setError] = useState("");
     const [isTimeOut, setTime] = useState(false);
+    const turnstileRef = useRef(null);
+    const verificationLock = useRef(false);
+    useEffect(() => {
+        let timeOut;
 
-useEffect(() => {
-    let timeOut;
+        const handleTimeout = () => {
+            setTime(true);
+            clearTimeout(timeOut);
+        };
 
-    const handleTimeout = () => {
-        setTime(true);
-        clearTimeout(timeOut);
-    };
+        timeOut = setTimeout(handleTimeout, 10000);
 
-    timeOut = setTimeout(handleTimeout, 10000);
+        // Cleanup on unmount
+        return () => clearTimeout(timeOut);
+    }, []);
 
-    // Cleanup on unmount
-    return () => clearTimeout(timeOut);
-}, []);
 
-    const handleVerify = (newToken) => {
-        setToken(newToken);
+    
+    const handleVerify = async (newToken) => {
+        if (!newToken || verificationLock.current) return;
+
+        setIsVerifying(true);
+        verificationLock.current = true;
         setError("");
+
+        try {
+            const response = await fetch("/myServer/auth/verifyTurnstile", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    token: newToken,
+                }),
+            });
+
+            const data = await response.json().catch(() => null);
+
+            if (!response.ok || data?.success !== true) {
+                throw new Error(
+                    data?.err || data?.message || "Verification failed."
+                );
+            }
+
+            if (data.success) {
+                setVerified(true);
+            }
+
+        } catch (error) {
+            console.error("Verification error:", error.message);
+
+            setError(
+                error.message || "Verification failed. Please try again."
+            );
+
+            // Get a fresh token for the next attempt.
+            turnstileRef.current?.reset();
+
+        } finally {
+            verificationLock.current = false;
+            setIsVerifying(false);
+        }
     };
 
     const handleExpire = () => {
-        setToken("");
-        setVerified(false);
         setError("Verification expired. Please try again.");
     };
 
     const handleError = () => {
-        setToken("");
-        setVerified(false);
-        setError("Verification failed. Please try again.");
+        setError("Verification encountered an error. Please try again.");
     };
 
-    const handleContinue = () => {
-        if (!token) return;
 
-        setVerified(true);
-    };
+
+
+    // const handleContinue = () => {
+    //     if (!token) return;
+
+    //     setVerified(true);
+    // };
+
+    useEffect(() => {
+        let mounted = true;
+
+        const checkSession = async () => {
+            try {
+                const response = await fetch(
+                    "/myServer/auth/turnstile-status",
+                    {
+                        method: "GET",
+                        credentials: "include",
+                        cache: "no-store"
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error("Unable to check verification session");
+                }
+
+                const data = await response.json();
+
+                if (mounted) {
+                    setVerified(data.verified === true);
+                }
+
+            } catch (error) {
+                console.error("Session check failed:", error.message);
+
+                if (mounted) {
+                    setVerified(false);
+                }
+
+            } finally {
+                if (mounted) {
+                    setCheckingSession(false);
+                }
+            }
+        };
+
+        checkSession();
+
+        return () => {
+            mounted = false;
+        };
+    }, []);
+
+    if (checkingSession) {
+        return (
+            <div className="security-gate">
+                <div className="security-card">
+                    <h2>Welcome to ECHO Nexy</h2>
+                    <p>Checking your verification session...</p>
+                </div>
+            </div>
+        );
+}
 
     if (verified) {
         return children;
@@ -61,14 +163,19 @@ useEffect(() => {
                 bg-clip-text text-transparent`}>Nexy</h2>
             </div></h1>
 
-                <p>
-                    Complete the security verification
-                    before entering the website.
+                <p className="text-gray-600 text-sm">
+                    This website is uses a security service to protecty against malicious bots. This page is displayed while the website verifies you are not a bot.
                 </p>
 
                 <div className="turnstile-container">
                     <Turnstile
-                        onVerify={handleVerify}
+                    ref={turnstileRef}
+                        siteKey={import.meta.env.VITE_CLOUDFLARE_KEY}
+                        options={{
+                            theme: "auto",
+                            appearance: "always",
+                        }}
+                        onSuccess={handleVerify}
                         onExpire={handleExpire}
                         onError={handleError}
                     />
@@ -77,6 +184,11 @@ useEffect(() => {
                 {error && (
                     <p className="security-error">
                         {error}
+                    </p>
+                )}
+                {isVerifying && (
+                    <p className="text-sm text-blue-500 mt-3">
+                        Verifying your request...
                     </p>
                 )}
 
@@ -107,6 +219,7 @@ useEffect(() => {
                                 R
                             </kbd>
                         </p>
+                        <p className="flex items-center gap-1.5">Or just Click on<button className="flex p-px rounded-md text-blue-600 underline hover:text-blue-400 cursor-pointer hover:scale-95" onClick={()=>window.location.reload()}>Reload</button></p>
                     </div>
                 )}
                 

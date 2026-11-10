@@ -34,6 +34,7 @@
     "node-fetch": "^3.3.2",
     "nodemailer": "^10.4.0",
     "p-limit": "^7.3.0",
+    "rate-limit-redis": "^6.0.2",
     "redis": "^5.11.0",
     "request-ip": "^3.3.0",
     "sharp": "^0.35.3",

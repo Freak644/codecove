@@ -18,7 +18,6 @@ import { findUsers } from '../../../API/getUsers/userInfo/getUserforSerarch.js';
 import { FindFriends } from '../../../API/getUsers/userInfo/findFriends.js';
 
 
-
 //absolute User Routes there path will look like /user/apiPath
 const userRoutes = Router();
 
@@ -31,21 +30,21 @@ userRoutes.post("/ForgotPassword/verify",...commonStack,verification);
 userRoutes.patch("/ForgotPassword/reset",...commonStack,resetPassword);
 // userRoutes.get("/GetUserInfo",...commonStack,Auth,CrntUser);
 userRoutes.get("/userFound",...commonStack,MergeRequestData);
-userRoutes.get("/searchUsers",...commonStack, Auth,findUsers);
+userRoutes.get("/searchUsers",...commonStack, Auth,  findUsers);
 
 //profileUserRoutes there path will look like /readUser/apiPath
 
 const readRoutes = Router();
 
-readRoutes.get("/getUserInfo",...commonStack,Auth,getUserinfo);
+readRoutes.get("/getUserInfo",...commonStack,Auth, getUserinfo);
 readRoutes.get("/findFriends", ...commonStack, Auth, FindFriends)
 
 //profileUserRoute for writeProfile Info full will be look like /writeUser/apiPath
 
 const writeRoutes = Router();
 
-writeRoutes.post("/follow",...commonStack,Auth,followAPI);
-writeRoutes.patch("/changeBio",...commonStack,Auth,changeBio);
+writeRoutes.post("/follow",...commonStack,Auth,  followAPI);
+writeRoutes.patch("/changeBio",...commonStack,Auth, changeBio);
 writeRoutes.put("/changeDP",...commonStack,Auth,upload.single("file"),changeDP);
 
 

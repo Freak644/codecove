@@ -1,5 +1,6 @@
 import {Router} from 'express';
 import {commonStack} from '../middleware/common.js';
+
 import {Auth} from '../../../API/Login/tokenChecker.js';
 import {diskUpload} from '../middleware/diskMulter.js';
 import {CreatePost} from '../../../API/Promulgation/createPost.js';
@@ -19,29 +20,34 @@ import { AddTag } from '../../../API/usersPOSTAPIs/writeThings/addTag.js';
 //wirtePost API full path will be look like /writePost/apiName
 const writePost = Router();
 
-writePost.post("/CreatePost",...commonStack, diskUpload.array("postFiles",5), Auth, CreatePost);
-writePost.patch("/toggles",...commonStack, Auth, miniToggleDy);
-writePost.post("/addStar",...commonStack, Auth, starPost);
-writePost.post("/addLikeComment", ...commonStack, Auth, likeComment);
-writePost.post("/savePost",...commonStack, Auth, savePost);
-writePost.post("/addComment",...commonStack, Auth, CommentAPI);
-writePost.post("/reportComment", ...commonStack, Auth, reportCommentAPI);
-writePost.post("/reportPost", ...commonStack, Auth, ReportPost);
-writePost.post("/addDislike",...commonStack, Auth, disLike)
-writePost.delete("/deletePost", ...commonStack, Auth, DeletePost);
-writePost.delete("/deleteComment", ...commonStack, Auth, DeleteCommentAPI);
-writePost.patch("/pinMe", ...commonStack, Auth, CommentPinned);
-writePost.post("/handleTag", ...commonStack, Auth, AddTag);
+// Write routes
+writePost.post(
+    "/CreatePost",
+    ...commonStack,
+    Auth,
+    diskUpload.array("postFiles", 5),
+    CreatePost
+);
 
+writePost.patch("/toggles", ...commonStack, Auth,   miniToggleDy);
+writePost.post("/addStar", ...commonStack, Auth,   starPost);
+writePost.post("/addLikeComment", ...commonStack, Auth,   likeComment);
+writePost.post("/savePost", ...commonStack, Auth,   savePost);
+writePost.post("/addComment", ...commonStack, Auth,   CommentAPI);
+writePost.post("/reportComment", ...commonStack, Auth,   reportCommentAPI);
+writePost.post("/reportPost", ...commonStack, Auth,   ReportPost);
+writePost.post("/addDislike", ...commonStack, Auth,   disLike);
+writePost.delete("/deletePost", ...commonStack, Auth,   DeletePost);
+writePost.delete("/deleteComment", ...commonStack, Auth,   DeleteCommentAPI);
+writePost.patch("/pinMe", ...commonStack, Auth,   CommentPinned);
+writePost.post("/handleTag", ...commonStack, Auth,   AddTag);
 
-//readPost API full path will be look like /readPost/apiName
+// Read routes
 const readPost = Router();
-
-readPost.get("/getPost", ...commonStack, Auth, GetPostForFeed);
-readPost.get("/getComment", ...commonStack, Auth, getComment);
-readPost.get("/getImage", ...commonStack, Auth, getPost);
-readPost.get("/getChartData", ...commonStack, Auth, Chartdata);
-readPost.get("/getPostExp",...commonStack, Auth, GetPostForExport);
-
+readPost.get("/getPost", ...commonStack, Auth,   GetPostForFeed);
+readPost.get("/getComment", ...commonStack, Auth,   getComment);
+readPost.get("/getImage", ...commonStack, Auth,   getPost);
+readPost.get("/getChartData", ...commonStack, Auth,   Chartdata);
+readPost.get("/getPostExp", ...commonStack, Auth,   GetPostForExport);
 
 export {writePost, readPost};   

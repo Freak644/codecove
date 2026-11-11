@@ -5,17 +5,14 @@ import {createRoot} from 'react-dom/client';
 import MyApp from './components/myApp';
 import './assets/style/index.css'
 import './assets/style/baseStyle.css'
-import SecurityGate from './components/Cloudflare/securityGate';
-
-
 
 createRoot(document.getElementById('rootContainer')).render(
     <StrictMode>
-        <BrowserRouter>
-            <SecurityGate>
+        
+            <BrowserRouter>
                 <MyApp/>
-            </SecurityGate>
-        </BrowserRouter>
+            </BrowserRouter>
+        
         <ToastContainer
             position='top-right'
             autoClose={3000}

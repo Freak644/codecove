@@ -11,10 +11,10 @@ export const LoginAPI = async (rkv,rspo) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     let token_id = nanoid(32);
     let {Email,Password,clientInfo} = rkv.body || {};
-    console.log("here");
+    
     try {
         if (!Email?.trim() || !Password?.trim() || Object.keys(clientInfo).length !== 2) {
-        return rspo.status(400).send({ err: "Please Provide proper information"})
+            return rspo.status(400).send({ err: "Please Provide proper information"})
         }
         let [isUser] = await database.query(
             "SELECT username,password,id,email,acStatus,avatar FROM users WHERE username=? OR email=?",

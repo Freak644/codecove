@@ -4,10 +4,9 @@ import { startGithubLogin, startGoogleLogin } from '../../auth.controller.js';
 import { googleCallBackHandler } from '../../../API/AdditionalAuth/google.services.js';
 import { githubCallBackHandler } from '../../../API/AdditionalAuth/github.services.js';
 import { VerifyMergeToken, verifyPassword } from '../../../API/AdditionalAuth/merge/handleMerge.js';
-import { upload } from '../middleware/upload.js';
+
 import {LoginAPI} from '../../../API/Login/loginAPI.js'
 import {checkAuth} from '../../../API/Login/tokenChecker.js';
-import { HandleTurntile } from '../../../API/AdditionalAuth/handleTurntile.js';
 
 //Oauth API the full api path will be look like /auth/:service
 const authRoute = Router();
@@ -20,27 +19,5 @@ authRoute.get("/verify/mergeToken",...commonStack,VerifyMergeToken);
 authRoute.post("/login", ...commonStack, LoginAPI);
 authRoute.get("/checkAuth", ...commonStack, checkAuth);
 authRoute.post("/verifyPassword", ...commonStack, verifyPassword);
-authRoute.post("/verifyTurnstile", ...commonStack, HandleTurntile);
-authRoute.get("/turnstile-status",...commonStack ,(rkv, rspo) => {
-    const verified = rkv.session?.turnstileVerified;
-    const verifiedAt = rkv.session?.turnstileVerifiedAt;
-
-    // 12-hour verification lifetime
-    const SESSION_TTL = 12 * 60 * 60 * 1000;
-
-    const isVerified =
-        verified === true &&
-        typeof verifiedAt === "number" &&
-        Date.now() - verifiedAt < SESSION_TTL;
-
-    if (!isVerified && verified) {
-        delete rkv.session.turnstileVerified;
-        delete rkv.session.turnstileVerifiedAt;
-    }
-
-    return rspo.status(200).json({
-        verified: isVerified
-    });
-});
 
 export {authRoute};

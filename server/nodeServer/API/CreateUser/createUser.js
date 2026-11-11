@@ -9,7 +9,6 @@ import redis from '../../Controllers/src/config/redis.js';
 import {v4 as uuidV4} from 'uuid'
 import { getAvatarPath } from '../../utils/getImagePath.js';
 
-
 async function checkDuplicate(sqlData, username, email) {
 
   if (sqlData.some(prv => prv.username === username)) return username;
@@ -75,15 +74,18 @@ export const CreateUser = async (rkv, rspo) => {
 
 
     if (!email || !username || !password || !email?.trim() || !username?.trim() || !password?.trim() || username.length<6) {
+      
       return rspo.status(400).send({ err: "Please provide proper information" });
     }
 
     if (!email.endsWith("@gmail.com") ||
       !/^[A-Za-z0-9][A-Za-z0-9._%+-]*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
-      return rspo.status(400).send({ err: "Invalid email" });
+       
+        return rspo.status(400).send({ err: "Invalid email" });
     }
 
     if (!/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])(?!.*\s).{6,}$/.test(password)) {
+      
       return rspo.status(400).send({ err: "Password must have (6 chars, upper lover, number, symbol)" });
     }
     username = String(username).toLowerCase();
@@ -101,6 +103,7 @@ export const CreateUser = async (rkv, rspo) => {
       [username, email]
     );
     if (existing.length > 0) {
+      
       const duplicate = await checkDuplicate(existing, username, email);
       return rspo.status(302).send({ err: `${duplicate} already has an account` });
     }
@@ -144,6 +147,7 @@ export const CreateUser = async (rkv, rspo) => {
    
   } catch (error) {
     // anything fails after saving, delete the file
+    
     console.log(error.message)
     if (rkv.file) {
       

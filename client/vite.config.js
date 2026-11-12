@@ -36,7 +36,8 @@ server: {
     allowedHosts: [
         "warchilds.online",
         "www.warchilds.online",
-        "nullvain.xyz"
+        "nullvain.xyz",
+        "www.nullvain.xyz"
     ],
     proxy: {
         "/myServer": {

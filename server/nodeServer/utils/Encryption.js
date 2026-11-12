@@ -4,7 +4,13 @@ dotenv.config();
 
 const Encrypt = async (plainText) => {
     
-    const key = Buffer.from(process.env.encryption_key,"hex"); 
+    const key = Buffer.from(process.env.encryption_key || "", "hex");
+
+    if (key.length !== 32) {
+        throw new Error(
+            "Invalid encryption_key: AES-256 requires exactly 32 bytes (64 hexadecimal characters)."
+        );
+    }
     const iv = crypto.randomBytes(12); 
 
     const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);

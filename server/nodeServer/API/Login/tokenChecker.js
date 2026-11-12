@@ -18,7 +18,7 @@ export const Auth = async (rkv,rspo,next) => {
             return rspo.status(401).send({err: "Please Login"});
         }
         let decryptedToken = await Decrypt(token);
-        let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec);
+        let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec, {algorithms: ["HS256"]});
         let decodedTime = Math.floor(Date.now()/1000);
         let {session_id,id} = tokenData;
         // console.log(session_id);
@@ -57,7 +57,7 @@ export const checkAuth = async (rkv,rspo) => {
     try {
         if(!token) throw new Error();
         let decryptedToken = await Decrypt(token);
-        let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec);
+        let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec, {algorithms: ["HS256"]});
         let decodedTime = Math.floor(Date.now()/1000);
         let {id,session_id} = tokenData;
         

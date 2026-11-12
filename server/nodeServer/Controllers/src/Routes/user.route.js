@@ -1,51 +1,59 @@
-import { Router } from 'express';
-import {commonStack} from '../middleware/common.js'
-import { usernameCheckLimiter } from '../../rateLimits.js';
-import {getUsers} from '../../../API/getUsers/getUsers.js';
-import {loggedMeOut} from '../../../API/Login/userSession.js';
-import {ActivityInfo} from '../../../API/Login/getSessionInfo.js'
-import {changePassSecure} from '../../../API/Secure/SecureAccount.js';
-import {verification,resetPassword} from '../../../API/Secure/userVerification/verificationAPI.js';
-// import {CrntUser} from '../../../API/getUsers/getCurrentUserdata.js';
-import {Auth} from '../../../API/Login/tokenChecker.js';
-import {getUserinfo} from '../../../API/getUsers/prifileAPIs.js';
-import {followAPI} from '../../../API/editProfileAPIs/followUnfollow.js';
-import {changeBio, changeDP} from '../../../API/editProfileAPIs/userInfoApis.js';
-import { upload } from '../middleware/upload.js';
-import {CreateUser} from '../../../API/CreateUser/createUser.js'
-import { MergeRequestData } from '../../../API/getUsers/mergeRequestData.js';
-import { findUsers } from '../../../API/getUsers/userInfo/getUserforSerarch.js';
-import { FindFriends } from '../../../API/getUsers/userInfo/findFriends.js';
+import { Router } from "express";
+import { commonStack } from "../middleware/common.js";
+import {
+    passwordChangeIpLimiter,
+    passwordRecoveryIpLimiter,
+    publicReadIpLimiter,
+    registrationIpLimiter,
+    userReadLimiter,
+    userUploadLimiter,
+    userWriteLimiter,
+    usernameCheckLimiter,
+} from "../../rateLimits.js";
+import { getUsers } from "../../../API/getUsers/getUsers.js";
+import { loggedMeOut } from "../../../API/Login/userSession.js";
+import { ActivityInfo } from "../../../API/Login/getSessionInfo.js";
+import { changePassSecure } from "../../../API/Secure/SecureAccount.js";
+import { verification, resetPassword } from "../../../API/Secure/userVerification/verificationAPI.js";
+import { Auth } from "../../../API/Login/tokenChecker.js";
+import { getUserinfo } from "../../../API/getUsers/prifileAPIs.js";
+import { followAPI } from "../../../API/editProfileAPIs/followUnfollow.js";
+import { changeBio, changeDP } from "../../../API/editProfileAPIs/userInfoApis.js";
+import { upload } from "../middleware/upload.js";
+import { CreateUser } from "../../../API/CreateUser/createUser.js";
+import { MergeRequestData } from "../../../API/getUsers/mergeRequestData.js";
+import { findUsers } from "../../../API/getUsers/userInfo/getUserforSerarch.js";
+import { FindFriends } from "../../../API/getUsers/userInfo/findFriends.js";
 
-
-//absolute User Routes there path will look like /user/apiPath
 const userRoutes = Router();
 
-userRoutes.get("/getUsername",usernameCheckLimiter,commonStack[1],commonStack[2],getUsers);
-userRoutes.post("/CreateUser",...commonStack, upload.single("avatar"),CreateUser)
-userRoutes.get("/Logout",...commonStack,Auth,loggedMeOut);
-userRoutes.get("/checkActivety",...commonStack,ActivityInfo);
-userRoutes.patch("/upDatePass",...commonStack,changePassSecure);
-userRoutes.post("/ForgotPassword/verify",...commonStack,verification);
-userRoutes.patch("/ForgotPassword/reset",...commonStack,resetPassword);
-// userRoutes.get("/GetUserInfo",...commonStack,Auth,CrntUser);
-userRoutes.get("/userFound",...commonStack,MergeRequestData);
-userRoutes.get("/searchUsers",...commonStack, Auth,  findUsers);
+// Public endpoints: IP-based limits.
+userRoutes.get("/getUsername", ...commonStack, usernameCheckLimiter, getUsers);
+userRoutes.post("/CreateUser", ...commonStack, registrationIpLimiter, upload.single("avatar"), CreateUser);
+userRoutes.get("/checkActivety", ...commonStack, publicReadIpLimiter, ActivityInfo);
+userRoutes.post("/ForgotPassword/verify", ...commonStack, passwordRecoveryIpLimiter, verification);
+userRoutes.patch("/ForgotPassword/reset", ...commonStack, passwordRecoveryIpLimiter, resetPassword);
+userRoutes.get("/userFound", ...commonStack, publicReadIpLimiter, MergeRequestData);
 
-//profileUserRoutes there path will look like /readUser/apiPath
+// Authenticated endpoints: Auth must run before the user-based limiter.
+userRoutes.get("/Logout", ...commonStack, Auth, userWriteLimiter, loggedMeOut);
+userRoutes.patch("/upDatePass", ...commonStack, passwordChangeIpLimiter, changePassSecure);
+userRoutes.get("/searchUsers", ...commonStack, Auth, userReadLimiter, findUsers);
 
 const readRoutes = Router();
-
-readRoutes.get("/getUserInfo",...commonStack,Auth, getUserinfo);
-readRoutes.get("/findFriends", ...commonStack, Auth, FindFriends)
-
-//profileUserRoute for writeProfile Info full will be look like /writeUser/apiPath
+readRoutes.get("/getUserInfo", ...commonStack, Auth, userReadLimiter, getUserinfo);
+readRoutes.get("/findFriends", ...commonStack, Auth, userReadLimiter, FindFriends);
 
 const writeRoutes = Router();
+writeRoutes.post("/follow", ...commonStack, Auth, userWriteLimiter, followAPI);
+writeRoutes.patch("/changeBio", ...commonStack, Auth, userWriteLimiter, changeBio);
+writeRoutes.put(
+    "/changeDP",
+    ...commonStack,
+    Auth,
+    userUploadLimiter,
+    upload.single("file"),
+    changeDP
+);
 
-writeRoutes.post("/follow",...commonStack,Auth,  followAPI);
-writeRoutes.patch("/changeBio",...commonStack,Auth, changeBio);
-writeRoutes.put("/changeDP",...commonStack,Auth,upload.single("file"),changeDP);
-
-
-export {userRoutes, readRoutes,writeRoutes};
+export { userRoutes, readRoutes, writeRoutes };

@@ -43,7 +43,7 @@ export const GetTags = async (rkv, rspo) => {
              FROM tags
              WHERE tag_name LIKE ?
              ORDER BY tag_name
-             LIMIT 20`,
+             LIMIT 7`,
             [`${searchTag}%`]
         );
 

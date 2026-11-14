@@ -48,6 +48,19 @@ myApp.use(
         credentials: true,
     })
 );
+myApp.use((err, req, res, next) => {
+    if (err?.type === "entity.parse.failed") {
+        return res.status(400).json({
+            err: "Invalid JSON request body"
+        });
+    }
+
+    console.error("[Express Error]", err);
+
+    return res.status(500).json({
+        err: "Internal server error"
+    });
+});
 
 myApp.use(express.json({ limit: "20mb" }));
 myApp.use(cookieParser());

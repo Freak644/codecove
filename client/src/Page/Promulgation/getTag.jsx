@@ -1,8 +1,33 @@
 import { useEffect, useState } from "react"
+import { usePostStore } from "../../lib/basicUserinfo";
+import { toast } from "react-toastify";
 
 export default function GetTag ({setTab}) {
     const [tags,setTags] = useState([]);
     const [isCalling,setCalling] = useState(false);
+    const selectedTags = usePostStore(stat=> stat.postOBJ.tags) || [];
+    const {setPostOBJ} = usePostStore();
+    
+    const handleSelecting =  (index) => {
+        let crntSelection = tags[index];
+        let isTaken = selectedTags.includes(crntSelection);
+        if (isTaken) {
+            toast.info(`#${crntSelection} is Already selected`);
+        }else {
+            let updateArray = [...selectedTags,crntSelection];
+            setPostOBJ({tags:updateArray});
+        }
+    }
+
+    const handleInputs =  (inp) => {
+        if (inp.length < 3) return;
+
+        try {
+            
+        } catch (error) {
+            toast.error(error.message);
+        }
+    }
     return(
         <div className="h-9/10 border border-gray-800 bg-violet-950/2 p-2! w-full flex items-center flex-col rounded-lg">
                 <div className="headingContainer h-1/4   w-full text-skin-text">
@@ -16,7 +41,7 @@ export default function GetTag ({setTab}) {
                 <div className="tags h-1/2  w-full flex items-center flex-row gap-2.5 p-1.5">
                     {
                        tags.length===0 ? <p className="miniLoader"></p> : tags.map((obj,index) => (
-                            <div key={index}>
+                            <div key={index} onClick={()=>handleSelecting(index)}>
                                 <span className="text-purple-700">#</span>
                                     {obj.tag_name}
                             </div>

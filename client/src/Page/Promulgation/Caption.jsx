@@ -8,7 +8,7 @@ const LIMIT = 500
 
 export default function CaptionComponent ({captionStr, UName}) {
     //?const [caption, setCaption] = useState(captionStr || "");
-    const caption = usePostStore(stat=> stat.postOBJ.caption || "");
+    const caption = usePostStore(stat=> stat.postOBJ.caption ) || "";
     const {setPostOBJ} = usePostStore();
     const setCaption =  (capTxt) => {
         setPostOBJ({caption:capTxt});

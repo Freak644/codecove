@@ -9,6 +9,8 @@ import { connectRedis } from "./Controllers/src/config/redis.js";
 // Keep this accessible to your other modules.
 let io;
 
+
+
 export function getIO() {
     if (!io) {
         throw new Error("Socket.io not initialized!");
@@ -22,7 +24,6 @@ async function startServer() {
         // 1. Connect Redis first
         await connectRedis();
 
-        console.log(chalk.green("Redis connected successfully"));
 
         // 2. Load application dependencies AFTER Redis is ready
         const [

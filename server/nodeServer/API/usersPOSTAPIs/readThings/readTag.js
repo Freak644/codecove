@@ -5,10 +5,10 @@ import { completeRequest } from "../../../Controllers/src/middleware/progressTra
 export const GetTags = async (rkv, rspo) => {
     const crntIp = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
+    const { tagName, isTagHistory } = rkv.body ?? {};
 
     try {
-        const { tagName, isTagHistory } = rkv.body ?? {};
-
+        console.log(tagName);
         // Validate request
         if (
             typeof tagName !== "string" ||

@@ -19,6 +19,7 @@ import { Chartdata } from "../../../API/usersPOSTAPIs/readThings/getChartData.js
 import { GetPostForExport } from "../../../API/usersPOSTAPIs/readThings/getPostExplore.js";
 import { disLike } from "../../../API/usersPOSTAPIs/writeThings/dislikeAPI.js";
 import { AddTag } from "../../../API/usersPOSTAPIs/writeThings/addTag.js";
+import { GetTags } from "../../../API/usersPOSTAPIs/readThings/readTag.js";
 
 const writePost = Router();
 
@@ -53,5 +54,6 @@ readPost.get("/getComment", ...commonStack, Auth, userReadLimiter, getComment);
 readPost.get("/getImage", ...commonStack, Auth, userReadLimiter, getPost);
 readPost.get("/getChartData", ...commonStack, Auth, userReadLimiter, Chartdata);
 readPost.get("/getPostExp", ...commonStack, Auth, userReadLimiter, GetPostForExport);
+readPost.post("/getTags",...commonStack, Auth, userReadLimiter, GetTags);
 
 export { writePost, readPost };

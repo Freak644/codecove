@@ -1,8 +1,6 @@
 import fs from 'fs';
 import chalk from 'chalk'
 import mysql2 from 'mysql2/promise';
-import dotenv from 'dotenv';
-dotenv.config();
 async function sql() {
     try {
         const connection = await mysql2.createConnection({

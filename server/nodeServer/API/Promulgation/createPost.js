@@ -1,5 +1,4 @@
 import {v2 as cloudinary} from 'cloudinary';
-import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
 import { FileChecker, safeUnlink } from './fileChecker.js';
@@ -10,7 +9,7 @@ import {JSDOM} from 'jsdom';
 import https from 'https';
 import pLimit from 'p-limit';
 import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
-dotenv.config();
+
 cloudinary.config({
   cloud_name:process.env.cloudinary_name,
   api_key: process.env.cloudinary_key,

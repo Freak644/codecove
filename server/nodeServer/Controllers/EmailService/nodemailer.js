@@ -1,8 +1,7 @@
 import nodemailer from "nodemailer";
-import dotenv from "dotenv";
 import {renderTemplate} from './tamplateHandler.js' // fixed typo
 
-dotenv.config();
+
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",

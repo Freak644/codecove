@@ -5,14 +5,13 @@ import { completeRequest } from "../../../Controllers/src/middleware/progressTra
 export const GetTags = async (rkv, rspo) => {
     const crntIp = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
-    const { tagName, isTagHistory } = rkv.body ?? {};
+    const {tagName} = rkv.body ?? {};
 
     try {
-        console.log(tagName);
+        
         // Validate request
         if (
-            typeof tagName !== "string" ||
-            typeof isTagHistory !== "boolean"
+            typeof tagName !== "string"
         ) {
             return rspo.status(400).json({
                 err: "Invalid request"
@@ -39,11 +38,11 @@ export const GetTags = async (rkv, rspo) => {
 
         // Prefix search
         const [tags] = await database.query(
-            `SELECT tag_id, tag_name AS tag
+            `SELECT tag_id, tag_name
              FROM tags
              WHERE tag_name LIKE ?
              ORDER BY tag_name
-             LIMIT 7`,
+             LIMIT 4`,
             [`${searchTag}%`]
         );
 
@@ -63,3 +62,25 @@ export const GetTags = async (rkv, rspo) => {
         completeRequest(crntIp, crntAPI);
     }
 };
+
+export const RecentUsedTags = async (rkv, rspo) => {
+    const crntIp = rkv.userIp;
+    const crntAPI = rkv.originalUrl.split("?")[0];
+    let {id} = rkv.authData;
+
+    try {
+        const [recentTags_id] = await database.query(`SELECT t.tag_id, t.tag_name, MAX(p.created_at) AS last_used
+                                                    FROM posts p JOIN post_tags pt ON p.post_id = pt.post_id
+                                                    JOIN tags t ON pt.tag_id = t.tag_id WHERE p.user_id = ?
+                                                    GROUP BY t.tag_id, t.tag_name ORDER BY last_used DESC LIMIT 5`,[id]);
+        if (recentTags_id.length === 0 ) {
+            return rspo.status(404).send({err:"No recent Used detected"});
+        }
+        
+        rspo.status(200).send({pass:"Done",recentTags_id});
+    } catch (error) {
+        rspo.status(500).send({err:"Server side error"});
+    } finally {
+        completeRequest(crntIp, crntAPI);
+    }
+}

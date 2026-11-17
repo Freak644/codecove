@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\"",
     "server": "cd server && npm run dev",
-    "client": "cd client && npm run dev"
+    "client": "cd client && npm run dev",
+    "migrate": "cd server && npm run migrate"
   },
   "devDependencies": {
     "concurrently": "^10.0.3"

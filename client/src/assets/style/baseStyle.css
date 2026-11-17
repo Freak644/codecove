@@ -392,6 +392,13 @@ body{
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
+.my-scroll-x{
+    overflow-x: visible;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
 .my-scroll::-webkit-scrollbar{
     display: none;
 }

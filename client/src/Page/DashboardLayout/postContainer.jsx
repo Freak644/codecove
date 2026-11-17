@@ -8,10 +8,10 @@ import { ThreeDot } from "../../utils/SVG/menuSVG";
 
 
 export default function PostsCon({posts}) {
-    let {caption,canComment,images_url,canSave, ownerName, post_id,username,avatar,post_moment,likeCount, isLiked,visibility,totalLike,id,isFollowing} = posts;
+    let {caption,canComment,images_url,canSave, ownerName, tags,post_id,username,avatar,post_moment,likeCount, isLiked,visibility,totalLike,id,isFollowing} = posts;
     const [isDropDown,setDropDown] = useState({});
     let {postsById,setUnivPost} = univPostStore();
-
+  
     const Refs = useRef({});
     const setCallback = (id)=> (el) =>{
         Refs.current[id] = el;
@@ -82,7 +82,14 @@ export default function PostsCon({posts}) {
                                 />
                         </div>
                         
-                        <p className="w-full  text-indigo-600 hover:underline underline-offset-1">#Code #React #AI</p>
+                        <div className="w-full flex items-center flex-row my-scroll-x gap-1.5 text-indigo-600 hover:underline underline-offset-1">{
+                                tags.length === 0 ? <div className="miniLoader"/> : tags.map((tag, index)=>(
+                                    <div key={index} className="shrink-0 tagsHolder HoverMe text-skin-text">
+                                        <span className="text-purple-700">#</span>
+                                        {tag.tag_name}
+                                    </div>
+                                ))
+                            }</div>
 
                         <div className="imgContainer w-full flex items-center h-100 relative">
                             <ImageSlider imgArray={images_url} postInfo={{post_id,isLiked, totalLike}} />

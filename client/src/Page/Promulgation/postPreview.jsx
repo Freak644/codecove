@@ -5,7 +5,7 @@ import PostsCon from "../DashboardLayout/postContainer";
 
 export default function PostPreview () {
     const {username, avatar, name} = UnivuUserInfo(stat=>stat.userInfo);
-    const {caption, images_url, canSave,isLiked, canComment,post_id,post_moment,likeCount,visibility,totalLike,isFollowing} = usePostStore(stat=>stat.postOBJ);
+    const {caption, images_url, tags,canSave,isLiked, canComment,post_id,post_moment,likeCount,visibility,totalLike,isFollowing} = usePostStore(stat=>stat.postOBJ);
 
 
     return(
@@ -21,6 +21,7 @@ export default function PostPreview () {
                         images_url,
                         canSave,
                         ownerName:name,
+                        tags: tags || [],
                         post_id,
                         username,
                         avatar,

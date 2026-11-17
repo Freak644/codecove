@@ -71,7 +71,7 @@ export default function UploadController() {
                     }
                 }
             });
-            let postInfo = responce.data.postData;
+            let postInfo = responce?.data?.postData;
             // console.log(postInfo.post_id)
             setUnivPost({[postInfo.post_id]:postInfo});
             toast.success("New Moment Shared🎉");

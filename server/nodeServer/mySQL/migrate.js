@@ -1,36 +1,50 @@
-import fs from 'fs';
-import chalk from 'chalk'
-import mysql2 from 'mysql2/promise';
-async function sql() {
-    try {
-        const connection = await mysql2.createConnection({
-            host:process.env.mySQL_host,
-            user:process.env.mySQL_user,
-            password:process.env.mySQL_password,
-            multipleStatements:true,
-            waitForConnections:true
-        })
-        console.log(chalk.green.bold("✅Succesfully build connection with MySQL"));
-        return connection;
-    } catch (error) {
-        console.log(chalk.red("something went wrong"+error.message))
-    }
-}
-
-const connection = await sql();
-
+import fs from "node:fs/promises";
+import chalk from "chalk";
+import mysql from "mysql2/promise";
+import "dotenv/config";
 async function migrate() {
+    let connection;
+
     try {
-        let dbStepFile = fs.readFileSync("nodeServer/mySQL/init.sql","utf-8");
-        dbStepFile = dbStepFile.replace(/^\uFEFF/,''); //strip the BOM from the file if present
+        connection = await mysql.createConnection({
+            host: process.env.mySQL_host,
+            user: process.env.mySQL_user,
+            password: process.env.mySQL_password,
+            multipleStatements: true
+        });
+
+        console.log(
+            chalk.green.bold("✅ Successfully connected to MySQL")
+        );
+
+        let dbStepFile = await fs.readFile(
+            "nodeServer/mySQL/init.sql",
+            "utf-8"
+        );
+
+        // Remove BOM if present
+        dbStepFile = dbStepFile.replace(/^\uFEFF/, "");
+
         await connection.query(dbStepFile);
-        console.log(chalk.bold.green("✅succesfully! CREATE DATABASE IN YOUR MATCHINE"));
-    }catch (err) {
-     console.error(chalk.red("❌ Migration failed:"), err.message);
+
+        console.log(
+            chalk.green.bold("✅ Successfully initialized database")
+        );
+
+    } catch (error) {
+        console.error(
+            chalk.red("❌ Migration failed:"),
+            error.message
+        );
+
+        process.exitCode = 1;
+
+    } finally {
+        if (connection) {
+            await connection.end();
+            console.log(chalk.gray("MySQL connection closed."));
+        }
     }
-     finally {
-      await connection.end();
-     }
 }
 
-migrate();
+await migrate();

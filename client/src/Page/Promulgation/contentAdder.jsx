@@ -84,9 +84,9 @@ export default function ContentAdder () {
                     <p>Ask community opinion</p>
                 </div>
             </div>
-
+                       
             <div className="imgMGmtContainer flex items-start flex-row h-4/10 w-full border my-scroll border-gray-900 rounded-lg">
-                {
+                {   
                     image_url.length !== 0 ? image_url.map((imgFile,index)=>(
                         <div key={index} className="attachmentHolder relative h-full w-auto ">
                             <div className="imgInfoPrev">
@@ -100,6 +100,7 @@ export default function ContentAdder () {
                     )) :
                             <p title="Add something to see the preview" className="mt-3 ml-[12vw] text-skin-ptext/80">Nothing there to preview</p> 
                 }
+
             </div>
         </div>
     )

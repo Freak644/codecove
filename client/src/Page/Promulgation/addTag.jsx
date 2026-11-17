@@ -5,7 +5,14 @@ import GetTag from "./getTag";
 const tagLimit = 5;
 export default function AddTag () {
     const tempTags = usePostStore(stat=> stat.postOBJ.tags) || [];
+    const {setPostOBJ} = usePostStore();
     const [tab,setTab] = useState(true);
+
+    const handleRemove =  (index) => {
+        let selectedTag = tempTags[index];
+        let updateArray = tempTags.filter(obj=> obj.tag_name !== selectedTag.tag_name);
+        setPostOBJ({tags:updateArray})
+    }
     return(
         <div className="h-4/10 rounded-lg gap-2 w-full relative">
             <div className="absolute text-skin-ptext right-2.5 top-1.5">
@@ -20,9 +27,9 @@ export default function AddTag () {
                 <div className="tags h-1/2  w-full flex items-center flex-row gap-2.5 p-1.5">
                     {
                         tempTags.map((obj, index) => (
-                                <div key={index}>
+                                <div key={index} onClick={()=>handleRemove(index)} className="miniTagDiv HoverMe text-skin-text hover:text-gray-700 rounded-lg cursor-pointer text-[13px] p-2 border  border-purple-600/50">
                                     <span className="text-purple-700">#</span>
-                                    {obj.tag}
+                                    {obj.tag_name}
                                 </div>
                             ))
                     }

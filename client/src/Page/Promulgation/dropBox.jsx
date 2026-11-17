@@ -1,36 +1,17 @@
 import { motion } from 'framer-motion';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect} from 'react';
 import {useDropzone} from 'react-dropzone';
-import {Upload,X,File} from 'lucide-react';
 import {toast} from 'react-toastify'
 
 import { usePostStore } from '../../lib/basicUserinfo';
 import { ImageIcon } from '../../utils/SVG/TODOsvg';
 export default function DragDropBox({inHidden}) {
-    const [imgFiles,setImgFiles] = useState([]);
-    let {setPostOBJ} = usePostStore();
-    const postData = usePostStore(state=>state.postOBJ);
-    useEffect(()=>{
-        return ()=> {
-            imgFiles.forEach(f=>URL.revokeObjectURL(f.preview));
-        };
-    },[])
 
-    useEffect(()=>{
-     
-      setPostOBJ({images_url:imgFiles});
-    },[imgFiles])
-
-    useEffect(()=>{
-      if (postData.imgFiles) {
-        setImgFiles(postData.imgFiles);
-      }
-    },[])
 
     const onDrop = useCallback((acceptedFiles) => {
         if (acceptedFiles.length > 5) return toast.info("You can only attach 5 file in single Post")
         const allowTypes = ["png", "jpeg", "jpg"];
-      console.log(acceptedFiles)
+      
         const maxSize = 3 * 1024 * 1024; // 5MB per file
 
         const validFiles = [];
@@ -63,7 +44,12 @@ export default function DragDropBox({inHidden}) {
         }
 
         if (validFiles.length > 0) {
-            setImgFiles((prev) => [...prev, ...validFiles]);
+          usePostStore.setState((stat)=>({
+            postOBJ: {
+              ...stat.postOBJ,
+              images_url: [...(stat.postOBJ.images_url ?? []), ...validFiles]
+            }
+          }))
         }
         }, []);
 

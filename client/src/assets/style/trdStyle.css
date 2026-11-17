@@ -761,3 +761,15 @@ textarea::-webkit-scrollbar {
     margin-top: 20px;
     color: #71717a;
 }
+
+.tagsHolder {
+    padding: 3px;
+    border: 1px solid rgb(66, 14, 116);
+    border-radius: 5px;
+    font-size: 12px;
+    background: rgba(0, 17, 112, 0.1);
+
+    &:hover {
+        background: rgba(0, 112, 21, 0.3);
+    }
+}

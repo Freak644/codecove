@@ -7,7 +7,6 @@ import ExplorSkel from '../../Page/Explore/skelton';
 import BaseSuggestion from '../../Page/Explore/suggestionWML/baseSuggestion';
 import CreatePostContainer from '../../Page/Promulgation/mainCreateCom';
 const HomePage = lazy(() => import('../../Page/DashboardLayout/HomePage'));
-const BaseCreate = lazy(() => import('../../Page/Promulgation/baseCreateCom'));
 const MainLapCom = lazy(() => import('../../Page/userProfile/mainLap'));
 const PostANDComment = lazy(() => import('../../Page/DashboardLayout/maximizeThings/noBGComment'));
 const BaseExplore = lazy(() => import('../../Page/Explore/baseExplore'));

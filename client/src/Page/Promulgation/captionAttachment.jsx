@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { UnivuUserInfo } from "../../lib/basicUserinfo"
+import { UnivuUserInfo, usePostStore } from "../../lib/basicUserinfo"
 import { useNavigate } from "react-router-dom";
 import { TringleIcon } from "../../utils/SVG/SVG";
 import { PublicGlob } from "../../utils/SVG/TODOsvg";
@@ -8,16 +8,17 @@ import ContentAdder from "./contentAdder";
 import AddTag from "./addTag";
 import Promulgation from "./promulgation";
 
-export default function CaptionAttachment ({postData, setPostData}) {
+export default function CaptionAttachment () {
     const userInfo = UnivuUserInfo(stat => stat.userInfo);
+    const visibility = usePostStore(stat => stat.postOBJ.visibility) || "";
     const navi = useNavigate();
 
     const handleNameClick = (username) => {
         navi(`/Lab/${username}`)
     }
-    useEffect(()=>{
-        console.log(userInfo);
-    },[userInfo])
+    // useEffect(()=>{
+    //     console.log(userInfo);
+    // },[userInfo])
     return(
         <div className="underTaker p-2.5! flex-col!">
             <div className="postUserInfo p-2.5 h-4/10  w-full flex items-center flex-col gap-2.5">
@@ -29,7 +30,7 @@ export default function CaptionAttachment ({postData, setPostData}) {
                     </div>
 
                     <div className="p-1.5 rounded-md flex items-center justify-center text-purple-600 font-bold absolute right-2.5 bg-violet-900/30">
-                    <PublicGlob className='mr-0.5 text-[14px]' /> <p>Public</p> <TringleIcon className="-translate-y-0.5 ml-px" />
+                    <PublicGlob className='mr-0.5 text-[14px]' /> <p>{visibility.charAt(0).toUpperCase() + visibility.slice(1)}</p> <TringleIcon className="-translate-y-0.5 ml-px" />
                     </div>
 
                 </div>

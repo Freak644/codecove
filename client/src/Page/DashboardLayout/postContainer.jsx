@@ -60,7 +60,7 @@ export default function PostsCon({posts}) {
                             <Link to={"/Lab/"+username} className="nameCat w-4/6 text-sm font-medium gap-1 flex items-start flex-col">
                                 <p className="tracking-wide hover:underline underline-offset-1">{ownerName}</p>
                                 <div className="flex items-center hover:underline underline-offset-1 flex-row gap-1.5 text-[10px] tracking-wider">{"@"+username} <span className="h-1 bg-skin-text w-1 rounded-full "></span> 
-                                    <div className="text-white rounded-md tracking-wider p-1 bg-[rgb(57,0,156)]/70">{post_moment}</div>
+                                    <div className="text-white rounded-md tracking-wider p-1 bg-[rgb(57,0,156)]/70">{post_moment.charAt(0).toUpperCase() + post_moment.slice(1)}</div>
                                 </div>
                             </Link>
 

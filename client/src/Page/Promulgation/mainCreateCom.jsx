@@ -44,7 +44,7 @@ export default function CreatePostContainer () {
                 <div className="flex-1 bg-violet-950/10 border border-gray-900/80 rounded-lg h-full">
                     <PostPreview/>
                 </div>
-                <div className="flex-1 bg-violet-950/10 border border-gray-900/80 rounded-lg h-full">
+                <div className="flex-1 bg-violet-950/10 border border-gray-900/80 rounded-lg h-full ">
                     <PostSetting/>
                 </div>
             </div>

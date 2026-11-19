@@ -658,10 +658,21 @@ textarea::-webkit-scrollbar {
     padding: 10px;
     width: 100%;
     
+    
     svg {
-        color: rgb(66, 14, 116);
+        color: rgb(122, 0, 235);
     }
     gap: 5px;
+}
+
+.active {
+        background: linear-gradient(90deg, rgba(33, 1, 80, 0.079), rgba(45, 1, 112, 0.568), rgb(77, 0, 160)) !important;
+        padding-left: 10px;
+        border-left: 2px solid rgba(123, 0, 255, 0.703) !important;
+
+        svg {
+            color: rgb(122, 87, 155);
+        }
 }
 
 .topDiv, .bottomDiv {
@@ -698,7 +709,11 @@ textarea::-webkit-scrollbar {
             flex-direction: row;
             gap: 8px;
             padding: 5px;
+            cursor: pointer;
 
+            &:hover {
+                background: linear-gradient(90deg, rgba(33, 1, 80, 0.079), rgba(48, 0, 120, 0.459), rgba(71, 0, 177, 0.767));
+            }
             p {
                 font-weight: 600;
                 color: var(--text-color);

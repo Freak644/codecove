@@ -23,7 +23,7 @@ export default function GetTag ({setTab}) {
     }
 
     const handleInputs = async (inp) => {
-        console.log(inp);
+        
         if (inp.length < 3) return;
         setCalling(true)
         try {
@@ -36,9 +36,17 @@ export default function GetTag ({setTab}) {
             });
 
             let matchingTags = resp.data?.tags
-            console.log(matchingTags);
-            if (resp.data?.tags.length > 0) {
-                setTags(matchingTags)
+            
+            
+            if (resp.data?.pass) {
+                if (matchingTags.length>0) {
+                    setTags(matchingTags)
+                } else {
+                    let tempOBJ = [{
+                        tag_name:inp
+                    }]
+                    setTags(tempOBJ);
+                }
             } else if (resp.data.err) {
                 throw new Error("Something went wrong");
             }

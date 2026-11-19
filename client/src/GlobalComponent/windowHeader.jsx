@@ -49,7 +49,7 @@ export default function WindowHerder() {
         if (toggleMiniOp.isPost) return;
 
         const handleClick = (evnt)=> {
-            console.log("i am listning ");
+          
             const el = postToggleRef.current;
             if (el && !el.contains(evnt.target)) {
                 setMiniOp(prev =>({

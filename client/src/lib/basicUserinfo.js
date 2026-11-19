@@ -22,29 +22,30 @@ export const usePostStore = create((set) => ({ //! this stor is use when user is
     username:"user",
     tags:[],
     avatar:"",
-    post_moment:"Not Selected",
+    post_moment:"memes",
     likeCount:true,
     isLiked:false,
-    visibility:true,
+    visibility:"public",
+    postType:"moment",
     totalLike:1,
     isFollowing:true
   },
 
   setEmpty:()=> set({postOBJ:{
     canComment:true,
-    images_url:[
-      
-    ],
+    images_url:[],
     canSave:true,
     ownerName:"User",
-    post_id:"jackal3221",
+    post_id:"random",
     username:"user",
+    tags:[],
     avatar:"",
-    post_moment:"Not Selected",
+    post_moment:"memes",
     likeCount:true,
     isLiked:false,
-    visibility:true,
-    totalLike:999,
+    visibility:"public",
+    postType:"moment",
+    totalLike:1,
     isFollowing:true
   }}),
 

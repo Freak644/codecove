@@ -6,7 +6,7 @@ const tagLimit = 5;
 export default function AddTag () {
     const tempTags = usePostStore(stat=> stat.postOBJ.tags) || [];
     const {setPostOBJ} = usePostStore();
-    const [tab,setTab] = useState(true);
+    const [tab,setTab] = useState(false);
 
     const handleRemove =  (index) => {
         let selectedTag = tempTags[index];

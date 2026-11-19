@@ -1,8 +1,35 @@
-import Biloti from "../../components/PetData/Biloti";
-import { BugIcon, CodeBlockI, FileSvg, SettingOt } from "../../utils/SVG/menuSVG";
-import { CommitIcon, UserFI, UserShield, UserSvg } from "../../utils/SVG/SVG";
-import { PollIcon, PublicGlob } from "../../utils/SVG/TODOsvg";
+
+import { BugIcon, CodeBlockI, Content, FileSvg, FireMoji, LockIcon, MomentIcon, SettingOt } from "../../utils/SVG/menuSVG";
+import { CommitIcon, StarIcon, UserFI, UserShield, UserSvg } from "../../utils/SVG/SVG";
+import { ImageIcon, PollIcon, PublicGlob } from "../../utils/SVG/TODOsvg";
+import { usePostStore } from "../../lib/basicUserinfo";
+
 export default function PostSetting () {
+    const post_moment = usePostStore(stat=>stat.postOBJ.post_moment) || "";
+    const visibility = usePostStore(stat=>stat.postOBJ.visibility) || "";
+    const postType = usePostStore(stat=>stat.postOBJ.postType) || "";
+    const {setPostOBJ} = usePostStore();
+    const visibilityOptions = [
+    { id: 'public',    Icon: PublicGlob, heading: 'Public',    dis: 'Anyone on EchoVein'  },
+    { id: 'followers', Icon: UserFI,     heading: 'Followers', dis: 'Only your followers' },
+    { id: 'private',   Icon: UserShield, heading: 'Private',   dis: 'Only you'            },
+    ];
+    const postTypeOptions = [
+    { id: 'moment',  Icon: FireMoji, heading: 'Moment',   dis: 'Share a quick Tip'      },
+    { id: 'project', Icon: CodeBlockI, heading: 'Project',  dis: 'Showcase your work'     },
+    { id: 'bug',     Icon: BugIcon,    heading: 'Bug Hunt', dis: 'Find bugs, share fixes' },
+    { id: 'article', Icon: FileSvg,    heading: 'Article',  dis: 'Long form content'      },
+    ];
+    const momentTypeOptions = [
+    { id: 'memes',   Icon: MomentIcon, heading: 'Dev memes',    dis: 'Programmers Joke and relatable' },
+    { id: 'miniblog',Icon: PollIcon,   heading: 'Mini Blog',    dis: 'Short form content'                     },
+    { id: 'wip',     Icon: CommitIcon, heading: 'WIP Showcase', dis: 'Share work in progress'                 },
+    { id: 'til',     Icon: ImageIcon,  heading: 'Today i learn',dis: 'Tell other what u learn today'          },
+    ];
+    
+    const handleChange =  (clickedLi, section) => {
+        setPostOBJ({[section]:clickedLi})
+    }
 
     
 
@@ -12,98 +39,58 @@ export default function PostSetting () {
             <div className="headingDiv">
                 <SettingOt className="text-lg"/> Post Settings
             </div>
-            <div className="h-[65%] bg-blue-950/10 rounded-lg border border-gray-900 p-2.5 flex w-full items-center flex-col">
+            <div className="h-auto my-scroll  bg-blue-950/10 rounded-lg border border-gray-900 p-2.5 flex w-full items-center flex-col">
                 <div className="topDiv w-full flex-1">
-                    <p className="w-full">Who can see this ?</p>
+                    <p className="w-full flex item-center justify-start gap-1"> <LockIcon/> Who can see this ?</p>
                     <ul>
-                        <li>
-                            <PublicGlob/>
-                            <div className="textHolder">
-                                <p>Public</p>
-                                <p className="spanBox">Anyone on EchoVein</p>
-                            </div></li>
-                        <li>
-                            <UserFI/>
-                            <div className="textHolder">
-                                <p>Followers</p>
-                                <p className="spanBox">Only your followers</p>
-                            </div></li>
-                        <li>
-                            <UserShield/>
-                            <div className="textHolder">
-                             <p>Private</p>
-                             <p className="spanBox">Only you</p>
-                            </div></li>
+                        {
+                            visibilityOptions.map(option=>(
+                                <li key={option.id} onClick={()=>handleChange(option.id, "visibility")} className={visibility === option.id ? "active":""}>
+                                    <option.Icon/>
+                                    <div className="textHolder">
+                                        <p>{option.heading}</p>
+                                        <p className="spanBox">{option.dis}</p>
+                                    </div>
+                                </li>
+                            ))
+                        }
                     </ul>
                 </div>
-                <div className="bottomDiv w-full flex-1 h-1/2 ">
-                    <p className="w-full">Post Type</p>
+                <div className="bottomDiv w-full flex-1 h-3/5 ">
+                    <p className="w-full  flex item-center justify-start gap-1"> <Content/> Post Type</p>
                     
-                    <ul className="my-scroll my-scroll-visible border-0!">
-                        <li>
-                            <CommitIcon/>
-                            <div className="textHolder">
-                                <p>Dev memes</p>
-                                <p className="spanBox">Programmers Joke and relatable moments</p>
-                            </div>
-                        </li>
-                        {/* <li>
-                            <PollIcon/>
-                            <div className="textHolder">
-                                <p>Mini Blog</p>
-                                <p className="spanBox"> Short form content</p>
-                            </div>
-                        </li> */}
-
-                        <li>
-                            <CommitIcon/>
-                            <div className="textHolder">
-                                <p>Quick Tip</p>
-                                <p className="spanBox">Share a quick Tip</p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <CodeBlockI/>
-                            <div className="textHolder">
-                                <p>Project</p>
-                                <p className="spanBox">Showcase your work</p>
-                            </div>
-                        </li>
-                        
-                        <li>
-                            <BugIcon/>
-                            <div className="textHolder">
-                                <p>Bug Hunt</p>
-                                <p className="spanBox">Find bugs, share fixes </p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <FileSvg/>
-                            <div className="textHolder">
-                                <p>Article</p>
-                                <p className="spanBox">Long form content</p>
-                            </div>
-                        </li>
-                        
-                        
-                        
-
-                        {/* <li>
-                            <CommitIcon/>
-                            <div className="textHolder">
-                                <p>WIP Showcase</p>
-                                <p className="spanBox">Share work in progress</p>
-                            </div>
-                        </li> */}
+                    <ul className="">
+                        {
+                            postTypeOptions.map(option=>(
+                                <li key={option.id} onClick={()=>handleChange(option.id, "postType")} className={postType === option.id ? "active":""}>
+                                    <option.Icon/>
+                                    <div className="textHolder">
+                                        <p>{option.heading}</p>
+                                        <p className="spanBox">{option.dis}</p>
+                                    </div>
+                                </li>
+                            ))
+                        }           
+                    </ul>
+                </div>
+                <div className="bottomDiv w-full flex-1 h-3/5 ">
+                    <p className="w-full flex item-center justify-start gap-1"><FireMoji/> Moments</p>
+                    
+                    <ul className=" border-0!">
+                        {
+                            momentTypeOptions.map(option=>(
+                                <li key={option.id} onClick={()=>handleChange(option.id, "post_moment")} className={post_moment === option.id ? "active":""}>
+                                    <option.Icon/>
+                                    <div className="textHolder">
+                                        <p>{option.heading}</p>
+                                        <p className="spanBox">{option.dis}</p>
+                                    </div>
+                                </li>
+                            ))
+                        }    
                         
                     </ul>
                 </div>
-            </div>
-
-            <div className="h-3/10 flex items-center justify-center">
-                <Biloti frameIndex={0} width={150} height={150} />
             </div>
         </div>
     )

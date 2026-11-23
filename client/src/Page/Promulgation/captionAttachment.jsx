@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { UnivuUserInfo, usePostStore } from "../../lib/basicUserinfo"
 import { useNavigate } from "react-router-dom";
-import { TringleIcon } from "../../utils/SVG/SVG";
+import { TringleIcon, UserFI, UserShield } from "../../utils/SVG/SVG";
 import { PublicGlob } from "../../utils/SVG/TODOsvg";
 import CaptionComponent from "./Caption";
 import ContentAdder from "./contentAdder";
@@ -16,6 +16,23 @@ export default function CaptionAttachment () {
     const handleNameClick = (username) => {
         navi(`/Lab/${username}`)
     }
+
+    const returnIcon = (crntValue)=> {
+
+        switch (crntValue) {
+            case "public":
+                return <PublicGlob className='mr-0.5 text-[14px]' />;
+            
+            case "followers" :
+                return <UserFI className='mr-0.5 text-[14px]' />;
+            
+            case "private" :
+                return <UserShield className='mr-0.5 text-[14px]' />;
+        
+            default:
+                return <PublicGlob className='mr-0.5 text-[14px]' />;
+        }
+    }
     // useEffect(()=>{
     //     console.log(userInfo);
     // },[userInfo])
@@ -29,8 +46,8 @@ export default function CaptionAttachment () {
                         <span className="text-[12px] text-skin-ptext flex items-center">{"@"+userInfo.username} <TringleIcon/></span>
                     </div>
 
-                    <div className="p-1.5 rounded-md flex items-center justify-center text-purple-600 font-bold absolute right-2.5 bg-violet-900/30">
-                    <PublicGlob className='mr-0.5 text-[14px]' /> <p>{visibility.charAt(0).toUpperCase() + visibility.slice(1)}</p> <TringleIcon className="-translate-y-0.5 ml-px" />
+                    <div className="p-1.5 rounded-md flex items-center justify-center text-skin-text font-bold absolute right-2.5 bg-violet-800/70">
+                        {returnIcon(visibility)} <p>{visibility.charAt(0).toUpperCase() + visibility.slice(1)}</p> 
                     </div>
 
                 </div>

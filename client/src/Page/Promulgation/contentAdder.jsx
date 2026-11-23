@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Content, DeleteForever } from "../../utils/SVG/menuSVG";
 import DragDropBox from "./dropBox.jsx";
-import { CodeBlock, DangerHIcon, LinkIcon, PenCileIcon, PollIcon } from "../../utils/SVG/TODOsvg";
+import { CodeBlock, DangerHIcon, ImageIcon, LinkIcon, PenCileIcon, PollIcon } from "../../utils/SVG/TODOsvg";
 import { usePostStore } from "../../lib/basicUserinfo.js";
 import { toast } from "react-toastify";
 
 export default function ContentAdder () {
     const image_url = usePostStore(stat=> stat.postOBJ.images_url) || [] ;
+    const postType = usePostStore(stat => stat.postOBJ.postType) || "";
     const {setPostOBJ} = usePostStore();
 
     const replaceFile = (index) => {
@@ -54,6 +55,8 @@ export default function ContentAdder () {
        setPostOBJ({images_url: newArray});
     }
 
+    
+
     return(
         <div className="h-6/10 rounded-lg gap-2 border border-gray-800 bg-blue-950/10 p-2.5! w-full flex items-center flex-col!">
             <div className="h-2/10 w-full">
@@ -65,20 +68,29 @@ export default function ContentAdder () {
                 </p>
             </div>
             <div className="h-4/10 w-full adderBoxContainer">
-                <div className="adderBox HoverMe ">
-                    <DragDropBox inHidden={true}/>
-                    {/* <div><ImageIcon className="imgIcon"/> Image</div>
-                    <p>Upload or drag and drop</p> */}
+                <div className="adderBox HoverMe " onClick={()=>{
+                    if (postType !== "moment") {
+                        toast.info("Only for Moment Type posts ")
+                    }}}>
+                    { postType === "moment" ? <DragDropBox inHidden={true}/> :<>
+                    <div><ImageIcon className="imgIcon"/> Image</div>
+                    <p>Upload or drag and drop</p> 
+                    </>
+                    }
                     
                 </div>
-                <div className="adderBox HoverMe">
+                <div className="adderBox HoverMe" onClick={()=>{
+                    if (postType !== "project") {
+                        toast.info("File's are only allow for Projects")
+                    }
+                }}>
                     <div className="codeIconw"><CodeBlock  className="codeIcons"/> <p>Code</p></div>
                     <p>Add code snippet with highlight</p>
                 </div>
-                <div className="adderBox HoverMe">
+                {/* <div className="adderBox HoverMe">
                     <div className="LikeIcon"><LinkIcon /> <p>Link</p></div>
                     <p>Share external resource</p>
-                </div>
+                </div> */}
                 <div className="adderBox HoverMe">
                     <div className="pollIcon"><PollIcon /> <p>Poll</p></div>
                     <p>Ask community opinion</p>

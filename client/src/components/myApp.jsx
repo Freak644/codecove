@@ -27,6 +27,8 @@ import useRouteCheck from "../hooks/useRouteCheck";
 
 import '../assets/style/paseTwo.css';
 import '../assets/style/trdStyle.css';
+import '../assets/style/4thStyle.css';
+
 import { AbsoluteMenuSkeleton, HeaderSkeleton, WindowHeaderSkeleton } from "../GlobalComponent/skel/windowSkeL";
 import MenuSkeleton from "../GlobalComponent/menuSkel";
 import LoginSkeleton from "../Page/Auth/loginSkel";

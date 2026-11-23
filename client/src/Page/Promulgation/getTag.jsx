@@ -11,6 +11,9 @@ export default function GetTag ({setTab}) {
     const {setPostOBJ} = usePostStore();
     
     const handleSelecting =  (index) => {
+        if (selectedTags.length>=5) {
+            return toast.warning("Only five tags! are allow")
+        }
         let {tag_name, tag_id} = tags[index];
         let isTaken = selectedTags.some(obj=> obj.tag_name === tag_name);
 
@@ -24,7 +27,7 @@ export default function GetTag ({setTab}) {
 
     const handleInputs = async (inp) => {
         
-        if (inp.length < 3) return;
+        if (inp.length < 3 || selectedTags.length >= 5) return;
         setCalling(true)
         try {
             let resp = await axios.post("/myServer/readPost/getTags",{
@@ -73,9 +76,7 @@ export default function GetTag ({setTab}) {
         }
     }
 
-    useEffect(()=> {
-
-    },[])
+    
     return(
         <div className="h-9/10 border border-gray-800 bg-violet-950/2 p-2! w-full flex items-center flex-col rounded-lg relative">
                 <div className="headingContainer h-1/4   w-full text-skin-text">

@@ -14,7 +14,7 @@ html[data-theme="dark-yellow"] {
     --color-skin-login:rgb(255,255,255);
 }
 html[data-theme="dark-white"]{
-    --color-skin-bg: #0f1115;
+    --color-skin-bg: #040b18;
     --color-skin-text: white;
     --color-skin-ptext: rgba(255, 255, 255, 0.5);
     --color-skin-login:rgb(255,255,255);

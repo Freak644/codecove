@@ -23,6 +23,7 @@ export const usePostStore = create((set) => ({ //! this stor is use when user is
     tags:[],
     avatar:"",
     post_moment:"memes",
+    moderationLevel:0,
     likeCount:true,
     isLiked:false,
     visibility:"public",

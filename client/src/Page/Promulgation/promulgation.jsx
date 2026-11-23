@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { MenuIcon } from "../../utils/SVG/SVG";
 import { CheckN, CodeBlock, ImageIcon } from "../../utils/SVG/TODOsvg";
 import { DeleteForever, DownArrow, SendSvg } from "../../utils/SVG/menuSVG";
+import { usePostStore } from "../../lib/basicUserinfo";
 
 
 export default function Promulgation () {
@@ -9,12 +10,12 @@ export default function Promulgation () {
     const [onButton,setButton] = useState("Post");
     const [progress, setProgress] = useState(0);
     const buttonRef = useRef(null);
-    useEffect(()=> {
-        const HandleClick =  (evnt) => {
-            const postButton = buttonRef.current;
-            
-        }
-    },[]);
+    
+    const postOBJ = usePostStore(stat => stat.postOBJ) || {};
+
+    const createPost = async (evnt) => {
+        
+    }
 
     return(
         <div className="underTaker flex-row!">

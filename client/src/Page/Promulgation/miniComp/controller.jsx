@@ -4,12 +4,12 @@ import { univPostStore, usePostStore } from "../../../lib/basicUserinfo";
 import { toast } from "react-toastify";
 import {useNavigate} from 'react-router-dom';
 import axios from "axios";
-import starSound from "../../../assets/Sounds/star.mp3"
+
 import { SendSvg } from "../../../utils/SVG/menuSVG";
 
 export default function UploadController() {
     const navi = useNavigate();
-    const starMp3 = new Audio(starSound)
+
     let {setEmpty} = usePostStore();
     let {setUnivPost} = univPostStore();
     const [controlls,setControlls] = useState({

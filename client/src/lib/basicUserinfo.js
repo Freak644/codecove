@@ -29,7 +29,9 @@ export const usePostStore = create((set) => ({ //! this stor is use when user is
     visibility:"public",
     postType:"moment",
     totalLike:1,
-    isFollowing:true
+    isFollowing:true,
+    isUploading:false,
+    progress:0
   },
 
   setEmpty:()=> set({postOBJ:{

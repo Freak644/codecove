@@ -16,7 +16,7 @@ USE echonexy_db;
 */
 
 CREATE TABLE IF NOT EXISTS users (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    user_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     name VARCHAR(50) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS oauth_accounts (
-  id CHAR(36) PRIMARY KEY,
+  oauth_id CHAR(36) PRIMARY KEY,
   user_id CHAR(36) NOT NULL,
   provider_name VARCHAR(50) NOT NULL,
   provider_account_id VARCHAR(255) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS oauth_accounts (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY unique_provider_account (provider_name, provider_account_id),
   INDEX idx_user_id (user_id),
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS roles (
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS roles (
   role_code INT NOT NULL DEFAULT 0,
   permoter_id CHAR(36) DEFAULT 'system',
   role_name ENUM('user', 'moderator', 'admin', 'verified') NOT NULL DEFAULT 'user',
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 /*
@@ -67,13 +67,13 @@ CREATE TABLE IF NOT EXISTS merge_request (
   isUsed BOOLEAN DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   INDEX idx_user_id (user_id),
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 
 CREATE TABLE IF NOT EXISTS user_sessions (
   session_id CHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
-  id CHAR(36) NOT NULL,
+  user_id CHAR(36) NOT NULL,
   ip VARCHAR(45),
   country VARCHAR(64),
   region VARCHAR(128),
@@ -89,8 +89,8 @@ CREATE TABLE IF NOT EXISTS user_sessions (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   revoked BOOLEAN DEFAULT FALSE,
   last_seen_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  INDEX idx_user_id (id)
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  INDEX idx_user_id (user_id)
 );
 
 /*
@@ -99,13 +99,13 @@ CREATE TABLE IF NOT EXISTS user_sessions (
 
 CREATE TABLE IF NOT EXISTS validationToken (
   token_id CHAR(36) NOT NULL PRIMARY KEY,
-  id CHAR(36) NOT NULL,
+  user_id CHAR(36) NOT NULL,
   session_id CHAR(36) NOT NULL,
   username CHAR(50) NOT NULL,
   email VARCHAR(100) NOT NULL,
   isUsed TINYINT DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS validationToken (
 CREATE TABLE IF NOT EXISTS posts (
   post_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
   post_sr BIGINT AUTO_INCREMENT UNIQUE,
-  id CHAR(36) NOT NULL,
+  user_id CHAR(36) NOT NULL,
   images_url JSON NOT NULL,
   caption TEXT,
   moderationLevel TINYINT NOT NULL,
@@ -132,8 +132,8 @@ CREATE TABLE IF NOT EXISTS posts (
   likeCount BOOLEAN DEFAULT 1,
   canSave VARCHAR(50) DEFAULT "Everyone",
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  INDEX idx_user_id (id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  INDEX idx_user_id (user_id),
   INDEX idx_feed_cursor (visibility, post_sr DESC),
   INDEX idx_moments (visibility, post_moment)
 );
@@ -141,14 +141,14 @@ CREATE TABLE IF NOT EXISTS posts (
 
 CREATE TABLE IF NOT EXISTS likes (
   like_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  id CHAR(36) NOT NULL,
+  user_id CHAR(36) NOT NULL,
   post_id CHAR(36) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE(id, post_id),
+  UNIQUE(user_id, post_id),
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
-  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
-  INDEX idx_like (post_id, id),
-  INDEX idx_user_id (id)
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  INDEX idx_like (post_id, user_id),
+  INDEX idx_user_id (user_id)
 );
 
 CREATE TABLE IF NOT EXISTS dislikes (
@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS dislikes (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE(user_id, post_id),
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
   INDEX idx_like (post_id, user_id),
   INDEX idx_user_id (user_id)
 );
@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS comments (
   commentID CHAR(36) PRIMARY KEY DEFAULT(UUID()),
   comment_sr BIGINT AUTO_INCREMENT UNIQUE,
   post_id CHAR(36) NOT NULL,
-  id CHAR(36) NOT NULL,
+  user_id CHAR(36) NOT NULL,
   comment TEXT NOT NULL,
   warnCategory VARCHAR(20) DEFAULT NULL,
   isPinned BOOLEAN DEFAULT 0,
@@ -183,7 +183,7 @@ CREATE TABLE IF NOT EXISTS comments (
   isBlocked BOOLEAN DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
-  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
   INDEX idx_comment_cursor (post_id, isBlocked, score, comment_sr),
   INDEX idx_comment_isPinned (isPinned)
 );
@@ -191,44 +191,44 @@ CREATE TABLE IF NOT EXISTS comments (
 CREATE TABLE IF NOT EXISTS commentLikes (
   commentLikeID INT AUTO_INCREMENT PRIMARY KEY,
   post_id CHAR(36) NOT NULL,
-  id CHAR(36) NOT NULL,
+  user_id CHAR(36) NOT NULL,
   commentID CHAR(36) NOT NULL,
-  UNIQUE(commentID,id),
+  UNIQUE(commentID,user_id),
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
-  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
   FOREIGN KEY (commentID) REFERENCES comments(commentID) ON DELETE CASCADE,
-  INDEX idx_commentLike (commentID, post_id, id),
+  INDEX idx_commentLike (commentID, post_id, user_id),
   INDEX idx_commentByPost (post_id)
 );
 
 CREATE TABLE IF NOT EXISTS postReports (
   report_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  id CHAR(36) NOT NULL,
+  user_id CHAR(36) NOT NULL,
   post_id CHAR(36) NOT NULL,
-  UNIQUE(id,post_id),
+  UNIQUE(user_id,post_id),
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
-  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
   INDEX idx_post_id (post_id)
 );
 
 
 CREATE TABLE IF NOT EXISTS savePost (
   savePost_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  id CHAR(36) NOT NULL,
+  user_id CHAR(36) NOT NULL,
   post_id CHAR(36) NOT NULL,
-  UNIQUE(id,post_id),
-  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  UNIQUE(user_id,post_id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS commentReports (
   report_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  id CHAR(36) NOT NULL,
+  user_id CHAR(36) NOT NULL,
   post_id CHAR(36) NOT NULL,
   commentID CHAR(36) NOT NULL,
-  UNIQUE(post_id,commentID, id),
+  UNIQUE(post_id,commentID, user_id),
   FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE,
-  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
   FOREIGN KEY (commentID) REFERENCES comments(commentID) ON DELETE CASCADE
 );
 
@@ -247,14 +247,14 @@ CREATE TABLE IF NOT EXISTS achievements (
 
 CREATE TABLE IF NOT EXISTS user_achievements (
   user_achievement_id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-  id CHAR(36) NOT NULL,
+  user_id CHAR(36) NOT NULL,
   achievement_id CHAR(36) NOT NULL,
   conditions JSON NOT NULL,
   achieved_at TIMESTAMP NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
   FOREIGN KEY (achievement_id) REFERENCES achievements(achievement_id) ON DELETE CASCADE,
-  UNIQUE KEY uniq_user_achievement (id, achievement_id)
+  UNIQUE KEY uniq_user_achievement (user_id, achievement_id)
 );
 
 
@@ -279,8 +279,8 @@ CREATE TABLE IF NOT EXISTS notification (
   is_read BOOLEAN DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   INDEX idx_notification_feed (recipient_id, is_read, created_at DESC),
-  FOREIGN KEY (recipient_id) REFERENCES users(id),
-  FOREIGN KEY (actor_id) REFERENCES users(id)
+  FOREIGN KEY (recipient_id) REFERENCES users(user_id),
+  FOREIGN KEY (actor_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE tags (
@@ -321,7 +321,7 @@ CREATE TABLE user_tag_interactions (
     ),
 
     FOREIGN KEY (tag_id) REFERENCES tags(tag_id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 
@@ -329,20 +329,20 @@ CREATE TABLE user_tag_interactions (
 CREATE TABLE interaction_events (
     event_id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
-    user_id BIGINT NOT NULL,
+    interaction_id BIGINT NOT NULL,
     post_id CHAR(21),
 
     event_type VARCHAR(30),
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    INDEX(user_id),
+    INDEX(interaction_id),
     INDEX(post_id),
     INDEX(event_type)
 );
 
 CREATE TABLE follow_sources (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    source_id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
     follower_id BIGINT NOT NULL,
     following_id BIGINT NOT NULL,

@@ -5,6 +5,7 @@ const storage = multer.diskStorage({
     cb(null, "./Images/temp"); // temp folder
   },
   filename: (req, file, cb) => {
+    
     const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
     cb(null, unique + path.extname(file.originalname));
   },
@@ -12,5 +13,5 @@ const storage = multer.diskStorage({
 
 export const diskUpload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 3MB
+  limits: { fileSize: 3 * 1024 * 1024 }, // 3MB
 });

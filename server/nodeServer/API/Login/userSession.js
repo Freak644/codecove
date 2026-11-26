@@ -13,7 +13,7 @@ export const SaveThisSession = async (rkv,userID) => {
 
     try {
         const [rows] = await database.execute(
-        `INSERT INTO user_sessions (id, session_id,ip, country, region, city, latitude, longitude, isp, user_agent, browser, browser_version, os, device_type)
+        `INSERT INTO user_sessions (user_id, session_id,ip, country, region, city, latitude, longitude, isp, user_agent, browser, browser_version, os, device_type)
         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?);`,
          [userID, session_id, ip, geo?.country || null, geo?.region || null, geo?.city || null,
         geo?.ll ? geo.ll[0] : null, geo?.ll ? geo.ll[1] : null, null, userAgent,
@@ -30,10 +30,10 @@ export const SaveThisSession = async (rkv,userID) => {
 export const loggedMeOut = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
-    let {id,session_id} = rkv.authData;
+    let {user_id,session_id} = rkv.authData;
     try {
-        await database.execute("UPDATE user_sessions SET revoked=? WHERE session_id=? AND id=?",
-            [true,session_id,id]
+        await database.execute("UPDATE user_sessions SET revoked=? WHERE session_id=? AND user_id=?",
+            [true,session_id,user_id]
         )
         rspo.clearCookie("myAuthToken",{
             httpOnly:true,

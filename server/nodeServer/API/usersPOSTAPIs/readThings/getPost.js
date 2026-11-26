@@ -6,52 +6,92 @@ export const GetPostForFeed = async (rkv,rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     const Limit = parseInt(rkv?.query?.Limit, 10);
-    const { id } = rkv.authData;
+    const { user_id } = rkv.authData;
 
     let limit = Number.isNaN(Limit) ? 10 : Limit;
     limit = limit > 15 ? 15 : limit;
     
     const cursorPost_sr = rkv.query.cursorPost_sr || null;
 
+    const currentUserId = user_id;               // the user_id of the user that is making the request
+    const cursor         = cursorPost_sr;   // pagination cursor (may be null)
+    const pageSize       = limit + 1; 
+
     try {
-        let [rows] = await database.query(`SELECT 
-                                    p.post_id, p.post_sr, p.id, p.images_url, p.caption, p.visibility, p.totalLike, p.totalComment, p.totalDislike, p.totalSave, p.post_moment, p.canComment, p.likeCount, p.canSave,
-                                    u.username,
-                                    u.avatar,
-                                    u.name as ownerName,
+        // ------------------------------------------------
+        // 3️⃣  Execute the query with the parameters in the same order
+        // ------------------------------------------------
+        let [rows] = await database.query(`SELECT
+                p.post_id,
+                p.post_sr,
+                p.user_id,
+                p.images_url,
+                p.caption,
+                p.visibility,
+                p.totalLike,
+                p.totalComment,
+                p.totalDislike,
+                p.totalSave,
+                p.post_moment,
+                p.canComment,
+                p.likeCount,
+                p.canSave,
 
-                                    (f.follower_id IS NOT NULL) AS isFollowing,
-                                    (li.id IS NOT NULL) AS isLiked,
-                                    (sp.id IS NOT NULL) AS isSaved,
-                                    (pr.id IS NOT NULL) AS isReported,
-                                    (di.user_id IS NOT NULL) AS isDisliked
-                                    FROM posts p
+                u.username,
+                u.avatar,
+                u.name AS ownerName,
 
-                                    INNER JOIN users u  
-                                    ON u.id = p.id
+          
+                (f.follower_id IS NOT NULL)      AS isFollowing,
+                (li.user_id IS NOT NULL)              AS isLiked,
+                (sp.user_id IS NOT NULL)              AS isSaved,
+                (pr.user_id IS NOT NULL)              AS isReported,
+                (di.user_id IS NOT NULL)         AS isDisliked
 
-                                    LEFT JOIN follows f
-                                    ON f.following_id = u.id AND f.follower_id = ?
+            FROM posts AS p
+            INNER JOIN users AS u
+                ON u.user_id = p.user_id
 
-                                    LEFT JOIN likes li
-                                    ON li.post_id = p.post_id AND li.id = ?
+           
+            LEFT JOIN follows AS f
+                ON f.following_id = u.user_id
+            AND f.follower_id = ?
 
-                                    LEFT JOIN dislikes di
-                                    ON di.user_id = ? AND di.post_id = p.post_id
+           
+            LEFT JOIN likes AS li
+                ON li.post_id = p.post_id
+            AND li.user_id = ?
 
-                                    LEFT JOIN savePost sp
-                                    ON sp.post_id = p.post_id AND sp.id = ?
+            
+            LEFT JOIN dislikes AS di
+                ON di.post_id = p.post_id
+            AND di.user_id = ?
 
-                                    LEFT JOIN postReports pr
-                                    ON pr.post_id = p.post_id AND pr.id = ?
+            
+            LEFT JOIN savePost AS sp
+                ON sp.post_id = p.post_id
+            AND sp.user_id = ?
 
-                                    WHERE p.visibility = 1
-                                    AND (? IS NULL OR p.post_sr < ?)
+            
+            LEFT JOIN postReports AS pr
+                ON pr.post_id = p.post_id
+            AND pr.user_id = ?
 
-                                    ORDER BY p.post_sr DESC
-                                    LIMIT ?;
-            `,
-        [ id, id, id, id, id, cursorPost_sr, cursorPost_sr,limit + 1]) // what the hake from today(19-02-26) i will wirte my all query in column format
+            WHERE p.visibility = "public"
+            AND ( ? IS NULL OR p.post_sr < ? )   /* cursor pagination */
+
+            ORDER BY p.post_sr DESC
+            LIMIT ?;
+            `, [
+            currentUserId,   // f.follower_id = ?
+            currentUserId,   // li.user_id    = ?
+            currentUserId,   // di.user_id    = ?
+            currentUserId,   // sp.user_id    = ?
+            currentUserId,   // pr.user_id    = ?
+            cursor,          // ? IS NULL
+            cursor,          // p.post_sr < ?
+            pageSize         // LIMIT ?
+        ]);
         
         if (rows.length < 1) return rspo.status(404).send({err:"No posts",count:0});
         
@@ -67,7 +107,7 @@ export const GetPostForFeed = async (rkv,rspo) => {
             const countKey = `post:likes:count:${row.post_id}`;
 
             pipeline.get(countKey);
-            pipeline.sIsMember(setKey, id);
+            pipeline.sIsMember(setKey, user_id);
         });
 
         const results = await pipeline.exec();
@@ -93,7 +133,7 @@ export const GetPostForFeed = async (rkv,rspo) => {
                 hydratePipeline.set(countKey, row.totalLike);
 
                 if (row.isLiked) {
-                    hydratePipeline.sAdd(setKey, id);
+                    hydratePipeline.sAdd(setKey, user_id);
                 }
 
                 redisLikeCount = row.totalLike;
@@ -114,7 +154,7 @@ export const GetPostForFeed = async (rkv,rspo) => {
 
         // rows = rows.map((row)=>{
         //     delete row.blockCat;
-        //     // row.id = id;
+        //     // row.user_id = user_id;
         //     return row
         // });
         let cursorObj = {};
@@ -133,22 +173,22 @@ export const GetPostForFeed = async (rkv,rspo) => {
 export const getPost = async (rkv, rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
-    let {id} = rkv.authData;
+    let {user_id:crntUser} = rkv.authData;
     let {post_id} = rkv.query;
     try {
         if (!post_id || post_id.length !== 21) return rspo.status(400).send({err:"Link is Broken"});
-        let [row] = await database.query(`SELECT p.post_id, p.post_sr, p.id, p.images_url, p.caption, p.visibility, p.totalComment, p.totalSave, p.post_moment, p.canComment, p.likeCount, p.canSave,
+        let [row] = await database.query(`SELECT p.post_id, p.post_sr, p.user_id, p.images_url, p.caption, p.visibility, p.totalComment, p.totalSave, p.post_moment, p.canComment, p.likeCount, p.canSave,
                         u.username, u.avatar,
                         u.name as ownerName,
                         EXISTS (
                         SELECT 1 FROM follows 
                         WHERE follower_id = ?
-                        AND following_id = u.id) AS isFollowing FROM posts p
-                        INNER JOIN users u ON u.id = p.id
-                        WHERE post_id = ?`,[id,post_id]);
+                        AND following_id = u.user_id) AS isFollowing FROM posts p
+                        INNER JOIN users u ON u.user_id = p.user_id
+                        WHERE post_id = ?`,[crntUser,post_id]);
         if (row.length !== 1) return rspo.status(400).send({err:"Something went wrong"});
         let {visibility, user_id} = row[0];
-        if (!visibility && id !== user_id) return rspo.status(401).send({err:"You did't have the access"});
+        if (!visibility && user_id !== crntUser) return rspo.status(401).send({err:"You did't have the access"});
         
         // console.log("i ma here");
         if (row[0].likeCount) {
@@ -156,7 +196,7 @@ export const getPost = async (rkv, rspo) => {
             const countKey = `post:likes:count:${post_id}`;
             
             row[0].totalLike = await redis.get(countKey);
-            row[0].isLiked = await redis.sIsMember(setkey,id);
+            row[0].isLiked = await redis.sIsMember(setkey,user_id);
         } else {
             row[0].totalLike = 0;
             row[0].totalComment = 0;

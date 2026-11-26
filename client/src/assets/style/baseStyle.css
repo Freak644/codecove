@@ -39,7 +39,7 @@
 body{
     margin: 0px; padding: 0px;
     background-color: var(--bg-color);
-    background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://res.cloudinary.com/dcve50avm/image/upload/v1765534333/ms_3221/l1vutg0yckc7fzddt0ev.jpg');
+    /* background-image: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)), url('https://res.cloudinary.com/dcve50avm/image/upload/v1765534333/ms_3221/l1vutg0yckc7fzddt0ev.jpg'); */
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;

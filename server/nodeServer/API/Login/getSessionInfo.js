@@ -10,7 +10,7 @@ export const ActivityInfo = async (rkv,rspo) => {
     try {
         let [rows] = await database.execute(`SELECT u.username, u.avatar,s.ip,s.country,s.city,s.region,s.os, s.isp, s.browser,v.created_at, v.session_id
                     FROM validationToken v
-                    LEFT JOIN users u ON u.id = v.id
+                    LEFT JOIN users u ON u.user_id = v.user_id
                     LEFT JOIN user_sessions s ON s.session_id = v.session_id
                     WHERE v.token_id = ?`,
             [token]

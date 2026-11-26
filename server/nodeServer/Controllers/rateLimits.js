@@ -48,7 +48,7 @@ const getRouteIdentity = (req) => {
 
 /**
  * User + endpoint limiter. Apply this AFTER Auth, because Auth sets
- * req.authData = tokenData and tokenData.id is the authenticated user ID.
+ * req.authData = tokenData and tokenData.user_id is the authenticated user user_id.
  */
 const createUserEndpointRateLimiter = ({
     prefix,
@@ -64,13 +64,13 @@ const createUserEndpointRateLimiter = ({
         legacyHeaders: false,
         store: createRedisStore(prefix),
         keyGenerator: (req) => {
-            const userId = req.authData?.id;
+            const userId = req.authData?.user_id;
 
             // This middleware must be mounted after Auth. Fail closed if
             // the expected authentication context is missing.
             if (userId === undefined || userId === null || userId === "") {
                 throw new Error(
-                    "Authenticated rate limiter used before Auth or without req.authData.id"
+                    "Authenticated rate limiter used before Auth or without req.authData.user_id"
                 );
             }
 
@@ -81,9 +81,9 @@ const createUserEndpointRateLimiter = ({
 
     return (req, res, next) => {
         if (
-            req.authData?.id === undefined ||
-            req.authData?.id === null ||
-            req.authData?.id === ""
+            req.authData?.user_id === undefined ||
+            req.authData?.user_id === null ||
+            req.authData?.user_id === ""
         ) {
             return res.status(401).json({
                 success: false,
@@ -201,7 +201,7 @@ export const passwordChangeIpLimiter = createIpRateLimiter({
     message: "Too many password-change attempts.",
 });
 
-// Authenticated policies are keyed by user ID + HTTP method + route template.
+// Authenticated policies are keyed by user user_id + HTTP method + route template.
 // Reusing one limiter across routes still gives each endpoint its own bucket.
 export const userReadLimiter = createUserEndpointRateLimiter({
     prefix: "codecove:ratelimit:v2:user:read:",

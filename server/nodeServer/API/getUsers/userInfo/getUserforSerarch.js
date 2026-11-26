@@ -5,7 +5,7 @@ export const findUsers = async (rkv, rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
     let {username} = rkv.query;
-    let {id} = rkv.authData;
+    let {user_id} = rkv.authData;
     
     try {
         if (!username || username.length<4) return rspo.status(403).send({err:"Username is too short"});
@@ -15,8 +15,8 @@ export const findUsers = async (rkv, rspo) => {
             EXISTS (
                 SELECT 1 FROM follows
                 WHERE follower_id = ?
-                AND following_id = u.id
-            ) AS isFollowing FROM users u WHERE u.username LIKE ? OR SOUNDEX(u.username) = SOUNDEX(?) LIMIT 20`,[id,`${username}%`, username]);
+                AND following_id = u.user_id
+            ) AS isFollowing FROM users u WHERE u.username LIKE ? OR SOUNDEX(u.username) = SOUNDEX(?) LIMIT 20`,[user_id,`${username}%`, username]);
         rspo.json({pass:"Ok",userData:similerUser})
     } catch (error) {
         console.log(error.message)

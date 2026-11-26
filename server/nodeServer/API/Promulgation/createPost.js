@@ -38,37 +38,33 @@ export const CreatePost = async (rkv,rspo) => {
     const crntAPI = rkv.originalUrl.split("?")[0];
     const upLoadLimit = pLimit(2);
     const fileArray = rkv.files;
-    let {id} = rkv.authData;
-    let {Absuse, Link, Spam, Violence, canComment, canSave, caption, likeCount, visibility, postGroup} = rkv.body || {};
+    let {user_id} = rkv.authData;
+    let {caption, canComment, canSave, tags, post_moment, moderationLevel, likeCount: showLikesCount, visibility} = rkv.body || {};
     let imgArray = [];
     // console.log(canSave)
     try {
+       console.log("here")
       if (fileArray.length === 0 ) return rspo.status(400).send({err:"No file Found"});
       fileArray.forEach(file => {
         imgArray.push(file.filename);
       });
       const validationError = "ValidationFaild"
       const allowedCategories = [
-        "Bugs","TIL","Snippets","Mini Blog","Setup Showcase",
-        "QuickTips","Meme","WIP"
+        "memes", "miniblog", "wip", "til"
       ];
-      const allowedSave = ["Everyone","Follower","false"];
       const boolValues = ["true","false"];
 
-      if (!boolValues.includes(canComment)) throw new Error("BoolendError");
-      ;
-      if (!allowedSave.includes(canSave)) throw new Error("canSaveBoolError");
-      if (!allowedCategories.includes(postGroup)) throw new Error(validationError);;
-      if (!boolValues.includes(visibility)) throw new Error(validationError);;
+      if (!boolValues.includes(canComment) || !boolValues.includes(canSave)) throw new Error("BoolendError");
+      
+      if (!allowedCategories.includes(post_moment)) throw new Error(validationError);;
+      
 
-      //const payload = { Absuse, Link, Spam, Violence, canComment, canSave, likeCount, visibility, postGroup };
-
+      console.log(typeof canComment, showLikesCount);
       const toBool = (v) => v === "true" ? 1 : 0;
 
       const normalized = {
         canComment: toBool(canComment),
-        likeCount: toBool(likeCount),
-        visibility: toBool(visibility)
+        likeCount: toBool(showLikesCount),
       };
 
     
@@ -76,8 +72,8 @@ export const CreatePost = async (rkv,rspo) => {
       const DOMpurify = createDOMPurify(window);
       const sanitiz = (str)=> DOMpurify.sanitize(str);
       caption = sanitiz(caption)
-      let [row] = await database.query("SELECT username FROM users WHERE id=?",
-        [id]
+      let [row] = await database.query("SELECT username FROM users WHERE user_id=?",
+        [user_id]
       );
       if(row.length<1) {
         await clearTemp(imgArray);
@@ -91,7 +87,7 @@ export const CreatePost = async (rkv,rspo) => {
           return rspo.status(400).send(rekvst.err);
         }
       }
-      console.log("here")
+     
       const uploadImage = fileArray.map(crntImg=>
           upLoadLimit(async ()=>{
             const result = await cloudinary.uploader.upload(
@@ -114,24 +110,24 @@ export const CreatePost = async (rkv,rspo) => {
       let post_id = nanoid();
       await database.query(
         `INSERT INTO posts 
-        (post_id, id, images_url, caption, blockCat, visibility, canComment, likeCount, canSave, post_moment) 
+        (post_id, user_id, images_url, caption, moderationLevel, visibility, canComment, likeCount, canSave, post_moment) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           post_id,
-          id,
+          user_id,
           JSON.stringify(cloudLiks),
           caption,
-          JSON.stringify({ Absuse, Spam, Link, Violence }),
-          normalized.visibility,
+          parseInt(moderationLevel),
+          visibility,
           normalized.canComment,
-          normalized.likeCount,
+          normalized.showLikesCount,
           canSave,
-          postGroup
+          post_moment
         ]
       );
 
       
-      rspo.status(201).send({pass:"Your Post is POst", postData:{post_id,id,cloudLiks,caption,blockCat:{Absuse,Spam,Link,Violence},visibility:visibility == "true" ? 1 : 0, canComment: canComment === "true" ? 1 : 0,likeCount: likeCount == "true" ? 1 : 0, canSave, postGroup}})
+      rspo.status(201).send({pass:"Your Post is POst", postData:{post_id,user_id,cloudLiks,caption,moderationLevel,visibility, canComment,likeCount: showLikesCount, canSave, post_moment}})
 
     } catch (error) {
         console.log(error)

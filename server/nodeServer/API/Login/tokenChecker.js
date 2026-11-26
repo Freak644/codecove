@@ -20,7 +20,8 @@ export const Auth = async (rkv,rspo,next) => {
         let decryptedToken = await Decrypt(token);
         let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec, {algorithms: ["HS256"]});
         let decodedTime = Math.floor(Date.now()/1000);
-        let {session_id,id} = tokenData;
+        let {session_id,user_id} = tokenData;
+        
         // console.log(session_id);
         // console.log(tokenData.exp<decodedTime);
         if (tokenData.exp<decodedTime) {
@@ -28,8 +29,8 @@ export const Auth = async (rkv,rspo,next) => {
             completeRequest(crntIp,crntAPI);
             return rspo.status(501).send({err: "Your Auth token is expired"});
         }
-        let [rows] = await database.execute("SELECT revoked FROM user_sessions WHERE id=? AND session_id=?",
-                [id,session_id]
+        let [rows] = await database.execute("SELECT revoked FROM user_sessions WHERE user_id=? AND session_id=?",
+                [user_id,session_id]
         )
         
         if (rows.length === 0) {
@@ -42,6 +43,7 @@ export const Auth = async (rkv,rspo,next) => {
             return rspo.status(401).send({err:"Token rovoked"});
         }
         rkv.authData = tokenData;
+        // console.log(crntIp);
         next();
     } catch (error) {
         completeRequest(crntIp,crntAPI);
@@ -59,14 +61,14 @@ export const checkAuth = async (rkv,rspo) => {
         let decryptedToken = await Decrypt(token);
         let tokenData = jwt.decode(decryptedToken,process.env.jwt_sec, {algorithms: ["HS256"]});
         let decodedTime = Math.floor(Date.now()/1000);
-        let {id,session_id} = tokenData;
+        let {user_id,session_id} = tokenData;
         
         if (tokenData.exp<decodedTime){
             await revokedToken(session_id)
             throw new Error("Token Expired")
         } 
-        let [rows] = await database.execute("SELECT revoked,ip FROM user_sessions WHERE id=? AND session_id=?",
-            [id,session_id]
+        let [rows] = await database.execute("SELECT revoked,ip FROM user_sessions WHERE user_id=? AND session_id=?",
+            [user_id,session_id]
         )
         if (rows.length === 0) {
             return rspo.status(404).send({loggedIn:true})
@@ -77,7 +79,7 @@ export const checkAuth = async (rkv,rspo) => {
             await revokedToken(session_id)
             throw new Error("token Revoked");
         }
-        const userInfo = await CrntUser(id);
+        const userInfo = await CrntUser(user_id);
         
         if (userInfo.err) {
             throw new Error(userInfo.err);

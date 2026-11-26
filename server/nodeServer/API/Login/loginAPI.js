@@ -17,7 +17,7 @@ export const LoginAPI = async (rkv,rspo) => {
             return rspo.status(400).send({ err: "Please Provide proper information"})
         }
         let [isUser] = await database.query(
-            "SELECT username,password,id,email,acStatus,avatar FROM users WHERE username=? OR email=?",
+            "SELECT username,password,user_id,email,acStatus,avatar FROM users WHERE username=? OR email=?",
             [Email,Email]
         )
         if (!isUser.length>0) {
@@ -28,7 +28,7 @@ export const LoginAPI = async (rkv,rspo) => {
             }
         }
         const pepper = process.env.pepper_sec
-        let {password,username,email,id,acStatus,avatar} = isUser[0];
+        let {password,username,email,user_id,acStatus,avatar} = isUser[0];
         if (acStatus !== 1) return rspo.status(401).send({err:"Your account Block"});
         if (!password) {
             return rspo.status(404).send({err:"You have an OAuth service account"});
@@ -37,7 +37,7 @@ export const LoginAPI = async (rkv,rspo) => {
         if (!isPassMatch) {
             return rspo.status(401).send({ err: "Check your Password"})
         }
-        let [rows] = await database.query("SELECT ip FROM user_sessions WHERE id = ? ORDER BY created_at DESC LIMIT 1",[id])
+        let [rows] = await database.query("SELECT ip FROM user_sessions WHERE user_id = ? ORDER BY created_at DESC LIMIT 1",[user_id])
         const loginTime = new Date();
         const formattedTime = loginTime.toLocaleString('en-US', {
             timeZone: clientInfo.timeZone,   
@@ -50,16 +50,16 @@ export const LoginAPI = async (rkv,rspo) => {
             second: '2-digit',
             hour12: true
         });
-        let {session_id,platform,city,country,region,device_type,ip} = await SaveThisSession(rkv,id)
+        let {session_id,platform,city,country,region,device_type,ip} = await SaveThisSession(rkv,user_id)
         
-        await database.query("INSERT INTO validationToken (token_id, id, session_id, username, email) VALUES (?,?,?,?,?);"
-            ,[token_id,id,session_id,username,email]
+        await database.query("INSERT INTO validationToken (token_id, user_id, session_id, username, email) VALUES (?,?,?,?,?);"
+            ,[token_id,user_id,session_id,username,email]
         )
         
         let activity_url = `${process.env.FRONTEND_URL}/checkInfo/${token_id}`
         
         
-        let authToken = jwt.sign({id,session_id},process.env.jwt_sec,{expiresIn:"1d"});
+        let authToken = jwt.sign({user_id,session_id},process.env.jwt_sec,{expiresIn:"1d"});
         
         let encryptedToken = await Encrypt(authToken);
         console.log("here");

@@ -132,7 +132,7 @@ export const CreateUser = async (rkv, rspo) => {
     await redis.sAdd("all:usernames",username);
     await redis.sAdd("all:emails",email)
     await database.query(
-      "INSERT INTO users (id, name, username,email,password,avatar) VALUES (?,?,?,?,?,COALESCE(?, DEFAULT(avatar)))",
+      "INSERT INTO users (user_id, name, username,email,password,avatar) VALUES (?,?,?,?,?,COALESCE(?, DEFAULT(avatar)))",
       [newUserID, name, username, email, hashPass, avatar]
     );
     

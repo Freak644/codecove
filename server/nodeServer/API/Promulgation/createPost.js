@@ -9,13 +9,14 @@ import {JSDOM} from 'jsdom';
 import https from 'https';
 import pLimit from 'p-limit';
 import { completeRequest } from '../../Controllers/src/middleware/progressTracker.js';
+import axios from 'axios';
 
 cloudinary.config({
   cloud_name:process.env.cloudinary_name,
   api_key: process.env.cloudinary_key,
   api_secret: process.env.cloudinary_sec,
   http_agent: new https.Agent({ keepAlive: true, maxSockets: 5 })
-})
+});
 
 
 
@@ -43,91 +44,96 @@ export const CreatePost = async (rkv,rspo) => {
     let imgArray = [];
     // console.log(canSave)
     try {
-       console.log("here")
-      if (fileArray.length === 0 ) return rspo.status(400).send({err:"No file Found"});
-      fileArray.forEach(file => {
-        imgArray.push(file.filename);
-      });
-      const validationError = "ValidationFaild"
-      const allowedCategories = [
-        "memes", "miniblog", "wip", "til"
-      ];
-      const boolValues = ["true","false"];
+      const [rows] = await database.query('SELECT * FROM tags WHERE tag_name IN (?)',tags)
+      console.log(rows);
+      rspo.json({pass:"Done"})
+      //  console.log("here")
+      // if (fileArray.length === 0 ) return rspo.status(400).send({err:"No file Found"});
+      // fileArray.forEach(file => {
+      //   imgArray.push(file.filename);
+      // });
+      // const validationError = "ValidationFaild"
+      // const allowedCategories = [
+      //   "memes", "miniblog", "wip", "til"
+      // ];
+      // const boolValues = ["true","false"];
 
-      if (!boolValues.includes(canComment) || !boolValues.includes(canSave)) throw new Error("BoolendError");
+      // if (!boolValues.includes(canComment) || !boolValues.includes(canSave)) throw new Error("BoolendError");
       
-      if (!allowedCategories.includes(post_moment)) throw new Error(validationError);;
+      // if (!allowedCategories.includes(post_moment)) throw new Error(validationError);;
       
 
-      console.log(typeof canComment, showLikesCount);
-      const toBool = (v) => v === "true" ? 1 : 0;
+      // console.log(typeof canComment, showLikesCount);
+      // const toBool = (v) => v === "true" ? 1 : 0;
 
-      const normalized = {
-        canComment: toBool(canComment),
-        likeCount: toBool(showLikesCount),
-      };
+      // const normalized = {
+      //   canComment: toBool(canComment),
+      //   likeCount: toBool(showLikesCount),
+      // };
 
     
-      const window = new JSDOM('').window;
-      const DOMpurify = createDOMPurify(window);
-      const sanitiz = (str)=> DOMpurify.sanitize(str);
-      caption = sanitiz(caption)
-      let [row] = await database.query("SELECT username FROM users WHERE user_id=?",
-        [user_id]
-      );
-      if(row.length<1) {
-        await clearTemp(imgArray);
-        return rspo.status(401).send({err:"No user found"});
-      }
+      // const window = new JSDOM('').window;
+      // const DOMpurify = createDOMPurify(window);
+      // const sanitiz = (str)=> DOMpurify.sanitize(str);
+      // caption = sanitiz(caption)
+      // let [row] = await database.query("SELECT username FROM users WHERE user_id=?",
+      //   [user_id]
+      // );
+      // if(row.length<1) {
+      //   await clearTemp(imgArray);
+      //   return rspo.status(401).send({err:"No user found"});
+      // }
 
-      for (const crntImg of fileArray) {
-        let rekvst = await FileChecker(crntImg.path,crntImg.size);
-        if (rekvst.err) {
-          await clearTemp(imgArray);
-          return rspo.status(400).send(rekvst.err);
-        }
-      }
+      // for (const crntImg of fileArray) {
+      //   let rekvst = await FileChecker(crntImg.path,crntImg.size);
+      //   if (rekvst.err) {
+      //     await clearTemp(imgArray);
+      //     return rspo.status(400).send(rekvst.err);
+      //   }
+      // }
      
-      const uploadImage = fileArray.map(crntImg=>
-          upLoadLimit(async ()=>{
-            const result = await cloudinary.uploader.upload(
-              crntImg.path,
-              {
-                folder: row[0].username,
-                transformation: [
-                  {quality: "auto", fetch_format: "auto"},
-                  {width: 800, crop: "scale"}
-                ]
-              }
-            )
-            await safeUnlink(crntImg.path)
-            console.log("here2")
-            return result.secure_url;})
-      )
+      // const uploadImage = fileArray.map(crntImg=>
+      //     upLoadLimit(async ()=>{
+      //       const result = await cloudinary.uploader.upload(
+      //         crntImg.path,
+      //         {
+      //           folder: row[0].username,
+      //           transformation: [
+      //             {quality: "auto", fetch_format: "auto"},
+      //             {width: 800, crop: "scale"}
+      //           ]
+      //         }
+      //       )
+      //       await safeUnlink(crntImg.path)
+            
+      //       return result.secure_url;})
+      // )
 
-      const cloudLiks = await Promise.all(uploadImage)
+      // const cloudLiks = await Promise.all(uploadImage);
+
+      // const tagsCall = await axios
    
-      let post_id = nanoid();
-      await database.query(
-        `INSERT INTO posts 
-        (post_id, user_id, images_url, caption, moderationLevel, visibility, canComment, likeCount, canSave, post_moment) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-          post_id,
-          user_id,
-          JSON.stringify(cloudLiks),
-          caption,
-          parseInt(moderationLevel),
-          visibility,
-          normalized.canComment,
-          normalized.showLikesCount,
-          canSave,
-          post_moment
-        ]
-      );
+      // let post_id = nanoid();
+      // await database.query(
+      //   `INSERT INTO posts 
+      //   (post_id, user_id, images_url, caption, moderationLevel, visibility, canComment, likeCount, canSave, post_moment) 
+      //   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      //   [
+      //     post_id,
+      //     user_id,
+      //     JSON.stringify(cloudLiks),
+      //     caption,
+      //     parseInt(moderationLevel),
+      //     visibility,
+      //     normalized.canComment,
+      //     normalized.showLikesCount,
+      //     canSave,
+      //     post_moment
+      //   ]
+      // );
 
       
-      rspo.status(201).send({pass:"Your Post is POst", postData:{post_id,user_id,cloudLiks,caption,moderationLevel,visibility, canComment,likeCount: showLikesCount, canSave, post_moment}})
+      // rspo.status(201).send({pass:"Your Post is POst", postData:{post_id,user_id,cloudLiks,caption,moderationLevel,visibility, canComment,likeCount: showLikesCount, canSave, post_moment}})
 
     } catch (error) {
         console.log(error)

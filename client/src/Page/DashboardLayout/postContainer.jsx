@@ -82,14 +82,16 @@ export default function PostsCon({posts}) {
                                 />
                         </div>
                         
-                        <div className="w-full flex items-center flex-row my-scroll-x gap-1.5 text-indigo-600 hover:underline underline-offset-1">{
+                        <div className="w-full flex items-center flex-row my-scroll-x gap-1.5 text-indigo-600 hover:underline underline-offset-1">
+                            {/* {
                                 tags.length === 0 ? <div className="miniLoader"/> : tags.map((tag, index)=>(
                                     <div key={index} className="shrink-0 tagsHolder HoverMe text-skin-text">
                                         <span className="text-purple-700">#</span>
                                         {tag.tag_name}
                                     </div>
                                 ))
-                            }</div>
+                            } */}
+                            </div>
 
                         <div className="imgContainer w-full flex items-center h-100 relative">
                             <ImageSlider imgArray={images_url} postInfo={{post_id,isLiked, totalLike}} />

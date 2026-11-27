@@ -1,4 +1,3 @@
-import { clearConfig } from "isomorphic-dompurify";
 import { database } from "../../../Controllers/myConnectionFile.js";
 import redis from "../../../Controllers/src/config/redis.js";
 import { completeRequest } from "../../../Controllers/src/middleware/progressTracker.js";

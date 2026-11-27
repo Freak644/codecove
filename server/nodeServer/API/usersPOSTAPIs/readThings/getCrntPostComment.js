@@ -8,7 +8,7 @@ export const getComment = async (rkv, rspo) => {
     const crntIP = rkv.userIp;
     const crntAPI = rkv.originalUrl.split("?")[0];
 
-    const { id } = rkv.authData;
+    const { user_id } = rkv.authData;
     const { post_id } = rkv.query;
 
     const QLimit = parseInt(rkv?.query?.Limit, 10);
@@ -29,7 +29,7 @@ export const getComment = async (rkv, rspo) => {
             `SELECT 
                 canComment,
                 visibility,
-                id AS user_id
+                user_id
             FROM posts
             WHERE post_id = ?
             LIMIT 1`,
@@ -48,7 +48,7 @@ export const getComment = async (rkv, rspo) => {
             user_id
         } = rows[0];
 
-        if ((!visibility || !canComment) && user_id !== id) {
+        if ((!visibility || !canComment) && user_id !== user_id) {
             return rspo.status(401).send({
                 err: "You don't have access",
                 isComment: false
@@ -72,20 +72,20 @@ export const getComment = async (rkv, rspo) => {
                 SELECT 1
                 FROM commentLikes cli
                 WHERE cli.commentID = c.commentID
-                AND cli.id = ?
+                AND cli.user_id = ?
             ) AS isLiked,
 
             EXISTS(
                 SELECT 1
                 FROM commentReports cr
                 WHERE cr.commentID = c.commentID
-                AND cr.id = ?
+                AND cr.user_id = ?
             ) AS isReported
 
         FROM comments c
 
         INNER JOIN users u
-        ON u.id = c.id
+        ON u.user_id = c.user_id
 
         LEFT JOIN posts p
         ON p.post_id = c.post_id
@@ -98,8 +98,8 @@ export const getComment = async (rkv, rspo) => {
         LIMIT ?
             `,
             [
-                id,
-                id,
+                user_id,
+                user_id,
                 post_id,
                 cursorComment_sr,
                 cursorComment_sr,
@@ -113,18 +113,18 @@ export const getComment = async (rkv, rspo) => {
             const [userRow] = await database.query(`SELECT 
                 p.post_moment, u.username AS Ouser, u.avatar AS Oavatar,
                 u.name as ownerName,
-                (p.id = ?) AS isPostOwner,
+                (p.user_id = ?) AS isPostOwner,
                 
                 EXISTS(
                     SELECT 1
                     FROM follows f
-                    WHERE f.following_id = u.id AND f.follower_id = ?
+                    WHERE f.following_id = u.user_id AND f.follower_id = ?
                 ) AS isFollowing,
     
                 EXISTS(
                     SELECT 1
                     FROM savePost sp
-                    WHERE sp.post_id = p.post_id AND sp.id = ?
+                    WHERE sp.post_id = p.post_id AND sp.user_id = ?
                 ) AS isSaved,
 
                 EXISTS(
@@ -136,8 +136,8 @@ export const getComment = async (rkv, rspo) => {
                 FROM posts p
                 
                 INNER JOIN users u
-                ON u.id = p.id
-                WHERE p.post_id = ?`,[id,id,id,id,post_id]);
+                ON u.user_id = p.user_id
+                WHERE p.post_id = ?`,[user_id,user_id,user_id,user_id,post_id]);
 
             postInfo = userRow;
         }
@@ -161,7 +161,7 @@ export const getComment = async (rkv, rspo) => {
             const cLikeCount = `post:commentLike:like:${row.commentID}`
             
             pipeline.get(cLikeCount);
-            pipeline.sIsMember(commentSet, id);
+            pipeline.sIsMember(commentSet, user_id);
         });
 
         const results = await pipeline.exec();
@@ -185,7 +185,7 @@ export const getComment = async (rkv, rspo) => {
                needHydration = true;
                hydratePipeline.set(cLikeCount,comment.totalLike);
                if (comment.isLiked) {
-                    hydratePipeline.sAdd(commentSet,id) ;
+                    hydratePipeline.sAdd(commentSet,user_id) ;
                }
                isLikedRedis = comment.isLiked;
                totalLikeRedis = comment.totalLike;

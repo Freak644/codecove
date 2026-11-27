@@ -8,13 +8,13 @@ new Worker("likeQueue",
         const {post_id, user_id, crntStatus} = job.data;
         // console.log(post_id, crntStatus)
         if (crntStatus) {
-            const [rspo] = await database.query("INSERT IGNORE INTO likes (post_id, id) VALUES (?, ?)",[post_id,user_id]);
+            const [rspo] = await database.query("INSERT IGNORE INTO likes (post_id, user_id) VALUES (?, ?)",[post_id,user_id]);
 
             if (rspo.affectedRows > 0) {
                 await database.query("UPDATE posts SET totalLike = totalLike + 1 WHERE post_id = ?",[post_id]);
             }
         } else {
-            const [rspo] = await database.query("DELETE FROM likes WHERE post_id = ? AND id = ?", [post_id, user_id]);
+            const [rspo] = await database.query("DELETE FROM likes WHERE post_id = ? AND user_id = ?", [post_id, user_id]);
             
             if (rspo.affectedRows > 0) {
                 await database.query("UPDATE posts SET totalLike = GREATEST(totalLike - 1, 0) WHERE post_id = ?",[post_id]);
@@ -30,12 +30,12 @@ new Worker("commentLike",
     const {post_id, commentID, user_id, crntStatus} = job.data;
     // console.log(commentID, post_id, user_id, crntStatus)
     if (crntStatus) {
-        const [rspo] = await database.query("INSERT IGNORE INTO commentLikes (commentID, post_id, id) VALUES (?, ?, ?)",[commentID, post_id, user_id]);
+        const [rspo] = await database.query("INSERT IGNORE INTO commentLikes (commentID, post_id, user_id) VALUES (?, ?, ?)",[commentID, post_id, user_id]);
         if (rspo.affectedRows > 0) {
             await database.query("UPDATE comments SET totalLike = totalLike + 1 WHERE commentID = ?",[commentID]);
         }
     } else {
-        const [rspo] = await database.query("DELETE FROM commentLikes WHERE commentID = ? AND post_id = ? AND id = ?",[commentID,post_id,user_id]);
+        const [rspo] = await database.query("DELETE FROM commentLikes WHERE commentID = ? AND post_id = ? AND user_id = ?",[commentID,post_id,user_id]);
 
         if (rspo.affectedRows > 0) {
             await database.query("UPDATE comments SET totalLike = GREATEST(totalLike - 1, 0) WHERE commentID = ?",[commentID])
@@ -43,9 +43,9 @@ new Worker("commentLike",
     }
 },{connection: bullRedis, concurrency: 5});
 // likeWorker.on("completed", job => {
-//   console.log("DONE:", job.id);
+//   console.log("DONE:", job.user_id);
 // });
 
 // likeWorker.on("failed", (job, err) => {
-//   console.error("FAILED:", job?.id, err);
+//   console.error("FAILED:", job?.user_id, err);
 // });

@@ -88,8 +88,21 @@ export const AddTag = async (rkv, rspo) => {
       throw new ValidationError("Missing 'tagArray' field");
     }
 
-    const tags = normalizeTags(tagArray);
-
+    let tags_withId = []
+    let strTags = []
+    const stringTag = () => {
+      
+      tagArray.forEach(tag=> {
+        if (tag.tag_id) {
+          tags_withId.push(tag)
+        } else if (!tag.tag_id) {
+          strTags.push(tag.tag_name)
+        }
+      })
+      return strTags
+    }
+  
+    const tags = normalizeTags(stringTag());
     const placeholders = tags.map(() => "(?)").join(", ");
     await database.query(
       `INSERT INTO tags (tag_name) VALUES ${placeholders}
@@ -97,11 +110,12 @@ export const AddTag = async (rkv, rspo) => {
       tags
     );
 
-    return rspo.json({ pass: "Done", tags });
+    const [rows] = await database.query('SELECT * FROM tags WHERE tag_name IN (?)',strTags)
+    rows.forEach(tag=> tags_withId.push(tag));
+
+    return tags_withId
   } catch (error) {
-    if (error instanceof ValidationError) {
-      return rspo.status(400).json({ err: error.message });
-    }
+    return error
 
     // Log unexpected errors (but don't leak details to the client)
     console.error("[AddTag]", error);
